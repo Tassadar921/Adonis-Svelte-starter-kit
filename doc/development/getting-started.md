@@ -19,7 +19,7 @@ For this part, refer to the [environment variables](environment.md) documentatio
 ### 3) Make sure you have Docker and the `compose` plugin installed
 
 ```bash
-    docker --version
+    which docker
     docker compose version
 ```
 
@@ -32,7 +32,7 @@ For this part, refer to the [environment variables](environment.md) documentatio
 ### 4) Make sure you have `make` installed
 
 ```bash
-    make --version
+    which make
 ```
 
 If you don't have `make` installed, you can follow the official [GNU Make installation guide](https://www.gnu.org/software/make/).
