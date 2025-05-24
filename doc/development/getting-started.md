@@ -16,7 +16,16 @@ For this part, refer to the [environment variables](environment.md) documentatio
 
 ---
 
-### 3) Make sure you have Docker and the `compose` plugin installed
+### 3) Make sure you have the right NodeJs version
+```bash
+    node --version
+```
+
+You should have Node.js >= 20.6 installed. If you don't have it installed, you can follow the official [Node.js installation guide](https://nodejs.org/en/download/).
+
+We strongly recommend using [nvm](https://github.com/nvm-sh/nvm) to manage your Node.js versions.
+
+### 4) Make sure you have Docker and the `compose` plugin installed
 
 ```bash
     which docker
@@ -29,7 +38,7 @@ For this part, refer to the [environment variables](environment.md) documentatio
 
 ---
 
-### 4) Make sure you have `make` installed
+### 5) Make sure you have `make` installed
 
 ```bash
     which make
@@ -39,7 +48,7 @@ If you don't have `make` installed, you can follow the official [GNU Make instal
 
 ---
 
-### 5) Start the application
+### 6) Start the application
 
 ```bash
     make start
@@ -49,7 +58,7 @@ This command will build and start the application in detached mode. It will also
 
 ---
 
-### 6) Access the application
+### 7) Access the application
 
 You can access the application at http://localhost:5173.
 
