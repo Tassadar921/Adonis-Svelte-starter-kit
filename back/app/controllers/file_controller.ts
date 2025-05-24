@@ -3,16 +3,12 @@ import { HttpContext } from '@adonisjs/core/http';
 import app from '@adonisjs/core/services/app';
 import UserRepository from '#repositories/user_repository';
 import User from '#models/user';
-import {
-    serveStaticProfilePictureFileValidator,
-} from '#validators/file';
+import { serveStaticProfilePictureFileValidator } from '#validators/file';
 import cache from '@adonisjs/cache/services/main';
 
 @inject()
 export default class FileController {
-    constructor(
-        private readonly userRepository: UserRepository,
-    ) {}
+    constructor(private readonly userRepository: UserRepository) {}
 
     public async serveStaticProfilePictureFile({ request, response }: HttpContext): Promise<void> {
         const { userId } = await serveStaticProfilePictureFileValidator.validate(request.params());
