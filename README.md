@@ -8,6 +8,23 @@
 
 ### ORM : Lucid
 
+### Features
+
+- Login
+- Reset password
+- Forgot password
+- Friends
+- Blocked users
+- Multi languages (English & French natively, easy to add more languages)
+- Multi themes (Light & Dark)
+
+**In development**
+
+- Account creation
+- Google oauth
+- Microsoft oauth
+- Discord oauth
+
 ### Production links
 
 - [Production](https://app.my-domain.fr)

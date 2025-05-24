@@ -61,16 +61,16 @@ FRIEND_EMAILS=["paul.lecuisinier@gmail.com"]
 ```
 VITE_API_BASE_URL=http://localhost:3333
 VITE_FRONT_URI=http://localhost:5173
-VITE_GITHUB_REPOSITORY=https://github.com/Tassadar921/Colonizadar
+VITE_GITHUB_REPOSITORY=https://github.com/Tassadar921/Adonis-Svelte-starter-kit
 VITE_DEFAULT_IMAGE=/assets/default/image.png
 ```
 
-| Variable                 | Value                                      |
-|--------------------------|--------------------------------------------|
-| `VITE_API_BASE_URL`      | http://localhost:3333                      |
-| `VITE_FRONT_URI`         | http://localhost:5173                      |
-| `VITE_GITHUB_REPOSITORY` | https://github.com/Tassadar921/Colonizadar |
-| `VITE_DEFAULT_IMAGE`     | /assets/default/image.png                  |
+| Variable                 | Value                                                    |
+|--------------------------|----------------------------------------------------------|
+| `VITE_API_BASE_URL`      | http://localhost:3333                                    |
+| `VITE_FRONT_URI`         | http://localhost:5173                                    |
+| `VITE_GITHUB_REPOSITORY` | https://github.com/Tassadar921/Adonis-Svelte-starter-kit |
+| `VITE_DEFAULT_IMAGE`     | /assets/default/image.png                                |
 
 ---
 
