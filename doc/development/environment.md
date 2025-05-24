@@ -34,7 +34,7 @@ FRIEND_EMAILS=["paul.lecuisinier@gmail.com"]
 | `PORT`                 | 3333                                                                                                    |
 | `HOST`                 | 0.0.0.0                                                                                                 |
 | `NODE_ENV`             | development                                                                                             |
-| `APP_KEY`              | **Run `node ace genetate:key` to generate this field**                                                  |
+| `APP_KEY`              | **Run `cd back && node ace generate:key` to generate this field**                                       |
 | `LOG_LEVEL`            | debug                                                                                                   |
 | `DB_CONNECTION`        | pg                                                                                                      |
 | `DB_HOST`              | db                                                                                                      |
