@@ -45,9 +45,11 @@
         "file": {
             "title": "Select a file",
             "description": "Drag & drop or click to select a file."
-        }
+        },
+        "consent": "I agree to the terms and conditions"
     },
     "toast": {
+        "token-expired": "Your session has expired, please login again",
         "copy": {
             "success": "Copied to clipboard"
         },
@@ -134,6 +136,12 @@
     },
     "login": {
         "title": "Login"
+    },
+    "create-account": {
+        "title": "Create account",
+        "confirm": {
+            "title": "Confirm account creation"
+        }
     },
     "logout": {
         "title": "Logout",
