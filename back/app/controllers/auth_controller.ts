@@ -43,27 +43,29 @@ export default class AuthController {
         return response.send({ revoked: true });
     }
 
-    public async sendAccountCreationEmail({ request, response }: HttpContext): Promise<void> {
+    public async sendAccountCreationEmail({ request, response, language }: HttpContext): Promise<void> {
         const { username, email, password, consent } = await request.validateUsing(sendAccountCreationEmailValidator);
 
         if (!consent) {
             return response.badRequest({ error: 'Consent is required' });
         }
 
-        let user: User = await this.userRepository.firstOrFail({ email });
-        if (!user.enabled) {
-            if (user.createdAt && user.createdAt > DateTime.now().minus({ minutes: 5 })) {
-                return response.send({ success: true });
+        let user: User | null = await this.userRepository.findOneBy({ email });
+        if (user) {
+            if (!user.enabled) {
+                if (user.createdAt > DateTime.now().minus({ minutes: 5 })) {
+                    return response.send({ message: 'Check your mails to confirm account creation' });
+                } else {
+                    await user.delete();
+                }
             } else {
-                await user.delete();
+                return response.status(409).send({ error: 'User already exists' });
             }
-        } else {
-            return response.status(409).send({ error: 'User already exists' });
         }
 
         try {
             const token: string = randomUUID();
-            await this.mailService.sendAccountCreationEmail(email, `${env.get('FRONT_URI')}/reset-password/confirm/${token}`);
+            await this.mailService.sendAccountCreationEmail(email, `${env.get('FRONT_URI')}/${language.code}/create-account/confirm/${token}`);
             await User.create({
                 username,
                 email,
@@ -73,7 +75,7 @@ export default class AuthController {
                 acceptedTermsAndConditions: true,
             });
         } catch (error: any) {
-            return response.status(error.status).send({ error: error.message });
+            return response.badGateway({ error: 'Failed to send account creation email' });
         }
 
         return response.send({ message: 'Check your mails to confirm account creation' });
@@ -90,6 +92,6 @@ export default class AuthController {
 
         const accessToken: AccessToken = await User.accessTokens.create(user);
 
-        return response.send({ message: 'User successfully enabled', token: accessToken, user: user.apiSerialize() });
+        return response.send({ message: 'Account successfully enabled', token: accessToken, user: user.apiSerialize() });
     }
 }

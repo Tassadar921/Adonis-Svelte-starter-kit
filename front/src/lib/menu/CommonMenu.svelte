@@ -30,5 +30,9 @@
             <Icon name="user" slot="iconLeft" />
             {$t('login.title')}
         </MenuItem>
+        <MenuItem {footer} href="/create-account" on:click>
+            <Icon name="user" slot="iconLeft" />
+            {$t('create-account.title')}
+        </MenuItem>
     {/if}
 </ul>

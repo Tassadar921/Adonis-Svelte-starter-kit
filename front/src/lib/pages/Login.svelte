@@ -7,7 +7,7 @@
     import Title from '../shared/Title.svelte';
     import Link from '../shared/Link.svelte';
     import { navigate } from '../../stores/locationStore';
-    import { updateProfile } from '../../stores/profileStore';
+    import { setProfile } from '../../stores/profileStore';
     import { t } from 'svelte-i18n';
     import Breadcrumbs from '../shared/Breadcrumbs.svelte';
 
@@ -20,7 +20,7 @@
         localStorage.setItem('apiTokenExpiration', event.detail.token.expiresAt);
         axios.defaults.headers.common['Authorization'] = `Bearer ${event.detail.token.token}`;
 
-        await updateProfile(event.detail.user);
+        setProfile(event.detail.user);
 
         showToast($t('toast.login.success'));
         navigate('/');

@@ -1,19 +1,21 @@
 import { type Writable, writable } from 'svelte/store';
 import axios from 'axios';
 import type SerializedUser from 'adonis-svelte-starter-kit-backend/app/types/serialized/serialized_user';
+import { showToast } from '../services/toastService';
 
 export const profile: Writable<SerializedUser | null> = writable(null);
 
-export function setProfile(user: SerializedUser | null): void {
+export function setProfile(user: SerializedUser): void {
     profile.set(user);
 }
 
-export async function updateProfile(profile: SerializedUser | null = null): Promise<void> {
-    if (!profile) {
-        const { data: fetchedProfile } = await axios.get('/api/profile');
-        profile = fetchedProfile.user;
+export async function updateProfile(): Promise<void> {
+    try {
+        const { data } = await axios.get('/api/profile');
+        setProfile(data.user);
+    } catch (error: any) {
+        showToast(error.response.data.error, 'error');
     }
-    setProfile(profile);
 }
 
 export function clearProfile(): void {
