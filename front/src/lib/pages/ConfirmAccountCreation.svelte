@@ -11,10 +11,7 @@
 
     onMount(async () => {
         try {
-            console.log(axios.defaults.baseURL);
-            console.log(token);
             const { data } = await axios.get(`/api/account-creation/confirm/${token}`);
-            console.log(data);
             localStorage.setItem('apiToken', data.token.token);
             localStorage.setItem('apiTokenExpiration', data.token.expiresAt);
             axios.defaults.headers.common['Authorization'] = `Bearer ${data.token.token}`;
@@ -23,7 +20,6 @@
             showToast(data.message);
             navigate('/');
         } catch (error: any) {
-            console.log(error);
             showToast(error.response.data.message, 'error');
         }
     });
