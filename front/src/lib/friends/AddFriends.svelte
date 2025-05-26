@@ -258,9 +258,9 @@
             <p class="my-5">{$t('social.friends.add.none')}</p>
         {/if}
     </div>
-    <Pagination bind:paginatedObject={paginatedUsers} bind:baseUrl={searchBaseUrl} />
+    <Pagination bind:paginatedObject={paginatedUsers} baseUrl={searchBaseUrl} />
 {:else}
-    <Loader bind:isLoading />
+    <Loader {isLoading} />
 {/if}
 
 <ConfirmModal bind:showModal on:success={handleBlockUser}>

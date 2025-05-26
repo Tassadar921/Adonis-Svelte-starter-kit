@@ -37,7 +37,7 @@
     };
 </script>
 
-<Loader bind:isLoading />
+<Loader {isLoading} />
 
 <Title title={$t('notifications.title')} />
 

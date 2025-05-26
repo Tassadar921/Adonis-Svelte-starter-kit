@@ -9,15 +9,15 @@
     import { profile } from '../../stores/profileStore';
     import Breadcrumbs from '../shared/Breadcrumbs.svelte';
 
-    export let token = '';
+    export let token;
 
     let password: string = '';
     let confirmPassword: string = '';
     let canSubmit: boolean = false;
     let message: string = '';
 
-    const handleSuccess = (): void => {
-        showToast($t('toast.reset-password.confirm.success'));
+    const handleSuccess = (event: CustomEvent): void => {
+        showToast($t(event.detail.message));
         if (!$profile) {
             navigate('/login');
         } else {

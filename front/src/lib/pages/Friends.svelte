@@ -171,9 +171,9 @@
             <p class="mt-5">{$t('social.friends.none')}</p>
         {/if}
     </div>
-    <Pagination bind:paginatedObject={paginatedFriends} bind:baseUrl={searchBaseUrl} />
+    <Pagination bind:paginatedObject={paginatedFriends} baseUrl={searchBaseUrl} />
 {:else}
-    <Loader bind:isLoading />
+    <Loader {isLoading} />
 {/if}
 
 <Modal bind:showModal={showAddFriendsModal} fullWidth>

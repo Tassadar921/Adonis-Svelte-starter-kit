@@ -109,9 +109,9 @@
             <p class="my-5">{$t('social.blocked.none')}</p>
         {/if}
     </div>
-    <Pagination bind:paginatedObject={paginatedBlockedUsers} bind:baseUrl={searchBaseUrl} />
+    <Pagination bind:paginatedObject={paginatedBlockedUsers} baseUrl={searchBaseUrl} />
 {:else}
-    <Loader bind:isLoading />
+    <Loader {isLoading} />
 {/if}
 
 <ConfirmModal bind:showModal on:success={handleUnblockUser}>
