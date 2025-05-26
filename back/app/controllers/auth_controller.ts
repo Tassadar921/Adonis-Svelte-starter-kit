@@ -17,7 +17,7 @@ export default class AuthController {
         private readonly mailService: BrevoMailService
     ) {}
 
-    public async login({ request, response }: HttpContext): Promise<void> {
+    public async login({ request, response, i18n }: HttpContext): Promise<void> {
         try {
             const { email, password } = await request.validateUsing(loginValidator);
 
@@ -27,39 +27,39 @@ export default class AuthController {
             const token: AccessToken = await User.accessTokens.create(user);
 
             return response.send({
-                message: 'Logged in',
+                message: i18n.t('messages.auth.login.success'),
                 token,
                 user: user.apiSerialize(),
             });
         } catch (error: any) {
-            return response.unauthorized({ error: 'API Login failed' });
+            return response.unauthorized({ error: i18n.t('messages.auth.login.error') });
         }
     }
 
-    public async logout({ auth, response }: HttpContext): Promise<void> {
+    public async logout({ auth, response, i18n }: HttpContext): Promise<void> {
         const user: User & { currentAccessToken: AccessToken } = await auth.use('api').authenticate();
         await User.accessTokens.delete(user, user.currentAccessToken.identifier);
 
-        return response.send({ message: 'Logged out' });
+        return response.send({ message: i18n.t('messages.auth.logout.success') });
     }
 
-    public async sendAccountCreationEmail({ request, response, language }: HttpContext): Promise<void> {
+    public async sendAccountCreationEmail({ request, response, language, i18n }: HttpContext): Promise<void> {
         const { username, email, password, consent } = await request.validateUsing(sendAccountCreationEmailValidator);
 
         if (!consent) {
-            return response.badRequest({ error: 'Consent is required' });
+            return response.badRequest({ error: i18n.t('messages.auth.send-account-creation-email.error.consent-required') });
         }
 
         let user: User | null = await this.userRepository.findOneBy({ email });
         if (user) {
             if (!user.enabled) {
                 if (user.createdAt > DateTime.now().minus({ minutes: 5 })) {
-                    return response.send({ message: 'Check your mails to confirm account creation' });
+                    return response.send({ message: i18n.t('messages.auth.send-account-creation-email.success') });
                 } else {
                     await user.delete();
                 }
             } else {
-                return response.status(409).send({ error: 'User already exists' });
+                return response.status(409).send({ error: i18n.t('messages.auth.send-account-creation-email.error.email-already-in-use') });
             }
         }
 
@@ -75,16 +75,21 @@ export default class AuthController {
                 acceptedTermsAndConditions: true,
             });
         } catch (error: any) {
-            return response.badGateway({ error: 'Failed to send account creation email' });
+            return response.badGateway({ error: i18n.t('messages.auth.send-account-creation-email.error.mail-not-sent') });
         }
 
-        return response.send({ message: 'Check your mails to confirm account creation' });
+        return response.send({ message: i18n.t('messages.auth.send-account-creation-email.success') });
     }
 
-    public async confirmAccountCreation({ request, response }: HttpContext): Promise<void> {
+    public async confirmAccountCreation({ request, response, i18n }: HttpContext): Promise<void> {
         const { token } = await confirmAccountCreationValidator.validate(request.params());
 
-        const user: User = await this.userRepository.firstOrFail({ creationToken: token });
+        const user: User | null = await this.userRepository.findOneBy({ creationToken: token });
+        if (!user) {
+            return response.notFound({ error: i18n.t('messages.auth.confirm-account-creation.invalid-token') });
+        } else if (user.createdAt > DateTime.now().minus({ minutes: 5 })) {
+            return response.badRequest({ error: i18n.t('messages.auth.confirm-account-creation.token-expired') });
+        }
 
         user.enabled = true;
         user.creationToken = null;
@@ -92,6 +97,9 @@ export default class AuthController {
 
         const accessToken: AccessToken = await User.accessTokens.create(user);
 
-        return response.send({ message: 'Account successfully enabled', token: accessToken, user: user.apiSerialize() });
+        return response.send({
+            message: i18n.t('messages.auth.confirm-account-creation.success'),
+            token: accessToken, user: user.apiSerialize(),
+        });
     }
 }

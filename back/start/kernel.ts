@@ -10,6 +10,17 @@
 
 import router from '@adonisjs/core/services/router';
 import server from '@adonisjs/core/services/server';
+import Language from '#models/language';
+import { I18n } from '@adonisjs/i18n';
+import User from '#models/user';
+
+declare module '@adonisjs/core/http' {
+    export interface HttpContext {
+        language: Language;
+        i18n: I18n;
+        user: User;
+    }
+}
 
 /**
  * The error handler is used to convert an exception

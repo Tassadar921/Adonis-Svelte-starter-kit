@@ -11,6 +11,7 @@ import User from '#models/user';
 import UserRoleEnum from '#types/enum/user_role_enum';
 import env from '#start/env';
 import UserRepository from '#repositories/user_repository';
+import { I18n } from '@adonisjs/i18n';
 
 @inject()
 export default class OauthController {
@@ -23,9 +24,9 @@ export default class OauthController {
         return ally.use('github').redirect();
     }
 
-    public async githubCallback({ ally, response }: HttpContext): Promise<void> {
+    public async githubCallback({ ally, response, i18n }: HttpContext): Promise<void> {
         const client: GithubDriver = ally.use('github');
-        const handleResponse: { error?: string; token?: { token: string; expiresAt: Date } } = await this.handleCallback(client);
+        const handleResponse: { error?: string; token?: { token: string; expiresAt: Date } } = await this.handleCallback(client, i18n);
         if (handleResponse.error) {
             return response.badRequest({ error: handleResponse.error });
         }
@@ -37,9 +38,9 @@ export default class OauthController {
         return ally.use('discord').redirect();
     }
 
-    public async discordCallback({ ally, response }: HttpContext): Promise<void> {
+    public async discordCallback({ ally, response, i18n }: HttpContext): Promise<void> {
         const client: DiscordDriver = ally.use('discord');
-        const handleResponse: { error?: string; token?: { token: string; expiresAt: Date } } = await this.handleCallback(client);
+        const handleResponse: { error?: string; token?: { token: string; expiresAt: Date } } = await this.handleCallback(client, i18n);
         if (handleResponse.error) {
             return response.badRequest({ error: handleResponse.error });
         }
@@ -51,9 +52,9 @@ export default class OauthController {
         return ally.use('google').redirect();
     }
 
-    public async googleCallback({ ally, response }: HttpContext): Promise<void> {
+    public async googleCallback({ ally, response, i18n }: HttpContext): Promise<void> {
         const client: GoogleDriver = ally.use('google');
-        const handleResponse: { error?: string; token?: { token: string; expiresAt: Date } } = await this.handleCallback(client);
+        const handleResponse: { error?: string; token?: { token: string; expiresAt: Date } } = await this.handleCallback(client, i18n);
         if (handleResponse.error) {
             return response.badRequest({ error: handleResponse.error });
         }
@@ -61,13 +62,13 @@ export default class OauthController {
         return response.redirect(`${env.get('FRONT_URI')}/en/oauth/${handleResponse.token!.token}?apiTokenExpiration=${handleResponse.token!.expiresAt}`);
     }
 
-    private async handleCallback(client: GithubDriver | DiscordDriver | GoogleDriver): Promise<{ error?: string; token?: { token: string; expiresAt: Date } }> {
+    private async handleCallback(client: GithubDriver | DiscordDriver | GoogleDriver, i18n: I18n): Promise<{ error?: string; token?: { token: string; expiresAt: Date } }> {
         /**
          * User has denied access by canceling
          * the login flow
          */
         if (client.accessDenied()) {
-            return { error: 'Access was denied by the user' };
+            return { error: i18n.t('messages.oauth.callback.error.access-denied') };
         }
 
         /**
@@ -75,14 +76,14 @@ export default class OauthController {
          * CSRF cookie gets expired.
          */
         if (client.stateMisMatch()) {
-            return { error: 'We are unable to verify the request. Please try again' };
+            return { error: i18n.t('messages.oauth.callback.error.state-mismatch') };
         }
 
         /**
          * Client responded with some error
          */
         if (client.hasError()) {
-            return { error: client.getError() ?? 'Unknown error from OAuth provider' };
+            return { error: client.getError() ?? i18n.t('messages.oauth.callback.error.default') };
         }
 
         const oauthUser = await client.user();
