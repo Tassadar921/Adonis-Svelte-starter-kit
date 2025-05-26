@@ -69,5 +69,19 @@
             "success": "Friend request cancelled",
             "error": "You are not related to this request"
         }
+    },
+    "profile": {
+        "send-reset-password-email": {
+            "success": "Check your mails to reset your password",
+            "error": {
+                "mail-not-sent": "An error occurred while sending the email, please try again later"
+            }
+        },
+        "reset": {
+            "success": "Password successfully reset"
+        },
+        "update-profile": {
+            "success": "Profile successfully updated"
+        }
     }
 }

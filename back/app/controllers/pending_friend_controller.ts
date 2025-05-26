@@ -69,7 +69,7 @@ export default class PendingFriendController {
 
         return response.send({
             message: i18n.t('messages.pending-friend.add.success'),
-            pendingFriend: pendingFriend.apiSerialize()
+            pendingFriend: pendingFriend.apiSerialize(),
         });
     }
 

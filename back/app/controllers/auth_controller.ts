@@ -99,7 +99,8 @@ export default class AuthController {
 
         return response.send({
             message: i18n.t('messages.auth.confirm-account-creation.success'),
-            token: accessToken, user: user.apiSerialize(),
+            token: accessToken,
+            user: user.apiSerialize(),
         });
     }
 }
