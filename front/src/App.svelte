@@ -21,6 +21,7 @@
     import NotificationsSetup from './lib/notifications/NotificationsSetup.svelte';
     import CreateAccount from './lib/pages/CreateAccount.svelte';
     import ConfirmAccountCreation from './lib/pages/ConfirmAccountCreation.svelte';
+    import Oauth from './lib/pages/Oauth.svelte';
 </script>
 
 <NotificationsSetup />
@@ -36,6 +37,7 @@
                 {#if $profile}
                     <Route path="/:language"><Homepage /></Route>
 
+                    <Route path="/:language/oauth/:apiToken"><AlreadyConnected /></Route>
                     <Route path="/:language/login"><AlreadyConnected /></Route>
                     <Route path="/:language/create-account"><AlreadyConnected /></Route>
                     <Route path="/:language/create-account/confirm/:token"><AlreadyConnected /></Route>
@@ -50,6 +52,7 @@
                 {:else}
                     <Route path="/:language/"><Login /></Route>
 
+                    <Route path="/:language/oauth/:apiToken" let:params><Oauth apiToken={params.apiToken} /></Route>
                     <Route path="/:language/login"><Login /></Route>
                     <Route path="/:language/create-account"><CreateAccount /></Route>
                     <Route path="/:language/create-account/confirm/:token" let:params><ConfirmAccountCreation token={params.token} /></Route>

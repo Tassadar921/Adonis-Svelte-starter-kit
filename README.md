@@ -10,20 +10,14 @@
 
 ### Features
 
-- Login
+- Classic Account creation + Authentication (email + password)
+- Oauth2 (Google, Github, Discord)
 - Reset password
 - Forgot password
 - Friends
 - Blocked users
 - Multi languages (English & French natively, easy to add more languages)
 - Multi themes (Light & Dark)
-
-**In development**
-
-- Account creation
-- Google oauth
-- Microsoft oauth
-- Discord oauth
 
 ### Production links
 

@@ -9,7 +9,7 @@ format-check:
 	cd front && npx prettier --check "**/*.{js,ts,svelte,html,css,json,yml}"
 
 install:
-	rm -rf .vite node_modules package-lock.json && npm install
+	rm -rf .vite node_modules package-lock.json back/node_modules front/node_modules && npm install
 
 upgrade:
 	cd front && npx ncu -u && cd back && npx ncu -u && make install

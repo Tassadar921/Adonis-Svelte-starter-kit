@@ -5,7 +5,7 @@ import { inject } from '@adonisjs/core';
 import UserRoleEnum from '#types/enum/user_role_enum';
 import { DateTime } from 'luxon';
 import UserRepository from '#repositories/user_repository';
-import { confirmAccountCreationValidator, loginValidator, sendAccountCreationEmailValidator } from '#validators/auth';
+import { loginValidator, sendAccountCreationEmailValidator, confirmAccountCreationValidator } from '#validators/auth';
 import BrevoMailService from '#services/brevo_mail_service';
 import env from '#start/env';
 import { randomUUID } from 'node:crypto';

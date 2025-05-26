@@ -13,12 +13,39 @@ const FriendController = () => import('#controllers/friend_controller');
 const NotificationController = () => import('#controllers/notification_controller');
 const PendingFriendController = () => import('#controllers/pending_friend_controller');
 const UserController = () => import('#controllers/user_controller');
+const OauthController = () => import('#controllers/oauth_controller');
 
 // API requests
 router
     .group((): void => {
-        router.post('/login', [AuthController, 'login']);
+        router
+            .group((): void => {
+                // OAuth routes
+                router
+                    .group((): void => {
+                        router.get('/', [OauthController, 'github']);
+                        router.get('/callback', [OauthController, 'githubCallback']);
+                    })
+                    .prefix('github');
+                router
+                    .group((): void => {
+                        router.get('/', [OauthController, 'discord']);
+                        router.get('/callback', [OauthController, 'discordCallback']);
+                    })
+                    .prefix('discord');
+                router
+                    .group((): void => {
+                        router.get('/', [OauthController, 'google']);
+                        router.get('/callback', [OauthController, 'googleCallback']);
+                    })
+                    .prefix('google');
+            })
+            .prefix('auth');
 
+        // Classic authentication routes
+        router.post('/', [AuthController, 'login']);
+
+        // Classic account creation routes
         router
             .group((): void => {
                 router.post('/send-mail', [AuthController, 'sendAccountCreationEmail']);

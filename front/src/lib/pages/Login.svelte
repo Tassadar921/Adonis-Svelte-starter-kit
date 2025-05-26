@@ -10,6 +10,7 @@
     import { setProfile } from '../../stores/profileStore';
     import { t } from 'svelte-i18n';
     import Breadcrumbs from '../shared/Breadcrumbs.svelte';
+    import Icon from '../shared/Icon.svelte';
 
     let email: string = '';
     let password: string = '';
@@ -22,8 +23,16 @@
 
         setProfile(event.detail.user);
 
-        showToast($t('toast.login.success'));
+        showToast($t(event.detail.message));
         navigate('/');
+    };
+
+    const handleOauthClick = async (provider: 'google' | 'github' | 'discord'): Promise<void> => {
+        try {
+            window.location.href = `${import.meta.env.VITE_API_BASE_URL}/api/auth/${provider}`;
+        } catch (error: any) {
+            showToast(error.response.data.error, 'error');
+        }
     };
 
     $: canSubmit = !!email && !!password;
@@ -33,7 +42,18 @@
 
 <Breadcrumbs hasBackground items={[{ label: $t('home.title'), path: '/' }, { label: $t('login.title') }]} />
 
-<Form action="/api/login" method="post" on:success={handleSuccess} isValid={canSubmit}>
+<Form action="/api/auth" method="post" on:success={handleSuccess} isValid={canSubmit}>
+    <div class="flex justify-around">
+        <button type="button" on:click={() => handleOauthClick('google')} class="rounded-full p-3">
+            <Icon name="google" size={42} />
+        </button>
+        <button type="button" on:click={() => handleOauthClick('github')} class="rounded-full">
+            <Icon name="github" size={42} />
+        </button>
+        <button type="button" on:click={() => handleOauthClick('discord')} class="rounded-full">
+            <Icon name="discord" size={42} />
+        </button>
+    </div>
     <Input type="email" name="email" placeholder={$t('common.email.placeholder')} label={$t('common.email.label')} bind:value={email} />
     <PasswordInput bind:value={password} />
     <div class="w-full mb-3">

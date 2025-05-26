@@ -10,49 +10,69 @@ HOST=0.0.0.0
 NODE_ENV=development
 APP_KEY=
 LOG_LEVEL=debug
+
 DB_CONNECTION=pg
+
 DB_HOST=db
 DB_PORT=5432
 DB_USER=superadmin
 DB_PASSWORD=xxx
 DB_DATABASE=adonis_svelte_starter_kit_db
+
 LOGS_DB_USER=superadmin
 LOGS_DB_PASSWORD=xxx
 LOGS_DB_DATABASE=adonis_svelte_starter_kit_db_logs
+
 REDIS_HOST=127.0.0.1
 REDIS_PORT=6379
 REDIS_PASSWORD=
+
+DISCORD_CLIENT_ID=
+DISCORD_CLIENT_SECRET=
+GITHUB_CLIENT_ID=
+GITHUB_CLIENT_SECRET=
+GOOGLE_CLIENT_ID=
+GOOGLE_CLIENT_SECRET=
+
 FRONT_URI=http://localhost:5173
 API_URI=http://localhost:3333
 ACCOUNT_SENDER_EMAIL=account@adonis_svelte_starter_kit_db.fr
 BREVO_API_KEY=
-FRIEND_EMAILS=["paul.lecuisinier@gmail.com"]
+ADMIN_EMAIL=
+FRIEND_EMAILS=[]
 ```
 
-| Variable               | Value                                                                                                   |
-|------------------------|---------------------------------------------------------------------------------------------------------|
-| `PORT`                 | 3333                                                                                                    |
-| `HOST`                 | 0.0.0.0                                                                                                 |
-| `NODE_ENV`             | development                                                                                             |
-| `APP_KEY`              | **Run `cd back && node ace generate:key` to generate this field**                                       |
-| `LOG_LEVEL`            | debug                                                                                                   |
-| `DB_CONNECTION`        | pg                                                                                                      |
-| `DB_HOST`              | db                                                                                                      |
-| `DB_PORT`              | 5432                                                                                                    |
-| `DB_USER`              | superadmin                                                                                              |
-| `DB_PASSWORD`          | xxx                                                                                                     |
-| `DB_DATABASE`          | adonis_svelte_starter_kit_db                                                                            |
-| `LOG_DB_USER`          | superadmin                                                                                              |
-| `LOG_DB_PASSWORD`      | xxx                                                                                                     |
-| `LOG_DB_DATABASE`      | adonis_svelte_starter_kit_db_logs                                                                       |
-| `REDIS_HOST`           | 127.0.0.1                                                                                               |
-| `REDIS_PORT`           | 6379                                                                                                    |
-| `REDIS_PASSWORD`       |                                                                                                         |
-| `FRONT_URI`            | http://localhost:5173                                                                                   |
-| `API_URI`              | http://localhost:3333                                                                                   |
-| `ACCOUNT_SENDER_EMAIL` | account@adonis_svelte_starter_kit.fr                                                                    |
-| `BREVO_API_KEY`        | **`A valid Brevo API key`**                                                                             |
-| `FRIEND_EMAILS`        | ["paul.lecuisinier@gmail.com"] **Feel free to add other emails to create other users or test emailing** |
+| Variable                | Value                                                                                                   |
+|-------------------------|---------------------------------------------------------------------------------------------------------|
+| `PORT`                  | 3333                                                                                                    |
+| `HOST`                  | 0.0.0.0                                                                                                 |
+| `NODE_ENV`              | development                                                                                             |
+| `APP_KEY`               | **Run `cd back && node ace generate:key` to generate this field**                                       |
+| `LOG_LEVEL`             | debug                                                                                                   |
+| `DB_CONNECTION`         | pg                                                                                                      |
+| `DB_HOST`               | db                                                                                                      |
+| `DB_PORT`               | 5432                                                                                                    |
+| `DB_USER`               | superadmin                                                                                              |
+| `DB_PASSWORD`           | xxx                                                                                                     |
+| `DB_DATABASE`           | adonis_svelte_starter_kit_db                                                                            |
+| `LOG_DB_USER`           | superadmin                                                                                              |
+| `LOG_DB_PASSWORD`       | xxx                                                                                                     |
+| `LOG_DB_DATABASE`       | adonis_svelte_starter_kit_db_logs                                                                       |
+| `REDIS_HOST`            | 127.0.0.1                                                                                               |
+| `REDIS_PORT`            | 6379                                                                                                    |
+| `REDIS_PASSWORD`        |                                                                                                         |
+| `DISCORD_CLIENT_ID`     | **`A valid Discord client ID`**                                                                         |
+| `DISCORD_CLIENT_SECRET` | **`A valid Discord client secret`**                                                                     |
+| `GITHUB_CLIENT_ID`      | **`A valid GitHub client ID`**                                                                          |
+| `GITHUB_CLIENT_SECRET`  | **`A valid GitHub client secret`**                                                                      |
+| `GOOGLE_CLIENT_ID`      | **`A valid Google client ID`**                                                                          |
+| `GOOGLE_CLIENT_SECRET`  | **`A valid Google client secret`**                                                                      |
+| `FRONT_URI`             | http://localhost:5173                                                                                   |
+| `API_URI`               | http://localhost:3333                                                                                   |
+| `ACCOUNT_SENDER_EMAIL`  | account@adonis_svelte_starter_kit.fr                                                                    |
+| `BREVO_API_KEY`         | **`A valid Brevo API key`**                                                                             |
+| `ADMIN_EMAIL`           | **`Put your email here`**                                                                               |
+| `FRIEND_EMAILS`         | ["paul.lecuisinier@gmail.com"] **Feel free to add other emails to create other users or test emailing** |
 
 ---
 
