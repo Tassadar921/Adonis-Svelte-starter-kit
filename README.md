@@ -1,5 +1,9 @@
 # Adonis & Svelte starter kit
 
+This is a starter kit for building web applications using AdonisJS for the backend and Svelte for the frontend (API setup). It includes essential features such as user authentication, OAuth2 integration, and many other things.
+
+It is designed to be a solid foundation for your projects, allowing you to focus on building your application without worrying about the boilerplate code.
+
 ### Front : Svelte 5, Tailwind 4, Axios
 
 ### Back : Adonisjs 6, Redis, VineJS
