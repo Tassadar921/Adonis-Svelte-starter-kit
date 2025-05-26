@@ -18,6 +18,9 @@
 - Blocked users
 - Multi languages (English & French natively, easy to add more languages)
 - Multi themes (Light & Dark)
+- API healthcheck
+- API internationalization (i18n)
+- Front optimized for SEO
 
 ### Production links
 
