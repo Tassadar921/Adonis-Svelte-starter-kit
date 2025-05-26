@@ -6,6 +6,7 @@
     import { showToast } from '../../services/toastService';
     import { navigate } from '../../stores/locationStore';
     import { setProfile } from '../../stores/profileStore';
+    import { MetaTags } from 'svelte-meta-tags';
 
     export let token = '';
 
@@ -24,5 +25,22 @@
         }
     });
 </script>
+
+<meta name="robots" content="noindex, nofollow" />
+<MetaTags
+    title={$t('create-account.confirm.meta.title')}
+    description={$t('create-account.confirm.meta.description')}
+    keywords={$t('create-account.confirm.meta.keywords').split(', ')}
+    languageAlternates={[
+        {
+            hrefLang: 'en',
+            href: `${import.meta.env.VITE_FRONT_URI}/en/create-account/confirm/${token}`,
+        },
+        {
+            hrefLang: 'fr',
+            href: `${import.meta.env.VITE_FRONT_URI}/fr/create-account/confirm/${token}`,
+        },
+    ]}
+/>
 
 <Title title={$t('create-account.confirm.title')} hasBackground={true} />

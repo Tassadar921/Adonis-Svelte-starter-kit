@@ -8,6 +8,7 @@
     import { checkPassword } from '../../services/checkStringService';
     import { profile } from '../../stores/profileStore';
     import Breadcrumbs from '../shared/Breadcrumbs.svelte';
+    import { MetaTags } from 'svelte-meta-tags';
 
     export let token;
 
@@ -32,6 +33,23 @@
         }
     }
 </script>
+
+<meta name="robots" content="noindex, nofollow" />
+<MetaTags
+    title={$t('reset-password.confirm.meta.title')}
+    description={$t('reset-password.confirm.meta.description')}
+    keywords={$t('reset-password.confirm.meta.keywords').split(', ')}
+    languageAlternates={[
+        {
+            hrefLang: 'en',
+            href: `${import.meta.env.VITE_FRONT_URI}/en/reset-password/confirm/${token}`,
+        },
+        {
+            hrefLang: 'fr',
+            href: `${import.meta.env.VITE_FRONT_URI}/fr/reset-password/confirm/${token}`,
+        },
+    ]}
+/>
 
 <Title title={$t('reset-password.confirm.title')} hasBackground />
 
