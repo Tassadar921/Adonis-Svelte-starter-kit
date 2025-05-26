@@ -10,7 +10,7 @@
 
 ### Features
 
-- Classical Account creation + Authentication (email + password)
+- Classic Account creation + Authentication (email + password)
 - Oauth2 (Google, Github, Discord)
 - Reset password
 - Forgot password
