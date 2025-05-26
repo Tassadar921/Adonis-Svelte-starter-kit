@@ -7,6 +7,7 @@
     import { navigate } from '../../stores/locationStore';
     import { updateProfile } from '../../stores/profileStore';
     import Loader from '../shared/Loader.svelte';
+    import { MetaTags } from 'svelte-meta-tags';
 
     export let apiToken: string;
 
@@ -30,6 +31,22 @@
     });
 </script>
 
-<Title title={$t('create-account.confirm.title')} hasBackground={true} />
+<MetaTags
+    title={$t('oauth.meta.title')}
+    description={$t('oauth.meta.description')}
+    keywords={$t('oauth.meta.keywords').split(', ')}
+    languageAlternates={[
+        {
+            hrefLang: 'en',
+            href: `${import.meta.env.VITE_FRONT_URI}/en/oauth/${apiToken}`,
+        },
+        {
+            hrefLang: 'fr',
+            href: `${import.meta.env.VITE_FRONT_URI}/fr/oauth/${apiToken}`,
+        },
+    ]}
+/>
+
+<Title title={$t('oauth.title')} hasBackground={true} />
 
 <Loader />

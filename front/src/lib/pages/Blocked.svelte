@@ -14,6 +14,7 @@
     import type SerializedUser from 'adonis-svelte-starter-kit-backend/app/types/serialized/serialized_user';
     import Loader from '../shared/Loader.svelte';
     import Icon from '../shared/Icon.svelte';
+    import { MetaTags } from 'svelte-meta-tags';
 
     let isLoading: boolean = false;
     let paginatedBlockedUsers: PaginatedBlockedUsers;
@@ -58,6 +59,22 @@
         showModal = true;
     };
 </script>
+
+<MetaTags
+    title={$t('social.blocked.meta.title')}
+    description={$t('social.blocked.meta.description')}
+    keywords={$t('social.blocked.meta.keywords').split(', ')}
+    languageAlternates={[
+        {
+            hrefLang: 'en',
+            href: `${import.meta.env.VITE_FRONT_URI}/en/social/blocked`,
+        },
+        {
+            hrefLang: 'fr',
+            href: `${import.meta.env.VITE_FRONT_URI}/fr/social/blocked`,
+        },
+    ]}
+/>
 
 <Title title={$t('social.blocked.title')} />
 

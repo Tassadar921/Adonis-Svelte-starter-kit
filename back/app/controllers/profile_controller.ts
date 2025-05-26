@@ -14,6 +14,7 @@ import FileService from '#services/file_service';
 import SlugifyService from '#services/slugify_service';
 import { resetPasswordParamsValidator, resetPasswordValidator, sendResetPasswordEmailValidator, updateProfileValidator } from '#validators/profile';
 import path from 'node:path';
+import env from '#start/env';
 
 @inject()
 export default class ProfileController {
@@ -31,7 +32,7 @@ export default class ProfileController {
     }
 
     public async sendResetPasswordEmail({ request, response, i18n }: HttpContext): Promise<void> {
-        const { email, frontUri } = await request.validateUsing(sendResetPasswordEmailValidator);
+        const { email } = await request.validateUsing(sendResetPasswordEmailValidator);
 
         const user: User = await this.userRepository.firstOrFail({ email });
 
@@ -58,7 +59,7 @@ export default class ProfileController {
             token,
         });
         try {
-            await this.mailService.sendResetPasswordEmail(user, `${frontUri}/${token}`);
+            await this.mailService.sendResetPasswordEmail(user, `${env.get('FRONT_URI')}/reset-password/confirm/${token}`);
         } catch (error: any) {
             response.notFound({ error: i18n.t('profile.send-reset-password-email.error.mail-not-sent') });
         }

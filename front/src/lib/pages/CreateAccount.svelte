@@ -7,6 +7,8 @@
     import Input from '../shared/Input.svelte';
     import { checkPassword, isValidEmail } from '../../services/checkStringService';
     import Switch from '../shared/Switch.svelte';
+    import OauthProviders from '../shared/OauthProviders.svelte';
+    import { MetaTags } from 'svelte-meta-tags';
 
     let username: string = '';
     let email: string = '';
@@ -29,9 +31,26 @@
     }
 </script>
 
+<MetaTags
+    title={$t('create-account.meta.title')}
+    description={$t('create-account.meta.description')}
+    keywords={$t('create-account.meta.keywords').split(', ')}
+    languageAlternates={[
+        {
+            hrefLang: 'en',
+            href: `${import.meta.env.VITE_FRONT_URI}/en/create-account`,
+        },
+        {
+            hrefLang: 'fr',
+            href: `${import.meta.env.VITE_FRONT_URI}/fr/create-account`,
+        },
+    ]}
+/>
+
 <Title title={$t('create-account.title')} hasBackground={true} />
 
 <Form action="/api/account-creation/send-mail" method="POST" on:success={handleSuccess} bind:isValid={canSubmit}>
+    <OauthProviders />
     <Input name="username" placeholder={$t('common.username.placeholder')} label={$t('common.username.label')} bind:value={username} required={true} />
     <Input type="email" name="email" placeholder={$t('common.email.placeholder')} label={$t('common.email.label')} bind:value={email} required={true} />
     <PasswordInput name="password" bind:value={password} required />
