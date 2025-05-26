@@ -40,7 +40,7 @@ export default class AuthController {
         const user: User & { currentAccessToken: AccessToken } = await auth.use('api').authenticate();
         await User.accessTokens.delete(user, user.currentAccessToken.identifier);
 
-        return response.send({ revoked: true });
+        return response.send({ message: 'Logged out' });
     }
 
     public async sendAccountCreationEmail({ request, response, language }: HttpContext): Promise<void> {
