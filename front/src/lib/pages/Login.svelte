@@ -23,7 +23,7 @@
 
         setProfile(event.detail.user);
 
-        showToast($t('toast.login.success'));
+        showToast($t(event.detail.message));
         navigate('/');
     };
 

@@ -42,11 +42,11 @@
 
     const handleUnblockUser = async (): Promise<void> => {
         try {
-            await axios.delete(`/api/blocked/cancel/${selectedBlockedUser.id}`);
+            const { data } = await axios.delete(`/api/blocked/cancel/${selectedBlockedUser.id}`);
             paginatedBlockedUsers.blockedUsers = paginatedBlockedUsers.blockedUsers.filter((currentUser) => {
                 return currentUser.user.id !== selectedBlockedUser.id;
             });
-            showToast($t('toast.unblock.success'));
+            showToast(data.message);
         } catch (error: any) {
             showToast(error.response.data.error, 'error');
         }

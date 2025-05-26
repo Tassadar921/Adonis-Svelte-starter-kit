@@ -54,9 +54,9 @@
 
     const handleRemoveFriend = async (): Promise<void> => {
         try {
-            await axios.delete(`/api/friends/remove/${selectedFriend.id}`);
+            const { data } = await axios.delete(`/api/friends/remove/${selectedFriend.id}`);
             paginatedFriends.friends = paginatedFriends.friends.filter((friendObject) => friendObject.friend.id !== selectedFriend.id);
-            showToast($t('toast.friends.remove.success'));
+            showToast(data.message);
             showConfirmRemoveFriendModal = false;
         } catch (error: any) {
             showToast(error.response.data.error, 'error');
@@ -70,9 +70,9 @@
 
     const handleBlockUser = async (): Promise<void> => {
         try {
-            await axios.get(`/api/blocked/add/${selectedFriend.id}`);
+            const { data } = await axios.get(`/api/blocked/add/${selectedFriend.id}`);
             paginatedFriends.friends = paginatedFriends.friends.filter((friendObject) => friendObject.friend.id !== selectedFriend.id);
-            showToast($t('toast.blocked.success'));
+            showToast(data.message);
             showBlockingModal = false;
         } catch (error: any) {
             showToast(error.response.data.error, 'error');
