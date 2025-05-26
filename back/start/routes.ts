@@ -5,6 +5,7 @@ const EventStreamController = () => import('@adonisjs/transmit/controllers/event
 const SubscribeController = () => import('@adonisjs/transmit/controllers/subscribe_controller');
 const UnsubscribeController = () => import('@adonisjs/transmit/controllers/unsubscribe_controller');
 
+const HealthCheckController = () => import('#controllers/health_checks_controller');
 const AuthController = () => import('#controllers/auth_controller');
 const ProfileController = () => import('#controllers/profile_controller');
 const FileController = () => import('#controllers/file_controller');
@@ -15,7 +16,8 @@ const PendingFriendController = () => import('#controllers/pending_friend_contro
 const UserController = () => import('#controllers/user_controller');
 const OauthController = () => import('#controllers/oauth_controller');
 
-// API requests
+router.get('healthcheck', [HealthCheckController]);
+
 router
     .group((): void => {
         router
