@@ -25,12 +25,12 @@
     },
     "blocked-user": {
         "block": {
-            "success": "User blocked",
-            "error": "User already blocked"
+            "success": "{username} blocked",
+            "error": "{username} already blocked"
         },
         "cancel": {
-            "success": "User unblocked",
-            "error": "User is not blocked"
+            "success": "{username} unblocked",
+            "error": "{username} is not blocked"
         }
     },
     "file": {
@@ -40,15 +40,15 @@
     },
     "friend": {
         "accept": {
-            "success": "Friend added",
-            "error": "Already friends"
+            "success": "{username} added to friends",
+            "error": "Already friend with {username}"
         },
         "refuse": {
             "success": "Friend request refused"
         },
         "remove": {
-            "success": "Friend removed",
-            "error": "You are not friend with this user"
+            "success": "{username} removed from friends",
+            "error": "You are not friend with {username}"
         }
     },
     "oauth": {
@@ -62,8 +62,8 @@
     },
     "pending-friend": {
         "add": {
-            "success": "Friend request sent",
-            "error": "Already friends"
+            "success": "Friend request sent to {username}",
+            "error": "Already friend with {username}"
         },
         "cancel": {
             "success": "Friend request cancelled",

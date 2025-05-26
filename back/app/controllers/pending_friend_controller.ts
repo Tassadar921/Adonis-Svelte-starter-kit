@@ -40,7 +40,7 @@ export default class PendingFriendController {
         const askingToUser: User = await this.userRepository.firstOrFail({ frontId: userId });
         const existingFriend: Friend | null = await this.friendRepository.findOneFromUsers(user, askingToUser);
         if (existingFriend) {
-            return response.send({ message: i18n.t('messages.pending-friend.add.error') });
+            return response.send({ message: i18n.t('messages.pending-friend.add.error', { username: askingToUser.username }) });
         }
 
         let pendingFriend: PendingFriend | null;
@@ -68,7 +68,7 @@ export default class PendingFriendController {
         }
 
         return response.send({
-            message: i18n.t('messages.pending-friend.add.success'),
+            message: i18n.t('messages.pending-friend.add.success', { username: askingToUser.username }),
             pendingFriend: pendingFriend.apiSerialize(),
         });
     }
@@ -84,9 +84,9 @@ export default class PendingFriendController {
             await pendingFriend.notification.delete();
             await pendingFriend.delete();
 
-            return response.send({ message: i18n.t('messages.pending-friend.cancel.success') });
+            return response.send({ message: i18n.t('messages.pending-friend.cancel.success', { username: askingToUser.username }) });
         }
 
-        return response.forbidden({ error: i18n.t('messages.pending-friend.cancel.error') });
+        return response.forbidden({ error: i18n.t('messages.pending-friend.cancel.error', { username: askingToUser.username }) });
     }
 }

@@ -43,7 +43,7 @@ export default class BlockedUserController {
 
         const blockedUsers: BlockedUser[] = await this.blockedUserRepository.findFromUsers(user, blockingUser);
         if (blockedUsers.length) {
-            return response.status(409).send({ error: i18n.t('messages.blocked-user.block.error') });
+            return response.status(409).send({ error: i18n.t('messages.blocked-user.block.error', { username: blockingUser.username }) });
         }
 
         const pendingFriends: PendingFriend[] = await this.pendingFriendRepository.findFromUsers(user, blockingUser);
@@ -63,7 +63,7 @@ export default class BlockedUserController {
         });
         transmit.broadcast(`notification/blocked/${userId}`, user.apiSerialize());
 
-        return response.send({ message: i18n.t('messages.blocked-user.block.success') });
+        return response.send({ message: i18n.t('messages.blocked-user.block.success', { username: blockingUser.username }) });
     }
 
     public async cancel({ request, response, user, i18n }: HttpContext): Promise<void> {
@@ -73,7 +73,7 @@ export default class BlockedUserController {
 
         const blockedUsers: BlockedUser[] = await this.blockedUserRepository.findFromUsers(user, blockingUser);
         if (!blockedUsers.length) {
-            return response.notFound({ error: i18n.t('messages.blocked-user.cancel.error') });
+            return response.notFound({ error: i18n.t('messages.blocked-user.cancel.error', { username: blockingUser.username }) });
         }
 
         blockedUsers.map(async (blockedUser: BlockedUser): Promise<void> => {
@@ -82,6 +82,6 @@ export default class BlockedUserController {
 
         transmit.broadcast(`notification/unblocked/${userId}`);
 
-        return response.send({ message: i18n.t('messages.blocked-user.cancel.success') });
+        return response.send({ message: i18n.t('messages.blocked-user.cancel.success', { username: blockingUser.username }) });
     }
 }
