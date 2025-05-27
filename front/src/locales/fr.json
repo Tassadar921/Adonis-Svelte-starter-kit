@@ -60,9 +60,7 @@
         "notification": {
             "friend-request": {
                 "ask": "Vous avez reçu une demande d'ami de",
-                "accept": "a été ajouté à vos amis",
-                "accepted": "a accepté votre demande d'ami",
-                "refuse": "Vous avez refusé la demande d'ami de"
+                "accepted": "a accepté votre demande d'ami"
             }
         }
     },
