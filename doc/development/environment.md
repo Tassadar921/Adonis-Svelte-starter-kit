@@ -72,7 +72,7 @@ FRIEND_EMAILS=[]
 | `ACCOUNT_SENDER_EMAIL`  | account@adonis_svelte_starter_kit.fr                                                                    |
 | `BREVO_API_KEY`         | **`A valid Brevo API key`**                                                                             |
 | `ADMIN_EMAIL`           | **`Put your email here`**                                                                               |
-| `FRIEND_EMAILS`         | ["paul.lecuisinier@gmail.com"] **Feel free to add other emails to create other users or test emailing** |
+| `FRIEND_EMAILS`         | [] **Feel free to add other emails to create other users or test emailing** |
 
 ---
 
