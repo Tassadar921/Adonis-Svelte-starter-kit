@@ -3,7 +3,7 @@ import i18nManager from '@adonisjs/i18n/services/main';
 import chokidar, { FSWatcher } from 'chokidar';
 import env from '#start/env';
 
-export default class I18NProvider {
+export default class I18nProvider {
     constructor(protected app: ApplicationService) {}
 
     register(): void {}

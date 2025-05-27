@@ -22,6 +22,9 @@ router
     .group((): void => {
         router
             .group((): void => {
+                // Classic authentication routes
+                router.post('/', [AuthController, 'login']);
+
                 // OAuth routes
                 router
                     .group((): void => {
@@ -43,9 +46,6 @@ router
                     .prefix('google');
             })
             .prefix('auth');
-
-        // Classic authentication routes
-        router.post('/', [AuthController, 'login']);
 
         // Classic account creation routes
         router
