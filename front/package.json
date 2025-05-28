@@ -12,7 +12,7 @@
     },
     "devDependencies": {
         "@tsconfig/svelte": "^5.0.4",
-        "@types/node": "^22.15.21",
+        "@types/node": "^22.15.23",
         "@types/toastify-js": "^1.12.4",
         "autoprefixer": "^10.4.21",
         "postcss": "^8.5.3",

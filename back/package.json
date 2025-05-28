@@ -41,7 +41,7 @@
         "@swc/core": "1.11.29",
         "@types/luxon": "^3.6.2",
         "@types/mime-types": "^2.1.4",
-        "@types/node": "^22.15.21",
+        "@types/node": "^22.15.23",
         "hot-hook": "^0.4.0",
         "pino-pretty": "^13.0.0",
         "ts-node-maintained": "^10.9.5",
