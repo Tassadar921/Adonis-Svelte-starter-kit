@@ -12,8 +12,8 @@ install:
 	rm -rf .vite node_modules package-lock.json back/node_modules front/node_modules && npm install
 
 upgrade:
-	cd front && npx ncu -u
 	cd back && npx ncu -u
+	cd front && npx ncu -u
 	${MAKE} install
 
 list-routes:
