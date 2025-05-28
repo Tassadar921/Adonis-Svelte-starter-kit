@@ -79,7 +79,7 @@ export default class User extends compose(BaseModel, AuthFinder) {
         });
     }
 
-    static accessTokens = DbAccessTokensProvider.forModel(User, {
+    static accessTokens: DbAccessTokensProvider<typeof User> = DbAccessTokensProvider.forModel(User, {
         expiresIn: '30 days',
         prefix: 'oat_',
         table: 'auth_access_tokens',

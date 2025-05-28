@@ -17,8 +17,9 @@ DB_CONTAINER_NAME="${DB_HOST}"
 
 echo "Waiting for PostgreSQL to become ready in container '$DB_CONTAINER_NAME'..."
 for i in {1..30}; do
-  if docker exec -u postgres "$DB_CONTAINER_NAME" pg_isready -U "$LOGS_DB_USER" > /dev/null 2>&1; then
+  if docker exec -u postgres "$DB_CONTAINER_NAME" pg_isready -U "$LOGS_DB_USER" -d postgres > /dev/null 2>&1; then
     echo "PostgreSQL is ready."
+    sleep 3
     break
   fi
   echo "PostgreSQL is not ready yet... ($i/30)"

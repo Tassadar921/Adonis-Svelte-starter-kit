@@ -16,6 +16,7 @@
     import { transmit } from '../../stores/transmitStore';
     import type PaginatedFriends from 'adonis-svelte-starter-kit-backend/app/types/paginated/paginated_friends';
     import type SerializedUser from 'adonis-svelte-starter-kit-backend/app/types/serialized/serialized_user';
+    import type SerializedFriend from 'adonis-svelte-starter-kit-backend/app/types/serialized/serialized_friend';
     import Loader from '../shared/Loader.svelte';
     import Icon from '../shared/Icon.svelte';
     import { MetaTags } from 'svelte-meta-tags';
@@ -56,7 +57,7 @@
     const handleRemoveFriend = async (): Promise<void> => {
         try {
             const { data } = await axios.delete(`/api/friends/remove/${selectedFriend.id}`);
-            paginatedFriends.friends = paginatedFriends.friends.filter((friendObject) => friendObject.friend.id !== selectedFriend.id);
+            paginatedFriends.friends = paginatedFriends.friends.filter((friendObject: SerializedFriend) => friendObject.friend.id !== selectedFriend.id);
             showToast(data.message);
             showConfirmRemoveFriendModal = false;
         } catch (error: any) {
@@ -72,7 +73,7 @@
     const handleBlockUser = async (): Promise<void> => {
         try {
             const { data } = await axios.get(`/api/blocked/add/${selectedFriend.id}`);
-            paginatedFriends.friends = paginatedFriends.friends.filter((friendObject) => friendObject.friend.id !== selectedFriend.id);
+            paginatedFriends.friends = paginatedFriends.friends.filter((friendObject: SerializedFriend) => friendObject.friend.id !== selectedFriend.id);
             showToast(data.message);
             showBlockingModal = false;
         } catch (error: any) {
@@ -85,13 +86,13 @@
         const removeFriend = $transmit.subscription(`notification/friend/remove/${$profile!.id}`);
         await removeFriend.create();
         removeFriend.onMessage(async (user: SerializedUser) => {
-            paginatedFriends.friends = paginatedFriends.friends.filter((friendObject) => friendObject.friend.id !== user.id);
+            paginatedFriends.friends = paginatedFriends.friends.filter((friendObject: SerializedFriend) => friendObject.friend.id !== user.id);
         });
 
         const blockFriend = $transmit.subscription(`notification/blocked/${$profile!.id}`);
         await blockFriend.create();
         blockFriend.onMessage(async (user: SerializedUser) => {
-            paginatedFriends.friends = paginatedFriends.friends.filter((friendObject) => friendObject.friend.id !== user.id);
+            paginatedFriends.friends = paginatedFriends.friends.filter((friendObject: SerializedFriend) => friendObject.friend.id !== user.id);
         });
     };
 

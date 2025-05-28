@@ -8,10 +8,8 @@ export default class extends BaseSeeder {
     async run(): Promise<void> {
         const userRepository: UserRepository = new UserRepository();
 
-        const admin: string = env.get('ADMIN_EMAIL');
         const emails: string[] = JSON.parse(env.get('FRIEND_EMAILS'));
-
-        for (const email of [...emails, admin]) {
+        for (const email of [...emails, env.get('ADMIN_EMAIL')]) {
             if (!(await userRepository.findOneBy({ email }))) {
                 await User.create({
                     username: email.split('@')[0],

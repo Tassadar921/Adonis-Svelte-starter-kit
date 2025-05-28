@@ -10,7 +10,6 @@
     import { setProfile } from '../../stores/profileStore';
     import { t } from 'svelte-i18n';
     import Breadcrumbs from '../shared/Breadcrumbs.svelte';
-    import Icon from '../shared/Icon.svelte';
     import OauthProviders from '../shared/OauthProviders.svelte';
     import { MetaTags } from 'svelte-meta-tags';
 

@@ -8,7 +8,7 @@
     import { setProfile } from '../../stores/profileStore';
     import { MetaTags } from 'svelte-meta-tags';
 
-    export let token = '';
+    export let token;
 
     onMount(async () => {
         try {

@@ -12,6 +12,7 @@
     import ConfirmModal from '../shared/ConfirmModal.svelte';
     import type PaginatedBlockedUsers from 'adonis-svelte-starter-kit-backend/app/types/paginated/paginated_blocked_users';
     import type SerializedUser from 'adonis-svelte-starter-kit-backend/app/types/serialized/serialized_user';
+    import type SerializedBlockedUser from 'adonis-svelte-starter-kit-backend/app/types/serialized/serialized_blocked_user';
     import Loader from '../shared/Loader.svelte';
     import Icon from '../shared/Icon.svelte';
     import { MetaTags } from 'svelte-meta-tags';
@@ -44,7 +45,7 @@
     const handleUnblockUser = async (): Promise<void> => {
         try {
             const { data } = await axios.delete(`/api/blocked/cancel/${selectedBlockedUser.id}`);
-            paginatedBlockedUsers.blockedUsers = paginatedBlockedUsers.blockedUsers.filter((currentUser) => {
+            paginatedBlockedUsers.blockedUsers = paginatedBlockedUsers.blockedUsers.filter((currentUser: SerializedBlockedUser) => {
                 return currentUser.user.id !== selectedBlockedUser.id;
             });
             showToast(data.message);

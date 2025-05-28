@@ -37,7 +37,6 @@ export default defineConfig({
         () => import('@adonisjs/redis/redis_provider'),
         () => import('@adonisjs/ally/ally_provider'),
         () => import('@adonisjs/i18n/i18n_provider'),
-        () => import('#providers/i18n_provider'),
     ],
 
     /*
@@ -76,12 +75,8 @@ export default defineConfig({
     },
     metaFiles: [
         {
-            pattern: 'public/**',
-            reloadServer: false,
-        },
-        {
             pattern: 'resources/lang/**/*.{json,yaml,yml}',
-            reloadServer: false,
+            reloadServer: true,
         },
     ],
 });
