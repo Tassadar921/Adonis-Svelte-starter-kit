@@ -9,6 +9,6 @@
     "devDependencies": {
         "npm-check-updates": "^18.0.1",
         "prettier": "^3.5.3",
-        "svelte-meta-tags": "^4.3.0",
+        "svelte-meta-tags": "^4.3.0"
     }
 }
