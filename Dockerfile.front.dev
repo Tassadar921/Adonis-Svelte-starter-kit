@@ -1,0 +1,19 @@
+# Dockerfile.front.dev
+
+FROM node:22
+
+WORKDIR /app
+
+COPY front/package*.json ./
+RUN npm install
+
+COPY front /app
+COPY package*.json /shared/
+
+RUN chown -R node:node /app
+
+EXPOSE 5173
+
+USER node
+
+CMD ["npm", "run", "dev"]
