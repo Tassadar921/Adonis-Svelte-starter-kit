@@ -67,7 +67,7 @@ build-prod:
 	if [ -d back/.persist/static ]; then cp -r back/.persist/static/* back/build/static/ || true; fi
 
 	# Fixture clearing
-	cp -r back/static/* back/build/static/
+	mkdir -p back/build/static && cp -r back/static/* back/build/static/
 
 	# Clear temporary persisted directories
 	rm -rf back/.persist
