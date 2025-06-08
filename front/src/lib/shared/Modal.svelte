@@ -47,6 +47,10 @@
 <dialog
     bind:this={dialog}
     on:close={() => (showModal = false)}
+    on:cancel|preventDefault={() => {
+        if (!closable) return;
+        handleClose();
+    }}
     style={`width: ${fullWidth ? '90%' : '50%'}`}
     class="rounded-lg border-none p-0 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
 >
@@ -77,9 +81,11 @@
                     {/if}
                 </div>
             {:else}
-                <Button className="mx-auto" on:click={handleClose} ariaLabel={$t('common.close')}>
-                    {closeText || $t('common.close')}
-                </Button>
+                {#if closable}
+                    <Button className="mx-auto" on:click={handleClose} ariaLabel={$t('common.close')}>
+                        {closeText || $t('common.close')}
+                    </Button>
+                {/if}
             {/if}
         </div>
     </div>
