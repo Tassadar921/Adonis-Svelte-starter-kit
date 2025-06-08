@@ -80,12 +80,10 @@
                         </Button>
                     {/if}
                 </div>
-            {:else}
-                {#if closable}
-                    <Button className="mx-auto" on:click={handleClose} ariaLabel={$t('common.close')}>
-                        {closeText || $t('common.close')}
-                    </Button>
-                {/if}
+            {:else if closable}
+                <Button className="mx-auto" on:click={handleClose} ariaLabel={$t('common.close')}>
+                    {closeText || $t('common.close')}
+                </Button>
             {/if}
         </div>
     </div>
