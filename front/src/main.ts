@@ -61,7 +61,7 @@ const logInformations = async (token: string): Promise<void> => {
 };
 
 // Axios configuration
-axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URL;
+axios.defaults.baseURL = import.meta.env.VITE_API_BASE_URI;
 
 // Language configuration
 initializeLanguage();

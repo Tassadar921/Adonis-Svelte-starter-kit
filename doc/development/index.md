@@ -4,9 +4,9 @@
 
 | Field    | Value                 |
 |----------|-----------------------|
-| Adminer  | http://localhost:8080 |
-| Backend  | http://localhost:3333 |
 | Frontend | http://localhost:5173 |
+| Backend  | http://localhost:3333 |
+| Adminer  | http://localhost:8080 |
 
 ### Common management commands
 

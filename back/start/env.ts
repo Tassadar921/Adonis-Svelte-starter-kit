@@ -66,8 +66,10 @@ export default await Env.create(new URL('../', import.meta.url), {
     GOOGLE_CLIENT_ID: Env.schema.string(),
     GOOGLE_CLIENT_SECRET: Env.schema.string(),
 
-    FRONT_URI: Env.schema.string(),
-    API_URI: Env.schema.string(),
+    FRONT_PORT: Env.schema.number(),
+    FRONT_URI: Env.schema.string(), // injected by Docker
+    API_URI: Env.schema.string(), // injected by Docker
+    GITHUB_REPOSITORY: Env.schema.string(),
     ACCOUNT_SENDER_EMAIL: Env.schema.string(),
     BREVO_API_KEY: Env.schema.string(),
     ADMIN_EMAIL: Env.schema.string(),

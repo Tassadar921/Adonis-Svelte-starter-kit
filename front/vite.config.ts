@@ -6,7 +6,7 @@ import tailwindcss from '@tailwindcss/vite';
 export default defineConfig({
     server: {
         host: true,
-        port: 5173,
+        port: Number(process.env.VITE_PORT),
         allowedHosts: ['localhost', 'app.adonis-svelte-starter-kit.fr'],
     },
     plugins: [svelte(), tailwindcss()],

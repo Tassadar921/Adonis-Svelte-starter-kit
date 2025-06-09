@@ -26,6 +26,9 @@ services:
         volumes:
             - ./back:/app
             - /app/node_modules
+        environment:
+            - API_URI=http://localhost:${PORT}
+            - FRONT_URI=http://localhost:${FRONT_PORT}
         ports:
             - '${PORT}:${PORT}'
         depends_on:
@@ -47,8 +50,12 @@ services:
         environment:
             - CHOKIDAR_USEPOLLING=true
             - WATCHPACK_POLLING=true
+            - VITE_PORT=${FRONT_PORT}
+            - VITE_FRONT_URI=http://localhost:${FRONT_PORT}
+            - VITE_API_BASE_URI=http://localhost:${PORT}
+            - VITE_GITHUB_REPOSITORY=${GITHUB_REPOSITORY}
         ports:
-            - '5173:5173'
+            - '${FRONT_PORT}:${FRONT_PORT}'
         depends_on:
             - backend
 
