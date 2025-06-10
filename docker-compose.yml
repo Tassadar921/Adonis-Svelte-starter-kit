@@ -42,7 +42,7 @@ services:
             context: .
             dockerfile: ./Dockerfile.front.dev
             args:
-                FRONT_PORT: ${FRONT_PORT}
+                PORT: ${FRONT_PORT}
         container_name: front
         restart: always
         env_file: ./front/.env
