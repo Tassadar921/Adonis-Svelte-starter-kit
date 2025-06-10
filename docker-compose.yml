@@ -19,6 +19,8 @@ services:
         build:
             context: .
             dockerfile: ./Dockerfile.back.dev
+            args:
+                PORT: ${PORT}
         container_name: back
         restart: always
         env_file: ./back/.env
