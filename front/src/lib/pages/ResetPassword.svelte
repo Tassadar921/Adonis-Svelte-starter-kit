@@ -42,6 +42,11 @@
             href: `${import.meta.env.VITE_FRONT_URI}/fr/reset-password`,
         },
     ]}
+    openGraph={{
+        type: 'website',
+        title: $t('reset-password.meta.title'),
+        description: $t('reset-password.meta.description'),
+    }}
 />
 
 <Title title={$t('reset-password.title')} hasBackground />

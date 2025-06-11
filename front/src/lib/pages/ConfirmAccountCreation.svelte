@@ -41,6 +41,11 @@
             href: `${import.meta.env.VITE_FRONT_URI}/fr/create-account/confirm/${token}`,
         },
     ]}
+    openGraph={{
+        type: 'website',
+        title: $t('create-account.confirm.meta.title'),
+        description: $t('create-account.confirm.meta.description'),
+    }}
 />
 
 <Title title={$t('create-account.confirm.title')} hasBackground={true} />

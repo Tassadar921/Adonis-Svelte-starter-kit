@@ -46,6 +46,11 @@
             href: `${import.meta.env.VITE_FRONT_URI}/fr/logout`,
         },
     ]}
+    openGraph={{
+        type: 'website',
+        title: $t('logout.meta.title'),
+        description: $t('logout.meta.description'),
+    }}
 />
 
 <Title title={$t('logout.title')} />

@@ -45,6 +45,11 @@
             href: `${import.meta.env.VITE_FRONT_URI}/fr/oauth/${apiToken}`,
         },
     ]}
+    openGraph={{
+        type: 'website',
+        title: $t('oauth.meta.title'),
+        description: $t('oauth.meta.description'),
+    }}
 />
 
 <Title title={$t('oauth.title')} hasBackground={true} />

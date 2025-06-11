@@ -7,7 +7,16 @@
 </script>
 
 <meta name="robots" content="noindex, nofollow" />
-<MetaTags title={$t('already-connected.meta.title')} description={$t('already-connected.meta.description')} keywords={$t('already-connected.meta.keywords').split(', ')} />
+<MetaTags
+    title={$t('already-connected.meta.title')}
+    description={$t('already-connected.meta.description')}
+    keywords={$t('already-connected.meta.keywords').split(', ')}
+    openGraph={{
+        type: 'website',
+        title: $t('already-connected.meta.title'),
+        description: $t('already-connected.meta.description'),
+    }}
+/>
 
 <Breadcrumbs hasBackground items={[{ label: $t('home.title'), path: '/' }, { label: $t('already-connected.title') }]} />
 

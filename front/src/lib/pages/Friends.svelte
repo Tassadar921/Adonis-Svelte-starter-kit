@@ -117,6 +117,11 @@
             href: `${import.meta.env.VITE_FRONT_URI}/fr/social/friends`,
         },
     ]}
+    openGraph={{
+        type: 'website',
+        title: $t('social.friends.meta.title'),
+        description: $t('social.friends.meta.description'),
+    }}
 />
 
 <Title title={$t('social.friends.title')} />

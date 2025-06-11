@@ -52,6 +52,11 @@
             href: `${import.meta.env.VITE_FRONT_URI}/fr/notifications`,
         },
     ]}
+    openGraph={{
+        type: 'website',
+        title: $t('notifications.meta.title'),
+        description: $t('notifications.meta.description'),
+    }}
 />
 
 <Loader {isLoading} />

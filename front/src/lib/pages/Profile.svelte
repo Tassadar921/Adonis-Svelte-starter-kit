@@ -61,6 +61,11 @@
             href: `${import.meta.env.VITE_FRONT_URI}/fr/profile`,
         },
     ]}
+    openGraph={{
+        type: 'website',
+        title: $t('profile.meta.title'),
+        description: $t('profile.meta.description'),
+    }}
 />
 
 <Title title={$t('profile.title')} hasBackground />

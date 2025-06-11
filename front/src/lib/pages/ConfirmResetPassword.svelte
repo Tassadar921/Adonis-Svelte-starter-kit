@@ -49,6 +49,11 @@
             href: `${import.meta.env.VITE_FRONT_URI}/fr/reset-password/confirm/${token}`,
         },
     ]}
+    openGraph={{
+        type: 'website',
+        title: $t('reset-password.confirm.meta.title'),
+        description: $t('reset-password.confirm.meta.description'),
+    }}
 />
 
 <Title title={$t('reset-password.confirm.title')} hasBackground />

@@ -45,6 +45,11 @@
             href: `${import.meta.env.VITE_FRONT_URI}/fr/create-account`,
         },
     ]}
+    openGraph={{
+        type: 'website',
+        title: $t('create-account.meta.title'),
+        description: $t('create-account.meta.description'),
+    }}
 />
 
 <Title title={$t('create-account.title')} hasBackground={true} />

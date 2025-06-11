@@ -75,6 +75,11 @@
             href: `${import.meta.env.VITE_FRONT_URI}/fr/social/blocked`,
         },
     ]}
+    openGraph={{
+        type: 'website',
+        title: $t('social.blocked.meta.title'),
+        description: $t('social.blocked.meta.description'),
+    }}
 />
 
 <Title title={$t('social.blocked.title')} />

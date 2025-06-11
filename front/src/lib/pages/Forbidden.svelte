@@ -8,7 +8,16 @@
 </script>
 
 <meta name="robots" content="noindex, nofollow" />
-<MetaTags title={$t('forbidden.meta.title')} description={$t('forbidden.meta.description')} keywords={$t('forbidden.meta.keywords').split(', ')} />
+<MetaTags
+    title={$t('forbidden.meta.title')}
+    description={$t('forbidden.meta.description')}
+    keywords={$t('forbidden.meta.keywords').split(', ')}
+    openGraph={{
+        type: 'website',
+        title: $t('forbidden.meta.title'),
+        description: $t('forbidden.meta.description'),
+    }}
+/>
 
 <Breadcrumbs hasBackground items={[{ label: $t('home.title'), path: '/' }, { label: $t('forbidden.title') }]} />
 

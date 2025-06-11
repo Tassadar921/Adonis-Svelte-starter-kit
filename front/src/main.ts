@@ -71,6 +71,7 @@ initI148nLanguages();
 
 // Theme configuration
 const theme: string | null = localStorage.getItem('theme');
+document.documentElement.classList.toggle('dark', theme === 'dark');
 if (theme !== 'light' && theme !== 'dark') {
     localStorage.setItem('theme', 'light');
 }

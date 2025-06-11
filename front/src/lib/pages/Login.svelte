@@ -45,6 +45,11 @@
             href: `${import.meta.env.VITE_FRONT_URI}/fr/login`,
         },
     ]}
+    openGraph={{
+        type: 'website',
+        title: $t('login.meta.title'),
+        description: $t('login.meta.description'),
+    }}
 />
 
 <Title title={$t('login.title')} hasBackground />

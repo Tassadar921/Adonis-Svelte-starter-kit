@@ -37,6 +37,11 @@
             href: `${import.meta.env.VITE_FRONT_URI}/fr`,
         },
     ]}
+    openGraph={{
+        type: 'website',
+        title: $t('home.meta.title'),
+        description: $t('home.meta.description'),
+    }}
 />
 
 <Title title={$t('home.title')} />

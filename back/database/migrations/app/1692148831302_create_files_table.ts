@@ -12,6 +12,7 @@ export default class extends BaseSchema {
             table.string('extension', 255).notNullable();
             table.string('mime_type', 255).notNullable();
             table.integer('size').notNullable();
+            table.string('type', 255).notNullable();
             table.timestamp('created_at', { useTz: true });
             table.timestamp('updated_at', { useTz: true });
         });

@@ -50,6 +50,11 @@
             href: `${import.meta.env.VITE_FRONT_URI}/fr/social`,
         },
     ]}
+    openGraph={{
+        type: 'website',
+        title: $t('social.meta.title'),
+        description: $t('social.meta.description'),
+    }}
 />
 
 <Title title={$t('social.title')} />
