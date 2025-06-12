@@ -50,4 +50,5 @@ export const middleware = router.named({
     language: () => import('#middleware/language_middleware'),
     queryStringAuth: () => import('#middleware/query_string_auth_middleware'),
     log: () => import('#middleware/log_middleware'),
+    isAdmin: () => import('#middleware/is_admin_middleware'),
 });
