@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { Router, Route } from 'svelte-routing';
+    import { Router } from 'svelte-routing';
     import { profile } from './stores/profileStore';
     import { isLoading } from 'svelte-i18n';
     import Loader from './lib/shared/Loader.svelte';
