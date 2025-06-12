@@ -15,8 +15,14 @@ import { t } from 'svelte-i18n';
 const supportedLanguages: string[] = ['en', 'fr'];
 
 const initializeLanguage = (): void => {
+    const currentPath: string = get(location);
+
+    if (currentPath.startsWith('/assets/') || currentPath.includes('.png') || currentPath.includes('.jpg') || currentPath.includes('.css') || currentPath.includes('.js')) {
+        return;
+    }
+
     const langRegex = new RegExp(`^\/(${supportedLanguages.join('|')})(\/|$)`);
-    const langMatch: RegExpMatchArray | null = langRegex.exec(get(location));
+    const langMatch: RegExpMatchArray | null = langRegex.exec(currentPath);
 
     const initialSetLanguage = (language: string): void => {
         setLanguage(language);

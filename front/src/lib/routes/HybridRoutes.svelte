@@ -12,6 +12,6 @@
 <Route path="/:language/reset-password/confirm/:token" let:params>
     <AppLayout component={ConfirmResetPassword} props={{ token: params.token }} />
 </Route>
-<Route path="*">
-    <AppLayout component={NotFound} />
-</Route>
+<!--<Route path="*">-->
+<!--    <AppLayout component={NotFound} />-->
+<!--</Route>-->

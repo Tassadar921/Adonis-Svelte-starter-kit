@@ -21,6 +21,15 @@
 
     let profileData: SerializedUser = $profile!;
 
+    let ogImages = [
+        {
+            url: `${import.meta.env.VITE_FRONT_URI}/assets/logo-1200x1200.webp`,
+            width: 1200,
+            height: 1200,
+            alt: 'open-graph.logo.alt',
+        },
+    ];
+
     onMount((): void => {
         formValues = {
             username: $profile?.username || '',
@@ -29,6 +38,16 @@
 
         if ($profile!.profilePicture) {
             path = `${import.meta.env.VITE_API_BASE_URI}/api/static/profile-picture/${$profile!.id}?token=${localStorage.getItem('apiToken')}`;
+
+            ogImages = [
+                ...ogImages,
+                {
+                    url: path,
+                    width: 600,
+                    height: 600,
+                    alt: `${$t('open-graph.profile-picture.alt')} ${$profile!.username}`,
+                },
+            ];
         }
     });
 
@@ -65,6 +84,7 @@
         type: 'website',
         title: $t('profile.meta.title'),
         description: $t('profile.meta.description'),
+        images: ogImages,
     }}
 />
 

@@ -48,6 +48,14 @@
         },
         "consent": "I agree to the terms and conditions"
     },
+    "open-graph": {
+        "logo": {
+            "alt": "Adonis & Svelte Starter Kit's logo"
+        },
+        "profile-picture": {
+            "alt": "Profile picture of"
+        }
+    },
     "toast": {
         "token-expired": "Your session has expired, please login again",
         "copy": {
