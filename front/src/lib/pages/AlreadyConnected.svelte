@@ -4,8 +4,6 @@
     import BackTo from '../shared/BackTo.svelte';
     import Breadcrumbs from '../shared/Breadcrumbs.svelte';
     import { MetaTags } from 'svelte-meta-tags';
-    import { location } from '../../stores/locationStore';
-    import { language } from '../../stores/languageStore';
 </script>
 
 <meta name="robots" content="noindex, nofollow" />
@@ -14,28 +12,12 @@
     description={$t('already-connected.meta.description')}
     keywords={$t('already-connected.meta.keywords').split(', ')}
     openGraph={{
-        type: 'website',
         title: $t('already-connected.meta.title'),
         description: $t('already-connected.meta.description'),
-        images: [
-            {
-                url: `${import.meta.env.VITE_FRONT_URI}/assets/logo-1200x1200.webp`,
-                width: 1200,
-                height: 1200,
-                alt: `${$t('open-graph.logo.alt')}`,
-            },
-        ],
-        url: `${import.meta.env.VITE_FRONT_URI}${$location}`,
-        locale: $language,
-        siteName: 'Adonis & Svelte Starter Kit',
     }}
     twitter={{
-        cardType: 'summary',
-        site: import.meta.env.VITE_TWITTER_HANDLE,
         title: $t('already-connected.meta.title'),
         description: $t('already-connected.meta.description'),
-        image: `${import.meta.env.VITE_FRONT_URI}/assets/logo-1200x1200.webp`,
-        imageAlt: `${$t('open-graph.logo.alt')}`,
     }}
 />
 

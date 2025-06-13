@@ -9,8 +9,6 @@
     import Switch from '../shared/Switch.svelte';
     import OauthProviders from '../shared/OauthProviders.svelte';
     import { MetaTags } from 'svelte-meta-tags';
-    import { location } from '../../stores/locationStore';
-    import { language } from '../../stores/languageStore';
 
     let username: string = '';
     let email: string = '';
@@ -48,20 +46,12 @@
         },
     ]}
     openGraph={{
-        type: 'website',
         title: $t('create-account.meta.title'),
         description: $t('create-account.meta.description'),
-        images: [
-            {
-                url: `${import.meta.env.VITE_FRONT_URI}/assets/logo-1200x1200.webp`,
-                width: 1200,
-                height: 1200,
-                alt: `open-graph.logo.alt`,
-            },
-        ],
-        url: `${import.meta.env.VITE_FRONT_URI}${$location}`,
-        locale: $language,
-        siteName: 'Adonis & Svelte Starter Kit',
+    }}
+    twitter={{
+        title: $t('create-account.meta.title'),
+        description: $t('create-account.meta.description'),
     }}
 />
 
