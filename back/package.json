@@ -37,10 +37,10 @@
         "@japa/assert": "^4.0.1",
         "@japa/plugin-adonisjs": "^4.0.0",
         "@japa/runner": "^4.2.0",
-        "@swc/core": "1.11.29",
+        "@swc/core": "1.12.1",
         "@types/luxon": "^3.6.2",
-        "@types/mime-types": "^3.0.0",
-        "@types/node": "^22.15.29",
+        "@types/mime-types": "^3.0.1",
+        "@types/node": "^24.0.1",
         "hot-hook": "^0.4.0",
         "typescript": "~5.8"
     },
