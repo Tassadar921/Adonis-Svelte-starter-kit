@@ -16,8 +16,6 @@
     import Loader from '../shared/Loader.svelte';
     import Icon from '../shared/Icon.svelte';
     import { MetaTags } from 'svelte-meta-tags';
-    import { location } from '../../stores/locationStore';
-    import { language } from '../../stores/languageStore';
 
     let isLoading: boolean = false;
     let paginatedBlockedUsers: PaginatedBlockedUsers;
@@ -78,20 +76,12 @@
         },
     ]}
     openGraph={{
-        type: 'website',
         title: $t('social.blocked.meta.title'),
         description: $t('social.blocked.meta.description'),
-        images: [
-            {
-                url: `${import.meta.env.VITE_FRONT_URI}/assets/logo-1200x1200.webp`,
-                width: 1200,
-                height: 1200,
-                alt: `open-graph.logo.alt`,
-            },
-        ],
-        url: `${import.meta.env.VITE_FRONT_URI}${$location}`,
-        locale: $language,
-        siteName: 'Adonis & Svelte Starter Kit',
+    }}
+    twitter={{
+        title: $t('social.blocked.meta.title'),
+        description: $t('social.blocked.meta.description'),
     }}
 />
 
