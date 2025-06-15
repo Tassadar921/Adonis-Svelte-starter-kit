@@ -1,28 +1,45 @@
-FROM node:22
+FROM node:24
 
-# Create app directory
+# Create app directory and set permissions
+RUN mkdir -p /app && \
+    chown -R node:node /app
+
+# Create .svelte-kit directory with correct permissions
+RUN mkdir -p /app/.svelte-kit && \
+    chown -R node:node /app/.svelte-kit
+
+# Set working directory
 WORKDIR /app
 
 # Accept the PORT build arg
 ARG PORT
 
-# Copy frontend dependencies
-COPY front/package*.json ./
+# Install app dependencies first (for better caching)
+COPY --chown=node:node front/package*.json ./
 
-# Install frontend deps
+# Install dependencies as non-root user
+USER node
+
+# Install all dependencies (including devDependencies)
 RUN npm install
 
 # Copy frontend app code
-COPY front /app
+COPY --chown=node:node front/ .
 
-# Also copy root-level shared tools (optional)
-COPY package*.json /shared/
+# Install any additional dependencies
+RUN npm install
 
-# Permissions
+# Run svelte-kit sync to generate .svelte-kit
+RUN npx svelte-kit sync
+
+# Fix permissions
 RUN chown -R node:node /app
 
-EXPOSE ${PORT}
-
+# Create a non-root user to run the app
 USER node
 
-CMD ["npm", "run", "dev"]
+# Expose the port the app runs on
+EXPOSE ${PORT}
+
+# Start the development server
+CMD ["npm", "run", "dev", "--", "--host"]

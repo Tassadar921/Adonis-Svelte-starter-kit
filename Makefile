@@ -9,7 +9,7 @@ format-check:
 	cd front && npx prettier --check "**/*.{js,ts,svelte,html,css,json,yml}"
 
 install:
-	rm -rf .vite node_modules package-lock.json back/node_modules front/node_modules
+	rm -rf .vite node_modules package-lock.json back/node_modules front/node_modules front/.svelte-kit
 	npm install
 
 upgrade:
@@ -47,6 +47,9 @@ rm:
 	./compose-env.sh down --volumes --remove-orphans
 
 start: install rm up db
+
+sync:
+	cd front && npx svelte-kit sync
 
 prune:
 	docker system prune -f
