@@ -1,6 +1,6 @@
 import { type Writable, writable } from 'svelte/store';
 import axios from 'axios';
-import type SerializedPendingFriend from 'adonis-svelte-starter-kit-backend/app/types/serialized/serialized_pending_friend';
+import type SerializedPendingFriend from 'back/app/types/serialized/serialized_pending_friend';
 
 interface Notifications {
     friendRequests: SerializedPendingFriend[];

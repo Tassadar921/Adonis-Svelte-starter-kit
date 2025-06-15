@@ -8,41 +8,41 @@ import NotificationTypeEnum from '#types/enum/notification_type_enum';
 
 export default class PendingFriendNotification extends BaseModel {
     @column({ isPrimary: true })
-    declare id: string;
+    declare public id: string;
 
     @column()
-    declare frontId: number;
+    declare public frontId: number;
 
     @column()
-    declare forId: string;
+    declare public forId: string;
 
     @belongsTo((): typeof User => User, {
         foreignKey: 'forId',
     })
-    declare for: BelongsTo<typeof User>;
+    declare public for: BelongsTo<typeof User>;
 
     @column()
-    declare fromId: string;
+    declare public fromId: string;
 
     @belongsTo((): typeof User => User, {
         foreignKey: 'fromId',
     })
-    declare from: BelongsTo<typeof User>;
+    declare public from: BelongsTo<typeof User>;
 
     @column()
-    declare pendingFriendId: string;
+    declare public pendingFriendId: string;
 
     @belongsTo((): typeof PendingFriend => PendingFriend)
-    declare pendingFriend: BelongsTo<typeof PendingFriend>;
+    declare public pendingFriend: BelongsTo<typeof PendingFriend>;
 
     @column()
-    declare seen: boolean;
+    declare public seen: boolean;
 
     @column.dateTime({ autoCreate: true })
-    declare createdAt: DateTime;
+    declare public createdAt: DateTime;
 
     @column.dateTime({ autoCreate: true, autoUpdate: true })
-    declare updatedAt: DateTime;
+    declare public updatedAt: DateTime;
 
     public apiSerialize(): SerializedPendingFriendNotification {
         return {

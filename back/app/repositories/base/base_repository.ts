@@ -99,6 +99,17 @@ export default class BaseRepository<T extends LucidModel> {
         return query.firstOrFail();
     }
 
+    public async updateOrCreate(
+        searchPayload: Partial<ModelAttributes<InstanceType<T>>>,
+        updatePayload: Partial<ModelAttributes<InstanceType<T>>>,
+        trx?: TransactionClientContract
+    ): Promise<InstanceType<T>> {
+        if (trx) {
+            return await this.Model.updateOrCreate(searchPayload, updatePayload, { client: trx });
+        }
+        return await this.Model.updateOrCreate(searchPayload, updatePayload);
+    }
+
     private isStrictValue(value: unknown): value is StrictValues {
         return typeof value === 'string' || typeof value === 'number' || typeof value === 'boolean' || (Array.isArray(value) && value.every(this.isStrictValue));
     }

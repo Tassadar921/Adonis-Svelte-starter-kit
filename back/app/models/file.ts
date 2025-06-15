@@ -5,32 +5,32 @@ import FileTypeEnum from '#types/enum/file_type_enum';
 
 export default class File extends BaseModel {
     @column({ isPrimary: true })
-    declare id: string;
+    declare public id: string;
 
     @column()
-    declare name: string;
+    declare public name: string;
 
     @column()
-    declare path: string;
+    declare public path: string;
 
     @column()
-    declare extension: string;
+    declare public extension: string;
 
     @column()
-    declare mimeType: string;
+    declare public mimeType: string;
 
     // File size in bytes
     @column()
-    declare size: number;
+    declare public size: number;
 
     @column()
-    declare type: FileTypeEnum;
+    declare public type: FileTypeEnum;
 
     @column.dateTime({ autoCreate: true })
-    declare createdAt: DateTime;
+    declare public createdAt: DateTime;
 
     @column.dateTime({ autoCreate: true, autoUpdate: true })
-    declare updatedAt: DateTime;
+    declare public updatedAt: DateTime;
 
     public apiSerialize(): SerializedFile {
         return {

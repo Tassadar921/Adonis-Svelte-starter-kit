@@ -2,30 +2,10 @@
     import { Router } from 'svelte-routing';
     import { profile } from './stores/profileStore';
     import { isLoading } from 'svelte-i18n';
-    import Loader from './lib/shared/Loader.svelte';
-    import NotificationsSetup from './lib/notifications/NotificationsSetup.svelte';
-    import HybridRoutes from './lib/routes/HybridRoutes.svelte';
-    import AuthenticatedRoutes from './lib/routes/AuthenticatedRoutes.svelte';
-    import AdminRoutes from './lib/routes/AdminRoutes.svelte';
-    import GuessRoutes from './lib/routes/GuessRoutes.svelte';
+    import Loader from '#components/shared/Loader.svelte';
+    import NotificationsSetup from './components/notifications/NotificationsSetup.svelte';
 </script>
 
 <NotificationsSetup />
 
-<main class="flex flex-col bg-gray-200 dark:bg-gray-900 h-screen w-screen">
-    {#if !$isLoading}
-        <Router>
-            {#if $profile}
-                <AuthenticatedRoutes />
-
-                <AdminRoutes />
-            {:else}
-                <GuessRoutes />
-            {/if}
-
-            <HybridRoutes />
-        </Router>
-    {:else}
-        <Loader isLoading />
-    {/if}
-</main>
+<main class="flex flex-col bg-gray-200 dark:bg-gray-900 h-screen w-screen"></main>

@@ -10,51 +10,51 @@ export default class Log extends BaseModel {
     static connection: string = 'logs';
 
     @column({ isPrimary: true })
-    declare id: string;
+    declare public id: string;
 
     @column()
-    declare frontId: number;
+    declare public frontId: number;
 
     @column()
-    declare route: string;
+    declare public route: string;
 
     @column()
-    declare routeMethod: LogRouteMethodEnum;
+    declare public routeMethod: LogRouteMethodEnum;
 
     @column()
-    declare queryString: Record<string, unknown>;
+    declare public queryString: Record<string, unknown>;
 
     @column()
-    declare params?: Record<string, unknown>;
+    declare public params?: Record<string, unknown>;
 
     @column()
-    declare body?: Record<string, unknown>;
+    declare public body?: Record<string, unknown>;
 
     @column()
-    declare responseStatus: LogResponseStatusEnum;
+    declare public responseStatus: LogResponseStatusEnum;
 
     @column()
-    declare responseBody: Record<string, unknown>;
+    declare public responseBody: Record<string, unknown>;
 
     @column.dateTime({ autoCreate: true, autoUpdate: true })
-    declare startTime: DateTime;
+    declare public startTime: DateTime;
 
     @column.dateTime({ autoCreate: true, autoUpdate: true })
-    declare endTime: DateTime;
+    declare public endTime: DateTime;
 
     @column()
-    declare userId: string;
+    declare public userId: string;
 
     @belongsTo((): typeof LogUser => LogUser, {
         foreignKey: 'userId',
     })
-    declare user: BelongsTo<typeof LogUser>;
+    declare public user: BelongsTo<typeof LogUser>;
 
     @column.dateTime({ autoCreate: true })
-    declare createdAt: DateTime;
+    declare public createdAt: DateTime;
 
     @column.dateTime({ autoCreate: true, autoUpdate: true })
-    declare updatedAt: DateTime;
+    declare public updatedAt: DateTime;
 
     public apiSerialize(): SerializedLog {
         return {

@@ -1,6 +1,5 @@
+import { sveltekit } from '@sveltejs/kit/vite';
 import { defineConfig } from 'vite';
-import { svelte } from '@sveltejs/vite-plugin-svelte';
-// @ts-ignore
 import tailwindcss from '@tailwindcss/vite';
 
 export default defineConfig({
@@ -9,5 +8,5 @@ export default defineConfig({
         port: Number(process.env.VITE_PORT),
         allowedHosts: ['localhost', 'app.adonis-svelte-starter-kit.fr'],
     },
-    plugins: [svelte(), tailwindcss()],
+    plugins: [sveltekit(), tailwindcss()],
 });

@@ -1,6 +1,6 @@
 import { type Writable, writable } from 'svelte/store';
 import axios from 'axios';
-import type SerializedUser from 'adonis-svelte-starter-kit-backend/app/types/serialized/serialized_user';
+import type SerializedUser from 'back/app/types/serialized/serialized_user';
 import { showToast } from '../services/toastService';
 
 export const profile: Writable<SerializedUser | null> = writable(null);

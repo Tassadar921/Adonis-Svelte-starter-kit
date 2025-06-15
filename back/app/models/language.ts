@@ -13,19 +13,19 @@ export default class Language extends BaseModel {
     };
 
     @column({ isPrimary: true })
-    declare id: string;
+    declare public id: string;
 
     @column()
-    declare name: string;
+    declare public name: string;
 
     @column()
-    declare code: string;
+    declare public code: string;
 
     @column.dateTime({ autoCreate: true })
-    declare createdAt: DateTime;
+    declare public createdAt: DateTime;
 
     @column.dateTime({ autoCreate: true, autoUpdate: true })
-    declare updatedAt: DateTime;
+    declare public updatedAt: DateTime;
 
     public apiSerialize(): SerializedLanguage {
         return {
