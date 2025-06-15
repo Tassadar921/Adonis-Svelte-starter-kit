@@ -8,24 +8,24 @@ export default class LogUser extends BaseModel {
     static connection: string = 'logs';
 
     @column({ isPrimary: true })
-    declare id: string;
+    declare public id: string;
 
     @column()
-    declare frontId: number;
+    declare public frontId: number;
 
     @column()
-    declare email: string;
+    declare public email: string;
 
     @hasMany((): typeof Log => Log, {
         foreignKey: 'userId',
     })
-    declare logs: HasMany<typeof Log>;
+    declare public logs: HasMany<typeof Log>;
 
     @column.dateTime({ autoCreate: true })
-    declare createdAt: DateTime;
+    declare public createdAt: DateTime;
 
     @column.dateTime({ autoCreate: true, autoUpdate: true })
-    declare updatedAt: DateTime;
+    declare public updatedAt: DateTime;
 
     public apiSerialize(): SerializedLogUser {
         return {

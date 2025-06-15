@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon';
 import hash from '@adonisjs/core/services/hash';
 import { compose } from '@adonisjs/core/helpers';
-import { afterCreate, BaseModel, belongsTo, column, hasMany } from '@adonisjs/lucid/orm';
+import { afterCreate, BaseModel, beforeCreate, belongsTo, column, hasMany } from '@adonisjs/lucid/orm';
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid';
 import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations';
 import SerializedUser from '#types/serialized/serialized_user';
@@ -12,6 +12,11 @@ import Friend from '#models/friend';
 import BlockedUser from '#models/blocked_user';
 import PendingFriend from '#models/pending_friend';
 import LogUser from '#models/log_user';
+import UserSetting from '#models/user_setting';
+import SerializedUserSetting from '#types/serialized/serialized_user_setting';
+import SettingRepository from '#repositories/setting_repository';
+import Setting from '#models/setting';
+import SettingChoice from '#models/setting_choice';
 
 const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
     uids: ['email'],
@@ -20,60 +25,82 @@ const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
 
 export default class User extends compose(BaseModel, AuthFinder) {
     @column({ isPrimary: true })
-    declare id: string;
+    declare public id: string;
 
     @column()
-    declare frontId: number;
+    declare public frontId: number;
 
     @column()
-    declare username: string;
+    declare public username: string;
 
     @column()
-    declare email: string;
+    declare public email: string;
 
     @column()
-    declare password: string;
+    declare public password: string;
 
     @column()
-    declare creationToken: string | null;
+    declare public creationToken: string | null;
 
     @column()
-    declare role: UserRoleEnum;
+    declare public role: UserRoleEnum;
 
     @column()
-    declare enabled: boolean;
+    declare public enabled: boolean;
 
     @column()
-    declare acceptedTermsAndConditions: boolean;
+    declare public acceptedTermsAndConditions: boolean;
 
     @column()
-    declare isOauth: boolean;
+    declare public isOauth: boolean;
 
     @column()
-    declare profilePictureId: string | null;
+    declare public profilePictureId: string | null;
 
     @belongsTo((): typeof File => File, {
         foreignKey: 'profilePictureId',
     })
-    declare profilePicture: BelongsTo<typeof File>;
+    declare public profilePicture: BelongsTo<typeof File>;
 
     @hasMany((): typeof PendingFriend => PendingFriend)
-    declare pendingFriends: HasMany<typeof PendingFriend>;
+    declare public pendingFriends: HasMany<typeof PendingFriend>;
+
+    @hasMany((): typeof LogUser => LogUser)
+    declare public logs: HasMany<typeof LogUser>;
+
+    @hasMany((): typeof UserSetting => UserSetting)
+    declare public settings: HasMany<typeof UserSetting>;
 
     @hasMany((): typeof Friend => Friend)
-    declare friends: HasMany<typeof Friend>;
+    declare public friends: HasMany<typeof Friend>;
 
     @hasMany((): typeof BlockedUser => BlockedUser)
-    declare blockedUsers: HasMany<typeof BlockedUser>;
+    declare public blockedUsers: HasMany<typeof BlockedUser>;
 
     @column.dateTime({ autoCreate: true })
-    declare createdAt: DateTime;
+    declare public createdAt: DateTime;
 
     @column.dateTime({ autoCreate: true, autoUpdate: true })
-    declare updatedAt: DateTime;
+    declare public updatedAt: DateTime;
+
+    @beforeCreate()
+    public static async createUserSettings(user: User): Promise<void> {
+        const settingsRepository: SettingRepository = new SettingRepository();
+        const settings: Setting[] = await settingsRepository.all(['choices']);
+        await Promise.all(
+            settings.map(async (setting: Setting): Promise<void> => {
+                const defaultValue: string | number | boolean | null = setting.choices?.find((choice: SettingChoice): boolean => choice.isDefault)?.value || null;
+                await UserSetting.create({
+                    userId: user.id,
+                    settingId: setting.id,
+                    value: defaultValue ?? undefined,
+                });
+            })
+        );
+    }
 
     @afterCreate()
-    static async createLogUser(user: User): Promise<void> {
+    public static async createLogUser(user: User): Promise<void> {
         await LogUser.create({
             email: user.email,
         });
@@ -96,6 +123,7 @@ export default class User extends compose(BaseModel, AuthFinder) {
             enabled: this.enabled,
             acceptedTermsAndConditions: this.acceptedTermsAndConditions,
             profilePicture: this.profilePicture?.apiSerialize(),
+            settings: this.settings?.map((setting: UserSetting): SerializedUserSetting => setting.apiSerialize()),
             updatedAt: this.updatedAt?.toString(),
             createdAt: this.createdAt?.toString(),
         };

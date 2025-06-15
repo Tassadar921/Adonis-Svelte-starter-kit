@@ -15,6 +15,7 @@ const NotificationController = () => import('#controllers/notification_controlle
 const PendingFriendController = () => import('#controllers/pending_friend_controller');
 const UserController = () => import('#controllers/user_controller');
 const OauthController = () => import('#controllers/oauth_controller');
+const PreferenceController = () => import('#controllers/user_setting_controller');
 
 router.get('healthcheck', [HealthCheckController]);
 
@@ -108,6 +109,14 @@ router
                         router.get('/pending-friends', [NotificationController, 'getPendingFriends']);
                     })
                     .prefix('notifications');
+
+                router
+                    .group((): void => {
+                        router.get('/', [PreferenceController, 'getAll']);
+                        router.get('/:key', [PreferenceController, 'getOne']);
+                        router.post('/:key', [PreferenceController, 'update']);
+                    })
+                    .prefix('settings');
             })
             .use([middleware.auth({ guards: ['api'] })]);
 

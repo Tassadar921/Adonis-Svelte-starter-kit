@@ -5,20 +5,20 @@ import type { BelongsTo } from '@adonisjs/lucid/types/relations';
 
 export default class ResetPassword extends BaseModel {
     @column({ isPrimary: true })
-    declare id: string;
+    declare public id: string;
 
     @column()
-    declare userId: string;
+    declare public userId: string;
 
     @belongsTo((): typeof User => User)
-    declare user: BelongsTo<typeof User>;
+    declare public user: BelongsTo<typeof User>;
 
     @column()
-    declare token: string;
+    declare public token: string;
 
     @column.dateTime({ autoCreate: true })
-    declare createdAt: DateTime;
+    declare public createdAt: DateTime;
 
     @column.dateTime({ autoCreate: true, autoUpdate: true })
-    declare updatedAt: DateTime;
+    declare public updatedAt: DateTime;
 }

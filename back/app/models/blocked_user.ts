@@ -6,32 +6,32 @@ import SerializedBlockedUser from '#types/serialized/serialized_blocked_user';
 
 export default class BlockedUser extends BaseModel {
     @column({ isPrimary: true })
-    declare id: string;
+    declare public id: string;
 
     @column()
-    declare frontId: number;
+    declare public frontId: number;
 
     @column()
-    declare blockerId: string;
+    declare public blockerId: string;
 
     @belongsTo((): typeof User => User, {
         foreignKey: 'blockerId',
     })
-    declare blocker: BelongsTo<typeof User>;
+    declare public blocker: BelongsTo<typeof User>;
 
     @column()
-    declare blockedId: string;
+    declare public blockedId: string;
 
     @belongsTo((): typeof User => User, {
         foreignKey: 'blockedId',
     })
-    declare blocked: BelongsTo<typeof User>;
+    declare public blocked: BelongsTo<typeof User>;
 
     @column.dateTime({ autoCreate: true })
-    declare createdAt: DateTime;
+    declare public createdAt: DateTime;
 
     @column.dateTime({ autoCreate: true, autoUpdate: true })
-    declare updatedAt: DateTime;
+    declare public updatedAt: DateTime;
 
     public apiSerialize(): SerializedBlockedUser {
         return {

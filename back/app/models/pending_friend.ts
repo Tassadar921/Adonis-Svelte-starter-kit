@@ -7,33 +7,33 @@ import PendingFriendNotification from '#models/pending_friend_notification';
 
 export default class PendingFriend extends BaseModel {
     @column({ isPrimary: true })
-    declare id: string;
+    declare public id: string;
 
     @column()
-    declare frontId: number;
+    declare public frontId: number;
 
     @column()
-    declare userId: string;
+    declare public userId: string;
 
     @belongsTo((): typeof User => User)
-    declare user: BelongsTo<typeof User>;
+    declare public user: BelongsTo<typeof User>;
 
     @hasOne((): typeof PendingFriendNotification => PendingFriendNotification)
-    declare notification: HasOne<typeof PendingFriendNotification>;
+    declare public notification: HasOne<typeof PendingFriendNotification>;
 
     @column()
-    declare friendId: string;
+    declare public friendId: string;
 
     @belongsTo((): typeof User => User, {
         foreignKey: 'friendId',
     })
-    declare friend: BelongsTo<typeof User>;
+    declare public friend: BelongsTo<typeof User>;
 
     @column.dateTime({ autoCreate: true })
-    declare createdAt: DateTime;
+    declare public createdAt: DateTime;
 
     @column.dateTime({ autoCreate: true, autoUpdate: true })
-    declare updatedAt: DateTime;
+    declare public updatedAt: DateTime;
 
     public apiSerialize(): SerializedPendingFriend {
         return {
