@@ -1,7 +1,7 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    import Button from '$lib/components/Button.svelte';
-    import Icon from '$lib/components/Icon.svelte';
+    import Button from '#components/shared/Button.svelte';
+    import Icon from '#components/shared/Icon.svelte';
     import { locale } from 'svelte-i18n';
     import { setLanguage } from '../../stores/languageStore';
     import { location, navigate } from '../../stores/locationStore';

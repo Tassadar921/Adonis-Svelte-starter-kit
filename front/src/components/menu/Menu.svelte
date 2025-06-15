@@ -1,10 +1,10 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    import ThemeSwitch from '$lib/components/ThemeSwitch.svelte';
-    import Button from '$lib/components/Button.svelte';
+    import ThemeSwitch from '#components/shared/ThemeSwitch.svelte';
+    import Button from '#components/shared/Button.svelte';
     import CommonMenu from './CommonMenu.svelte';
     import FlagMenu from './FlagMenu.svelte';
-    import Icon from '$lib/components/Icon.svelte';
+    import Icon from '#components/shared/Icon.svelte';
 
     let isOpen: boolean = false;
 

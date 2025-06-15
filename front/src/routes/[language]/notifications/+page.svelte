@@ -1,11 +1,11 @@
 <script lang="ts">
     import { profile } from '#stores/profileStore';
     import Forbidden from '#pages/Forbidden.svelte';
-    import Blocked from '#pages/Blocked.svelte';
+    import Notifications from '#pages/Notifications.svelte';
 </script>
 
 {#if $profile}
-    <Blocked />
+    <Notifications />
 {:else}
     <Forbidden />
 {/if}

@@ -1,7 +1,7 @@
 <script lang="ts">
     import { location } from '../../stores/locationStore';
-    import Link from '$lib/components/Link.svelte';
-    import Icon from '$lib/components/Icon.svelte';
+    import Link from '#components/shared/Link.svelte';
+    import Icon from '#components/shared/Icon.svelte';
 
     export let href: string = '';
     export let footer: boolean = false;

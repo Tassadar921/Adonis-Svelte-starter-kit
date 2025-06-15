@@ -1,8 +1,8 @@
 import type { Load } from '@sveltejs/kit';
 
-export const load = (({ params, data }) => {
+export const load = (({ data }) => {
     return {
         ...data,
-        language: params.language,
+        isAdmin: true,
     };
 }) satisfies Load;

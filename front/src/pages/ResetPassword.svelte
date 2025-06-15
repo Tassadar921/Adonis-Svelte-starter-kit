@@ -3,10 +3,10 @@
     import Form from '../shared/Form.svelte';
     import Input from '../shared/Input.svelte';
     import { onMount } from 'svelte';
-    import { showToast } from '../../services/toastService';
+    import { showToast } from '#services/toastService';
     import { t } from 'svelte-i18n';
-    import { profile } from '../../stores/profileStore';
-    import { isValidEmail } from '../../services/checkStringService';
+    import { profile } from '#stores/profileStore';
+    import { isValidEmail } from '#services/checkStringService';
     import Breadcrumbs from '../shared/Breadcrumbs.svelte';
     import { MetaTags } from 'svelte-meta-tags';
 

@@ -4,8 +4,6 @@
 
 ### Development backend .env (back/.env)
 
-Note that `FRONT_URI` and `API_URI` are automatically generated from `FRONT_PORT` and `PORT` backend environment variables respectively by Docker.
-
 ```
 PORT=3333
 HOST=0.0.0.0
@@ -37,6 +35,8 @@ GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
 
 FRONT_PORT=5173
+FRONT_URI=http://localhost:5173
+API_URI=http://localhost:3333
 GITHUB_REPOSITORY=https://github.com/Tassadar921/Adonis-Svelte-starter-kit
 ACCOUNT_SENDER_EMAIL=account@adonis_svelte_starter_kit_db.fr
 BREVO_API_KEY=
@@ -70,6 +70,8 @@ FRIEND_EMAILS=[]
 | `GOOGLE_CLIENT_ID`      | **`A valid Google client ID`**                                              |
 | `GOOGLE_CLIENT_SECRET`  | **`A valid Google client secret`**                                          |
 | `FRONT_PORT`            | 5173                                                                        |
+| `FRONT_URI`             | http://localhost:5173                                                       |
+| `API_URI`               | http://localhost:3333                                                       |
 | `GITHUB_REPOSITORY`     | https://github.com/Tassadar921/Adonis-Svelte-starter-kit                    |
 | `ACCOUNT_SENDER_EMAIL`  | account@adonis_svelte_starter_kit.fr                                        |
 | `BREVO_API_KEY`         | **`A valid Brevo API key`**                                                 |
@@ -82,9 +84,7 @@ FRIEND_EMAILS=[]
 
 Note that `VITE_FRONT_URI` and `VITE_API_BASE_URI` are automatically generated from `FRONT_PORT` and `PORT` backend environment variables respectively by Docker.
 
-`VITE_FRONT_PORT` is also injected from backend environment variables.
-
-`VITE_GITHUB_REPOSITORY` is also injected from backend environment variables.
+`VITE_FRONT_PORT` & `VITE_GITHUB_REPOSITORY` are also injected from backend environment variables.
 
 ```
 VITE_DEFAULT_IMAGE=/assets/default/image.png

@@ -2,12 +2,12 @@
     import { t } from 'svelte-i18n';
     import { onMount } from 'svelte';
     import axios from 'axios';
-    import Pagination from '$lib/components/Pagination.svelte';
+    import Pagination from '#components/shared/Pagination.svelte';
     import { showToast } from '../../services/toastService';
-    import Search from '$lib/components/Search.svelte';
-    import Button from '$lib/components/Button.svelte';
-    import ConfirmModal from '$lib/components/ConfirmModal.svelte';
-    import Subtitle from '$lib/components/Subtitle.svelte';
+    import Search from '#components/shared/Search.svelte';
+    import Button from '#components/shared/Button.svelte';
+    import ConfirmModal from '#components/shared/ConfirmModal.svelte';
+    import Subtitle from '#components/shared/Subtitle.svelte';
     import { transmit } from '../../stores/transmitStore';
     import { profile } from '../../stores/profileStore';
     import { createEventDispatcher } from 'svelte';
@@ -15,8 +15,8 @@
     import type SerializedUser from 'adonis-svelte-starter-kit-backend/app/types/serialized/serialized_user';
     import type PaginatedUsers from 'adonis-svelte-starter-kit-backend/app/types/paginated/paginated_users';
     import type SerializedPendingFriend from 'adonis-svelte-starter-kit-backend/app/types/serialized/serialized_pending_friend';
-    import Loader from '$lib/components/Loader.svelte';
-    import Icon from '$lib/components/Icon.svelte';
+    import Loader from '#components/shared/Loader.svelte';
+    import Icon from '#components/shared/Icon.svelte';
 
     const dispatch = createEventDispatcher();
 

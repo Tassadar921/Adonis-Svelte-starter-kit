@@ -1,9 +1,9 @@
 <script lang="ts">
-    import Button from '$lib/components/Button.svelte';
+    import Button from '#components/shared/Button.svelte';
     import { createEventDispatcher } from 'svelte';
-    import Subtitle from '$lib/components/Subtitle.svelte';
+    import Subtitle from '#components/shared/Subtitle.svelte';
     import type SerializedPendingFriend from 'adonis-svelte-starter-kit-backend/app/types/serialized/serialized_pending_friend';
-    import Icon from '$lib/components/Icon.svelte';
+    import Icon from '#components/shared/Icon.svelte';
 
     const dispatch = createEventDispatcher();
 

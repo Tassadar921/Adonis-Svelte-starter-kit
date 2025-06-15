@@ -2,7 +2,7 @@
     import MenuItem from './MenuItem.svelte';
     import { t } from 'svelte-i18n';
     import { profile } from '../../stores/profileStore';
-    import Icon from '$lib/components/Icon.svelte';
+    import Icon from '#components/shared/Icon.svelte';
 
     export let footer: boolean = false;
 </script>

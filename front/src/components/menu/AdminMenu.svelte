@@ -1,6 +1,6 @@
 <script lang="ts">
     import MenuItem from './MenuItem.svelte';
-    import Icon from '$lib/components/Icon.svelte';
+    import Icon from '#components/shared/Icon.svelte';
     import { t } from 'svelte-i18n';
 </script>
 
