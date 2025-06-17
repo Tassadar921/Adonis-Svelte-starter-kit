@@ -8,7 +8,7 @@
 
     <p>
         This is a <a href="https://svelte.dev/docs/kit">SvelteKit</a>
-         app. You can make your own by typing the following into your command line and following the prompts:
+        app. You can make your own by typing the following into your command line and following the prompts:
     </p>
 
     <pre>npx sv create</pre>
@@ -20,6 +20,6 @@
 
     <p>
         The <a href="/sverdle">Sverdle</a>
-         page illustrates SvelteKit's data loading and form handling. Try using it with JavaScript disabled!
+        page illustrates SvelteKit's data loading and form handling. Try using it with JavaScript disabled!
     </p>
 </div>

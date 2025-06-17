@@ -16,7 +16,7 @@
     export let selectedObserver: boolean = false;
 
     let searchTimeout: NodeJS.Timeout | undefined = undefined;
-    let inputElement: HTMLInputElement
+    let inputElement: HTMLInputElement;
     let focused: boolean = false;
 
     const searchFunction = async (): Promise<void> => {
