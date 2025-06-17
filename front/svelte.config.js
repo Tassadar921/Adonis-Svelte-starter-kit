@@ -6,10 +6,12 @@ const config = {
     kit: {
         adapter: adapter(),
         alias: {
+            '#menu': './src/menu',
             '#components': './src/components',
             '#services': './src/services',
             '#stores': './src/stores',
             '#pages': './src/pages',
+            '#icons': './src/icons',
         },
     },
 };
