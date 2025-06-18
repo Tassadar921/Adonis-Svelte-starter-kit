@@ -1,9 +1,9 @@
 <script lang="ts">
     import { page } from '$app/state';
-    import Title from "#components/Title.svelte";
-    import BackTo from "#components/BackTo.svelte";
-    import {MetaTags} from "svelte-meta-tags";
-    import Breadcrumbs from "#components/Breadcrumbs.svelte";
+    import Title from '#components/Title.svelte';
+    import BackTo from '#components/BackTo.svelte';
+    import { MetaTags } from 'svelte-meta-tags';
+    import Breadcrumbs from '#components/Breadcrumbs.svelte';
     import { m } from '$lib/paraglide/messages.js';
 
     let key: 'unauthorized' | 'forbidden' | 'not-found' | 'already-connected' | 'unknown-error' = 'unknown-error';

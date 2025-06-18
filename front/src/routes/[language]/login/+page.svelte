@@ -9,8 +9,8 @@
     import Breadcrumbs from '#components/Breadcrumbs.svelte';
     import OauthProviders from '#components/OauthProviders.svelte';
     import { MetaTags } from 'svelte-meta-tags';
-    import {navigate} from "#stores/locationStore";
-    import {setProfile} from "#stores/profileStore";
+    import { navigate } from '#stores/locationStore';
+    import { setProfile } from '#stores/profileStore';
 
     let email: string = $state('');
     let password: string = $state('');
@@ -57,14 +57,7 @@
 
 <Form method="post" on:success={handleSuccess} isValid={canSubmit}>
     <OauthProviders />
-    <Input
-        type="email"
-        name="email"
-        placeholder={m['common.email.placeholder']()}
-        label={m['common.email.label']()}
-        bind:value={email}
-        required
-    />
+    <Input type="email" name="email" placeholder={m['common.email.placeholder']()} label={m['common.email.label']()} bind:value={email} required />
     <PasswordInput name="password" bind:value={password} required />
     <div class="w-full mb-3 flex justify-between">
         <Link href="/reset-password" className="text-primary-500 hover:text-white duration-300 transition-colors">{m['login.forgot-password']()}</Link>

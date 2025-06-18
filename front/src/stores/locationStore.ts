@@ -18,8 +18,7 @@ export async function navigate(path: string, options = {}): Promise<void> {
     if (!browser) return;
 
     const currentLanguage: string | null = localStorage.getItem('language');
-    const normalizedPath: string =
-        path.startsWith(`/${currentLanguage}`) ? path : `/${currentLanguage}${path}`;
+    const normalizedPath: string = path.startsWith(`/${currentLanguage}`) ? path : `/${currentLanguage}${path}`;
 
     location.set(normalizedPath);
     await goto(normalizedPath, options);

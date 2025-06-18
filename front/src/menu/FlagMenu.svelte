@@ -2,7 +2,7 @@
     import { onMount } from 'svelte';
     import Button from '#components/Button.svelte';
     import Icon from '#components/Icon.svelte';
-    import { setLocale } from "$lib/paraglide/runtime";
+    import { setLocale } from '$lib/paraglide/runtime';
     import { setLanguage } from '#stores/languageStore';
     import { location, navigate } from '#stores/locationStore';
     import axios from 'axios';
