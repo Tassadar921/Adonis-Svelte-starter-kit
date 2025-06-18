@@ -1,15 +1,15 @@
 <script lang="ts">
     import MenuItem from './MenuItem.svelte';
     import Icon from '#components/Icon.svelte';
-    import { t } from 'svelte-i18n';
+    import { m } from '$lib/paraglide/messages.js';
 </script>
 
 <MenuItem href="/admin/dashboard" on:click>
     <Icon name="home" slot="iconLeft" />
-    {$t('admin.dashboard.title')}
+    {m['admin.dashboard.title']()}
 </MenuItem>
 
 <MenuItem href="/admin/users" on:click>
     <Icon name="user" slot="iconLeft" />
-    {$t('admin.users.title')}
+    {m['admin.users.title']()}
 </MenuItem>

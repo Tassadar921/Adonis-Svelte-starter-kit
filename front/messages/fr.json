@@ -159,6 +159,15 @@
             "text": "Êtes-vous sûr de vouloir vous déconnecter ?"
         }
     },
+    "unauthorized": {
+        "title": "Unauthorized",
+        "subtitle": "You are not authorized to view this page.",
+        "meta": {
+            "title": "Unauthorized Access – Adonis & Svelte Starter Kit",
+            "description": "Your credentials do not grant access to this page. Please log in or contact support if you think this is a mistake.",
+            "keywords": "unauthorized access, 401 error, login required, permission denied, Adonis & Svelte Starter Kit"
+        }
+    },
     "forbidden": {
         "title": "Accès refusé",
         "subtitle": "Vous devez être connecté pour accéder à cette partie de l'application.",
@@ -182,6 +191,14 @@
             "title": "Déjà connecté – Accédez à votre tableau de bord | Adonis & Svelte Starter Kit",
             "description": "Vous êtes déjà connecté à Adonis & Svelte Starter Kit. Accédez à votre tableau de bord ou retournez à la page d'accueil pour découvrir toutes les fonctionnalités.",
             "keywords": "déjà connecté, session utilisateur, tableau de bord, page d'accueil, Adonis & Svelte Starter Kit"
+        }
+    },
+    "unknown-error": {
+        "title": "Erreur inconnue",
+        "meta": {
+            "title": "Erreur Inconnue – Une Erreur S’est Produite | Adonis & Svelte Starter Kit",
+            "description": "Une erreur inattendue s’est produite lors de l’utilisation du Adonis & Svelte Starter Kit. Veuillez réessayer plus tard ou retourner à la page d’accueil pour obtenir de l’aide.",
+            "keywords": "erreur inconnue, problème inattendu, gestion des erreurs, dépannage, Adonis & Svelte Starter Kit"
         }
     },
     "social": {

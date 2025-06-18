@@ -159,6 +159,15 @@
             "text": "Are you sure you want to logout ?"
         }
     },
+    "unauthorized": {
+        "title": "Unauthorized",
+        "subtitle": "You are not authorized to view this page.",
+        "meta": {
+            "title": "Unauthorized Access – Adonis & Svelte Starter Kit",
+            "description": "Your credentials do not grant access to this page. Please log in or contact support if you think this is a mistake.",
+            "keywords": "unauthorized access, 401 error, login required, permission denied, Adonis & Svelte Starter Kit"
+        }
+    },
     "forbidden": {
         "title": "Forbidden",
         "subtitle": "You have to be logged to access this app's part.",
@@ -182,6 +191,14 @@
             "title": "Already Logged In – Return to Your Dashboard | Adonis & Svelte Starter Kit",
             "description": "You're already logged in to Adonis & Svelte Starter Kit. Continue to your dashboard or return to the homepage to explore more features.",
             "keywords": "already logged in, user session, dashboard, homepage, Adonis & Svelte Starter Kit"
+        }
+    },
+    "unknown-error": {
+        "title": "Unknown error",
+        "meta": {
+            "title": "Unknown Error – Something Went Wrong | Adonis & Svelte Starter Kit",
+            "description": "An unexpected error occurred while using the Adonis & Svelte Starter Kit. Please try again later or return to the homepage for support.",
+            "keywords": "unknown error, unexpected issue, error handling, troubleshooting, Adonis & Svelte Starter Kit"
         }
     },
     "social": {

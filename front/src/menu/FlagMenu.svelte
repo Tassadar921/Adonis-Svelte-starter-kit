@@ -2,15 +2,18 @@
     import { onMount } from 'svelte';
     import Button from '#components/Button.svelte';
     import Icon from '#components/Icon.svelte';
-    import { locale } from 'svelte-i18n';
+    import { setLocale } from "$lib/paraglide/runtime";
     import { setLanguage } from '#stores/languageStore';
     import { location, navigate } from '#stores/locationStore';
     import axios from 'axios';
 
+    type FlagName = 'englishFlag' | 'frenchFlag';
+    type FlagValue = 'en' | 'fr';
+
     interface Flag {
-        icon: string;
+        icon: FlagName;
         label: string;
-        value: string;
+        value: FlagValue;
     }
 
     let flags: Flag[] = [
@@ -18,8 +21,8 @@
         { icon: 'frenchFlag', label: 'Français', value: 'fr' },
     ];
     let selectedFlag: Flag = flags[0];
-    let chevronIcon = 'chevronDown';
-    let isExpanded = false;
+    let chevronIcon: 'chevronDown' | 'chevronUp' = 'chevronDown';
+    let isExpanded: boolean = false;
     let popoverEl: HTMLDivElement;
     let buttonContainerElement: HTMLDivElement;
 
@@ -34,7 +37,7 @@
         }
 
         setLanguage(flag.value);
-        locale.set(flag.value);
+        setLocale(flag.value);
         axios.defaults.headers.common['Accept-Language'] = `${flag.value}-${flag.value.toUpperCase()}`;
         selectedFlag = flag;
 

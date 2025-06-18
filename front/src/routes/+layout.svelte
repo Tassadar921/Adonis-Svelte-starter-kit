@@ -1,8 +1,10 @@
 <script lang="ts">
     import '../app.css';
     import Footer from './Footer.svelte';
+    import { location } from '#stores/locationStore';
 
     let { children } = $props();
+    console.log($location);
 </script>
 
 <div class="app">

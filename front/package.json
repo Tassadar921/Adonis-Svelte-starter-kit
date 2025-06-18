@@ -1,7 +1,7 @@
 {
-    "name": "front",
+    "name": "adonis-svelte-starter-kit-frontend",
+    "version": "1.0",
     "private": true,
-    "version": "0.0.1",
     "type": "module",
     "scripts": {
         "dev": "vite dev",
@@ -26,6 +26,7 @@
         "@testing-library/jest-dom": "^6.6.3",
         "@testing-library/svelte": "^5.2.8",
         "adonis-svelte-starter-kit-backend": "file:../back",
+        "axios": "^1.10.0",
         "jsdom": "^26.1.0",
         "prettier-plugin-svelte": "^3.4.0",
         "svelte": "^5.34.3",
@@ -36,6 +37,9 @@
         "vitest": "^3.2.3"
     },
     "dependencies": {
-        "@inlang/paraglide-js": "^2.1.0"
+        "@adonisjs/transmit-client": "^1.0.0",
+        "@inlang/paraglide-js": "^2.1.0",
+        "svelte-meta-tags": "^4.3.0",
+        "toastify-js": "^1.12.0"
     }
 }

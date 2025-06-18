@@ -2,23 +2,24 @@
     import Popover from '#components/Popover.svelte';
     import Icon from '#components/Icon.svelte';
 
-    let show: boolean = false;
-    let iconElement: HTMLButtonElement;
+    let { children } = $props();
+    let show: boolean = $state(false);
+    let iconElement: HTMLButtonElement | null = $state(null);
 </script>
 
 <div class="flex items-center justify-center">
     <button
         class="flex items-center justify-center bg-blue-500 text-white rounded-full size-8"
         bind:this={iconElement}
-        on:mouseover={() => (show = true)}
-        on:focus={() => (show = true)}
-        on:mouseleave={() => (show = false)}
-        on:blur={() => (show = false)}
+        onmouseover={() => (show = true)}
+        onfocus={() => (show = true)}
+        onmouseleave={() => (show = false)}
+        onblur={() => (show = false)}
     >
         <Icon name="help" />
     </button>
 
     <Popover {show} target={iconElement}>
-        <slot />
+        {@render children()}
     </Popover>
 </div>
