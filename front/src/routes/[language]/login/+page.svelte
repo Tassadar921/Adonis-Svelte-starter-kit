@@ -8,9 +8,9 @@
     import { m } from '$lib/paraglide/messages.js';
     import Breadcrumbs from '#components/Breadcrumbs.svelte';
     import OauthProviders from '#components/OauthProviders.svelte';
-    import { MetaTags } from 'svelte-meta-tags';
     import { navigate } from '#stores/locationStore';
     import { setProfile } from '#stores/profileStore';
+    import Meta from '#components/Meta.svelte';
 
     let email: string = $state('');
     let password: string = $state('');
@@ -27,7 +27,7 @@
     });
 </script>
 
-<MetaTags
+<Meta
     title={m['login.meta.title']()}
     description={m['login.meta.description']()}
     keywords={m['login.meta.keywords']().split(', ')}
@@ -41,14 +41,6 @@
             href: `${import.meta.env.VITE_FRONT_URI}/fr/login`,
         },
     ]}
-    openGraph={{
-        title: m['login.meta.title'](),
-        description: m['login.meta.description'](),
-    }}
-    twitter={{
-        title: m['login.meta.title'](),
-        description: m['login.meta.description'](),
-    }}
 />
 
 <Title title={m['login.title']()} hasBackground />

@@ -23,6 +23,8 @@
         default:
             key = 'unknown-error';
     }
+
+    console.log(page.error);
 </script>
 
 <meta name="robots" content="noindex, nofollow" />

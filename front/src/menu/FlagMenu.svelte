@@ -3,17 +3,16 @@
     import Button from '#components/Button.svelte';
     import Icon from '#components/Icon.svelte';
     import { setLocale } from '$lib/paraglide/runtime';
-    import { setLanguage } from '#stores/languageStore';
+    import { type LanguageCode, setLanguage } from '#stores/languageStore';
     import { location, navigate } from '#stores/locationStore';
     import axios from 'axios';
 
     type FlagName = 'englishFlag' | 'frenchFlag';
-    type FlagValue = 'en' | 'fr';
 
     interface Flag {
         icon: FlagName;
         label: string;
-        value: FlagValue;
+        value: LanguageCode;
     }
 
     let flags: Flag[] = [
@@ -25,6 +24,16 @@
     let isExpanded: boolean = false;
     let popoverEl: HTMLDivElement;
     let buttonContainerElement: HTMLDivElement;
+
+    onMount(() => {
+        const savedLanguage: LanguageCode | null = localStorage.getItem('language') as LanguageCode | null;
+        const match: Flag | undefined = flags.find((flag) => flag.value === savedLanguage);
+        selectedFlag = match || flags[0];
+
+        document.addEventListener('click', handleClickOutside);
+
+        return () => document.removeEventListener('click', handleClickOutside);
+    });
 
     const togglePopover = (): void => {
         isExpanded = !isExpanded;
@@ -52,13 +61,6 @@
             isExpanded = false;
         }
     };
-
-    onMount(() => {
-        document.addEventListener('click', handleClickOutside);
-        return () => document.removeEventListener('click', handleClickOutside);
-    });
-
-    $: selectedFlag = flags.find((flag: Flag) => flag.value === localStorage.getItem('language')) || flags[0];
 </script>
 
 <div class="relative inline-block" bind:this={buttonContainerElement}>

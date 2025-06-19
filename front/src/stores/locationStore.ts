@@ -13,9 +13,10 @@ if (browser) {
     });
 }
 
-// Navigation function with language prefix logic
 export async function navigate(path: string, options = {}): Promise<void> {
-    if (!browser) return;
+    if (!browser) {
+        return;
+    }
 
     const currentLanguage: string | null = localStorage.getItem('language');
     const normalizedPath: string = path.startsWith(`/${currentLanguage}`) ? path : `/${currentLanguage}${path}`;

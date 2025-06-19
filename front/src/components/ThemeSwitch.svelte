@@ -1,13 +1,17 @@
 <script lang="ts">
     import Switch from '#components/Switch.svelte';
     import Icon from '#components/Icon.svelte';
+    import { onMount } from 'svelte';
 
     export let title: string = '';
 
-    let checked = localStorage.getItem('theme') === 'dark';
+    let checked: boolean = false;
 
-    const iconSize: number = 20;
     const switchSize: number = 4;
+
+    onMount((): void => {
+        checked = localStorage.getItem('theme') === 'dark';
+    });
 
     const handleToggleChange = () => {
         localStorage.setItem('theme', checked ? 'dark' : 'light');
