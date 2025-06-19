@@ -16,7 +16,7 @@
 </script>
 
 <div class="app">
-    <main class="flex flex-col bg-gray-200 dark:bg-gray-900 h-screen w-screen px-3.5">
+    <main class="flex flex-col h-screen w-screen">
         <Menu />
         {@render children()}
     </main>
