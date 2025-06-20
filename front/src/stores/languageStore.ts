@@ -3,9 +3,9 @@ import { type Writable, writable } from 'svelte/store';
 
 export type LanguageCode = 'en' | 'fr';
 
-export const language: Writable<string> = writable('en');
+export const language: Writable<LanguageCode> = writable('en');
 
-export function setLanguage(value: string): void {
+export function setLanguage(value: LanguageCode): void {
     if (!browser) {
         return;
     }

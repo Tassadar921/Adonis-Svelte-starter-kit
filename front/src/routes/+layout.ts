@@ -1,22 +1,22 @@
 import { type LanguageCode } from '#stores/languageStore';
 import { redirect } from '@sveltejs/kit';
 
-export async function load({ url }): Promise<{ language: LanguageCode }> {
+export async function load({ url }): Promise<{ language: string }> {
     const supportedLanguages: string[] = ['en', 'fr'];
     const currentPath: string = url.pathname;
 
-    if (currentPath.startsWith('/assets/') || currentPath.includes('.png') || currentPath.includes('.jpg') || currentPath.includes('.css') || currentPath.includes('.js')) {
+    if (currentPath.startsWith('/assets/') || currentPath.match(/\.(png|jpe?g|webp|svg|css|js)$/)) {
         return { language: 'en' };
     }
 
-    const langRegex = new RegExp(`^\/(${supportedLanguages.join('|')})(\/|$)`);
-    const langMatch: RegExpMatchArray | null = langRegex.exec(currentPath);
+    const match: RegExpMatchArray | null = /^\/(en|fr)(\/|$)/.exec(currentPath);
+    const languageCode: LanguageCode | null = match ? (match[0].replaceAll('/', '') as LanguageCode) : null;
 
-    let language: LanguageCode | null = langMatch ? (langMatch[1] as LanguageCode) : null;
-
-    if (!language || !supportedLanguages.includes(language)) {
-        throw redirect(307, `/en`);
+    if (!languageCode || !supportedLanguages.includes(languageCode)) {
+        throw redirect(307, `/en${currentPath}`);
     }
 
-    return { language };
+    console.log('[layout] params:', { language: languageCode });
+
+    return { language: languageCode };
 }
