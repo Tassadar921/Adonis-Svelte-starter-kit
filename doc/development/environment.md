@@ -82,9 +82,7 @@ FRIEND_EMAILS=[]
 
 Note that `VITE_FRONT_URI` and `VITE_API_BASE_URI` are automatically generated from `FRONT_PORT` and `PORT` backend environment variables respectively by Docker.
 
-`VITE_FRONT_PORT` is also injected from backend environment variables.
-
-`VITE_GITHUB_REPOSITORY` is also injected from backend environment variables.
+`VITE_FRONT_PORT` and `VITE_GITHUB_REPOSITORY` are also injected from backend environment variables.
 
 ```
 VITE_DEFAULT_IMAGE=/assets/default/image.png
@@ -98,4 +96,4 @@ VITE_DEFAULT_IMAGE=/assets/default/image.png
 
 ### Development index documentation
 
-[&larr; Back to index](index.md)
+&larr; [Back to index](index.md)

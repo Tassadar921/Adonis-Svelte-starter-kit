@@ -41,6 +41,7 @@ stop:
 
 up:
 	${MAKE} stop
+	rm -rf front/.svelte-kit
 	./compose-env.sh up -d --build
 
 rm:

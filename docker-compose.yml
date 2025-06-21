@@ -47,7 +47,7 @@ services:
         restart: always
         env_file: ./front/.env
         working_dir: /app
-        command: npm run dev -- --host --force
+        command: npm run dev -- --host --port ${FRONT_PORT}
         volumes:
             - ./front:/app
             - /app/node_modules

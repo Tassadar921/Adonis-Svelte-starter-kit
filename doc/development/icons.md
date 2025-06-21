@@ -54,4 +54,4 @@ The icons are in SVG format and are used in the frontend of Adonis & Svelte Star
 
 ### Development index documentation
 
-[&larr; Back to index](index.md)
+&larr; [Back to index](index.md)

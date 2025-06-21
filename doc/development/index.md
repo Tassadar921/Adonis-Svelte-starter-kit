@@ -19,8 +19,8 @@
 
 ### Related documentation
 
-- [Getting started &rarr;](getting-started.md)
-- [Adminer &rarr;](adminer.md)
-- [Environment variables &rarr;](environment.md)
-- [Commands &rarr;](commands.md)
-- [Icons &rarr;](commands.md)
+- [Getting started](getting-started.md) &rarr;
+- [Adminer](adminer.md) &rarr;
+- [Environment variables](environment.md) &rarr;
+- [Commands](commands.md) &rarr;
+- [Icons](commands.md) &rarr;
