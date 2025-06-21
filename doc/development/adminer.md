@@ -18,4 +18,4 @@
 
 ### Development index documentation
 
-[&larr; Back to index](index.md)
+&larr; [Back to index](index.md)
