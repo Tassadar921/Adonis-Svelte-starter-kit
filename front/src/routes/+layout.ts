@@ -16,7 +16,7 @@ export async function load({ url }): Promise<{ language: string }> {
         throw redirect(307, `/en${currentPath}`);
     }
 
-    console.log('[layout] params:', { language: languageCode });
+    console.log('[routes/+layout.ts] params:', { language: languageCode });
 
     return { language: languageCode };
 }

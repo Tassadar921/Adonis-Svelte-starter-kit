@@ -7,8 +7,6 @@
     }
 
     export let items: Breadcrumb[];
-    // TODO: put this back when we'll have a form background
-    export let hasBackground: boolean = false;
 </script>
 
 <div class="relative flex gap-3 z-10">
