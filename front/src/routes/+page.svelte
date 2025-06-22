@@ -2,7 +2,7 @@
     import Card from '#components/Card.svelte';
     import { m } from '$lib/paraglide/messages.js';
     import Title from '#components/Title.svelte';
-    import Meta from "#components/Meta.svelte";
+    import Meta from '#components/Meta.svelte';
 
     interface Page {
         title: string;
@@ -11,9 +11,7 @@
         description: string;
     }
 
-    let pages: Page[] = [];
-
-    $: pages = [
+    const pages: Page[] = [
         {
             title: m['social.title'](),
             icon: 'people',

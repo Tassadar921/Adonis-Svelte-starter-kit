@@ -17,6 +17,7 @@ export async function load({ url }): Promise<{ language: string }> {
     }
 
     console.log('[routes/+layout.ts] params:', { language: languageCode });
+    console.log('[routes/+layout.ts] url:', url.pathname);
 
     return { language: languageCode };
 }
