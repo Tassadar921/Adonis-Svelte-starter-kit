@@ -42,6 +42,7 @@ stop:
 up:
 	${MAKE} stop
 	rm -rf front/.svelte-kit
+	cd front && npx paraglide-js compile
 	./compose-env.sh up -d --build
 
 rm:
