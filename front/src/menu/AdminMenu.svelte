@@ -1,7 +1,7 @@
 <script lang="ts">
     import MenuItem from './MenuItem.svelte';
     import Icon from '#components/Icon.svelte';
-    import { m } from '$lib/paraglide/messages.js';
+    import { m } from '$lib/paraglide/messages';
 </script>
 
 <MenuItem href="/admin/dashboard" on:click>

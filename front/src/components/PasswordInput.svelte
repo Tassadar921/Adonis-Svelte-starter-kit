@@ -1,6 +1,6 @@
 <script lang="ts">
     import Input from '#components/Input.svelte';
-    import { m } from '$lib/paraglide/messages.js';
+    import { m } from '$lib/paraglide/messages';
     import { onMount } from 'svelte';
 
     export let value: string = '';

@@ -1,7 +1,7 @@
 <script lang="ts">
     import axios from 'axios';
     import Icon from '#components/Icon.svelte';
-    import { m } from '$lib/paraglide/messages.js';
+    import { m } from '$lib/paraglide/messages';
     import { createEventDispatcher, tick } from 'svelte';
     import FormBackground from '#components/background/FormBackground.svelte';
     import { language } from '#stores/languageStore';

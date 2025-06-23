@@ -1,6 +1,6 @@
 <script lang="ts">
     import { formatGameNumbers } from '#services/stringService';
-    import { m } from '$lib/paraglide/messages.js';
+    import { m } from '$lib/paraglide/messages';
 
     export let min: number = 0;
     export let max: number = 100;

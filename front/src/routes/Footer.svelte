@@ -1,7 +1,7 @@
 <script lang="ts">
     import MenuItem from '#menu/MenuItem.svelte';
     import FooterMenu from '#menu/FooterMenu.svelte';
-    import { m } from '$lib/paraglide/messages.js';
+    import { m } from '$lib/paraglide/messages';
     import Icon from '#components/Icon.svelte';
 </script>
 

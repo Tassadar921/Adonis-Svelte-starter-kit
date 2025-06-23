@@ -2,7 +2,7 @@
     import { MetaTags, type Twitter } from 'svelte-meta-tags';
     import { location } from '#stores/locationStore';
     import { language } from '#stores/languageStore';
-    import { m } from '$lib/paraglide/messages.js';
+    import { m } from '$lib/paraglide/messages';
     import { get } from 'svelte/store';
 
     interface LanguageAlternate {

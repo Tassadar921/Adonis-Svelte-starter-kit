@@ -1,7 +1,7 @@
 <script lang="ts">
     import Button from '#components/Button.svelte';
     import { createEventDispatcher, onMount } from 'svelte';
-    import { m } from '$lib/paraglide/messages.js';
+    import { m } from '$lib/paraglide/messages';
 
     const dispatch = createEventDispatcher();
 

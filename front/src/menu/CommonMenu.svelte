@@ -1,6 +1,6 @@
 <script lang="ts">
     import MenuItem from './MenuItem.svelte';
-    import { m } from '$lib/paraglide/messages.js';
+    import { m } from '$lib/paraglide/messages';
     import { profile } from '#stores/profileStore';
     import Icon from '#components/Icon.svelte';
 

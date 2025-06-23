@@ -1,7 +1,8 @@
 import { type LanguageCode } from '#stores/languageStore';
 import { redirect } from '@sveltejs/kit';
+import type { LayoutLoad } from './$types';
 
-export async function load({ url }): Promise<{ language: string }> {
+export const load: LayoutLoad = async ({ url }): Promise<{ language: string }> => {
     const supportedLanguages: string[] = ['en', 'fr'];
     const currentPath: string = url.pathname;
 
@@ -20,4 +21,4 @@ export async function load({ url }): Promise<{ language: string }> {
     console.log('[routes/+layout.ts] url:', url.pathname);
 
     return { language: languageCode };
-}
+};

@@ -2,7 +2,7 @@
     import { transmit } from '#stores/transmitStore';
     import { addNotification, removeNotification, setPendingFriendRequests } from '#stores/notificationStore';
     import { showToast } from '#services/toastService';
-    import { m } from '$lib/paraglide/messages.js';
+    import { m } from '$lib/paraglide/messages';
     import { profile } from '#stores/profileStore';
     import type SerializedPendingFriend from 'adonis-svelte-starter-kit-backend/app/types/serialized/serialized_pending_friend';
     import type SerializedUser from 'adonis-svelte-starter-kit-backend/app/types/serialized/serialized_user';

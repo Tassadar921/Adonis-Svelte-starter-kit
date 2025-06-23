@@ -1,6 +1,6 @@
 <script lang="ts">
     import Card from '#components/Card.svelte';
-    import { m } from '$lib/paraglide/messages.js';
+    import { m } from '$lib/paraglide/messages';
     import Title from '#components/Title.svelte';
     import Meta from '#components/Meta.svelte';
 

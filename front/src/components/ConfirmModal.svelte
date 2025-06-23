@@ -1,6 +1,6 @@
 <script lang="ts">
     import Modal from '#components/Modal.svelte';
-    import { m } from '$lib/paraglide/messages.js';
+    import { m } from '$lib/paraglide/messages';
 
     export let showModal: boolean;
     export let closable: boolean = true;

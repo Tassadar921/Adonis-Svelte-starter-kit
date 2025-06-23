@@ -5,7 +5,7 @@
     import { showToast } from '#services/toastService';
     import Title from '#components/Title.svelte';
     import Link from '#components/Link.svelte';
-    import { m } from '$lib/paraglide/messages.js';
+    import { m } from '$lib/paraglide/messages';
     import Breadcrumbs from '#components/Breadcrumbs.svelte';
     import OauthProviders from '#components/OauthProviders.svelte';
     import { navigate } from '#stores/locationStore';

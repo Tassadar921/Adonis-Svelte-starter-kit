@@ -4,7 +4,7 @@
     import BackTo from '#components/BackTo.svelte';
     import { MetaTags } from 'svelte-meta-tags';
     import Breadcrumbs from '#components/Breadcrumbs.svelte';
-    import { m } from '$lib/paraglide/messages.js';
+    import { m } from '$lib/paraglide/messages';
 
     let key: 'unauthorized' | 'forbidden' | 'not-found' | 'already-connected' | 'unknown-error' = 'unknown-error';
     switch (page.status) {
