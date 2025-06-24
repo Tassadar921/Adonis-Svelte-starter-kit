@@ -7,37 +7,51 @@
     export let footer: boolean = false;
 </script>
 
-<ul class={`${footer ? '' : 'space-y-4'} p-4`}>
+<ul class:space-y-4={!footer} class="p-4">
     {#if $profile}
         <MenuItem {footer} href="/" on:click>
-            <Icon name="home" slot="iconLeft" />
+            {#snippet iconLeft()}
+                <Icon name="home" />
+            {/snippet}
             {m['home.title']()}
         </MenuItem>
         <MenuItem {footer} href="/social" on:click>
-            <Icon name="people" slot="iconLeft" />
+            {#snippet iconLeft()}
+                <Icon name="home" />
+            {/snippet}
             {m['social.title']()}
         </MenuItem>
         <MenuItem {footer} href="/profile" on:click>
-            <Icon name="user" slot="iconLeft" />
+            {#snippet iconLeft()}
+                <Icon name="user" />
+            {/snippet}
             {m['profile.title']()}
         </MenuItem>
         <MenuItem {footer} href="/logout" on:click>
-            <Icon name="userRemove" slot="iconLeft" />
+            {#snippet iconLeft()}
+                <Icon name="userRemove" />
+            {/snippet}
             {m['logout.title']()}
         </MenuItem>
         {#if $profile.role === 'admin'}
             <MenuItem {footer} href="/admin" on:click>
-                <Icon name="admin" slot="iconLeft" />
+                {#snippet iconLeft()}
+                    <Icon name="admin" />
+                {/snippet}
                 {m['admin.title']()}
             </MenuItem>
         {/if}
     {:else}
         <MenuItem {footer} href="/login" on:click>
-            <Icon name="user" slot="iconLeft" />
+            {#snippet iconLeft()}
+                <Icon name="user" />
+            {/snippet}
             {m['login.title']()}
         </MenuItem>
         <MenuItem {footer} href="/create-account" on:click>
-            <Icon name="user" slot="iconLeft" />
+            {#snippet iconLeft()}
+                <Icon name="user" />
+            {/snippet}
             {m['create-account.title']()}
         </MenuItem>
     {/if}

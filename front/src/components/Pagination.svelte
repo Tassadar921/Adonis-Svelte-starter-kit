@@ -12,33 +12,40 @@
         total: number;
     }
 
-    export let baseUrl;
-    export let paginatedObject: PaginatedObject;
-    export let containerRef = window;
+    type Props = {
+        baseUri: string;
+        paginatedObject: PaginatedObject;
+        containerElement: Window | HTMLElement;
+    };
 
-    let canGoBack: boolean = false;
-    let canGoForward: boolean = false;
-    let isLoading: boolean = false;
+    let { baseUri, paginatedObject, containerElement = window }: Props = $props();
+
+    let canGoBack: boolean = $state(false);
+    let canGoForward: boolean = $state(false);
+    let isLoading: boolean = $state(false);
 
     const handleClick = async (page: number, perPage: number) => {
         try {
             isLoading = true;
-            const { data } = await axios.get(`${baseUrl}&page=${page}&perPage=${perPage}`);
+            const { data } = await axios.get(`${baseUri}&page=${page}&perPage=${perPage}`);
             paginatedObject = data;
         } catch (error: any) {
             console.error('Failed to fetch paginated data:', error);
         } finally {
             isLoading = false;
-            if (containerRef) {
-                containerRef.scrollTo({
+            if (containerElement) {
+                containerElement.scrollTo({
                     top: 0,
                     behavior: 'smooth',
                 });
             }
         }
     };
-    $: canGoBack = paginatedObject.currentPage > paginatedObject.firstPage;
-    $: canGoForward = paginatedObject.currentPage < paginatedObject.lastPage;
+
+    $effect((): void => {
+        canGoBack = paginatedObject.currentPage > paginatedObject.firstPage;
+        canGoForward = paginatedObject.currentPage < paginatedObject.lastPage;
+    });
 </script>
 
 <div class="my-2 flex gap-3 justify-center" class:hidden={paginatedObject.lastPage === 1}>

@@ -3,8 +3,12 @@
     import Link from '#components/Link.svelte';
     import Icon from '#components/Icon.svelte';
 
-    export let href: string;
-    export let text: string;
+    type Props = {
+        href?: string;
+        text?: string;
+    };
+
+    let { href, text }: Props = $props();
 </script>
 
 <Button>

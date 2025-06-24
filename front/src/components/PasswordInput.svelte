@@ -1,24 +1,20 @@
 <script lang="ts">
     import Input from '#components/Input.svelte';
     import { m } from '$lib/paraglide/messages';
-    import { onMount } from 'svelte';
 
-    export let value: string = '';
-    export let name: string = 'password';
-    export let required: boolean = false;
-    export let label: string = '';
-    export let min: number | null = null;
-    export let marginTop: number = 10;
-    export let marginBottom: number = 5;
+    type Props = {
+        value: string;
+        name: string;
+        required?: boolean;
+        label?: string;
+        min?: number;
+        marginTop: number;
+        marginBottom: number;
+    };
 
-    let placeholder: string;
+    let { value = $bindable(), name, required = false, label = m['common.password.label'](), min, marginTop = 10, marginBottom = 5 }: Props = $props();
 
-    onMount(() => {
-        placeholder = m['common.password.placeholder']();
-        if (!label) {
-            label = m['common.password.label']();
-        }
-    });
+    const placeholder: string = $state(m['common.password.placeholder']());
 </script>
 
 <Input bind:value type="password" {name} {placeholder} {label} {min} {marginBottom} {marginTop} {required} />

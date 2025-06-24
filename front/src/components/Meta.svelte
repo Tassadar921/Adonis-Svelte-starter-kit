@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { MetaTags, type Twitter } from 'svelte-meta-tags';
+    import { MetaTags, type OpenGraph, type Twitter } from 'svelte-meta-tags';
     import { location } from '#stores/locationStore';
     import { language } from '#stores/languageStore';
     import { m } from '$lib/paraglide/messages';
@@ -14,11 +14,24 @@
         alt: string;
     }
 
-    export let title: string;
-    export let description: string;
-    export let keywords: string[];
-    export let pathname: string = '';
-    export let additionalOpenGraphImages: OpenGraphImage[] = [];
+    interface Meta {
+        title: string;
+        description: string;
+        keywords: string[];
+        languageAlternates: { hrefLang: string; href: string }[];
+        openGraph: OpenGraph;
+        twitter: Twitter;
+    }
+
+    type Props = {
+        title: string;
+        description: string;
+        keywords: string[];
+        pathname?: string;
+        additionalOpenGraphImages?: OpenGraphImage[];
+    };
+
+    let { title, description, keywords, pathname = '', additionalOpenGraphImages = [] }: Props = $props();
 
     let baseImage: OpenGraphImage = {
         url: `${PUBLIC_FRONT_URI}/assets/logo-1200x1200.webp`,
@@ -26,7 +39,8 @@
         height: 1200,
         alt: `${m['open-graph.logo.alt']()}`,
     };
-    $: meta = {
+
+    const meta: Meta = {
         title,
         description,
         keywords,

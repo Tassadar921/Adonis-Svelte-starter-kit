@@ -16,7 +16,7 @@
         closable: boolean;
     };
 
-    let { children, header, showModal = false, closeText = null, successText = '', fullWidth = false, confirm = false, closable = true }: Props = $props();
+    let { children, header, showModal = $bindable(false), closeText = null, successText = '', fullWidth = false, confirm = false, closable = true }: Props = $props();
 
     let initialFullWidth: boolean = fullWidth;
     let dialog: HTMLDialogElement;
@@ -49,7 +49,12 @@
 
     $effect(() => {
         if (dialog) {
-            showModal ? (dialog.showModal(), dispatch('open')) : dialog.close();
+            if (showModal) {
+                dialog.showModal();
+                dispatch('open');
+            } else {
+                dialog.close();
+            }
         }
     });
 </script>

@@ -2,25 +2,29 @@
     import { createEventDispatcher, onMount } from 'svelte';
     import Icon from '#components/Icon.svelte';
 
+    const dispatch = createEventDispatcher();
+
     interface Option {
         label: string;
         value: string;
         uri?: string;
     }
 
-    const dispatch = createEventDispatcher();
+    type Props = {
+        options: Option[];
+        selectedOption: Option | null;
+        name: string;
+        label: string;
+        required: boolean;
+    };
 
-    export let options: Option[] = [];
-    export let selectedOption: Option | null = null;
-    export let name: string = '';
-    export let label: string = '';
-    export let required: boolean = false;
+    let { options = [], selectedOption = null, name = '', label = '', required = false }: Props = $props();
 
-    let isOpen: boolean = false;
-    let chevronIcon: 'chevronUp' | 'chevronDown' = 'chevronDown';
-    let dropdownRef: HTMLDivElement;
-    let dropdownWidth: string = 'auto';
-    let measureContainer: HTMLDivElement;
+    let isOpen: boolean = $state(false);
+    let chevronIcon: 'chevronUp' | 'chevronDown' = $state('chevronDown');
+    let dropdownElement: HTMLDivElement;
+    let dropdownWidth: string = $state('auto');
+    let containerElement: HTMLDivElement;
 
     const handleSelect = (option: Option): void => {
         selectedOption = option;
@@ -29,14 +33,14 @@
     };
 
     const handleClickOutside = (event: MouseEvent): void => {
-        if (dropdownRef && !dropdownRef.contains(event.target as Node)) {
+        if (dropdownElement && !dropdownElement.contains(event.target as Node)) {
             isOpen = false;
         }
     };
 
     const setDropdownWidth = () => {
-        if (measureContainer) {
-            const widths = Array.from(measureContainer.children).map((el) => (el as HTMLElement).offsetWidth);
+        if (containerElement) {
+            const widths = Array.from(containerElement.children).map((el) => (el as HTMLElement).offsetWidth);
             const maxWidth = Math.max(...widths);
 
             dropdownWidth = `clamp(8rem, ${maxWidth + 50}px, 20rem)`;
@@ -52,11 +56,15 @@
         };
     });
 
-    $: (options, setDropdownWidth());
+    $effect((): void => {
+        if (options) {
+            setDropdownWidth();
+        }
+    });
 </script>
 
-<div class="w-full relative" bind:this={dropdownRef}>
-    <div bind:this={measureContainer} class="fixed opacity-0 pointer-events-none whitespace-nowrap -z-50 flex flex-col" style="visibility: hidden;">
+<div class="w-full relative" bind:this={dropdownElement}>
+    <div bind:this={containerElement} class="fixed opacity-0 pointer-events-none whitespace-nowrap -z-50 flex flex-col" style="visibility: hidden;">
         {#each options as option}
             <div class="flex items-center px-3 py-2 font-sans text-sm space-x-2">
                 {#if option.uri}
@@ -78,9 +86,8 @@
     <input type="hidden" {name} value={selectedOption?.value} />
 
     <button
-        class="px-3 py-2 border border-gray-300 dark:border-gray-800 dark:bg-gray-700 dark:text-gray-300 rounded-xl shadow-xs flex justify-between items-center gap-2"
-        style="width: {dropdownWidth}; min-width: 8rem;"
-        on:click={() => {
+        class="px-3 py-2 w-[{dropdownWidth}] border border-gray-300 dark:border-gray-800 dark:bg-gray-700 dark:text-gray-300 rounded-xl shadow-xs flex justify-between items-center gap-2"
+        onclick={() => {
             isOpen = !isOpen;
             setDropdownWidth();
         }}
@@ -98,11 +105,10 @@
 
     {#if isOpen}
         <ul
-            class="absolute left-0 mt-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg z-10 max-h-72 overflow-auto min-w-max whitespace-nowrap"
-            style="width: {dropdownWidth};"
+            class="absolute w-[{dropdownWidth}] left-0 mt-1 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-700 rounded-lg shadow-lg z-10 max-h-72 overflow-auto min-w-max whitespace-nowrap"
         >
             {#each options as option}
-                <button class="flex items-center px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 w-full" on:click={() => handleSelect(option)}>
+                <button class="flex items-center px-3 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 w-full" onclick={() => handleSelect(option)}>
                     {#if option.uri}
                         <img src={option.uri} alt={option.label} class="mr-2" />
                     {/if}

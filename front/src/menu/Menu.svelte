@@ -33,12 +33,7 @@
     <div class="mt-3">
         <!-- Bind the button element reference -->
         <div bind:this={buttonContainerElement}>
-            <Button
-                idName="menu-button"
-                customStyle
-                className={`text-primary-500 hover:text-primary-800 duration-300 transition-colors ${isOpen ? 'opacity-0' : ''}`}
-                on:click={() => (isOpen = !isOpen)}
-            >
+            <Button id="menu-button" customStyle className={`text-primary-500 hover:text-primary-800 duration-300 transition-colors ${isOpen ? 'opacity-0' : ''}`} onclick={() => (isOpen = !isOpen)}>
                 <Icon name="burger" />
             </Button>
         </div>
@@ -57,7 +52,7 @@
                         <FlagMenu />
                     </div>
                 </div>
-                <Button on:click={closeMenu}>
+                <Button onclick={closeMenu}>
                     <Icon name="close" />
                 </Button>
             </div>

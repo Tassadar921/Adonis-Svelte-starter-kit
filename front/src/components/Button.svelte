@@ -1,28 +1,38 @@
 <script lang="ts">
-    export let type: 'button' | 'reset' | 'submit' | null | undefined = 'button';
-    export let disabled: boolean = false;
-    export let idName: string = '';
-    export let className: string = '';
-    export let additionalStyle: string = '';
-    export let customStyle: boolean = false;
-    export let ariaLabel: string = 'This is a button';
-    export let style: string = '';
-    export let title: string = '';
+    interface Props {
+        children: () => any;
+        onclick?: () => any;
+        onmouseover?: () => any;
+        onfocus?: () => any;
+        onblur?: () => any;
+        onmouseout?: () => any;
+        type?: 'button' | 'reset' | 'submit';
+        disabled?: boolean;
+        id?: string;
+        className?: string;
+        additionalStyle?: string;
+        customStyle?: boolean;
+        ariaLabel?: string;
+        style?: string;
+        title?: string;
+    }
+
+    let { children, onclick, onmouseover, onfocus, onblur, onmouseout, type = 'button', disabled = false, id = '', className, additionalStyle, customStyle, ariaLabel, style, title }: Props = $props();
 </script>
 
 <button
     {disabled}
-    id={idName}
+    {id}
     {type}
     {title}
     aria-label={ariaLabel}
-    on:click
-    on:mouseover
-    on:focus
-    on:blur
-    on:mouseout
+    {onclick}
+    {onmouseover}
+    {onfocus}
+    {onblur}
+    {onmouseout}
     {style}
     class="{customStyle ? className : `rounded ${disabled ? '' : 'hover:scale-[1.15] text-primary-500 hover:text-primary-300'} transition-all duration-300`} {additionalStyle}"
 >
-    <slot />
+    {@render children()}
 </button>

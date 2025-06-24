@@ -1,17 +1,16 @@
 <script lang="ts">
     import Icon from '#components/Icon.svelte';
 
-    export let horizontal: Props['horizontal'] = 'right';
-    export let vertical: Props['vertical'] = 'bottom';
-    export let icon: string = '';
-    export let color: keyof typeof colorClasses = 'primary';
-    export let ariaLabel: string;
-    export let isLoading: boolean = false;
-
-    interface Props {
+    type Props = {
         horizontal: 'right' | 'left' | 'middle';
         vertical: 'top' | 'bottom' | 'center';
-    }
+        icon: string;
+        color: keyof typeof colorClasses;
+        ariaLabel: string;
+        isLoading: boolean;
+    };
+
+    let { horizontal = 'right', vertical = 'bottom', icon, color = 'primary', ariaLabel, isLoading = false }: Props = $props();
 
     const horizontalClasses = {
         right: 'right-4',
@@ -36,17 +35,19 @@
     const validHorizontal = ['right', 'left', 'middle'];
     const validVertical = ['top', 'bottom', 'center'];
 
-    $: horizontal = validHorizontal.includes(horizontal) ? horizontal : 'right';
-    $: vertical = validVertical.includes(vertical) ? vertical : 'bottom';
-
-    $: buttonClasses = `text-white shadow-lg flex items-center justify-center  size-10 rounded-full
+    const buttonClasses: string = `text-white shadow-lg flex items-center justify-center  size-10 rounded-full
         transition-colors duration-300
         ${verticalClasses[vertical]}
         ${horizontalClasses[horizontal]}
         ${colorClasses[color] ?? colorClasses['primary']}`;
+
+    $effect((): void => {
+        horizontal = validHorizontal.includes(horizontal) ? horizontal : 'right';
+        vertical = validVertical.includes(vertical) ? vertical : 'bottom';
+    });
 </script>
 
-<button on:click aria-label={ariaLabel} style="z-index: 5000" class={buttonClasses} disabled={isLoading}>
+<button aria-label={ariaLabel} style="z-index: 5000" class={buttonClasses} disabled={isLoading}>
     {#key isLoading}
         <Icon name={isLoading ? 'spinner' : icon} size={isLoading ? 30 : undefined} />
     {/key}

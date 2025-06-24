@@ -4,20 +4,35 @@
 
     const dispatch = createEventDispatcher();
 
-    export let search: string = '';
-    export let placeholder: string = m['common.search']();
-    export let debounce: number = 300;
-    export let minChars: number | undefined = undefined;
-    export let name: string = '';
-    export let disabled: boolean = false;
-    export let label: string = '';
-    export let selected: boolean = false;
-    export let results: any[] = [];
-    export let selectedObserver: boolean = false;
+    type Props = {
+        search: string;
+        placeholder: string;
+        debounce: number;
+        minChars?: number;
+        name: string;
+        disabled: boolean;
+        label: string;
+        selected: boolean;
+        results: any[];
+        selectedObserver: boolean;
+    };
 
-    let searchTimeout: NodeJS.Timeout | undefined = undefined;
+    let {
+        search = '',
+        placeholder = m['common.search'](),
+        debounce = 300,
+        minChars,
+        name = '',
+        disabled = false,
+        label = '',
+        selected = false,
+        results = [],
+        selectedObserver = false,
+    }: Props = $props();
+
+    let searchTimeout: NodeJS.Timeout | undefined;
     let inputElement: HTMLInputElement;
-    let focused: boolean = false;
+    let focused: boolean = $state(false);
 
     const searchFunction = async (): Promise<void> => {
         if (minChars && search.length < minChars) {
@@ -48,9 +63,11 @@
         dispatch('blur');
     };
 
-    $: if (selectedObserver && selected) {
-        inputElement.focus();
-    }
+    $effect((): void => {
+        if (selectedObserver && selected) {
+            inputElement.focus();
+        }
+    });
 </script>
 
 <div class="relative w-full mt-8">
@@ -62,9 +79,9 @@
     </label>
     <input
         bind:this={inputElement}
-        on:focus={handleFocus}
-        on:blur={handleBlur}
-        on:keydown={searchDebounced}
+        onfocus={handleFocus}
+        onblur={handleBlur}
+        onkeydown={searchDebounced}
         type="search"
         bind:value={search}
         placeholder={focused || search.length ? placeholder : ''}

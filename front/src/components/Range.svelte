@@ -2,19 +2,23 @@
     import { formatGameNumbers } from '#services/stringService';
     import { m } from '$lib/paraglide/messages';
 
-    export let min: number = 0;
-    export let max: number = 100;
-    export let step: number = 1;
-    export let value: number = min;
-    export let name: string;
-    export let label: string | undefined = undefined;
+    type Props = {
+        min?: number;
+        max?: number;
+        step?: number;
+        value?: number;
+        name: string;
+        label?: string;
+    };
+
+    let { min = 0, max = 100, step = 1, value = min, name, label }: Props = $props();
 
     const id: string = `range-${Math.random().toString(36).slice(2, 9)}`;
 
-    function handleInput(event: Event): void {
+    const handleInput = (event: Event): void => {
         const target = event.target as HTMLInputElement;
         value = +target.value;
-    }
+    };
 </script>
 
 <div class="w-full mb-3">
@@ -22,7 +26,7 @@
         {label ?? m['common.value']()} :
         <span class="text-primary-500 font-medium">{formatGameNumbers(value)}</span>
     </label>
-    <input {name} {id} type="range" {min} {max} {step} bind:value on:input={handleInput} class="custom-range w-full h-2 bg-gray-200 rounded-lg appearance-none" />
+    <input {name} {id} type="range" {min} {max} {step} bind:value oninput={handleInput} class="custom-range w-full h-2 bg-gray-200 rounded-lg appearance-none" />
 </div>
 
 <style>

@@ -4,24 +4,28 @@
     import { raw } from '#services/stringService';
     import Loader from '#components/Loader.svelte';
     import Icon from '#components/Icon.svelte';
-
-    export let name: string = '';
-    export let description: string = '';
-    export let title: string = '';
-    export let width: string = '96';
-    export let accept: string = '';
-    export let fileName: string = '';
-    export let file: File | null = null;
-    export let pathPrefix: string;
-    export let id: number;
-    export let disabled: boolean = false;
     import { PUBLIC_API_BASE_URI } from '$env/static/public';
 
-    let acceptedFormats: string = '';
-    let isDragging: boolean = false;
-    let previewSrc: string = `${PUBLIC_API_BASE_URI}/api/static/${pathPrefix}/${id}?token=${localStorage.getItem('apiToken')}`;
+    type Props = {
+        name: string;
+        description: string;
+        title: string;
+        width: number;
+        accept: string;
+        fileName: string;
+        file?: File;
+        pathPrefix: string;
+        id: number;
+        disabled: boolean;
+    };
+
+    let { name, description, title, width = 96, accept, fileName, file, pathPrefix, id, disabled = false }: Props = $props();
+
+    let acceptedFormats: string = $state('');
+    let isDragging: boolean = $state(false);
+    let previewSrc: string = $state(`${PUBLIC_API_BASE_URI}/api/static/${pathPrefix}/${id}?token=${localStorage.getItem('apiToken')}`);
     let inputRef: HTMLInputElement;
-    let isLoading: boolean = false;
+    let isLoading: boolean = $state(false);
 
     onMount((): void => {
         title = title ?? m['common.file.description']();
@@ -52,7 +56,7 @@
             }
             isLoading = false;
         } else {
-            file = null;
+            file = undefined;
             fileName = '';
             previewSrc = '';
         }

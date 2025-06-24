@@ -1,23 +1,23 @@
 <script lang="ts">
     import Button from '#components/Button.svelte';
-    import { createEventDispatcher } from 'svelte';
     import Icon from '#components/Icon.svelte';
 
-    const dispatch = createEventDispatcher();
+    type Props = {
+        type: 'text' | 'password' | 'email';
+        value: string;
+        placeholder: string;
+        name: string;
+        required: boolean;
+        disabled?: boolean;
+        label: string;
+        readonly?: boolean;
+        min?: number;
+        max?: number;
+        marginTop: number;
+        marginBottom: number;
+    };
 
-    export let type: string = 'text';
-    export let value: string = '';
-    export let placeholder: string;
-    export let name: string;
-    export let required: boolean = false;
-    export let disabled: boolean = false;
-    export let label: string;
-    export let readonly: boolean = false;
-    export let inputRef = null;
-    export let min: number | null = null;
-    export let max: number | null = null;
-    export let marginTop: number = 10;
-    export let marginBottom: number = 5;
+    let { type = 'text', value = $bindable(''), placeholder, name, required = false, disabled = false, label, readonly = false, min, max, marginTop = 10, marginBottom = 5 }: Props = $props();
 
     interface InputAttributes {
         maxLength?: number;
@@ -26,10 +26,10 @@
         min?: number;
     }
 
-    let realType: string;
-    let inputAttributes: InputAttributes;
+    let realType: string = $state('');
+    let inputAttributes: InputAttributes | undefined = $state();
 
-    let focused: boolean = false;
+    let focused: boolean = $state(false);
 
     const classes: string = `rounded-lg bg-gray-400 dark:bg-gray-500 block w-full px-3 py-2 mt-1 text-base text-black placeholder:gray-900 border border-gray-300 shadow-xs shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${
         disabled || readonly ? 'bg-gray-300 dark:bg-gray-500' : ''
@@ -43,22 +43,24 @@
 
     const handleFocus = (): void => {
         focused = true;
-        dispatch('focus');
     };
 
     const handleBlur = (): void => {
         focused = false;
-        dispatch('blur');
     };
 
-    $: realType = type;
+    $effect((): void => {
+        realType = type;
+    });
 
-    $: inputAttributes = {
-        ...(min !== null && realType !== 'text' && { min }),
-        ...(max !== null && realType !== 'text' && { max }),
-        ...(realType === 'text' && min !== null && { minlength: min }),
-        ...(realType === 'text' && max !== null && { maxlength: max }),
-    };
+    $effect((): void => {
+        inputAttributes = {
+            ...(min !== null && realType !== 'text' && { min }),
+            ...(max !== null && realType !== 'text' && { max }),
+            ...(realType === 'text' && min !== null && { minlength: min }),
+            ...(realType === 'text' && max !== null && { maxlength: max }),
+        };
+    });
 </script>
 
 <div class={`relative mt-${marginTop} mb-${marginBottom}`}>
@@ -74,8 +76,8 @@
 
     {#if realType !== 'password'}
         <input
-            on:focus={handleFocus}
-            on:blur={handleBlur}
+            onfocus={handleFocus}
+            onblur={handleBlur}
             use:typeWorkaround
             bind:value
             placeholder={focused || value ? placeholder : ''}
@@ -83,14 +85,13 @@
             {required}
             {disabled}
             {readonly}
-            bind:this={inputRef}
             class={classes}
             {...inputAttributes}
         />
     {:else if type === 'password'}
         <input
-            on:focus={() => (focused = true)}
-            on:blur={() => (focused = false)}
+            onfocus={() => (focused = true)}
+            onblur={() => (focused = false)}
             use:typeWorkaround
             bind:value
             placeholder={focused || value ? placeholder : ''}
@@ -101,13 +102,13 @@
             class={`${classes} pr-9`}
             {...inputAttributes}
         />
-        <Button additionalStyle="absolute top-2 right-2" on:click={switchType}>
+        <Button additionalStyle="absolute top-2 right-2" onclick={switchType}>
             <Icon name="eye" />
         </Button>
     {:else}
         <input
-            on:focus={() => (focused = true)}
-            on:blur={() => (focused = false)}
+            onfocus={() => (focused = true)}
+            onblur={() => (focused = false)}
             use:typeWorkaround
             bind:value
             placeholder={focused || value ? placeholder : ''}
@@ -118,7 +119,7 @@
             class={`${classes} pr-9`}
             {...inputAttributes}
         />
-        <Button additionalStyle="absolute top-2 right-2" on:click={switchType}>
+        <Button additionalStyle="absolute top-2 right-2" onclick={switchType}>
             <Icon name="eyeSlash" />
         </Button>
     {/if}

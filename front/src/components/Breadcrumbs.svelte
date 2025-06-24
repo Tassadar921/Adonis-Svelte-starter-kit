@@ -6,7 +6,11 @@
         path?: string;
     }
 
-    export let items: Breadcrumb[];
+    type Props = {
+        items: Breadcrumb[];
+    };
+
+    let { items }: Props = $props();
 </script>
 
 <div class="relative flex gap-3 z-10">

@@ -71,12 +71,16 @@
     type PascalCase = (typeof iconNames)[number];
     type CamelCase<S extends string> = S extends `${infer First}${infer Rest}` ? `${Lowercase<First>}${Rest}` : S;
 
-    export let name: PascalCase | CamelCase<PascalCase>;
-    export let size: number = 24;
+    type Props = {
+        name: PascalCase | CamelCase<PascalCase>;
+        size?: number;
+    };
+
+    let { name, size = 24 }: Props = $props();
 
     let currentName: string = '';
 
-    let IconComponent: typeof SvelteComponent | null = null;
+    let IconComponent: typeof SvelteComponent | undefined = $state();
 
     const setIcon = async (name: string): Promise<void> => {
         const camelCaseName = toCamelCase(name);
@@ -84,14 +88,16 @@
         IconComponent = module.default;
     };
 
-    $: if (name && name !== currentName) {
-        currentName = name;
-        (async () => {
-            await setIcon(name);
-        })();
-    }
+    $effect((): void => {
+        if (name && name !== currentName) {
+            currentName = name;
+            (async () => {
+                await setIcon(name);
+            })();
+        }
+    });
 </script>
 
 {#if IconComponent}
-    <svelte:component this={IconComponent} {size} class="transition-all duration-300" />
+    <IconComponent {size} class="transition-all duration-300" />
 {/if}

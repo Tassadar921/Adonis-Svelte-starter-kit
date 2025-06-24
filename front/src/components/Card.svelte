@@ -2,12 +2,16 @@
     import Icon from '#components/Icon.svelte';
     import Link from '#components/Link.svelte';
 
-    export let title: string = '';
-    export let icon: string = '';
-    export let href: string = '';
-    export let description: string = '';
+    type Props = {
+        title: string;
+        icon: string;
+        href: string;
+        description: string;
+    };
 
-    let hovering = false;
+    let { title, icon, href, description }: Props = $props();
+
+    let hovering = $state(false);
 </script>
 
 <Link
