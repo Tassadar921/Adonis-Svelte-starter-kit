@@ -13,8 +13,8 @@
         readonly?: boolean;
         min?: number;
         max?: number;
-        marginTop: number;
-        marginBottom: number;
+        marginTop?: number;
+        marginBottom?: number;
     };
 
     let { type = 'text', value = $bindable(''), placeholder, name, required = false, disabled = false, label, readonly = false, min, max, marginTop = 10, marginBottom = 5 }: Props = $props();

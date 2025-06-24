@@ -8,8 +8,8 @@
         required?: boolean;
         label?: string;
         min?: number;
-        marginTop: number;
-        marginBottom: number;
+        marginTop?: number;
+        marginBottom?: number;
     };
 
     let { value = $bindable(), name, required = false, label = m['common.password.label'](), min, marginTop = 10, marginBottom = 5 }: Props = $props();
