@@ -54,10 +54,10 @@ services:
         environment:
             - CHOKIDAR_USEPOLLING=true
             - WATCHPACK_POLLING=true
-            - VITE_PORT=${FRONT_PORT}
-            - VITE_FRONT_URI=http://localhost:${FRONT_PORT}
-            - VITE_API_BASE_URI=http://localhost:${PORT}
-            - VITE_GITHUB_REPOSITORY=${GITHUB_REPOSITORY}
+            - PUBLIC_PORT=${FRONT_PORT}
+            - PUBLIC_FRONT_URI=http://frontend:${FRONT_PORT}
+            - PUBLIC_API_BASE_URI=http://backend:${PORT}
+            - PUBLIC_GITHUB_REPOSITORY=${GITHUB_REPOSITORY}
         ports:
             - '${FRONT_PORT}:${FRONT_PORT}'
         depends_on:

@@ -8,46 +8,24 @@
     import { m } from '$lib/paraglide/messages';
     import Breadcrumbs from '#components/Breadcrumbs.svelte';
     import OauthProviders from '#components/OauthProviders.svelte';
-    import { navigate } from '#stores/locationStore';
-    import { setProfile } from '#stores/profileStore';
     import Meta from '#components/Meta.svelte';
 
     let email: string = $state('');
     let password: string = $state('');
     let canSubmit: boolean = $state(false);
 
-    async function handleSuccess(event: CustomEvent) {
-        showToast(event.detail.message);
-        setProfile(event.detail.user);
-        await navigate('/');
-    }
-
     $effect((): void => {
         canSubmit = !!email && !!password;
     });
 </script>
 
-<Meta
-    title={m['login.meta.title']()}
-    description={m['login.meta.description']()}
-    keywords={m['login.meta.keywords']().split(', ')}
-    languageAlternates={[
-        {
-            hrefLang: 'en',
-            href: `${import.meta.env.VITE_FRONT_URI}/en/login`,
-        },
-        {
-            hrefLang: 'fr',
-            href: `${import.meta.env.VITE_FRONT_URI}/fr/login`,
-        },
-    ]}
-/>
+<Meta title={m['login.meta.title']()} description={m['login.meta.description']()} keywords={m['login.meta.keywords']().split(', ')} pathname="/login" />
 
 <Title title={m['login.title']()} hasBackground />
 
-<Breadcrumbs hasBackground items={[{ label: m['home.title'](), path: '/' }, { label: m['login.title']() }]} />
+<Breadcrumbs items={[{ label: m['home.title'](), path: '/' }, { label: m['login.title']() }]} />
 
-<Form method="post" on:success={handleSuccess} isValid={canSubmit}>
+<Form isValid={canSubmit}>
     <OauthProviders />
     <Input type="email" name="email" placeholder={m['common.email.placeholder']()} label={m['common.email.label']()} bind:value={email} required />
     <PasswordInput name="password" bind:value={password} required />

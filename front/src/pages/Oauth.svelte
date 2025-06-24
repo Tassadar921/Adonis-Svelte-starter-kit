@@ -1,13 +1,14 @@
 <script lang="ts">
-    import Title from '../../../../front/src/components/Title.svelte';
-    import { t } from 'svelte-i18n';
+    import Title from '#components/Title.svelte';
     import { onMount } from 'svelte';
     import axios from 'axios';
-    import { showToast } from '../../../../front/src/services/toastService';
-    import { navigate } from '../../../../front/src/stores/locationStore';
-    import { updateProfile } from '../../../../front/src/stores/profileStore';
-    import Loader from '../../../../front/src/components/Loader.svelte';
-    import { MetaTags } from 'svelte-meta-tags';
+    import { showToast } from '#services/toastService';
+    import { navigate } from '#stores/locationStore';
+    import { updateProfile } from '#stores/profileStore';
+    import Loader from '#components/Loader.svelte';
+    import { m } from '$lib/paraglide/messages';
+    import Meta from '#components/Meta.svelte';
+    import { PUBLIC_FRONT_URI } from '$env/static/public';
 
     export let apiToken: string;
 
@@ -17,8 +18,8 @@
         const params = new URLSearchParams(window.location.search);
         apiTokenExpiration = params.get('apiTokenExpiration') ?? '';
         if (!apiToken || !apiTokenExpiration) {
-            showToast($t('toast.login.error'), 'error');
-            navigate('/login');
+            showToast(m['toast.login.error'](), 'error');
+            await navigate('/login');
             return;
         }
 
@@ -26,35 +27,13 @@
         localStorage.setItem('apiTokenExpiration', apiTokenExpiration);
         axios.defaults.headers.common['Authorization'] = `Bearer ${apiToken}`;
         await updateProfile();
-        showToast($t('toast.login.success'));
-        navigate('/');
+        showToast(m['toast.login.success']());
+        await navigate('/');
     });
 </script>
 
-<MetaTags
-    title={$t('oauth.meta.title')}
-    description={$t('oauth.meta.description')}
-    keywords={$t('oauth.meta.keywords').split(', ')}
-    languageAlternates={[
-        {
-            hrefLang: 'en',
-            href: `${import.meta.env.VITE_FRONT_URI}/en/oauth/${apiToken}`,
-        },
-        {
-            hrefLang: 'fr',
-            href: `${import.meta.env.VITE_FRONT_URI}/fr/oauth/${apiToken}`,
-        },
-    ]}
-    openGraph={{
-        title: $t('oauth.meta.title'),
-        description: $t('oauth.meta.description'),
-    }}
-    twitter={{
-        title: $t('oauth.meta.title'),
-        description: $t('oauth.meta.description'),
-    }}
-/>
+<Meta title={m['home.meta.title']()} description={m['home.meta.description']()} keywords={m['home.meta.keywords']().split(', ')} pathname="{`/oauth/${apiToken}`}," />
 
-<Title title={$t('oauth.title')} hasBackground={true} />
+<Title title={m['oauth.title']()} hasBackground />
 
 <Loader />

@@ -34,21 +34,7 @@
     ];
 </script>
 
-<Meta
-    title={m['social.meta.title']()}
-    description={m['social.meta.description']()}
-    keywords={m['social.meta.keywords']().split(', ')}
-    languageAlternates={[
-        {
-            hrefLang: 'en',
-            href: `${import.meta.env.VITE_FRONT_URI}/en/social`,
-        },
-        {
-            hrefLang: 'fr',
-            href: `${import.meta.env.VITE_FRONT_URI}/fr/social`,
-        },
-    ]}
-/>
+<Meta title={m['social.meta.title']()} description={m['social.meta.description']()} keywords={m['social.meta.keywords']().split(', ')} pathname="/social" />
 
 <Title title={m['social.title']()} />
 

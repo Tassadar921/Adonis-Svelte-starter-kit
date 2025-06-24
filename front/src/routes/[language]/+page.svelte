@@ -21,21 +21,7 @@
     ];
 </script>
 
-<Meta
-    title={m['home.meta.title']()}
-    description={m['home.meta.description']()}
-    keywords={m['home.meta.keywords']().split(', ')}
-    languageAlternates={[
-        {
-            hrefLang: 'en',
-            href: `${import.meta.env.VITE_FRONT_URI}/en`,
-        },
-        {
-            hrefLang: 'fr',
-            href: `${import.meta.env.VITE_FRONT_URI}/fr`,
-        },
-    ]}
-/>
+<Meta title={m['home.meta.title']()} description={m['home.meta.description']()} keywords={m['home.meta.keywords']().split(', ')} pathname="/" />
 
 <Title title={m['home.title']()} />
 

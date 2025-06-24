@@ -38,11 +38,11 @@
     languageAlternates={[
         {
             hrefLang: 'en',
-            href: `${import.meta.env.VITE_FRONT_URI}/en/create-account`,
+            href: `${import.meta.env.PUBLIC_FRONT_URI}/en/create-account`,
         },
         {
             hrefLang: 'fr',
-            href: `${import.meta.env.VITE_FRONT_URI}/fr/create-account`,
+            href: `${import.meta.env.PUBLIC_FRONT_URI}/fr/create-account`,
         },
     ]}
     openGraph={{

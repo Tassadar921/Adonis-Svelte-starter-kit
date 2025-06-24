@@ -1,21 +1,22 @@
 <script lang="ts">
-    import { t } from 'svelte-i18n';
-    import Title from '../../../../front/src/components/Title.svelte';
+    import { m } from '$lib/paraglide/messages';
+    import Title from '#components/Title.svelte';
     import { onMount } from 'svelte';
     import axios from 'axios';
-    import Search from '../../../../front/src/components/Search.svelte';
-    import Pagination from '../../../../front/src/components/Pagination.svelte';
-    import Breadcrumbs from '../../../../front/src/components/Breadcrumbs.svelte';
-    import Button from '../../../../front/src/components/Button.svelte';
-    import { showToast } from '../../../../front/src/services/toastService';
-    import Subtitle from '../../../../front/src/components/Subtitle.svelte';
-    import ConfirmModal from '../../../../front/src/components/ConfirmModal.svelte';
+    import Search from '#components/Search.svelte';
+    import Pagination from '#components/Pagination.svelte';
+    import Breadcrumbs from '#components/Breadcrumbs.svelte';
+    import Button from '#components/Button.svelte';
+    import { showToast } from '#services/toastService';
+    import Subtitle from '#components/Subtitle.svelte';
+    import ConfirmModal from '#components/ConfirmModal.svelte';
     import type PaginatedBlockedUsers from 'adonis-svelte-starter-kit-backend/app/types/paginated/paginated_blocked_users';
     import type SerializedUser from 'adonis-svelte-starter-kit-backend/app/types/serialized/serialized_user';
     import type SerializedBlockedUser from 'adonis-svelte-starter-kit-backend/app/types/serialized/serialized_blocked_user';
-    import Loader from '../../../../front/src/components/Loader.svelte';
-    import Icon from '../../../../front/src/components/Icon.svelte';
-    import { MetaTags } from 'svelte-meta-tags';
+    import Loader from '#components/Loader.svelte';
+    import Icon from '#components/Icon.svelte';
+    import { PUBLIC_FRONT_URI, PUBLIC_API_BASE_URI, PUBLIC_DEFAULT_IMAGE } from '$env/static/public';
+    import Meta from '#components/Meta.svelte';
 
     let isLoading: boolean = false;
     let paginatedBlockedUsers: PaginatedBlockedUsers;
@@ -61,40 +62,32 @@
     };
 </script>
 
-<MetaTags
-    title={$t('social.blocked.meta.title')}
-    description={$t('social.blocked.meta.description')}
-    keywords={$t('social.blocked.meta.keywords').split(', ')}
+<Meta
+    title={m['social.blocked.meta.title']()}
+    description={m['social.blocked.meta.description']()}
+    keywords={m['social.blocked.meta.keywords']().split(', ')}
     languageAlternates={[
         {
             hrefLang: 'en',
-            href: `${import.meta.env.VITE_FRONT_URI}/en/social/blocked`,
+            href: `${PUBLIC_FRONT_URI}/en/social/blocked`,
         },
         {
             hrefLang: 'fr',
-            href: `${import.meta.env.VITE_FRONT_URI}/fr/social/blocked`,
+            href: `${PUBLIC_FRONT_URI}/fr/social/blocked`,
         },
     ]}
-    openGraph={{
-        title: $t('social.blocked.meta.title'),
-        description: $t('social.blocked.meta.description'),
-    }}
-    twitter={{
-        title: $t('social.blocked.meta.title'),
-        description: $t('social.blocked.meta.description'),
-    }}
 />
 
-<Title title={$t('social.blocked.title')} />
+<Title title={m['social.blocked.title']()} />
 
-<Breadcrumbs items={[{ label: $t('home.title'), path: '/' }, { label: $t('social.title'), path: '/social' }, { label: $t('social.blocked.title') }]} />
+<Breadcrumbs items={[{ label: m['home.title'](), path: '/' }, { label: m['social.title'](), path: '/social' }, { label: m['social.blocked.title']() }]} />
 
 {#if paginatedBlockedUsers}
     <Search
         selected
         bind:results={paginatedBlockedUsers.blockedUsers}
-        placeholder={$t('social.blocked.search.placeholder')}
-        label={$t('social.blocked.search.label')}
+        placeholder={m['social.blocked.search.placeholder']()}
+        label={m['social.blocked.search.label']()}
         name="search-blocked"
         minChars={3}
         bind:search={query}
@@ -112,11 +105,11 @@
                             {#if blocked.user.profilePicture}
                                 <img
                                     alt={blocked.user.username}
-                                    src={`${import.meta.env.VITE_API_BASE_URI}/api/static/profile-picture/${blocked.user.id}?token=${localStorage.getItem('apiToken')}`}
+                                    src={`${PUBLIC_API_BASE_URI}/api/static/profile-picture/${blocked.user.id}?token=${localStorage.getItem('apiToken')}`}
                                     class="w-10 rounded-full"
                                 />
                             {:else}
-                                <img alt={blocked.user.username} src={import.meta.env.VITE_DEFAULT_IMAGE} class="max-h-10 rounded-full" />
+                                <img alt={blocked.user.username} src={PUBLIC_DEFAULT_IMAGE} class="max-h-10 rounded-full" />
                             {/if}
                             <p>{blocked.user.username}</p>
                         </div>
@@ -132,7 +125,7 @@
                 {/each}
             </div>
         {:else}
-            <p class="my-5">{$t('social.blocked.none')}</p>
+            <p class="my-5">{m['social.blocked.none']()}</p>
         {/if}
     </div>
     <Pagination bind:paginatedObject={paginatedBlockedUsers} baseUrl={searchBaseUrl} />
@@ -141,6 +134,6 @@
 {/if}
 
 <ConfirmModal bind:showModal on:success={handleUnblockUser}>
-    <Subtitle slot="header">{$t('social.unblock.modal.title')}</Subtitle>
-    <p>{selectedBlockedUser.username} {$t('social.unblock.modal.text')}</p>
+    <Subtitle slot="header">{m['social.unblock.modal.title']()}</Subtitle>
+    <p>{selectedBlockedUser.username} {m['social.unblock.modal.text']()}</p>
 </ConfirmModal>

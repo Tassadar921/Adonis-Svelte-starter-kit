@@ -2,9 +2,8 @@
     import { page } from '$app/state';
     import Title from '#components/Title.svelte';
     import BackTo from '#components/BackTo.svelte';
-    import { MetaTags } from 'svelte-meta-tags';
-    import Breadcrumbs from '#components/Breadcrumbs.svelte';
     import { m } from '$lib/paraglide/messages';
+    import Meta from '#components/Meta.svelte';
 
     let key: 'unauthorized' | 'forbidden' | 'not-found' | 'already-connected' | 'unknown-error' = 'unknown-error';
     switch (page.status) {
@@ -28,25 +27,15 @@
 </script>
 
 <meta name="robots" content="noindex, nofollow" />
-<MetaTags
-    title={m[`${key}.meta.title`]()}
-    description={m[`${key}.meta.description`]()}
-    keywords={m[`${key}.meta.keywords`]().split(', ')}
-    openGraph={{
-        title: m[`${key}.meta.title`](),
-        description: m[`${key}.meta.description`](),
-    }}
-    twitter={{
-        title: m[`${key}.meta.title`](),
-        description: m[`${key}.meta.description`](),
-    }}
-/>
-
-<Breadcrumbs hasBackground items={[{ label: m['home.title'](), path: '/' }, { label: m[`${key}.title`]() }]} />
+<Meta title={m[`${key}.meta.title`]()} description={m[`${key}.meta.description`]()} keywords={m[`${key}.meta.keywords`]().split(', ')} />
 
 <div class="absolute top-0 left-0 w-full h-screen flex flex-col justify-center items-center text-center pointer-events-none">
     <div class="flex flex-col gap-5 pointer-events-auto">
         <Title title={m[`${key}.title`]()} />
-        <BackTo href="/" text={m['common.back-to-home']()} />
+        {#if page.status === 401}
+            <BackTo href="/login" text={m['login.title']()} />
+        {:else}
+            <BackTo href="/" text={m['common.back-to-home']()} />
+        {/if}
     </div>
 </div>

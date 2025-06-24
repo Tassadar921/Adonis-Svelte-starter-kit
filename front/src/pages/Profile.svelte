@@ -28,7 +28,7 @@
         };
 
         if ($profile!.profilePicture) {
-            path = `${import.meta.env.VITE_API_BASE_URI}/api/static/profile-picture/${$profile!.id}?token=${localStorage.getItem('apiToken')}`;
+            path = `${import.meta.env.PUBLIC_API_BASE_URI}/api/static/profile-picture/${$profile!.id}?token=${localStorage.getItem('apiToken')}`;
         }
     });
 
@@ -54,11 +54,11 @@
     languageAlternates={[
         {
             hrefLang: 'en',
-            href: `${import.meta.env.VITE_FRONT_URI}/en/profile`,
+            href: `${import.meta.env.PUBLIC_FRONT_URI}/en/profile`,
         },
         {
             hrefLang: 'fr',
-            href: `${import.meta.env.VITE_FRONT_URI}/fr/profile`,
+            href: `${import.meta.env.PUBLIC_FRONT_URI}/fr/profile`,
         },
     ]}
     openGraph={{

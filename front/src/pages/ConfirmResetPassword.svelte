@@ -1,14 +1,15 @@
 <script lang="ts">
-    import Form from '../../../../front/src/components/Form.svelte';
-    import PasswordInput from '../../../../front/src/components/PasswordInput.svelte';
-    import Title from '../../../../front/src/components/Title.svelte';
-    import { showToast } from '../../../../front/src/services/toastService';
-    import { navigate } from '../../../../front/src/stores/locationStore';
-    import { t } from 'svelte-i18n';
-    import { checkPassword } from '../../../../front/src/services/checkStringService';
-    import { profile } from '../../../../front/src/stores/profileStore';
-    import Breadcrumbs from '../../../../front/src/components/Breadcrumbs.svelte';
-    import { MetaTags } from 'svelte-meta-tags';
+    import Form from '#components/Form.svelte';
+    import PasswordInput from '#components/PasswordInput.svelte';
+    import Title from '#components/Title.svelte';
+    import { showToast } from '#services/toastService';
+    import { navigate } from '#stores/locationStore';
+    import { m } from '$lib/paraglide/messages';
+    import { checkPassword } from '#services/checkStringService';
+    import { profile } from '#stores/profileStore';
+    import Breadcrumbs from '#components/Breadcrumbs.svelte';
+    import { PUBLIC_FRONT_URI } from '$env/static/public';
+    import Meta from '#components/Meta.svelte';
 
     export let token;
 
@@ -18,7 +19,7 @@
     let message: string = '';
 
     const handleSuccess = (event: CustomEvent): void => {
-        showToast($t(event.detail.message));
+        showToast(event.detail.message);
         if (!$profile) {
             navigate('/login');
         } else {
@@ -28,44 +29,41 @@
 
     $: {
         if (password && confirmPassword) {
-            message = $t(checkPassword(password, confirmPassword));
-            canSubmit = password === confirmPassword && message === '';
+            const checkPasswordMessageKey = checkPassword(password, confirmPassword);
+            if (checkPasswordMessageKey) {
+                message = m[checkPasswordMessageKey]();
+                canSubmit = false;
+            } else {
+                canSubmit = true;
+            }
         }
     }
 </script>
 
 <meta name="robots" content="noindex, nofollow" />
-<MetaTags
-    title={$t('reset-password.confirm.meta.title')}
-    description={$t('reset-password.confirm.meta.description')}
-    keywords={$t('reset-password.confirm.meta.keywords').split(', ')}
+<Meta
+    title={m['reset-password.confirm.meta.title']()}
+    description={m['reset-password.confirm.meta.description']()}
+    keywords={m['reset-password.confirm.meta.keywords']().split(', ')}
     languageAlternates={[
         {
             hrefLang: 'en',
-            href: `${import.meta.env.VITE_FRONT_URI}/en/reset-password/confirm/${token}`,
+            href: `${PUBLIC_FRONT_URI}/en/reset-password/confirm/${token}`,
         },
         {
             hrefLang: 'fr',
-            href: `${import.meta.env.VITE_FRONT_URI}/fr/reset-password/confirm/${token}`,
+            href: `${PUBLIC_FRONT_URI}/fr/reset-password/confirm/${token}`,
         },
     ]}
-    openGraph={{
-        title: $t('reset-password.confirm.meta.title'),
-        description: $t('reset-password.confirm.meta.description'),
-    }}
-    twitter={{
-        title: $t('reset-password.confirm.meta.title'),
-        description: $t('reset-password.confirm.meta.description'),
-    }}
 />
 
-<Title title={$t('reset-password.confirm.title')} hasBackground />
+<Title title={m['reset-password.confirm.title']()} hasBackground />
 
-<Breadcrumbs hasBackground items={[{ label: $t('home.title'), path: '/' }, { label: $t('reset-password.confirm.title') }]} />
+<Breadcrumbs items={[{ label: m['home.title'](), path: '/' }, { label: m['reset-password.confirm.title']() }]} />
 
-<Form action={`/api/reset-password/confirm/${token}`} method="POST" on:success={handleSuccess} isValid={canSubmit}>
+<Form isValid={canSubmit}>
     <PasswordInput name="password" bind:value={password} />
-    <PasswordInput name="confirmPassword" label={$t('common.confirm-password.label')} bind:value={confirmPassword} />
+    <PasswordInput name="confirmPassword" label={m['common.confirm-password.label']()} bind:value={confirmPassword} />
 </Form>
 
 {#if message}

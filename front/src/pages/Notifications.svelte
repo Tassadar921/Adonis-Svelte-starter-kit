@@ -45,11 +45,11 @@
     languageAlternates={[
         {
             hrefLang: 'en',
-            href: `${import.meta.env.VITE_FRONT_URI}/en/notifications`,
+            href: `${import.meta.env.PUBLIC_FRONT_URI}/en/notifications`,
         },
         {
             hrefLang: 'fr',
-            href: `${import.meta.env.VITE_FRONT_URI}/fr/notifications`,
+            href: `${import.meta.env.PUBLIC_FRONT_URI}/fr/notifications`,
         },
     ]}
     openGraph={{

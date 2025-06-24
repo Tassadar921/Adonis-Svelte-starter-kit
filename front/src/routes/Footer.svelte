@@ -3,13 +3,14 @@
     import FooterMenu from '#menu/FooterMenu.svelte';
     import { m } from '$lib/paraglide/messages';
     import Icon from '#components/Icon.svelte';
+    import { PUBLIC_GITHUB_REPOSITORY } from '$env/static/public';
 </script>
 
 <footer class="w-full bg-gray-300 dark:bg-gray-950 p-5 pb-10">
     <div class="grid grid-cols-1 lg:grid-cols-3">
         <div class="px-1">
             <ul class="p-4">
-                <MenuItem target="_blank" footer href={import.meta.env.VITE_GITHUB_REPOSITORY}>
+                <MenuItem target="_blank" footer href={PUBLIC_GITHUB_REPOSITORY}>
                     <Icon name="openSource" slot="iconLeft" />
                     {m['menu.source-code']()}
                 </MenuItem>

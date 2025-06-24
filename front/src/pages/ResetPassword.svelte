@@ -35,11 +35,11 @@
     languageAlternates={[
         {
             hrefLang: 'en',
-            href: `${import.meta.env.VITE_FRONT_URI}/en/reset-password`,
+            href: `${import.meta.env.PUBLIC_FRONT_URI}/en/reset-password`,
         },
         {
             hrefLang: 'fr',
-            href: `${import.meta.env.VITE_FRONT_URI}/fr/reset-password`,
+            href: `${import.meta.env.PUBLIC_FRONT_URI}/fr/reset-password`,
         },
     ]}
     openGraph={{

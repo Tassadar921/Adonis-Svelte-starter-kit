@@ -110,11 +110,11 @@
     languageAlternates={[
         {
             hrefLang: 'en',
-            href: `${import.meta.env.VITE_FRONT_URI}/en/social/friends`,
+            href: `${import.meta.env.PUBLIC_FRONT_URI}/en/social/friends`,
         },
         {
             hrefLang: 'fr',
-            href: `${import.meta.env.VITE_FRONT_URI}/fr/social/friends`,
+            href: `${import.meta.env.PUBLIC_FRONT_URI}/fr/social/friends`,
         },
     ]}
     openGraph={{
@@ -164,11 +164,11 @@
                             {#if friendObject.friend.profilePicture}
                                 <img
                                     alt={friendObject.friend.username}
-                                    src={`${import.meta.env.VITE_API_BASE_URI}/api/static/profile-picture/${friendObject.friend.id}?token=${localStorage.getItem('apiToken')}`}
+                                    src={`${import.meta.env.PUBLIC_API_BASE_URI}/api/static/profile-picture/${friendObject.friend.id}?token=${localStorage.getItem('apiToken')}`}
                                     class="w-10 rounded-full"
                                 />
                             {:else}
-                                <img alt={friendObject.friend.username} src={import.meta.env.VITE_DEFAULT_IMAGE} class="max-h-10 rounded-full" />
+                                <img alt={friendObject.friend.username} src={import.meta.env.PUBLIC_DEFAULT_IMAGE} class="max-h-10 rounded-full" />
                             {/if}
                             <p>{friendObject.friend.username}</p>
                         </div>

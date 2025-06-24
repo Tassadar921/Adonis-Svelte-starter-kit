@@ -39,11 +39,11 @@
     languageAlternates={[
         {
             hrefLang: 'en',
-            href: `${import.meta.env.VITE_FRONT_URI}/en/logout`,
+            href: `${import.meta.env.PUBLIC_FRONT_URI}/en/logout`,
         },
         {
             hrefLang: 'fr',
-            href: `${import.meta.env.VITE_FRONT_URI}/fr/logout`,
+            href: `${import.meta.env.PUBLIC_FRONT_URI}/fr/logout`,
         },
     ]}
     openGraph={{

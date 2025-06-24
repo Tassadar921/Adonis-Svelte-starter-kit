@@ -80,17 +80,27 @@ FRIEND_EMAILS=[]
 
 ### Development frontend .env (front/.env)
 
-Note that `VITE_FRONT_URI` and `VITE_API_BASE_URI` are automatically generated from `FRONT_PORT` and `PORT` backend environment variables respectively by Docker.
+Note that `PUBLIC_FRONT_URI` and `PUBLIC_API_BASE_URI` are automatically generated from `FRONT_PORT` and `PORT` backend environment variables respectively by Docker.
 
-`VITE_FRONT_PORT` and `VITE_GITHUB_REPOSITORY` are also injected from backend environment variables.
+`PUBLIC_FRONT_PORT` and `PUBLIC_GITHUB_REPOSITORY` are also injected from backend environment variables.
 
 ```
-VITE_DEFAULT_IMAGE=/assets/default/image.png
+PUBLIC_FRONT_PORT=""
+PUBLIC_FRONT_URI=""
+PUBLIC_API_BASE_URI=""
+PUBLIC_GITHUB_REPOSITORY=""
+PUBLIC_DEFAULT_IMAGE=/assets/default/image.png
+PUBLIC_TWITTER_HANDLE=""
 ```
 
-| Variable                 | Value                                                    |
-|--------------------------|----------------------------------------------------------|
-| `VITE_DEFAULT_IMAGE`     | /assets/default/image.png                                |
+| Variable                      | Value                                                     |
+|-------------------------------|-----------------------------------------------------------|
+| `PUBLIC_FRONT_PORT`           | ""                                                        |
+| `PUBLIC_FRONT_URI`            | ""                                                        |
+| `PUBLIC_API_BASE_URI`         | ""                                                        |
+| `PUBLIC_GITHUB_REPOSITORY`    | ""                                                        |
+| `PUBLIC_DEFAULT_IMAGE`        | /assets/default/image.png                                 |
+| `PUBLIC_TWITTER_HANDLE`       | **`Put your twitter @ here, for example : @Tassadar921`** |
 
 ---
 

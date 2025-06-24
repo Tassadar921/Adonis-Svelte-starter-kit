@@ -52,7 +52,7 @@
         };
     });
 
-    $: options, setDropdownWidth();
+    $: (options, setDropdownWidth());
 </script>
 
 <div class="w-full relative" bind:this={dropdownRef}>

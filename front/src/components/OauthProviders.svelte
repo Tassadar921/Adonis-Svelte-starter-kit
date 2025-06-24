@@ -1,10 +1,11 @@
 <script lang="ts">
     import Icon from '#components/Icon.svelte';
     import { showToast } from '#services/toastService';
+    import { PUBLIC_GITHUB_REPOSITORY } from '$env/static/public';
 
     const handleOauthClick = async (provider: 'google' | 'github' | 'discord'): Promise<void> => {
         try {
-            window.location.href = `${import.meta.env.VITE_API_BASE_URI}/api/auth/${provider}`;
+            window.location.href = `${PUBLIC_GITHUB_REPOSITORY}/api/auth/${provider}`;
         } catch (error: any) {
             showToast(error.response.data.error, 'error');
         }

@@ -1,7 +1,3 @@
-interface CheckPassword {
-    (password: string, confirmPassword: string): string;
-}
-
 interface CheckEmail {
     (email: string): boolean;
 }
@@ -10,7 +6,16 @@ interface CheckUuid {
     (uuid: string): boolean;
 }
 
-const checkPassword: CheckPassword = (password: string, confirmPassword: string): string => {
+export type CheckPasswordMessageKey =
+    | 'common.password.match'
+    | 'common.password.length'
+    | 'common.password.lowercase'
+    | 'common.password.uppercase'
+    | 'common.password.number'
+    | 'common.password.special-character'
+    | '';
+
+export const checkPassword = (password: string, confirmPassword: string): CheckPasswordMessageKey => {
     if (password !== confirmPassword) {
         return 'common.password.match';
     } else if (password.length < 8) {
@@ -28,14 +33,12 @@ const checkPassword: CheckPassword = (password: string, confirmPassword: string)
     }
 };
 
-const isValidEmail: CheckEmail = (email: string): boolean => {
+export const isValidEmail: CheckEmail = (email: string): boolean => {
     const isValidEmailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return isValidEmailRegex.test(email);
 };
 
-const isValidUuid: CheckUuid = (uuid: string): boolean => {
+export const isValidUuid: CheckUuid = (uuid: string): boolean => {
     const isValidUuidRegex = /^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-4[0-9a-fA-F]{3}-[89abAB][0-9a-fA-F]{3}-[0-9a-fA-F]{12}$/;
     return isValidUuidRegex.test(uuid);
 };
-
-export { checkPassword, isValidEmail, isValidUuid };

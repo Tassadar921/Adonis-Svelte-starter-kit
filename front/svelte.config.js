@@ -4,6 +4,10 @@ import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 const config = {
     preprocess: vitePreprocess(),
     kit: {
+        env: {
+            publicPrefix: 'PUBLIC_',
+            privatePrefix: 'PRIVATE_',
+        },
         adapter: adapter(),
         alias: {
             '#menu': './src/menu',
