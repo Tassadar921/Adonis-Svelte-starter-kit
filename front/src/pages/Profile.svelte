@@ -11,6 +11,7 @@
     import Breadcrumbs from '#components/Breadcrumbs.svelte';
     import type SerializedUser from 'adonis-svelte-starter-kit-backend/app/types/serialized/serialized_user';
     import Meta from '#components/Meta.svelte';
+    import { PUBLIC_API_BASE_URI } from '$env/static/public';
 
     let formValues: { username: string; email: string } = $state({
         username: '',
@@ -28,7 +29,7 @@
         };
 
         if ($profile!.profilePicture) {
-            path = `${import.meta.env.PUBLIC_API_BASE_URI}/api/static/profile-picture/${$profile!.id}?token=${localStorage.getItem('apiToken')}`;
+            path = `${PUBLIC_API_BASE_URI}/api/static/profile-picture/${$profile!.id}?token=${localStorage.getItem('apiToken')}`;
         }
     });
 

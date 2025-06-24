@@ -64,7 +64,7 @@
     }
 </script>
 
-<div class="flex flex-row gap-3">
+<div class="flex gap-3">
     {#if editing}
         <input bind:this={inputElement} class={`${className} bg-transparent dark:text-white`} type="text" bind:value on:keydown={handleKeyDown} on:blur={handleBlur} />
     {:else}

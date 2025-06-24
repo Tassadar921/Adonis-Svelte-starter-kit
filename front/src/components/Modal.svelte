@@ -5,28 +5,41 @@
 
     const dispatch = createEventDispatcher();
 
-    export let showModal: boolean = false;
-    export let closeText: string | null = null;
-    export let successText: string = '';
-    export let fullWidth: boolean = false;
-    export let confirm: boolean = false;
-    export let closable: boolean = true;
+    type Props = {
+        children: () => any;
+        header: () => any;
+        showModal: boolean;
+        closeText: string | null;
+        successText: string;
+        fullWidth: boolean;
+        confirm: boolean;
+        closable: boolean;
+    };
+
+    let { children, header, showModal = false, closeText = null, successText = '', fullWidth = false, confirm = false, closable = true }: Props = $props();
 
     let initialFullWidth: boolean = fullWidth;
     let dialog: HTMLDialogElement;
 
-    const handleSuccess = (): void => {
-        dispatch('success');
+    const handleSuccess = () => dispatch('success');
+
+    const handleCancel = (event: Event) => {
+        event.preventDefault();
+        if (!closable) {
+            requestAnimationFrame(() => dialog.showModal());
+            return;
+        }
+        handleClose();
     };
 
-    const handleClose = (): void => {
+    const handleClose = () => {
         if (closable) {
             dispatch('close');
             dialog.close();
         }
     };
 
-    onMount((): void => {
+    onMount(() => {
         if (!initialFullWidth) {
             window.addEventListener('resize', () => {
                 fullWidth = window.innerWidth < 768;
@@ -34,41 +47,32 @@
         }
     });
 
-    $: if (dialog) {
-        if (showModal) {
-            dialog.showModal();
-            dispatch('open');
-        } else {
-            dialog.close();
+    $effect(() => {
+        if (dialog) {
+            showModal ? (dialog.showModal(), dispatch('open')) : dialog.close();
         }
-    }
+    });
 </script>
 
 <dialog
     bind:this={dialog}
-    on:close={() => (showModal = false)}
-    on:cancel|preventDefault={() => {
-        if (!closable) {
-            requestAnimationFrame(() => dialog.showModal());
-            return;
-        }
-        handleClose();
-    }}
-    style={`width: ${fullWidth ? '90%' : '50%'}`}
-    class="rounded-lg border-none p-0 fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2"
+    onclose={() => (showModal = false)}
+    oncancel={handleCancel}
+    class="fixed inset-0 z-50 flex items-center justify-center backdrop:bg-black/50 open:animate-[zoom_0.3s_cubic-bezier(0.34,1.56,0.64,1)]"
 >
-    {#if closable}
-        <Button type="button" ariaLabel={m['common.close-modal']()} className="fixed inset-0 w-full h-full cursor-default" customStyle on:click={handleClose} />
-    {/if}
+    <div class={`relative bg-white dark:bg-gray-700 rounded-lg p-4 ${fullWidth ? 'w-[90%]' : 'w-1/2'}`}>
+        {#if closable}
+            <Button ariaLabel={m['common.close-modal']()} className="fixed inset-0 w-full h-full cursor-default" customStyle on:click={handleClose} />
+        {/if}
 
-    <div class="p-4 bg-white dark:bg-gray-700 rounded-lg relative">
-        <slot name="header" />
+        {@render header?.()}
         <hr class="my-2" />
-        <slot />
+        {@render children?.()}
         <hr class="my-2" />
-        <div class="flex flex-row justify-center">
+
+        <div class="flex justify-center">
             {#if successText}
-                <div class="flex flex-row justify-center space-x-12 w-full">
+                <div class="flex justify-center w-full space-x-12">
                     {#if !confirm && closable}
                         <Button on:click={handleClose} ariaLabel={closeText || m['common.no']()}>
                             {closeText || m['common.no']()}
@@ -84,7 +88,7 @@
                     {/if}
                 </div>
             {:else if closable}
-                <Button className="mx-auto" on:click={handleClose} ariaLabel={m['common.close']()}>
+                <Button on:click={handleClose} ariaLabel={m['common.close']()}>
                     {closeText || m['common.close']()}
                 </Button>
             {/if}
@@ -93,33 +97,12 @@
 </dialog>
 
 <style>
-    dialog::backdrop {
-        background: rgba(0, 0, 0, 0.5);
-    }
-
-    dialog[open] {
-        animation: zoom 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-
     @keyframes zoom {
         from {
             transform: scale(0.95);
         }
         to {
             transform: scale(1);
-        }
-    }
-
-    dialog[open]::backdrop {
-        animation: fade 0.2s ease-out;
-    }
-
-    @keyframes fade {
-        from {
-            opacity: 0;
-        }
-        to {
-            opacity: 1;
         }
     }
 </style>

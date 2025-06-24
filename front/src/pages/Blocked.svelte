@@ -94,7 +94,7 @@
         on:search={handleSearch}
     />
 
-    <div class="flex flex-row flex-wrap gap-5 justify-center my-5">
+    <div class="flex flex-wrap gap-5 justify-center my-5">
         {#if paginatedBlockedUsers.blockedUsers.length}
             <div class="flex flex-col gap-1 w-full">
                 {#each paginatedBlockedUsers.blockedUsers as blocked}

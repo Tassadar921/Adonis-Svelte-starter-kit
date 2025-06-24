@@ -25,7 +25,7 @@
     </div>
 {/if}
 
-<div class="flex flex-row items-center gap-0.5">
+<div class="flex items-center gap-0.5">
     <span class={checked ? 'dark:text-white' : 'text-primary-500'}>
         <Icon name="sun" size={20} />
     </span>

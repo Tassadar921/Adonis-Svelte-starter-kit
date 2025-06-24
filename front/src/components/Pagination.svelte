@@ -41,7 +41,7 @@
     $: canGoForward = paginatedObject.currentPage < paginatedObject.lastPage;
 </script>
 
-<div class="my-2 flex flex-row gap-3 justify-center" class:hidden={paginatedObject.lastPage === 1}>
+<div class="my-2 flex gap-3 justify-center" class:hidden={paginatedObject.lastPage === 1}>
     {#if paginatedObject.currentPage}
         {#if !isLoading}
             <!-- First Page Button -->

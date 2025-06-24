@@ -15,10 +15,11 @@
     export let pathPrefix: string;
     export let id: number;
     export let disabled: boolean = false;
+    import { PUBLIC_API_BASE_URI } from '$env/static/public';
 
     let acceptedFormats: string = '';
     let isDragging: boolean = false;
-    let previewSrc: string = `${import.meta.env.PUBLIC_API_BASE_URI}/api/static/${pathPrefix}/${id}?token=${localStorage.getItem('apiToken')}`;
+    let previewSrc: string = `${PUBLIC_API_BASE_URI}/api/static/${pathPrefix}/${id}?token=${localStorage.getItem('apiToken')}`;
     let inputRef: HTMLInputElement;
     let isLoading: boolean = false;
 
@@ -105,15 +106,15 @@
         class={`w-${width} flex flex-col items-center justify-center border-2 border-gray-400 dark:border-white rounded-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 m-auto p-3`}
         class:bg-blue-50={isDragging && !disabled}
         class:border-blue-500={isDragging && !disabled}
-        on:click={() => !disabled && inputRef.click()}
-        on:dragover={handleDragOver}
-        on:dragleave={handleDragLeave}
-        on:drop={handleDrop}
-        on:keydown={handleKeyDown}
+        onclick={() => !disabled && inputRef.click()}
+        ondragover={handleDragOver}
+        ondragleave={handleDragLeave}
+        ondrop={handleDrop}
+        onkeydown={handleKeyDown}
         aria-label="File uploader"
         {disabled}
     >
-        <input bind:this={inputRef} type="file" class="hidden" {name} accept={acceptedFormats} on:change={handleFileChange} {disabled} />
+        <input bind:this={inputRef} type="file" class="hidden" {name} accept={acceptedFormats} onchange={handleFileChange} {disabled} />
         <span class="text-primary-500">
             <Icon name="upload" size={35} />
         </span>

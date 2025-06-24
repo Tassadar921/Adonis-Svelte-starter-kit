@@ -10,7 +10,7 @@
 <Button>
     <Link {href}>
         <div class="inline-block">
-            <div class="flex flex-row gap-1">
+            <div class="flex gap-1">
                 <Icon name="arrowLeft" />
                 <p>{text}</p>
             </div>

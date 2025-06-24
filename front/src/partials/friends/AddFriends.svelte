@@ -17,6 +17,7 @@
     import type SerializedPendingFriend from 'adonis-svelte-starter-kit-backend/app/types/serialized/serialized_pending_friend';
     import Loader from '#components/Loader.svelte';
     import Icon from '#components/Icon.svelte';
+    import { PUBLIC_API_BASE_URI } from '$env/static/public';
 
     const dispatch = createEventDispatcher();
 
@@ -195,7 +196,7 @@
         on:search={handleSearch}
     />
 
-    <div class="flex flex-row flex-wrap gap-5 justify-center my-5">
+    <div class="flex flex-wrap gap-5 justify-center my-5">
         {#if paginatedUsers.users.length}
             <div class="flex flex-col gap-1 w-full">
                 {#each paginatedUsers.users as user}
@@ -204,13 +205,9 @@
                     >
                         <div class="flex gap-5 flex-wrap items-center">
                             {#if user.profilePicture}
-                                <img
-                                    alt={user.username}
-                                    src={`${import.meta.env.VITE_API_BASE_URI}/api/static/profile-picture/${user.id}?token=${localStorage.getItem('apiToken')}`}
-                                    class="w-10 rounded-full"
-                                />
+                                <img alt={user.username} src={`${PUBLIC_API_BASE_URI}/api/static/profile-picture/${user.id}?token=${localStorage.getItem('apiToken')}`} class="w-10 rounded-full" />
                             {:else}
-                                <img alt={user.username} src={import.meta.env.VITE_DEFAULT_IMAGE} class="max-h-10 rounded-full" />
+                                <img alt={user.username} src={PUBLIC_API_BASE_URI} class="max-h-10 rounded-full" />
                             {/if}
                             <p>{user.username}</p>
                         </div>
