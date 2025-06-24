@@ -1,36 +1,37 @@
 <script lang="ts">
-    import { t } from 'svelte-i18n';
-    import Title from '../../../../front/src/components/Title.svelte';
+    import { m } from '$lib/paraglide/messages';
+    import Title from '#components/Title.svelte';
     import { onMount } from 'svelte';
     import axios from 'axios';
-    import Search from '../../../../front/src/components/Search.svelte';
-    import Pagination from '../../../../front/src/components/Pagination.svelte';
-    import Breadcrumbs from '../../../../front/src/components/Breadcrumbs.svelte';
-    import Modal from '../../../../front/src/components/Modal.svelte';
-    import Subtitle from '../../../../front/src/components/Subtitle.svelte';
-    import AddFriends from '../friends/AddFriends.svelte';
-    import Button from '../../../../front/src/components/Button.svelte';
-    import ConfirmModal from '../../../../front/src/components/ConfirmModal.svelte';
-    import { showToast } from '../../../../front/src/services/toastService';
-    import { profile } from '../../../../front/src/stores/profileStore';
-    import { transmit } from '../../../../front/src/stores/transmitStore';
+    import Search from '#components/Search.svelte';
+    import Pagination from '#components/Pagination.svelte';
+    import Breadcrumbs from '#components/Breadcrumbs.svelte';
+    import Modal from '#components/Modal.svelte';
+    import Subtitle from '#components/Subtitle.svelte';
+    import AddFriends from '#partials/friends/AddFriends.svelte';
+    import Button from '#components/Button.svelte';
+    import ConfirmModal from '#components/ConfirmModal.svelte';
+    import { showToast } from '#services/toastService';
+    import { profile } from '#stores/profileStore';
+    import { transmit } from '#stores/transmitStore';
     import type PaginatedFriends from 'adonis-svelte-starter-kit-backend/app/types/paginated/paginated_friends';
     import type SerializedUser from 'adonis-svelte-starter-kit-backend/app/types/serialized/serialized_user';
     import type SerializedFriend from 'adonis-svelte-starter-kit-backend/app/types/serialized/serialized_friend';
-    import Loader from '../../../../front/src/components/Loader.svelte';
-    import Icon from '../../../../front/src/components/Icon.svelte';
-    import { MetaTags } from 'svelte-meta-tags';
+    import Loader from '#components/Loader.svelte';
+    import Icon from '#components/Icon.svelte';
+    import Meta from '#components/Meta.svelte';
+    import { PUBLIC_API_BASE_URI, PUBLIC_DEFAULT_IMAGE } from '$env/static/public';
 
-    let isLoading: boolean = false;
-    let paginatedFriends: PaginatedFriends;
-    let searchBaseUrl: string = '/api/friends';
-    let query: string = '';
+    let isLoading: boolean = $state(false);
+    let paginatedFriends: PaginatedFriends | undefined = $state();
+    let searchBaseUrl: string = $state('/api/friends');
+    let query: string = $state('');
 
-    let selectedFriend: SerializedUser;
+    let selectedFriend: SerializedUser | undefined = $state();
 
-    let showAddFriendsModal: boolean = false;
-    let showConfirmRemoveFriendModal: boolean = false;
-    let showBlockingModal: boolean = false;
+    let showAddFriendsModal: boolean = $state(false);
+    let showConfirmRemoveFriendModal: boolean = $state(false);
+    let showBlockingModal: boolean = $state(false);
 
     onMount(async (): Promise<void> => {
         await updateFriends();
@@ -56,8 +57,10 @@
 
     const handleRemoveFriend = async (): Promise<void> => {
         try {
-            const { data } = await axios.delete(`/api/friends/remove/${selectedFriend.id}`);
-            paginatedFriends.friends = paginatedFriends.friends.filter((friendObject: SerializedFriend) => friendObject.friend.id !== selectedFriend.id);
+            const { data } = await axios.delete(`/api/friends/remove/${selectedFriend?.id}`);
+            if (paginatedFriends) {
+                paginatedFriends.friends = paginatedFriends.friends.filter((friendObject: SerializedFriend) => friendObject.friend.id !== selectedFriend?.id);
+            }
             showToast(data.message);
             showConfirmRemoveFriendModal = false;
         } catch (error: any) {
@@ -72,8 +75,10 @@
 
     const handleBlockUser = async (): Promise<void> => {
         try {
-            const { data } = await axios.get(`/api/blocked/add/${selectedFriend.id}`);
-            paginatedFriends.friends = paginatedFriends.friends.filter((friendObject: SerializedFriend) => friendObject.friend.id !== selectedFriend.id);
+            const { data } = await axios.get(`/api/blocked/add/${selectedFriend?.id}`);
+            if (paginatedFriends) {
+                paginatedFriends.friends = paginatedFriends.friends.filter((friendObject: SerializedFriend) => friendObject.friend.id !== selectedFriend?.id);
+            }
             showToast(data.message);
             showBlockingModal = false;
         } catch (error: any) {
@@ -83,53 +88,35 @@
 
     const setupEvents = async (): Promise<void> => {
         // update when a friend removes us from its friends
-        const removeFriend = $transmit.subscription(`notification/friend/remove/${$profile!.id}`);
+        const removeFriend = $transmit!.subscription(`notification/friend/remove/${$profile!.id}`);
         await removeFriend.create();
         removeFriend.onMessage(async (user: SerializedUser) => {
-            paginatedFriends.friends = paginatedFriends.friends.filter((friendObject: SerializedFriend) => friendObject.friend.id !== user.id);
+            if (paginatedFriends) {
+                paginatedFriends.friends = paginatedFriends?.friends.filter((friendObject: SerializedFriend) => friendObject.friend.id !== user.id);
+            }
         });
 
-        const blockFriend = $transmit.subscription(`notification/blocked/${$profile!.id}`);
+        const blockFriend = $transmit!.subscription(`notification/blocked/${$profile!.id}`);
         await blockFriend.create();
         blockFriend.onMessage(async (user: SerializedUser) => {
-            paginatedFriends.friends = paginatedFriends.friends.filter((friendObject: SerializedFriend) => friendObject.friend.id !== user.id);
+            if (paginatedFriends) {
+                paginatedFriends.friends = paginatedFriends?.friends.filter((friendObject: SerializedFriend) => friendObject.friend.id !== user.id);
+            }
         });
     };
 
-    $: {
+    $effect((): void => {
         if ($profile) {
             setupEvents();
         }
-    }
+    });
 </script>
 
-<MetaTags
-    title={$t('social.friends.meta.title')}
-    description={$t('social.friends.meta.description')}
-    keywords={$t('social.friends.meta.keywords').split(', ')}
-    languageAlternates={[
-        {
-            hrefLang: 'en',
-            href: `${import.meta.env.PUBLIC_FRONT_URI}/en/social/friends`,
-        },
-        {
-            hrefLang: 'fr',
-            href: `${import.meta.env.PUBLIC_FRONT_URI}/fr/social/friends`,
-        },
-    ]}
-    openGraph={{
-        title: $t('social.friends.meta.title'),
-        description: $t('social.friends.meta.description'),
-    }}
-    twitter={{
-        title: $t('social.friends.meta.title'),
-        description: $t('social.friends.meta.description'),
-    }}
-/>
+<Meta title={m['social.friends.meta.title']()} description={m['social.friends.meta.description']()} keywords={m['social.friends.meta.keywords']().split(', ')} pathname="/social/friends" />
 
-<Title title={$t('social.friends.title')} />
+<Title title={m['social.friends.title']()} />
 
-<Breadcrumbs items={[{ label: $t('home.title'), path: '/' }, { label: $t('social.title'), path: '/social' }, { label: $t('social.friends.title') }]} />
+<Breadcrumbs items={[{ label: m['home.title'](), path: '/' }, { label: m['social.title'](), path: '/social' }, { label: m['social.friends.title']() }]} />
 
 {#if paginatedFriends}
     <div class="flex gap-3 items-center">
@@ -146,8 +133,8 @@
     <Search
         selected
         bind:results={paginatedFriends.friends}
-        placeholder={$t('social.friends.search.placeholder')}
-        label={$t('social.friends.search.label')}
+        placeholder={m['social.friends.search.placeholder']()}
+        label={m['social.friends.search.label']()}
         name="search-friend"
         bind:search={query}
         on:search={handleSearch}
@@ -164,11 +151,11 @@
                             {#if friendObject.friend.profilePicture}
                                 <img
                                     alt={friendObject.friend.username}
-                                    src={`${import.meta.env.PUBLIC_API_BASE_URI}/api/static/profile-picture/${friendObject.friend.id}?token=${localStorage.getItem('apiToken')}`}
+                                    src={`${PUBLIC_API_BASE_URI}/api/static/profile-picture/${friendObject.friend.id}?token=${localStorage.getItem('apiToken')}`}
                                     class="w-10 rounded-full"
                                 />
                             {:else}
-                                <img alt={friendObject.friend.username} src={import.meta.env.PUBLIC_DEFAULT_IMAGE} class="max-h-10 rounded-full" />
+                                <img alt={friendObject.friend.username} src={PUBLIC_DEFAULT_IMAGE} class="max-h-10 rounded-full" />
                             {/if}
                             <p>{friendObject.friend.username}</p>
                         </div>
@@ -194,7 +181,7 @@
                 {/each}
             </div>
         {:else}
-            <p class="mt-5">{$t('social.friends.none')}</p>
+            <p class="mt-5">{m['social.friends.none']()}</p>
         {/if}
     </div>
     <Pagination bind:paginatedObject={paginatedFriends} baseUrl={searchBaseUrl} />
@@ -203,16 +190,16 @@
 {/if}
 
 <Modal bind:showModal={showAddFriendsModal} fullWidth>
-    <Subtitle slot="header">{$t('social.friends.add.title')}</Subtitle>
+    <Subtitle slot="header">{m['social.friends.add.title']()}</Subtitle>
     <AddFriends on:updateFriends={updateFriends} />
 </Modal>
 
 <ConfirmModal bind:showModal={showConfirmRemoveFriendModal} on:success={handleRemoveFriend}>
-    <Subtitle slot="header">{$t('social.friends.remove.modal.title')}</Subtitle>
-    <p>{selectedFriend.username} {$t('social.friends.remove.modal.text')}</p>
+    <Subtitle slot="header">{m['social.friends.remove.modal.title']()}</Subtitle>
+    <p>{selectedFriend?.username} {m['social.friends.remove.modal.text']()}</p>
 </ConfirmModal>
 
 <ConfirmModal bind:showModal={showBlockingModal} on:success={handleBlockUser}>
-    <Subtitle slot="header">{$t('social.blocked.modal.title')}</Subtitle>
-    <p>{selectedFriend.username} {$t('social.blocked.modal.text')}</p>
+    <Subtitle slot="header">{m['social.blocked.modal.title']()}</Subtitle>
+    <p>{selectedFriend?.username} {m['social.blocked.modal.text']()}</p>
 </ConfirmModal>

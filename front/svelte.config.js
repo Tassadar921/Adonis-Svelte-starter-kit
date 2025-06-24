@@ -12,6 +12,7 @@ const config = {
         alias: {
             '#menu': './src/menu',
             '#components': './src/components',
+            '#partials': './src/partials',
             '#services': './src/services',
             '#stores': './src/stores',
             '#pages': './src/pages',

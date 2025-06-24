@@ -1,12 +1,12 @@
 <script lang="ts">
-    import Title from '../../../../front/src/components/Title.svelte';
-    import { t } from 'svelte-i18n';
+    import Title from '#components/Title.svelte';
+    import { m } from '$lib/paraglide/messages';
     import { onMount } from 'svelte';
     import axios from 'axios';
-    import { showToast } from '../../../../front/src/services/toastService';
-    import { navigate } from '../../../../front/src/stores/locationStore';
-    import { setProfile } from '../../../../front/src/stores/profileStore';
-    import { MetaTags } from 'svelte-meta-tags';
+    import { showToast } from '#services/toastService';
+    import { navigate } from '#stores/locationStore';
+    import { setProfile } from '#stores/profileStore';
+    import Meta from '#components/Meta.svelte';
 
     export let token;
 
@@ -19,7 +19,7 @@
 
             setProfile(data.user);
             showToast(data.message);
-            navigate('/');
+            await navigate('/');
         } catch (error: any) {
             showToast(error.response.data.message, 'error');
         }
@@ -27,28 +27,11 @@
 </script>
 
 <meta name="robots" content="noindex, nofollow" />
-<MetaTags
-    title={$t('create-account.confirm.meta.title')}
-    description={$t('create-account.confirm.meta.description')}
-    keywords={$t('create-account.confirm.meta.keywords').split(', ')}
-    languageAlternates={[
-        {
-            hrefLang: 'en',
-            href: `${import.meta.env.PUBLIC_FRONT_URI}/en/create-account/confirm/${token}`,
-        },
-        {
-            hrefLang: 'fr',
-            href: `${import.meta.env.PUBLIC_FRONT_URI}/fr/create-account/confirm/${token}`,
-        },
-    ]}
-    openGraph={{
-        title: $t('create-account.confirm.meta.title'),
-        description: $t('create-account.confirm.meta.description'),
-    }}
-    twitter={{
-        title: $t('create-account.confirm.meta.title'),
-        description: $t('create-account.confirm.meta.description'),
-    }}
+<Meta
+    title={m['create-account.confirm.meta.title']()}
+    description={m['create-account.confirm.meta.description']()}
+    keywords={m['create-account.confirm.meta.keywords']().split(', ')}
+    pathname={`/create-account/confirm/${token}`}
 />
 
-<Title title={$t('create-account.confirm.title')} hasBackground={true} />
+<Title title={m['create-account.confirm.title']()} hasBackground />
