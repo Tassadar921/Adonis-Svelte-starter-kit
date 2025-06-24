@@ -10,8 +10,6 @@
         form?: {
             error?: string;
         };
-        method?: 'POST' | 'GET';
-        action?: string;
         isValid?: boolean;
         submittable?: boolean;
         hasBackground?: boolean;

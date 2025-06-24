@@ -1,23 +1,23 @@
 <script lang="ts">
-    import Form from '../../../../front/src/components/Form.svelte';
-    import Input from '../../../../front/src/components/Input.svelte';
-    import Title from '../../../../front/src/components/Title.svelte';
-    import Link from '../../../../front/src/components/Link.svelte';
-    import { profile, setProfile } from '../../../../front/src/stores/profileStore';
-    import { showToast } from '../../../../front/src/services/toastService';
-    import { t } from 'svelte-i18n';
+    import Form from '#components/Form.svelte';
+    import Input from '#components/Input.svelte';
+    import Title from '#components/Title.svelte';
+    import Link from '#components/Link.svelte';
+    import { profile, setProfile } from '#stores/profileStore';
+    import { showToast } from '#services/toastService';
+    import { m } from '$lib/paraglide/messages';
     import { onMount } from 'svelte';
-    import FileUpload from '../../../../front/src/components/FileUpload.svelte';
-    import Breadcrumbs from '../../../../front/src/components/Breadcrumbs.svelte';
+    import FileUpload from '#components/FileUpload.svelte';
+    import Breadcrumbs from '#components/Breadcrumbs.svelte';
     import type SerializedUser from 'adonis-svelte-starter-kit-backend/app/types/serialized/serialized_user';
-    import { MetaTags } from 'svelte-meta-tags';
+    import Meta from '#components/Meta.svelte';
 
-    let formValues: { username: string; email: string } = {
+    let formValues: { username: string; email: string } = $state({
         username: '',
         email: '',
-    };
+    });
     let path: string = '';
-    let canSubmit: boolean = false;
+    let canSubmit: boolean = $state(false);
 
     let profileData: SerializedUser = $profile!;
 
@@ -44,49 +44,29 @@
         };
     };
 
-    $: canSubmit = !!formValues.username && !!formValues.email;
+    $effect((): void => {
+        canSubmit = !!formValues.username && !!formValues.email;
+    });
 </script>
 
-<MetaTags
-    title={$t('profile.meta.title')}
-    description={$t('profile.meta.description')}
-    keywords={$t('profile.meta.keywords').split(', ')}
-    languageAlternates={[
-        {
-            hrefLang: 'en',
-            href: `${import.meta.env.PUBLIC_FRONT_URI}/en/profile`,
-        },
-        {
-            hrefLang: 'fr',
-            href: `${import.meta.env.PUBLIC_FRONT_URI}/fr/profile`,
-        },
-    ]}
-    openGraph={{
-        title: $t('profile.meta.title'),
-        description: $t('profile.meta.description'),
-    }}
-    twitter={{
-        title: $t('profile.meta.title'),
-        description: $t('profile.meta.description'),
-    }}
-/>
+<Meta title={m['profile.meta.title']()} description={m['profile.meta.description']()} keywords={m['profile.meta.keywords']().split(', ')} pathname="/profile" />
 
-<Title title={$t('profile.title')} hasBackground />
+<Title title={m['profile.title']()} hasBackground />
 
-<Breadcrumbs hasBackground items={[{ label: $t('home.title'), path: '/' }, { label: $t('social.title'), path: '/social' }, { label: $t('profile.title') }]} />
+<Breadcrumbs items={[{ label: m['home.title'](), path: '/' }, { label: m['social.title'](), path: '/social' }, { label: m['profile.title']() }]} />
 
-<Form action="/api/profile/update" method="POST" on:success={handleSuccess} on:error={handleError} isValid={canSubmit}>
-    <Input name="username" placeholder={$t('common.username.label')} label={$t('common.username.label')} bind:value={formValues.username} min={3} max={50} />
-    <Input name="email" placeholder={$t('common.email.label')} label={$t('common.email.label')} bind:value={formValues.email} disabled />
+<Form isValid={canSubmit}>
+    <Input name="username" placeholder={m['common.username.label']()} label={m['common.username.label']()} bind:value={formValues.username} min={3} max={50} />
+    <Input name="email" placeholder={m['common.email.label']()} label={m['common.email.label']()} bind:value={formValues.email} disabled />
     <Link href="/reset-password" className="text-primary-500 hover:text-primary-800 transition-colors duration-300">
-        {$t('profile.reset-password')}
+        {m['profile.reset-password']()}
     </Link>
     <FileUpload
         name="profilePicture"
         accept="png jpg gif jpeg webp"
         fileName={profileData.profilePicture?.name}
-        title={$t('profile.profile-picture.title')}
-        description={$t('profile.profile-picture.description')}
+        title={m['profile.profile-picture.title']()}
+        description={m['profile.profile-picture.description']()}
         pathPrefix="profile-picture"
         id={profileData.id}
     />

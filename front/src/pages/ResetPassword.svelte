@@ -1,18 +1,18 @@
 <script lang="ts">
-    import Title from '../../../../front/src/components/Title.svelte';
-    import Form from '../../../../front/src/components/Form.svelte';
-    import Input from '../../../../front/src/components/Input.svelte';
+    import Title from '#components/Title.svelte';
+    import Form from '#components/Form.svelte';
+    import Input from '#components/Input.svelte';
     import { onMount } from 'svelte';
-    import { showToast } from '../../../../front/src/services/toastService';
-    import { t } from 'svelte-i18n';
-    import { profile } from '../../../../front/src/stores/profileStore';
-    import { isValidEmail } from '../../../../front/src/services/checkStringService';
-    import Breadcrumbs from '../../../../front/src/components/Breadcrumbs.svelte';
-    import { MetaTags } from 'svelte-meta-tags';
+    import { showToast } from '#services/toastService';
+    import { m } from '$lib/paraglide/messages';
+    import { profile } from '#stores/profileStore';
+    import { isValidEmail } from '#services/checkStringService';
+    import Breadcrumbs from '#components/Breadcrumbs.svelte';
+    import Meta from '#components/Meta.svelte';
 
-    let email: string = '';
-    let readonly: boolean = false;
-    let canSubmit: boolean = false;
+    let email: string = $state('');
+    let readonly: boolean = $state(false);
+    let canSubmit: boolean = $state(false);
 
     onMount(async (): Promise<void> => {
         if ($profile && $profile.email) {
@@ -25,37 +25,17 @@
         showToast(event.detail.message);
     };
 
-    $: canSubmit = !!email && isValidEmail(email);
+    $effect((): void => {
+        canSubmit = !!email && isValidEmail(email);
+    });
 </script>
 
-<MetaTags
-    title={$t('reset-password.meta.title')}
-    description={$t('reset-password.meta.description')}
-    keywords={$t('reset-password.meta.keywords').split(', ')}
-    languageAlternates={[
-        {
-            hrefLang: 'en',
-            href: `${import.meta.env.PUBLIC_FRONT_URI}/en/reset-password`,
-        },
-        {
-            hrefLang: 'fr',
-            href: `${import.meta.env.PUBLIC_FRONT_URI}/fr/reset-password`,
-        },
-    ]}
-    openGraph={{
-        title: $t('reset-password.meta.title'),
-        description: $t('reset-password.meta.description'),
-    }}
-    twitter={{
-        title: $t('reset-password.meta.title'),
-        description: $t('reset-password.meta.description'),
-    }}
-/>
+<Meta title={m['reset-password.meta.title']()} description={m['reset-password.meta.description']()} keywords={m['reset-password.meta.keywords']().split(', ')} pathname="/reset-password" />
 
-<Title title={$t('reset-password.title')} hasBackground />
+<Title title={m['reset-password.title']()} hasBackground />
 
-<Breadcrumbs hasBackground items={[{ label: $t('home.title'), path: '/' }, { label: $t('reset-password.title') }]} />
+<Breadcrumbs items={[{ label: m['home.title'](), path: '/' }, { label: m['reset-password.title']() }]} />
 
-<Form action="/api/reset-password/send-mail" method="POST" on:success={handleSuccess} isValid={canSubmit}>
-    <Input label={$t('common.email.label')} placeholder={$t('common.email.placeholder')} type="email" name="email" bind:value={email} required {readonly} />
+<Form isValid={canSubmit}>
+    <Input label={m['common.email.label']()} placeholder={m['common.email.placeholder']()} type="email" name="email" bind:value={email} required {readonly} />
 </Form>

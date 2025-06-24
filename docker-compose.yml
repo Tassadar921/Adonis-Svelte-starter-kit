@@ -57,6 +57,7 @@ services:
             - PUBLIC_PORT=${FRONT_PORT}
             - PUBLIC_FRONT_URI=http://frontend:${FRONT_PORT}
             - PUBLIC_API_BASE_URI=http://backend:${PORT}
+            - PUBLIC_API_TRANSMIT_URI=http://localhost:${PORT}
             - PUBLIC_GITHUB_REPOSITORY=${GITHUB_REPOSITORY}
         ports:
             - '${FRONT_PORT}:${FRONT_PORT}'

@@ -1,14 +1,14 @@
 <script lang="ts">
-    import { showToast } from '../../../../front/src/services/toastService';
-    import { navigate } from '../../../../front/src/stores/locationStore';
-    import { clearProfile } from '../../../../front/src/stores/profileStore';
-    import Subtitle from '../../../../front/src/components/Subtitle.svelte';
-    import { t } from 'svelte-i18n';
-    import Title from '../../../../front/src/components/Title.svelte';
-    import ConfirmModal from '../../../../front/src/components/ConfirmModal.svelte';
+    import { showToast } from '#services/toastService';
+    import { navigate } from '#stores/locationStore';
+    import { clearProfile } from '#stores/profileStore';
+    import Subtitle from '#components/Subtitle.svelte';
+    import { m } from '$lib/paraglide/messages';
+    import Title from '#components/Title.svelte';
+    import ConfirmModal from '#components/ConfirmModal.svelte';
     import axios from 'axios';
-    import Breadcrumbs from '../../../../front/src/components/Breadcrumbs.svelte';
-    import { MetaTags } from 'svelte-meta-tags';
+    import Breadcrumbs from '#components/Breadcrumbs.svelte';
+    import Meta from '#components/Meta.svelte';
 
     let showModal: boolean = true;
 
@@ -20,10 +20,10 @@
             localStorage.removeItem('subscribed');
             clearProfile();
             showToast(data.message);
-            navigate('/login');
+            await navigate('/login');
         } catch (error: any) {
             showToast(error.response.data.error, 'error');
-            navigate('/');
+            await navigate('/');
         }
     };
 
@@ -32,35 +32,13 @@
     };
 </script>
 
-<MetaTags
-    title={$t('logout.meta.title')}
-    description={$t('logout.meta.description')}
-    keywords={$t('logout.meta.keywords').split(', ')}
-    languageAlternates={[
-        {
-            hrefLang: 'en',
-            href: `${import.meta.env.PUBLIC_FRONT_URI}/en/logout`,
-        },
-        {
-            hrefLang: 'fr',
-            href: `${import.meta.env.PUBLIC_FRONT_URI}/fr/logout`,
-        },
-    ]}
-    openGraph={{
-        title: $t('logout.meta.title'),
-        description: $t('logout.meta.description'),
-    }}
-    twitter={{
-        title: $t('logout.meta.title'),
-        description: $t('logout.meta.description'),
-    }}
-/>
+<Meta title={m['logout.meta.title']()} description={m['logout.meta.description']()} keywords={m['logout.meta.keywords']().split(', ')} pathname="/logout" />
 
-<Title title={$t('logout.title')} />
+<Title title={m['logout.title']()} />
 
-<Breadcrumbs hasBackground items={[{ label: $t('home.title'), path: '/' }, { label: $t('logout.title') }]} />
+<Breadcrumbs items={[{ label: m['home.title'](), path: '/' }, { label: m['logout.title']() }]} />
 
 <ConfirmModal bind:showModal on:success={handleSuccess} on:close={handleClose}>
-    <Subtitle slot="header">{$t('logout.modal.title')}</Subtitle>
-    <p>{$t('logout.modal.text')}</p>
+    <Subtitle slot="header">{m['logout.modal.title']()}</Subtitle>
+    <p>{m['logout.modal.text']()}</p>
 </ConfirmModal>

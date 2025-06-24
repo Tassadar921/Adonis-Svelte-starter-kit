@@ -34,9 +34,9 @@
         await setupPendingFriendRequests();
     };
 
-    $: {
+    $effect((): void => {
         if ($profile) {
             setup();
         }
-    }
+    });
 </script>

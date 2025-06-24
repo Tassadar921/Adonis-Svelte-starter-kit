@@ -5,6 +5,7 @@
     import { onMount } from 'svelte';
     import Meta from '#components/Meta.svelte';
     import { m } from '$lib/paraglide/messages';
+    import NotificationsSetup from './NotificationsSetup.svelte';
 
     onMount((): void => {
         const theme: string | null = localStorage.getItem('theme');
@@ -16,6 +17,8 @@
 </script>
 
 <Meta title={m['home.meta.title']()} description={m['home.meta.description']()} keywords={m['home.meta.keywords']().split(', ')} />
+
+<NotificationsSetup />
 
 <div class="app">
     <main class="flex flex-col h-screen w-screen">

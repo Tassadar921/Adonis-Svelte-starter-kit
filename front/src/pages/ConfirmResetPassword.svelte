@@ -8,9 +8,9 @@
     import { checkPassword } from '#services/checkStringService';
     import { profile } from '#stores/profileStore';
     import Breadcrumbs from '#components/Breadcrumbs.svelte';
-    import { PUBLIC_FRONT_URI } from '$env/static/public';
     import Meta from '#components/Meta.svelte';
 
+    // TODO inject by +page.ts by token param
     export let token;
 
     let password: string = '';
@@ -27,7 +27,7 @@
         }
     };
 
-    $: {
+    $effect((): void => {
         if (password && confirmPassword) {
             const checkPasswordMessageKey = checkPassword(password, confirmPassword);
             if (checkPasswordMessageKey) {
@@ -37,7 +37,7 @@
                 canSubmit = true;
             }
         }
-    }
+    });
 </script>
 
 <meta name="robots" content="noindex, nofollow" />
@@ -45,16 +45,7 @@
     title={m['reset-password.confirm.meta.title']()}
     description={m['reset-password.confirm.meta.description']()}
     keywords={m['reset-password.confirm.meta.keywords']().split(', ')}
-    languageAlternates={[
-        {
-            hrefLang: 'en',
-            href: `${PUBLIC_FRONT_URI}/en/reset-password/confirm/${token}`,
-        },
-        {
-            hrefLang: 'fr',
-            href: `${PUBLIC_FRONT_URI}/fr/reset-password/confirm/${token}`,
-        },
-    ]}
+    pathname={`/reset-password/confirm/${token}`}
 />
 
 <Title title={m['reset-password.confirm.title']()} hasBackground />
