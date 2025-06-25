@@ -35,20 +35,10 @@
                         <p>{notificationObject.notification.from.username}</p>
                     </div>
                     <div class="flex gap-10 pr-5">
-                        <Button
-                            ariaLabel="Accept as friend"
-                            customStyle
-                            className="transition-colors duration-300 text-green-600 hover:text-green-400"
-                            onclick={() => onaccept(notificationObject)}
-                        >
+                        <Button ariaLabel="Accept as friend" customStyle className="transition-colors duration-300 text-green-600 hover:text-green-400" onclick={() => onaccept(notificationObject)}>
                             <Icon name="confirm" />
                         </Button>
-                        <Button
-                            ariaLabel="Refuse friend request"
-                            customStyle
-                            className="transition-colors duration-300 text-red-600 hover:text-red-400"
-                            onclick={() => onrefuse(notificationObject)}
-                        >
+                        <Button ariaLabel="Refuse friend request" customStyle className="transition-colors duration-300 text-red-600 hover:text-red-400" onclick={() => onrefuse(notificationObject)}>
                             <Icon name="close" />
                         </Button>
                     </div>

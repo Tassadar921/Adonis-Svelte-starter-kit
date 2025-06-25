@@ -17,7 +17,23 @@
         title?: string;
     }
 
-    let { children = () => {}, onclick, onmouseover, onfocus, onblur, onmouseout, type = 'button', disabled = false, id = '', className, additionalStyle, customStyle, ariaLabel, style, title }: Props = $props();
+    let {
+        children = () => {},
+        onclick,
+        onmouseover,
+        onfocus,
+        onblur,
+        onmouseout,
+        type = 'button',
+        disabled = false,
+        id = '',
+        className,
+        additionalStyle,
+        customStyle,
+        ariaLabel,
+        style,
+        title,
+    }: Props = $props();
 </script>
 
 <button
@@ -26,11 +42,11 @@
     {type}
     {title}
     aria-label={ariaLabel}
-    onclick={onclick}
-    onmouseover={onmouseover}
-    onfocus={onfocus}
-    onblur={onblur}
-    onmouseout={onmouseout}
+    {onclick}
+    {onmouseover}
+    {onfocus}
+    {onblur}
+    {onmouseout}
     {style}
     class="{customStyle ? className : `rounded ${disabled ? '' : 'hover:scale-[1.15] text-primary-500 hover:text-primary-300'} transition-all duration-300`} {additionalStyle}"
 >

@@ -35,17 +35,6 @@
     };
 </script>
 
-<a
-    href={isAbsolute ? href : `/${$language}${href}`}
-    aria-label={ariaLabel}
-    {target}
-    class={className}
-    {style}
-    onmouseover={onmouseover}
-    onfocus={onfocus}
-    onblur={onblur}
-    onmouseout={onmouseout}
-    onclick={handleClick}
->
+<a href={isAbsolute ? href : `/${$language}${href}`} aria-label={ariaLabel} {target} class={className} {style} {onmouseover} {onfocus} {onblur} {onmouseout} onclick={handleClick}>
     {@render children()}
 </a>

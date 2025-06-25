@@ -17,7 +17,19 @@
         closable: boolean;
     };
 
-    let { children, header, onopen = () => {}, onsuccess = () => {}, onclose = () => {}, showModal = $bindable(false), closeText = null, successText = '', fullWidth = false, confirm = false, closable = true }: Props = $props();
+    let {
+        children,
+        header,
+        onopen = () => {},
+        onsuccess = () => {},
+        onclose = () => {},
+        showModal = $bindable(false),
+        closeText = null,
+        successText = '',
+        fullWidth = false,
+        confirm = false,
+        closable = true,
+    }: Props = $props();
 
     let initialFullWidth: boolean = fullWidth;
     let dialog: HTMLDialogElement;
@@ -58,11 +70,7 @@
     });
 </script>
 
-<dialog
-    bind:this={dialog}
-    onclose={handleCancel}
-    class="fixed inset-0 z-50 flex items-center justify-center backdrop:bg-black/50 open:animate-[zoom_0.3s_cubic-bezier(0.34,1.56,0.64,1)]"
->
+<dialog bind:this={dialog} onclose={handleCancel} class="fixed inset-0 z-50 flex items-center justify-center backdrop:bg-black/50 open:animate-[zoom_0.3s_cubic-bezier(0.34,1.56,0.64,1)]">
     <div class={`relative bg-white dark:bg-gray-700 rounded-lg p-4 ${fullWidth ? 'w-[90%]' : 'w-1/2'}`}>
         {#if closable}
             <Button ariaLabel={m['common.close-modal']()} className="fixed inset-0 w-full h-full cursor-default" customStyle onclick={handleClose} />
