@@ -1,16 +1,19 @@
 <script lang="ts">
     import Button from '#components/Button.svelte';
-    import { createEventDispatcher } from 'svelte';
     import Subtitle from '#components/Subtitle.svelte';
     import type SerializedPendingFriend from 'adonis-svelte-starter-kit-backend/app/types/serialized/serialized_pending_friend';
     import Icon from '#components/Icon.svelte';
     import { PUBLIC_API_BASE_URI, PUBLIC_DEFAULT_IMAGE } from '$env/static/public';
 
-    const dispatch = createEventDispatcher();
+    interface Props {
+        onaccept: (pendingFriend: SerializedPendingFriend) => void;
+        onrefuse: (pendingFriend: SerializedPendingFriend) => void;
+        title: string;
+        notifications: SerializedPendingFriend[];
+        noneMessage: string;
+    }
 
-    export let title;
-    export let notifications: SerializedPendingFriend[] = [];
-    export let noneMessage: string;
+    let { onaccept, onrefuse, title, notifications = $bindable([]), noneMessage }: Props = $props();
 </script>
 
 <div class="flex flex-col gap-5 my-5 p-5 overflow-y-scroll scrollbar-hide max-h-[400px]">
@@ -36,7 +39,7 @@
                             ariaLabel="Accept as friend"
                             customStyle
                             className="transition-colors duration-300 text-green-600 hover:text-green-400"
-                            on:click={() => dispatch('accept', notificationObject)}
+                            onclick={() => onaccept(notificationObject)}
                         >
                             <Icon name="confirm" />
                         </Button>
@@ -44,7 +47,7 @@
                             ariaLabel="Refuse friend request"
                             customStyle
                             className="transition-colors duration-300 text-red-600 hover:text-red-400"
-                            on:click={() => dispatch('refuse', notificationObject)}
+                            onclick={() => onrefuse(notificationObject)}
                         >
                             <Icon name="close" />
                         </Button>

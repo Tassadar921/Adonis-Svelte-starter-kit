@@ -1,12 +1,14 @@
 <script lang="ts">
-    import { onMount } from 'svelte';
+    interface Props {
+        title: string;
+        hasBackground?: boolean;
+    }
 
-    export let title: string;
-    export let hasBackground: boolean = false;
+    let { title, hasBackground = false }: Props = $props();
 </script>
 
 <svelte:head>
     <title>{title}</title>
 </svelte:head>
 
-<h1 class="relative z-10 text-3xl {hasBackground ? 'text-white' : ''} font-bold mb-2">{title}</h1>
+<h1 class:dark:text-white={hasBackground} class="relative z-10 text-3xl font-bold mb-2">{title}</h1>

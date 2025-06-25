@@ -4,17 +4,19 @@
 
     type Props = {
         children: () => any;
-        header: () => any;
+        onopen: () => void;
+        onsuccess: () => void;
+        onclose: () => void;
         showModal: boolean;
         closable: boolean;
         fullWidth?: boolean;
         successText?: string;
     };
 
-    let { children, header, showModal, closable, fullWidth = false, successText = m['common.yes']() }: Props = $props();
+    let { children, onopen, onsuccess, onclose, showModal = $bindable(), closable = true, fullWidth = false, successText = m['common.yes']() }: Props = $props();
 </script>
 
-<Modal bind:showModal {successText} closeText={m['common.no']()} {closable} confirm {fullWidth} on:success on:close>
+<Modal bind:showModal {successText} closeText={m['common.no']()} {closable} confirm {fullWidth} {onopen} {onsuccess} {onclose}>
     {#snippet header()}
         {@render header()}
     {/snippet}

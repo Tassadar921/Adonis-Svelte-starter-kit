@@ -10,13 +10,16 @@
     import Breadcrumbs from '#components/Breadcrumbs.svelte';
     import Meta from '#components/Meta.svelte';
 
-    // TODO inject by +page.ts by token param
-    export let token;
+    interface Props {
+        token: string;
+    }
 
-    let password: string = '';
-    let confirmPassword: string = '';
-    let canSubmit: boolean = false;
-    let message: string = '';
+    let { token }: Props = $props();
+
+    let password: string = $state('');
+    let confirmPassword: string = $state('');
+    let canSubmit: boolean = $state(false);
+    let message: string = $state('');
 
     const handleSuccess = (event: CustomEvent): void => {
         showToast(event.detail.message);

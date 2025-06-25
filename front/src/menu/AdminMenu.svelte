@@ -5,11 +5,15 @@
 </script>
 
 <MenuItem href="/admin/dashboard" on:click>
-    <Icon name="home" slot="iconLeft" />
+    {#snippet iconLeft()}
+        <Icon name="home" />
+    {/snippet}
     {m['admin.dashboard.title']()}
 </MenuItem>
 
 <MenuItem href="/admin/users" on:click>
-    <Icon name="user" slot="iconLeft" />
+    {#snippet iconLeft()}
+        <Icon name="user" />
+    {/snippet}
     {m['admin.users.title']()}
 </MenuItem>

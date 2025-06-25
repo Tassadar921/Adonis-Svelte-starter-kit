@@ -3,12 +3,16 @@
 
     const dispatch = createEventDispatcher();
 
-    export let value: boolean = false;
-    export let size: number = 2;
-    export let disabled: boolean = false;
-    export let label: string = '';
-    export let name: string = '';
-    export let required: boolean = false;
+    interface Props {
+        value?: boolean;
+        size?: number;
+        disabled?: boolean;
+        label?: string;
+        name?: string;
+        required?: boolean;
+    }
+
+    let { value = $bindable(false), size = 2, disabled = false, label = '', name = '', required = false }: Props = $props();
 
     const handleToggleChange = (event: Event) => {
         const target = event.target as HTMLInputElement;
@@ -18,11 +22,11 @@
 </script>
 
 {#if name}
-    <input type="checkbox" {name} bind:checked={value} {required} class="sr-only peer" style="position: absolute; opacity: 0; pointer-events: none;" />
+    <input type="checkbox" {name} bind:checked={value} {required} class="absolute opacity-0 cursor-pointer sr-only peer" />
 {/if}
 <div class="flex gap-3">
-    <label class="inline-flex items-center {disabled ? '' : 'cursor-pointer'}">
-        <input type="checkbox" on:change={handleToggleChange} class="sr-only peer" bind:checked={value} {disabled} aria-required={required} />
+    <label class:cursor-pointer={!disabled} class="inline-flex items-center">
+        <input type="checkbox" onchange={handleToggleChange} class="sr-only peer" bind:checked={value} {disabled} aria-required={required} />
         <span
             class="relative w-[{size * 8}px] h-[{size * 4 -
                 2}px] border border-gray-600 bg-gray-400 dark:bg-gray-500 peer-focus:outline-none peer-focus:ring-2 peer-focus:ring-gray-500 rounded-full peer peer-checked:bg-primary-600 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white toggle-circle"
@@ -38,7 +42,11 @@
         </span>
     </label>
     {#if label}
-        <p class={value ? 'duration-300 transition-colors text-primary-500' : ''}>
+        <p
+            class:duration-300={value}
+            class:transition-colors={value}
+            class:text-primary-500={value}
+        >
             {label}
             {#if required}
                 <span class="text-red-500">*</span>

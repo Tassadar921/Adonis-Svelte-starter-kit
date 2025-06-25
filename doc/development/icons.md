@@ -12,7 +12,11 @@ The icons are in SVG format and are used in the frontend of Adonis & Svelte Star
 
     ```sveltehtml
     <script lang="ts">
-        export let size: number = 24;
+        interface Props {
+            size?: number;
+        }
+
+        let { size = 24 }: Props = $props();
     </script>
     ```
 

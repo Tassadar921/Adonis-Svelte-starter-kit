@@ -1,6 +1,13 @@
 <script lang="ts">
-    export let style: string = '';
-    export let className: string = 'text-xl font-bold relative';
+    interface Props {
+        children: () => any;
+        style?: string;
+        className?: string;
+    }
+
+    let { children, style = '', className = 'text-xl font-bold relative' }: Props = $props();
 </script>
 
-<h2 {style} class={className}><slot /></h2>
+<h2 {style} class={className}>
+    {@render children()}
+</h2>

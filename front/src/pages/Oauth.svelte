@@ -10,7 +10,11 @@
     import Meta from '#components/Meta.svelte';
     import { PUBLIC_FRONT_URI } from '$env/static/public';
 
-    export let apiToken: string;
+    interface Props {
+        apiToken: string;
+    }
+
+    let { apiToken }: Props = $props();
 
     let apiTokenExpiration: string;
 

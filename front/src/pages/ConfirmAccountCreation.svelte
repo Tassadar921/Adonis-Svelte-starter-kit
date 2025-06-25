@@ -8,7 +8,11 @@
     import { setProfile } from '#stores/profileStore';
     import Meta from '#components/Meta.svelte';
 
-    export let token;
+    interface Props {
+        token: string;
+    }
+
+    let { token }: Props = $props();
 
     onMount(async () => {
         try {

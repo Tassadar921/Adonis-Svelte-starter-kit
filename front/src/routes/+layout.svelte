@@ -7,6 +7,12 @@
     import { m } from '$lib/paraglide/messages';
     import NotificationsSetup from './NotificationsSetup.svelte';
 
+    interface Props {
+        children: () => any;
+    }
+
+    let { children }: Props = $props();
+
     onMount((): void => {
         const theme: string | null = localStorage.getItem('theme');
         document.documentElement.classList.toggle('dark', theme === 'dark');
@@ -23,7 +29,7 @@
 <div class="app">
     <main class="flex flex-col h-screen w-screen">
         <Menu />
-        <slot />
+        {@render children()}
     </main>
 
     <Footer />

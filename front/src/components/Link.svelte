@@ -1,15 +1,22 @@
 <script lang="ts">
     import { navigate } from '#stores/locationStore';
-    import { createEventDispatcher } from 'svelte';
     import { language } from '#stores/languageStore';
 
-    const dispatch = createEventDispatcher();
+    interface Props {
+        children: () => any;
+        onclick?: (event: MouseEvent) => void;
+        onmouseover?: (event: MouseEvent) => void;
+        onfocus?: (event: FocusEvent) => void;
+        onblur?: (event: FocusEvent) => void;
+        onmouseout?: (event: MouseEvent) => void;
+        href?: string;
+        className?: string;
+        target?: string;
+        ariaLabel?: string;
+        style?: string;
+    }
 
-    export let href: string = '';
-    export let className: string = '';
-    export let target: string = '';
-    export let ariaLabel: string = '';
-    export let style: string = '';
+    let { children, onclick, onmouseover, onfocus, onblur, onmouseout, href = '', className, target, ariaLabel, style }: Props = $props();
 
     let isAbsolute: boolean = href.startsWith('http://') || href.startsWith('https://');
 
@@ -17,7 +24,7 @@
         if (target === '' || target === '_self') {
             event.preventDefault();
             if (href) {
-                dispatch('click');
+                onclick?.(event);
                 if (isAbsolute) {
                     window.open(href, target);
                 } else {
@@ -28,6 +35,17 @@
     };
 </script>
 
-<a href={isAbsolute ? href : `/${$language}${href}`} aria-label={ariaLabel} {target} class={className} {style} on:mouseenter on:mouseleave on:focus on:blur on:click={handleClick}>
-    <slot />
+<a
+    href={isAbsolute ? href : `/${$language}${href}`}
+    aria-label={ariaLabel}
+    {target}
+    class={className}
+    {style}
+    onmouseover={onmouseover}
+    onfocus={onfocus}
+    onblur={onblur}
+    onmouseout={onmouseout}
+    onclick={handleClick}
+>
+    {@render children()}
 </a>

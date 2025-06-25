@@ -4,7 +4,11 @@
     import { profile } from '#stores/profileStore';
     import Icon from '#components/Icon.svelte';
 
-    export let footer: boolean = false;
+    interface Props {
+        footer?: boolean;
+    }
+
+    let { footer = false }: Props = $props();
 </script>
 
 <ul class:space-y-4={!footer} class="p-4">

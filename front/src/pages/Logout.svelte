@@ -9,6 +9,8 @@
     import axios from 'axios';
     import Breadcrumbs from '#components/Breadcrumbs.svelte';
     import Meta from '#components/Meta.svelte';
+    import MenuItem from "#menu/MenuItem.svelte";
+    import Icon from "#components/Icon.svelte";
 
     let showModal: boolean = true;
 
@@ -38,7 +40,10 @@
 
 <Breadcrumbs items={[{ label: m['home.title'](), path: '/' }, { label: m['logout.title']() }]} />
 
-<ConfirmModal bind:showModal on:success={handleSuccess} on:close={handleClose}>
-    <Subtitle slot="header">{m['logout.modal.title']()}</Subtitle>
+<ConfirmModal bind:showModal onsuccess={handleSuccess} onclose={handleClose}>
     <p>{m['logout.modal.text']()}</p>
+
+    {#snippet header()}
+        <Subtitle>{m['logout.modal.title']()}</Subtitle>
+    {/snippet}
 </ConfirmModal>

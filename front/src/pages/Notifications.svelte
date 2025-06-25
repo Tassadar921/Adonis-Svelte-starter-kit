@@ -8,13 +8,14 @@
     import axios from 'axios';
     import { showToast } from '#services/toastService';
     import Meta from '#components/Meta.svelte';
+    import type SerializedPendingFriend from 'adonis-svelte-starter-kit-backend/app/types/serialized/serialized_pending_friend';
 
     let isLoading: boolean = false;
 
-    const handleAcceptPendingRequest = async (event: CustomEvent): Promise<void> => {
+    const handleAcceptPendingRequest = async (pendingFriend: SerializedPendingFriend): Promise<void> => {
         try {
-            const { data } = await axios.post('/api/friends/accept', { userId: event.detail.from.id });
-            removeNotification(event.detail, 'friendRequests');
+            const { data } = await axios.post('/api/friends/accept', { userId: pendingFriend.friend.id });
+            removeNotification(pendingFriend, 'friendRequests');
             showToast(data.message, 'success', '/friends');
             if ($notifications.friendRequests.length <= 3) {
                 await setPendingFriendRequests();
@@ -24,10 +25,10 @@
         }
     };
 
-    const handleRefusePendingRequest = async (event: CustomEvent): Promise<void> => {
+    const handleRefusePendingRequest = async (pendingFriend: SerializedPendingFriend): Promise<void> => {
         try {
-            const { data } = await axios.post('/api/friends/refuse', { userId: event.detail.from.id });
-            removeNotification(event.detail, 'friendRequests');
+            const { data } = await axios.post('/api/friends/refuse', { userId: pendingFriend.friend.id });
+            removeNotification(pendingFriend, 'friendRequests');
             showToast(data.message, 'success', '/friends');
             if ($notifications.friendRequests.length <= 3) {
                 await setPendingFriendRequests();
@@ -51,7 +52,7 @@
         bind:notifications={$notifications.friendRequests}
         title={m['notifications.friend-requests.title']()}
         noneMessage={m['notifications.friend-requests.none']()}
-        on:accept={handleAcceptPendingRequest}
-        on:refuse={handleRefusePendingRequest}
+        onaccept={handleAcceptPendingRequest}
+        onrefuse={handleRefusePendingRequest}
     />
 </div>

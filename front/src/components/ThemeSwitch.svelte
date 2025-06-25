@@ -3,11 +3,7 @@
     import Icon from '#components/Icon.svelte';
     import { onMount } from 'svelte';
 
-    export let title: string = '';
-
-    let checked: boolean = false;
-
-    const switchSize: number = 4;
+    let checked: boolean = $state(false);
 
     onMount((): void => {
         checked = localStorage.getItem('theme') === 'dark';
@@ -19,18 +15,12 @@
     };
 </script>
 
-{#if title}
-    <div class="legend font-bold mb-2">
-        <p>{title}</p>
-    </div>
-{/if}
-
 <div class="flex items-center gap-0.5">
-    <span class={checked ? 'dark:text-white' : 'text-primary-500'}>
+    <span class:dark:text-white={checked} class:text-primary-500={!checked}>
         <Icon name="sun" size={20} />
     </span>
-    <Switch size={switchSize} bind:value={checked} on:change={handleToggleChange} />
-    <span class={checked ? 'text-primary-500' : 'dark:text-white'}>
+    <Switch size={4} bind:value={checked} on:change={handleToggleChange} />
+    <span class:text-primary-500={checked} class:dark:text-white={!checked}>
         <Icon name="moon" size={20} />
     </span>
 </div>

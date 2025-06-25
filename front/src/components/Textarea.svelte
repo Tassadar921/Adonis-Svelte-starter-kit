@@ -1,27 +1,29 @@
 <script lang="ts">
-    export let value: string = '';
-    export let placeholder: string;
-    export let name: string;
-    export let required: boolean = false;
-    export let disabled: boolean = false;
-    export let label: string;
-    export let min: number | null = null;
-    export let max: number | null = null;
+    interface Props {
+        value?: string;
+        placeholder: string;
+        name: string;
+        required?: boolean;
+        disabled?: boolean;
+        label: string;
+        min?: number;
+        max?: number;
+    }
+
+    let { value = $bindable(''), placeholder, name, required = false, disabled = false, label, min, max }: Props = $props();
 
     interface InputAttributes {
         maxlength?: number;
         minlength?: number;
     }
 
-    let focused: boolean = false;
+    let focused: boolean = $state(false);
 
-    const classes: string = `block w-full px-3 py-2 mt-1 text-base text-gray-800 placeholder-gray-500 border border-gray-300 rounded-md shadow-xs focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm ${
-        disabled ? 'bg-gray-300 dark:bg-gray-500' : ''
-    }`;
+    const classes: string = ``;
 
     const inputAttributes: InputAttributes = {
-        ...(min !== null && { minlength: min }),
-        ...(max !== null && { maxlength: max }),
+        ...(min !== undefined && { minlength: min }),
+        ...(max !== undefined && { maxlength: max }),
     };
 </script>
 
@@ -39,14 +41,16 @@
     </label>
 
     <textarea
-        on:focus={() => (focused = true)}
-        on:blur={() => (focused = false)}
+        onfocus={() => (focused = true)}
+        onblur={() => (focused = false)}
         bind:value
         placeholder={focused || value ? placeholder : ''}
         {name}
         {required}
         {disabled}
-        class={classes}
+        class:bg-gray-300={disabled}
+        class:dark:bg-gray-500={disabled}
+        class="block w-full px-3 py-2 mt-1 text-base text-gray-800 placeholder-gray-500 border border-gray-300 rounded-md shadow-xs focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
         {...inputAttributes}
     ></textarea>
     {#if inputAttributes.minlength && value.length < inputAttributes.minlength}

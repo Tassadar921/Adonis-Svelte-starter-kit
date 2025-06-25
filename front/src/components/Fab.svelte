@@ -36,7 +36,7 @@
     const validVertical = ['top', 'bottom', 'center'];
 
     const buttonClasses: string = `text-white shadow-lg flex items-center justify-center  size-10 rounded-full
-        transition-colors duration-300
+        transition-colors duration-300 z[5000]
         ${verticalClasses[vertical]}
         ${horizontalClasses[horizontal]}
         ${colorClasses[color] ?? colorClasses['primary']}`;
@@ -47,7 +47,7 @@
     });
 </script>
 
-<button aria-label={ariaLabel} style="z-index: 5000" class={buttonClasses} disabled={isLoading}>
+<button aria-label={ariaLabel} class={buttonClasses} disabled={isLoading}>
     {#key isLoading}
         <Icon name={isLoading ? 'spinner' : icon} size={isLoading ? 30 : undefined} />
     {/key}

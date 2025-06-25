@@ -1,5 +1,9 @@
 <script lang="ts">
-    export let size: number = 24;
+    interface Props {
+        size?: number;
+    }
+
+    let { size = 24 }: Props = $props();
 </script>
 
 <svg class="transition-all duration-300" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width={size} height={size} fill="none" viewBox="0 0 100 100">

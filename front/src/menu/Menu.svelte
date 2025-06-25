@@ -33,7 +33,7 @@
     <div class="mt-3">
         <!-- Bind the button element reference -->
         <div bind:this={buttonContainerElement}>
-            <Button id="menu-button" customStyle className={`text-primary-500 hover:text-primary-800 duration-300 transition-colors ${isOpen ? 'opacity-0' : ''}`} onclick={() => (isOpen = !isOpen)}>
+            <Button id="menu-button" customStyle className="text-primary-500 hover:text-primary-800 duration-300 transition-colors {isOpen ? 'opacity-0' : ''}" onclick={() => (isOpen = !isOpen)}>
                 <Icon name="burger" />
             </Button>
         </div>
@@ -41,8 +41,8 @@
         <!-- Bind the menu element reference -->
         <nav
             id="menu"
-            class="fixed top-0 left-0 w-64 h-full bg-gray-700 dark:bg-gray-800 text-white transform transition-transform duration-300 ease-in-out {isOpen ? '' : '-translate-x-full'}"
-            style="z-index: 10000"
+            class:-translate-x-full={!isOpen}
+            class="fixed top-0 left-0 w-64 h-full bg-gray-700 dark:bg-gray-800 text-white transform transition-transform duration-300 ease-in-out z-[9999]"
             bind:this={menuElement}
         >
             <div class="flex justify-between items-center p-4">

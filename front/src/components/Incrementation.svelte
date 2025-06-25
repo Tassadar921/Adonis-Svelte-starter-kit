@@ -4,15 +4,19 @@
     import Icon from '#components/Icon.svelte';
     import { formatGameNumbers } from '#services/stringService';
 
-    export let value: number = 0;
-    export let smallStep: number;
-    export let largeStep: number;
-    export let smallShiftStep: number;
-    export let largeShiftStep: number;
-    export let canDecrement: boolean;
-    export let canIncrement: boolean;
-    export let canBeZero: boolean = false;
-    export let name = '';
+    interface Props {
+        value?: number;
+        smallStep: number;
+        largeStep: number;
+        smallShiftStep: number;
+        largeShiftStep: number;
+        canDecrement: boolean;
+        canIncrement: boolean;
+        canBeZero?: boolean;
+        name: string;
+    }
+
+    let { value = 0, smallStep, largeStep, smallShiftStep, largeShiftStep, canDecrement, canIncrement, canBeZero = false, name }: Props = $props();
 
     const applyStep = (step: number, shiftStep: number, direction: 'inc' | 'dec', shiftKey: boolean) => {
         const appliedStep = shiftKey ? shiftStep : step;
@@ -76,12 +80,12 @@
 
 <div class="my-2 flex gap-3 justify-center items-center">
     <!-- Large Decrement -->
-    <Button disabled={!canDecrement} on:click={(e) => handleClick(e, largeStep, largeShiftStep, 'dec')}>
+    <Button disabled={!canDecrement} onclick={(event: MouseEvent) => handleClick(event, largeStep, largeShiftStep, 'dec')}>
         <Icon name="doubleChevronLeft" />
     </Button>
 
     <!-- Small Decrement -->
-    <Button disabled={!canDecrement} on:click={(e) => handleClick(e, smallStep, smallShiftStep, 'dec')}>
+    <Button disabled={!canDecrement} onclick={(event: MouseEvent) => handleClick(event, smallStep, smallShiftStep, 'dec')}>
         <Icon name="chevronLeft" />
     </Button>
 
@@ -91,12 +95,12 @@
     </p>
 
     <!-- Small Increment -->
-    <Button disabled={!canIncrement} on:click={(e) => handleClick(e, smallStep, smallShiftStep, 'inc')}>
+    <Button disabled={!canIncrement} onclick={(event: MouseEvent) => handleClick(event, smallStep, smallShiftStep, 'inc')}>
         <Icon name="chevronRight" />
     </Button>
 
     <!-- Large Increment -->
-    <Button disabled={!canIncrement} on:click={(e) => handleClick(e, largeStep, largeShiftStep, 'inc')}>
+    <Button disabled={!canIncrement} onclick={(event: MouseEvent) => handleClick(event, largeStep, largeShiftStep, 'inc')}>
         <Icon name="doubleChevronRight" />
     </Button>
 </div>
