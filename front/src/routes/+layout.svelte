@@ -8,7 +8,7 @@
     import NotificationsSetup from './NotificationsSetup.svelte';
 
     interface Props {
-        children: () => any;
+        children: import('svelte').Snippet;
     }
 
     let { children }: Props = $props();

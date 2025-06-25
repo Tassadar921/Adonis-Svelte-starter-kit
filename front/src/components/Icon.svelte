@@ -76,7 +76,7 @@
         size?: number;
     };
 
-    let { name, size = 24 }: Props = $props();
+    let { name = $bindable(), size = 24 }: Props = $props();
 
     let currentName: string = '';
 

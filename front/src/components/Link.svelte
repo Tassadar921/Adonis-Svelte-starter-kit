@@ -3,7 +3,7 @@
     import { language } from '#stores/languageStore';
 
     interface Props {
-        children: () => any;
+        children: import('svelte').Snippet;
         onclick?: (event: MouseEvent) => void;
         onmouseover?: (event: MouseEvent) => void;
         onfocus?: (event: FocusEvent) => void;

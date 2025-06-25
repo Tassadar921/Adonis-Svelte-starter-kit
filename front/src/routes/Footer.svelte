@@ -1,6 +1,6 @@
 <script lang="ts">
     import MenuItem from '#menu/MenuItem.svelte';
-    import FooterMenu from '#menu/FooterMenu.svelte';
+    import CommonMenu from '#menu/CommonMenu.svelte';
     import { m } from '$lib/paraglide/messages';
     import Icon from '#components/Icon.svelte';
     import { PUBLIC_GITHUB_REPOSITORY } from '$env/static/public';
@@ -17,7 +17,7 @@
             </ul>
         </div>
         <div class="px-1">
-            <FooterMenu />
+            <CommonMenu />
         </div>
         <div class="px-1">
             <ul class="p-4">

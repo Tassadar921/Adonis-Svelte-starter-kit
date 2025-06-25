@@ -1,6 +1,6 @@
 <script lang="ts">
     type Props = {
-        children: () => any;
+        children: import('svelte').Snippet;
         show: boolean;
         target: HTMLElement;
     };

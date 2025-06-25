@@ -3,7 +3,7 @@
     import { m } from '$lib/paraglide/messages';
 
     type Props = {
-        children: () => any;
+        children: import('svelte').Snippet;
         onopen: () => void;
         onsuccess: () => void;
         onclose: () => void;

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Button from '#components/Button.svelte';
+    import { Button } from '$lib/components/ui/button/index';
     import axios from 'axios';
     import Loader from '#components/Loader.svelte';
     import Icon from '#components/Icon.svelte';
@@ -52,11 +52,11 @@
     {#if paginatedObject.currentPage}
         {#if !isLoading}
             <!-- First Page Button -->
-            <Button disabled={!canGoBack} on:click={() => handleClick(paginatedObject.firstPage, paginatedObject.perPage)}>
+            <Button disabled={!canGoBack} onclick={() => handleClick(paginatedObject.firstPage, paginatedObject.perPage)}>
                 <Icon name="doubleChevronLeft" />
             </Button>
             <!-- Previous Page Button -->
-            <Button disabled={!canGoBack} on:click={() => handleClick(paginatedObject.currentPage - 1, paginatedObject.perPage)}>
+            <Button disabled={!canGoBack} onclick={() => handleClick(paginatedObject.currentPage - 1, paginatedObject.perPage)}>
                 <Icon name="arrowLeft" />
             </Button>
             <!-- Page Indicator -->
@@ -64,11 +64,11 @@
                 {paginatedObject.currentPage} / {paginatedObject.lastPage}
             </p>
             <!-- Next Page Button -->
-            <Button disabled={!canGoForward} on:click={() => handleClick(paginatedObject.currentPage + 1, paginatedObject.perPage)}>
+            <Button disabled={!canGoForward} onclick={() => handleClick(paginatedObject.currentPage + 1, paginatedObject.perPage)}>
                 <Icon name="chevronRight" />
             </Button>
             <!-- Last Page Button -->
-            <Button disabled={!canGoForward} on:click={() => handleClick(paginatedObject.lastPage, paginatedObject.perPage)}>
+            <Button disabled={!canGoForward} onclick={() => handleClick(paginatedObject.lastPage, paginatedObject.perPage)}>
                 <Icon name="doubleChevronRight" />
             </Button>
         {:else}

@@ -1,26 +1,15 @@
 <script lang="ts">
-    import Switch from '#components/Switch.svelte';
-    import Icon from '#components/Icon.svelte';
-    import { onMount } from 'svelte';
+    import { Moon, Sun } from '@lucide/svelte';
+    import { ModeWatcher } from 'mode-watcher';
 
-    let checked: boolean = $state(false);
-
-    onMount((): void => {
-        checked = localStorage.getItem('theme') === 'dark';
-    });
-
-    const handleToggleChange = () => {
-        localStorage.setItem('theme', checked ? 'dark' : 'light');
-        document.documentElement.classList.toggle('dark', checked);
-    };
+    import { toggleMode } from 'mode-watcher';
+    import { Button } from '$lib/components/ui/button/index.js';
 </script>
 
-<div class="flex items-center gap-0.5">
-    <span class:dark:text-white={checked} class:text-primary-500={!checked}>
-        <Icon name="sun" size={20} />
-    </span>
-    <Switch size={4} bind:value={checked} on:change={handleToggleChange} />
-    <span class:text-primary-500={checked} class:dark:text-white={!checked}>
-        <Icon name="moon" size={20} />
-    </span>
-</div>
+<ModeWatcher />
+
+<Button onclick={toggleMode} variant="outline" size="icon">
+    <Sun class="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+    <Moon class="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+    <span class="sr-only">Toggle theme</span>
+</Button>

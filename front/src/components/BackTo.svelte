@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Button from '#components/Button.svelte';
+    import { Button } from '$lib/components/ui/button/index';
     import Link from '#components/Link.svelte';
     import Icon from '#components/Icon.svelte';
 

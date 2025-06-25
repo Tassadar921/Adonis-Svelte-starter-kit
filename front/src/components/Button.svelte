@@ -1,6 +1,6 @@
 <script lang="ts">
     interface Props {
-        children: () => any;
+        children: import('svelte').Snippet;
         onclick?: (event: MouseEvent) => void;
         onmouseover?: (event: MouseEvent) => void;
         onfocus?: (event: FocusEvent) => void;

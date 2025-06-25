@@ -5,8 +5,8 @@
     import FormBackground from '#components/background/FormBackground.svelte';
 
     type Props = {
-        children: () => any;
-        otherOption?: () => any;
+        children: import('svelte').Snippet;
+        otherOption?: import('svelte').Snippet;
         form?: {
             error?: string;
         };
