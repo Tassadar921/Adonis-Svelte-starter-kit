@@ -1,6 +1,5 @@
 <script lang="ts">
     import '../app.css';
-    import Footer from './Footer.svelte';
     import Menu from '#menu/Menu.svelte';
     import { onMount } from 'svelte';
     import Meta from '#components/Meta.svelte';
@@ -27,10 +26,9 @@
 <NotificationsSetup />
 
 <div class="app">
-    <main class="flex flex-col h-screen w-screen">
-        <Menu />
-        {@render children()}
+    <main class="flex flex-col w-screen">
+        <Menu>
+            {@render children()}
+        </Menu>
     </main>
-
-    <Footer />
 </div>

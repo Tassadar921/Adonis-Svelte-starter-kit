@@ -1,7 +1,6 @@
 <script lang="ts">
     import { Button } from '$lib/components/ui/button/index';
-    import Link from '#components/Link.svelte';
-    import Icon from '#components/Icon.svelte';
+    import { ArrowLeft } from '@lucide/svelte';
 
     type Props = {
         href?: string;
@@ -11,13 +10,7 @@
     let { href, text }: Props = $props();
 </script>
 
-<Button>
-    <Link {href}>
-        <div class="inline-block">
-            <div class="flex gap-1">
-                <Icon name="arrowLeft" />
-                <p>{text}</p>
-            </div>
-        </div>
-    </Link>
+<Button variant="link" {href} class="flex items-center">
+    <ArrowLeft class="mb-0.5" />
+    <p>{text}</p>
 </Button>

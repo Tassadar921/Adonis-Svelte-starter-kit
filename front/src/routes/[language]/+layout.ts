@@ -6,7 +6,7 @@ import axios from '$lib/api';
 import { supportedLanguages } from '#services/languageService';
 
 export const load: LayoutLoad = async ({ params, url }): Promise<{ language: LanguageCode }> => {
-    const languageCode: string = params.language;
+    const languageCode: string = params.language.replace('/', '');
 
     if (!supportedLanguages.includes(languageCode)) {
         throw redirect(307, `/en${url.pathname}`);

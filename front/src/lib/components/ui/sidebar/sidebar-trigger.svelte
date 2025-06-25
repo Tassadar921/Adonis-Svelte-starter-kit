@@ -1,9 +1,9 @@
 <script lang="ts">
     import { Button } from '$lib/components/ui/button/index.js';
     import { cn } from '$lib/utils.js';
-    import PanelLeftIcon from '@lucide/svelte/icons/panel-left';
     import type { ComponentProps } from 'svelte';
     import { useSidebar } from './context.svelte.js';
+    import { Menu } from '@lucide/svelte';
 
     let {
         ref = $bindable(),
@@ -23,7 +23,7 @@
     };
 </script>
 
-<Button bind:ref data-sidebar="trigger" data-slot="sidebar-trigger" variant="ghost" size="icon" class={cn('size-7', className)} type="button" onclick={handleClick} {...restProps}>
-    <PanelLeftIcon />
+<Button bind:ref data-sidebar="trigger" data-slot="sidebar-trigger" variant="ghost" size="icon" class={className} type="button" onclick={handleClick} {...restProps}>
+    <Menu class="size-8" />
     <span class="sr-only">Toggle Sidebar</span>
 </Button>
