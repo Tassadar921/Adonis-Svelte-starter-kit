@@ -3,6 +3,8 @@
     import Icon from '#components/Icon.svelte';
     import { m } from '$lib/paraglide/messages';
     import FormBackground from '#components/background/FormBackground.svelte';
+    import { Button } from '$lib/components/ui/button';
+    import { SendHorizontal } from '@lucide/svelte';
 
     type Props = {
         children: import('svelte').Snippet;
@@ -42,19 +44,14 @@
                 <div>
                     {@render otherOption?.()}
                 </div>
-                <button
-                    type="submit"
-                    disabled={isSendButtonDisabled}
-                    class:hover:bg-green-700={!isSendButtonDisabled}
-                    class="bg-green-600 transition-all duration-300 px-5 py-1.5 rounded-xl text-2xl font-bold flex justify-center items-center gap-3 w-40"
-                >
+                <Button type="submit" disabled={isSendButtonDisabled} size="lg">
                     {#if isLoading}
                         <Icon name="spinner" size={40} />
                     {:else}
                         <p class="text-white">{m['common.submit']()}</p>
-                        <span class="text-primary-400"><Icon name="send" /></span>
+                        <SendHorizontal />
                     {/if}
-                </button>
+                </Button>
             </div>
         {/if}
     </form>

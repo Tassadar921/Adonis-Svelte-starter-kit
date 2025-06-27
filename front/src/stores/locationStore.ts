@@ -1,6 +1,7 @@
 import { browser } from '$app/environment';
-import { writable, type Writable } from 'svelte/store';
+import { get, writable, type Writable } from 'svelte/store';
 import { goto } from '$app/navigation';
+import { language } from '#stores/languageStore';
 
 export const location: Writable<string> = writable('');
 
@@ -9,8 +10,7 @@ export async function navigate(path: string, options = {}): Promise<void> {
         return;
     }
 
-    const currentLanguage: string | null = localStorage.getItem('language');
-    const normalizedPath: string = path.startsWith(`/${currentLanguage}`) ? path : `/${currentLanguage}${path}`;
+    const normalizedPath: string = path.startsWith(`/${get(language)}`) ? path : `/${get(language)}${path}`;
 
     location.set(normalizedPath);
     await goto(normalizedPath, options);

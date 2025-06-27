@@ -4,6 +4,7 @@ import { type LanguageCode, setLanguage } from '#stores/languageStore';
 import { setLocale } from '../../paraglide/runtime';
 import axios from '$lib/api';
 import { supportedLanguages } from '#services/languageService';
+import { location } from '#stores/locationStore';
 
 export const load: LayoutLoad = async ({ params, url }): Promise<{ language: LanguageCode }> => {
     const languageCode: string = params.language.replace('/', '');
@@ -14,6 +15,7 @@ export const load: LayoutLoad = async ({ params, url }): Promise<{ language: Lan
 
     setLanguage(languageCode as LanguageCode);
     setLocale(languageCode as LanguageCode);
+    location.set(url.pathname.replace(`/${languageCode}`, '') || '/');
     axios.defaults.headers.common['Accept-Language'] = `${languageCode}-${languageCode.toUpperCase()}`;
 
     return { language: languageCode as LanguageCode };

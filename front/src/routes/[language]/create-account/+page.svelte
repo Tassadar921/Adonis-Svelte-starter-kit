@@ -1,14 +1,13 @@
 <script lang="ts">
     import Form from '#components/Form.svelte';
-    import PasswordInput from '#components/PasswordInput.svelte';
     import Title from '#components/Title.svelte';
     import { showToast } from '#services/toastService';
     import { m } from '$lib/paraglide/messages';
-    import Input from '#components/Input.svelte';
+    import { Input } from '$lib/components/ui/input';
     import { checkPassword, isValidEmail } from '#services/checkStringService';
-    import Switch from '#components/Switch.svelte';
     import OauthProviders from '#components/OauthProviders.svelte';
     import Meta from '#components/Meta.svelte';
+    import { Switch } from '$lib/components/ui/switch';
 
     let username: string = $state('');
     let email: string = $state('');
@@ -44,9 +43,9 @@
     <OauthProviders />
     <Input name="username" placeholder={m['common.username.placeholder']()} label={m['common.username.label']()} bind:value={username} required />
     <Input type="email" name="email" placeholder={m['common.email.placeholder']()} label={m['common.email.label']()} bind:value={email} required />
-    <PasswordInput name="password" bind:value={password} required />
-    <PasswordInput name="confirmPassword" label={m['common.confirm-password.label']()} bind:value={confirmPassword} required />
-    <Switch name="consent" size={6} label={m['common.consent']()} bind:value={consent} required />
+    <Input type="password" name="password" placeholder={m['common.password.placeholder']()} label={m['common.password.label']()} bind:value={password} required />
+    <Input type="password" name="confirmPassword" placeholder={m['common.confirm-password.placeholder']()} label={m['common.confirm-password.label']()} bind:value={confirmPassword} required />
+    <Switch name="consent" label={m['common.consent']()} bind:checked={consent} required />
 </Form>
 
 {#if message}

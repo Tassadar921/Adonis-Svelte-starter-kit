@@ -4,6 +4,7 @@
     import { profile } from '#stores/profileStore';
     import { Button } from '$lib/components/ui/button';
     import Theme from '#components/Theme.svelte';
+    import FlagMenu from '#menu/FlagMenu.svelte';
 
     type Props = {
         children: import('svelte').Snippet;
@@ -12,42 +13,39 @@
     let { children }: Props = $props();
 
     let triggerButtonRef: HTMLButtonElement | undefined = $state();
+    let isOpen: boolean = $state(false);
 </script>
 
-<Sidebar.Provider open={false}>
+<Sidebar.Provider bind:open={isOpen}>
     <Sidebar.Root toggleButtonRef={triggerButtonRef}>
         <Sidebar.Content>
             <Sidebar.Group>
                 <Sidebar.GroupContent>
                     <Sidebar.Menu>
-                        <div class="flex gap-3">
+                        <div class="flex items-center gap-5">
+                            <Sidebar.Trigger bind:ref={triggerButtonRef} />
+                            <FlagMenu />
                             <Theme />
                         </div>
                         {#if $profile}
                             {#each menuItems.connected as item (item.title)}
-                                <Sidebar.MenuItem>
-                                    <Sidebar.MenuButton>
-                                        {#snippet child({ props })}
-                                            <Button href={item.href} variant="link">
-                                                <item.icon />
-                                                <span>{item.title}</span>
-                                            </Button>
-                                        {/snippet}
-                                    </Sidebar.MenuButton>
-                                </Sidebar.MenuItem>
+                                <div class="mt-3">
+                                    <Sidebar.MenuItem>
+                                        <Button href={item.href} variant="link" class="flex justify-start items-center">
+                                            <item.icon classname="size-8" />
+                                            <p class="text-xl">{item.title}</p>
+                                        </Button>
+                                    </Sidebar.MenuItem>
+                                </div>
                             {/each}
                         {:else}
                             {#each menuItems.notConnected as item (item.title)}
                                 <div class="mt-3">
                                     <Sidebar.MenuItem>
-                                        <Sidebar.MenuButton>
-                                            {#snippet child({ props })}
-                                                <Button variant="link" class="flex justify-start items-center" href={item.href} {...props}>
-                                                    <item.icon classname="size-8" />
-                                                    <p class="text-xl">{item.title}</p>
-                                                </Button>
-                                            {/snippet}
-                                        </Sidebar.MenuButton>
+                                        <Button href={item.href} variant="link" class="flex justify-start items-center">
+                                            <item.icon classname="size-8" />
+                                            <p class="text-xl">{item.title}</p>
+                                        </Button>
                                     </Sidebar.MenuItem>
                                 </div>
                             {/each}
@@ -60,7 +58,9 @@
 
     <Sidebar.Inset>
         <div class="mt-3">
-            <Sidebar.Trigger class="ml-2" bind:ref={triggerButtonRef} />
+            <div class="h-10">
+                <Sidebar.Trigger class={`${isOpen ? 'hidden' : ''}`} />
+            </div>
             {@render children()}
         </div>
     </Sidebar.Inset>

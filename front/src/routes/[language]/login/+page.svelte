@@ -1,14 +1,12 @@
 <script lang="ts">
     import Form from '#components/Form.svelte';
-    import Input from '#components/Input.svelte';
-    import PasswordInput from '#components/PasswordInput.svelte';
     import { showToast } from '#services/toastService';
     import Title from '#components/Title.svelte';
-    import Link from '#components/Link.svelte';
     import { m } from '$lib/paraglide/messages';
-    import Breadcrumbs from '#components/Breadcrumbs.svelte';
     import OauthProviders from '#components/OauthProviders.svelte';
     import Meta from '#components/Meta.svelte';
+    import { Input } from '$lib/components/ui/input';
+    import { Button } from '$lib/components/ui/button';
 
     let email: string = $state('');
     let password: string = $state('');
@@ -23,14 +21,12 @@
 
 <Title title={m['login.title']()} hasBackground />
 
-<Breadcrumbs items={[{ label: m['home.title'](), path: '/' }, { label: m['login.title']() }]} />
-
 <Form isValid={canSubmit}>
     <OauthProviders />
     <Input type="email" name="email" placeholder={m['common.email.placeholder']()} label={m['common.email.label']()} bind:value={email} required />
-    <PasswordInput name="password" bind:value={password} required />
-    <div class="w-full mb-3 flex justify-between">
-        <Link href="/reset-password" className="text-primary-500 hover:text-white duration-300 transition-colors">{m['login.forgot-password']()}</Link>
-        <Link href="/create-account" className="text-primary-500 hover:text-white duration-300 transition-colors">{m['login.create-account']()}</Link>
+    <Input type="password" name="password" placeholder={m['common.password.placeholder']()} label={m['common.password.label']()} bind:value={password} required />
+    <div class="w-full my-3 flex justify-between">
+        <Button href="/reset-password" variant="link" class="bg-transparent">{m['login.forgot-password']()}</Button>
+        <Button href="/create-account" variant="link">{m['login.create-account']()}</Button>
     </div>
 </Form>

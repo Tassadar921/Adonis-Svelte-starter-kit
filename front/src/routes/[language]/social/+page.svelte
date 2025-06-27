@@ -38,8 +38,6 @@
 
 <Title title={m['social.title']()} />
 
-<Breadcrumbs items={[{ label: m['home.title'](), path: '/' }, { label: m['social.title']() }]} />
-
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-5">
     {#each pages as page}
         <Card title={page.title} icon={page.icon} href={page.href} description={page.description} />

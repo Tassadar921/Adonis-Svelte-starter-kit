@@ -1,9 +1,9 @@
 <script lang="ts">
     import { Button } from '$lib/components/ui/button/index.js';
-    import { cn } from '$lib/utils.js';
     import type { ComponentProps } from 'svelte';
     import { useSidebar } from './context.svelte.js';
     import { Menu } from '@lucide/svelte';
+    import { cn } from '$lib/utils.js';
 
     let {
         ref = $bindable(),
@@ -21,6 +21,8 @@
         sidebar.toggle();
         onclick?.(event);
     };
+
+    console.log(className);
 </script>
 
 <Button bind:ref data-sidebar="trigger" data-slot="sidebar-trigger" variant="ghost" size="icon" class={className} type="button" onclick={handleClick} {...restProps}>

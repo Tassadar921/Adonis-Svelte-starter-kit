@@ -160,12 +160,12 @@
         }
     },
     "unauthorized": {
-        "title": "Unauthorized",
-        "subtitle": "You are not authorized to view this page.",
+        "title": "Non autorisé",
+        "subtitle": "Vous n'êtes pas autorisé à accéder à cette page.",
         "meta": {
-            "title": "Unauthorized Access – Adonis & Svelte Starter Kit",
-            "description": "Your credentials do not grant access to this page. Please log in or contact support if you think this is a mistake.",
-            "keywords": "unauthorized access, 401 error, login required, permission denied, Adonis & Svelte Starter Kit"
+            "title": "Accès non autorisé – Kit de démarrage Adonis & Svelte",
+            "description": "Vos identifiants ne vous permettent pas d'accéder à cette page. Veuillez vous connecter ou contacter le support si vous pensez qu'il s'agit d'une erreur.",
+            "keywords": "accès non autorisé, erreur 401, connexion requise, permission refusée, Kit de démarrage Adonis & Svelte"
         }
     },
     "forbidden": {

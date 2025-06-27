@@ -5,7 +5,7 @@ import { fail } from '@sveltejs/kit';
 export const actions: Actions = {
     default: async ({ request, cookies }) => {
         const formData: FormData = await request.formData();
-        console.log(formData);
+        console.log(request.body);
 
         try {
             const { data } = await axios.post('/api/auth', formData);

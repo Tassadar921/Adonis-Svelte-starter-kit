@@ -10,6 +10,5 @@ export function setLanguage(value: LanguageCode): void {
         return;
     }
 
-    localStorage.setItem('language', value);
     language.set(value);
 }
