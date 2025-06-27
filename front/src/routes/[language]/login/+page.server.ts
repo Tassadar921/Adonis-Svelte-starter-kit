@@ -5,12 +5,21 @@ import { fail } from '@sveltejs/kit';
 export const actions: Actions = {
     default: async ({ request, cookies }) => {
         const formData: FormData = await request.formData();
-        console.log(request.body);
+        console.log('===================================================================');
+        console.log('===================================================================');
+        console.log('===================================================================');
+
+        const email = formData.get('email');
+        const password = formData.get('password');
+
+        console.log('Form Values:', { email, password });
+
+        if (!email || !password) {
+            return fail(400, { error: 'Email and password are required' });
+        }
 
         try {
             const { data } = await axios.post('/api/auth', formData);
-
-            console.log(data);
 
             // cookies.set('token', data.token.token, {
             //     httpOnly: true,

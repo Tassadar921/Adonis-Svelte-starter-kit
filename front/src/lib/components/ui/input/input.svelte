@@ -48,7 +48,7 @@
     };
 </script>
 
-<div class="relative mt-8">
+<div class="relative">
     {#if type === 'file'}
         <input
             bind:this={ref}
@@ -68,7 +68,9 @@
     {:else}
         <label
             for={name}
-            class="absolute pointer-events-none z-10 transition-all duration-800 ease-in-out font-medium {isFocused || value ? 'text-gray-900 bottom-10 left-1' : 'text-gray-600 bottom-1.5 left-3'}"
+            class="absolute pointer-events-none z-10 transition-all duration-800 ease-in-out font-medium {isFocused || value
+                ? 'bottom-9 left-1'
+                : 'text-gray-600 dark:text-gray-400 bottom-1.5 left-3'}"
         >
             {label}
             {#if required}
@@ -94,11 +96,11 @@
         />
 
         {#if isPassword()}
-            <Button type="button" onclick={togglePasswordVisibility} aria-label="Toggle password visibility" variant="ghost" size="icon" class="absolute top-0 right-0 rounded-full">
+            <Button type="button" onclick={togglePasswordVisibility} aria-label="Toggle password visibility" variant="ghost" size="icon" class="absolute -top-0.5 right-0 rounded-full">
                 {#if showPassword}
-                    <EyeOff size="24" />
+                    <EyeOff class="size-6" />
                 {:else}
-                    <Eye size="24" />
+                    <Eye class="size-6" />
                 {/if}
             </Button>
         {/if}

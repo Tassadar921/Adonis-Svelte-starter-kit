@@ -3,17 +3,19 @@
     import { showToast } from '#services/toastService';
     import Title from '#components/Title.svelte';
     import { m } from '$lib/paraglide/messages';
-    import OauthProviders from '#components/OauthProviders.svelte';
+    import OauthProviders from '#partials/login/OauthProviders.svelte';
     import Meta from '#components/Meta.svelte';
     import { Input } from '$lib/components/ui/input';
     import { Button } from '$lib/components/ui/button';
+    import { isValidEmail } from '#services/checkStringService';
+    import IconInfo from '#components/IconInfo.svelte';
 
     let email: string = $state('');
     let password: string = $state('');
     let canSubmit: boolean = $state(false);
 
     $effect((): void => {
-        canSubmit = !!email && !!password;
+        canSubmit = isValidEmail(email) && !!password;
     });
 </script>
 
@@ -25,8 +27,15 @@
     <OauthProviders />
     <Input type="email" name="email" placeholder={m['common.email.placeholder']()} label={m['common.email.label']()} bind:value={email} required />
     <Input type="password" name="password" placeholder={m['common.password.placeholder']()} label={m['common.password.label']()} bind:value={password} required />
-    <div class="w-full my-3 flex justify-between">
+    <div class="w-full flex justify-between">
         <Button href="/reset-password" variant="link" class="bg-transparent">{m['login.forgot-password']()}</Button>
         <Button href="/create-account" variant="link">{m['login.create-account']()}</Button>
     </div>
+
+    <IconInfo>
+        <p>coucouuuuuu ceci est un test</p>
+        <p>coucouuuuuu ceci est un test</p>
+        <p>coucouuuuuu ceci est un test</p>
+        <p>coucouuuuuu ceci est un test</p>
+    </IconInfo>
 </Form>

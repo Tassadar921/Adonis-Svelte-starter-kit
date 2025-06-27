@@ -21,8 +21,6 @@
         sidebar.toggle();
         onclick?.(event);
     };
-
-    console.log(className);
 </script>
 
 <Button bind:ref data-sidebar="trigger" data-slot="sidebar-trigger" variant="ghost" size="icon" class={className} type="button" onclick={handleClick} {...restProps}>

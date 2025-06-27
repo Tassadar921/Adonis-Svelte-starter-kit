@@ -1,25 +1,21 @@
 <script lang="ts">
-    import Popover from '#components/Popover.svelte';
     import Icon from '#components/Icon.svelte';
+    import * as Popover from '$lib/components/ui/popover';
 
-    let { children } = $props();
-    let show: boolean = $state(false);
-    let iconElement: HTMLButtonElement | null = $state(null);
+    type Props = {
+        children: import('svelte').Snippet;
+    };
+
+    let { children }: Props = $props();
+
+    let isOpen: boolean = $state(false);
 </script>
 
-<div class="flex items-center justify-center">
-    <button
-        class="flex items-center justify-center bg-blue-500 text-white rounded-full size-8"
-        bind:this={iconElement}
-        onmouseover={() => (show = true)}
-        onfocus={() => (show = true)}
-        onmouseleave={() => (show = false)}
-        onblur={() => (show = false)}
-    >
+<Popover.Root bind:open={isOpen}>
+    <Popover.Trigger class="w-8 p-1">
         <Icon name="help" />
-    </button>
-
-    <Popover {show} target={iconElement}>
+    </Popover.Trigger>
+    <Popover.Content>
         {@render children()}
-    </Popover>
-</div>
+    </Popover.Content>
+</Popover.Root>

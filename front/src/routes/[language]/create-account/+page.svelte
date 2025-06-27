@@ -5,7 +5,7 @@
     import { m } from '$lib/paraglide/messages';
     import { Input } from '$lib/components/ui/input';
     import { checkPassword, isValidEmail } from '#services/checkStringService';
-    import OauthProviders from '#components/OauthProviders.svelte';
+    import OauthProviders from '#partials/login/OauthProviders.svelte';
     import Meta from '#components/Meta.svelte';
     import { Switch } from '$lib/components/ui/switch';
 

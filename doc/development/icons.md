@@ -3,6 +3,23 @@
 The icons are stored in `front/src/lib/icons` and are imported in `front/src/lib/shared/Icon.svelte`.
 The icons are in SVG format and are used in the frontend of Adonis & Svelte Starter Kit.
 
+## Before creating a full custom icon
+
+1. Have a look at [Lucid icons](https://lucide.dev/icons) : this is the official repository icons package. For more simplicity, prefer using it instead of creating your own icon which is much harder.
+
+2. If you find your icon there, simply import is in PascalCase from `'@lucide/svelte'`.
+
+    Here's a complete example :
+
+    ```sveltehtml
+        <script lang="ts">
+            import { Moon } from '@lucide/svelte';
+        </script>
+    
+        <Moon class="size-8" />
+    ```
+   To resize those icons, you can use tailwind `size` classes.
+
 ## Steps to create a new icon
 
 1. Find your icon on [Iconify](https://icon-sets.iconify.design/).
