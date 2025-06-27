@@ -14,6 +14,9 @@
         "public": "Public",
         "private": "Private",
         "value": "Value",
+        "error": {
+            "default-message": "Something went wrong"
+        },
         "title": {
             "label": "Title",
             "placeholder": "Jesus' photo"

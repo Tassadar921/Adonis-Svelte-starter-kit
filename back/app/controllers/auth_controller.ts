@@ -26,6 +26,18 @@ export default class AuthController {
 
             const token: AccessToken = await User.accessTokens.create(user);
 
+            const expiresAt: Date = new Date(token.expiresAt);
+            const now: Date = new Date();
+
+            response.cookie('apiToken', {
+                httpOnly: true,
+                secure: true,
+                sameSite: 'none',
+                domain: env.get('API_URI'),
+                path: '/',
+                maxAge: Math.floor((expiresAt.getTime() - now.getTime()) / 1000),
+            });
+
             return response.send({
                 message: i18n.t('messages.auth.login.success'),
                 token,

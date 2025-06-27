@@ -1,18 +1,14 @@
 import type { Actions } from '@sveltejs/kit';
 import axios from '$lib/api';
 import { fail } from '@sveltejs/kit';
+import { m } from '$lib/paraglide/messages';
 
 export const actions: Actions = {
     default: async ({ request, cookies }) => {
         const formData: FormData = await request.formData();
-        console.log('===================================================================');
-        console.log('===================================================================');
-        console.log('===================================================================');
 
-        const email = formData.get('email');
-        const password = formData.get('password');
-
-        console.log('Form Values:', { email, password });
+        const email: FormDataEntryValue | null = formData.get('email');
+        const password: FormDataEntryValue | null = formData.get('password');
 
         if (!email || !password) {
             return fail(400, { error: 'Email and password are required' });
@@ -21,21 +17,24 @@ export const actions: Actions = {
         try {
             const { data } = await axios.post('/api/auth', formData);
 
-            // cookies.set('token', data.token.token, {
-            //     httpOnly: true,
-            //     path: '/',
-            //     maxAge: 60 * 60 * 24 * 7
-            // });
+            const expiresAt: Date = new Date(data.token.expiresAt);
+            const now: Date = new Date();
+
+            cookies.set('token', data.token.token, {
+                httpOnly: true,
+                path: '/',
+                maxAge: Math.floor((expiresAt.getTime() - now.getTime()) / 1000),
+            });
+
+            console.log(data);
 
             return {
-                success: true,
-                user: data.user,
                 message: data.message,
+                isSuccess: true,
+                profile: data.user,
             };
         } catch (error: any) {
-            console.error(error);
-            const message = error?.response?.data?.error ?? 'Something went wrong';
-            return fail(400, { error: message });
+            return fail(error?.response?.status ?? 400, { isSuccess: false, message: error?.response?.data?.error ?? m['common.error.default-message'] });
         }
     },
 };
