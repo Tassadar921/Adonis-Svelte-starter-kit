@@ -4,7 +4,7 @@ import { fail } from '@sveltejs/kit';
 import { m } from '$lib/paraglide/messages';
 
 export const actions: Actions = {
-    default: async ({ request, cookies }) => {
+    default: async ({ request }) => {
         const formData: FormData = await request.formData();
 
         const email: FormDataEntryValue | null = formData.get('email');
@@ -17,16 +17,7 @@ export const actions: Actions = {
         try {
             const { data } = await axios.post('/api/auth', formData);
 
-            const expiresAt: Date = new Date(data.token.expiresAt);
-            const now: Date = new Date();
-
-            cookies.set('token', data.token.token, {
-                httpOnly: true,
-                path: '/',
-                maxAge: Math.floor((expiresAt.getTime() - now.getTime()) / 1000),
-            });
-
-            console.log(data);
+            console.log(formData, data);
 
             return {
                 message: data.message,
@@ -34,6 +25,7 @@ export const actions: Actions = {
                 profile: data.user,
             };
         } catch (error: any) {
+            console.log(error);
             return fail(error?.response?.status ?? 400, { isSuccess: false, message: error?.response?.data?.error ?? m['common.error.default-message'] });
         }
     },

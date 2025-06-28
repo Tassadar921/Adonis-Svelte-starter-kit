@@ -17,9 +17,6 @@
     onMount(async () => {
         try {
             const { data } = await axios.get(`/api/account-creation/confirm/${token}`);
-            localStorage.setItem('apiToken', data.token.token);
-            localStorage.setItem('apiTokenExpiration', data.token.expiresAt);
-            axios.defaults.headers.common['Authorization'] = `Bearer ${data.token.token}`;
 
             setProfile(data.user);
             showToast(data.message);
