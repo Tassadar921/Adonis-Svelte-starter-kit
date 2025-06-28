@@ -6,7 +6,6 @@ import type SerializedUser from 'adonis-svelte-starter-kit-backend/app/types/ser
 export const profile: Writable<SerializedUser | null> = writable(null);
 
 export function setProfile(user: SerializedUser): void {
-    console.log('iciiii', user);
     profile.set(user);
 }
 

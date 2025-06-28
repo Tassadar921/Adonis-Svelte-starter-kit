@@ -23,22 +23,22 @@ export const menuItems: Items = {
         {
             href: '/social',
             icon: Handshake,
-            title: m['home.title'](),
+            title: m['social.title'](),
         },
         {
             href: '/profile',
             icon: UserPen,
-            title: m['home.title'](),
+            title: m['profile.title'](),
         },
         {
             href: '/logout',
             icon: LogOut,
-            title: m['home.title'](),
+            title: m['logout.title'](),
         },
         {
             href: '/admin',
             icon: Lock,
-            title: m['home.title'](),
+            title: m['admin.title'](),
         },
     ],
     notConnected: [

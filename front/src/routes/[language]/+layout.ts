@@ -1,22 +1,14 @@
-import { redirect } from '@sveltejs/kit';
 import type { LayoutLoad } from './$types';
 import { type LanguageCode, setLanguage } from '#stores/languageStore';
 import { setLocale } from '../../paraglide/runtime';
 import axios from '$lib/api';
-import { supportedLanguages } from '#services/languageService';
 import { location } from '#stores/locationStore';
 
-export const load: LayoutLoad = async ({ params, url }): Promise<{ language: LanguageCode }> => {
-    const languageCode: string = params.language.replace('/', '');
+export const load: LayoutLoad = async ({ data, url }): Promise<{ language: LanguageCode }> => {
+    setLanguage(data.language as LanguageCode);
+    setLocale(data.language as LanguageCode);
+    axios.defaults.headers.common['Accept-Language'] = `${data.language}-${data.language.toUpperCase()}`;
+    location.set(data.clearedPathName);
 
-    if (!supportedLanguages.includes(languageCode)) {
-        throw redirect(307, `/en${url.pathname}`);
-    }
-
-    setLanguage(languageCode as LanguageCode);
-    setLocale(languageCode as LanguageCode);
-    location.set(url.pathname.replace(`/${languageCode}`, '') || '/');
-    axios.defaults.headers.common['Accept-Language'] = `${languageCode}-${languageCode.toUpperCase()}`;
-
-    return { language: languageCode as LanguageCode };
+    return { language: data.language as LanguageCode };
 };

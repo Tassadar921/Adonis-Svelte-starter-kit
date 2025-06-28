@@ -29,14 +29,16 @@
                         </div>
                         {#if $profile}
                             {#each menuItems.connected as item (item.title)}
-                                <div class="mt-3">
-                                    <Sidebar.MenuItem>
-                                        <Button href={item.href} variant="link" class="flex justify-start items-center">
-                                            <item.icon classname="size-8" />
-                                            <p class="text-xl">{item.title}</p>
-                                        </Button>
-                                    </Sidebar.MenuItem>
-                                </div>
+                                {#if !item.href.startsWith('/admin') || $profile.role === 'admin'}
+                                    <div class="mt-3">
+                                        <Sidebar.MenuItem>
+                                            <Button href={item.href} variant="link" class="flex justify-start items-center">
+                                                <item.icon classname="size-8" />
+                                                <p class="text-xl">{item.title}</p>
+                                            </Button>
+                                        </Sidebar.MenuItem>
+                                    </div>
+                                {/if}
                             {/each}
                         {:else}
                             {#each menuItems.notConnected as item (item.title)}
