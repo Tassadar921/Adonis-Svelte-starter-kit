@@ -4,7 +4,7 @@ import { fail } from '@sveltejs/kit';
 import { m } from '$lib/paraglide/messages';
 
 export const actions: Actions = {
-    default: async ({ request }) => {
+    default: async ({ request, params }) => {
         const formData: FormData = await request.formData();
 
         const email: FormDataEntryValue | null = formData.get('email');
@@ -17,16 +17,19 @@ export const actions: Actions = {
         try {
             const { data } = await axios.post('/api/auth', formData);
 
-            console.log(formData, data);
-
             return {
                 message: data.message,
                 isSuccess: true,
-                profile: data.user,
+                user: data.user,
+                language: params.language,
             };
         } catch (error: any) {
             console.log(error);
-            return fail(error?.response?.status ?? 400, { isSuccess: false, message: error?.response?.data?.error ?? m['common.error.default-message'] });
+            return fail(error?.response?.status ?? 400, {
+                isSuccess: false,
+                message: error?.response?.data?.error ?? m['common.error.default-message'],
+                language: params.language,
+            });
         }
     },
 };

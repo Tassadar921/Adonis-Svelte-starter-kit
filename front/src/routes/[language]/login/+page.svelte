@@ -8,27 +8,28 @@
     import { Input } from '$lib/components/ui/input';
     import { Button } from '$lib/components/ui/button';
     import { isValidEmail } from '#services/checkStringService';
-    import type SerializedUser from 'adonis-svelte-starter-kit-backend/app/types/serialized/serialized_user';
-    import { onMount } from 'svelte';
-    import { setProfile } from '#stores/profileStore';
-
-    type Props = { isSuccess?: boolean; message?: string; profile?: SerializedUser };
-
-    let { isSuccess, message, profile }: Props = $props();
+    import { setProfile, profile } from '#stores/profileStore';
+    import { page } from '$app/state';
 
     let email: string = $state('');
     let password: string = $state('');
     let canSubmit: boolean = $state(false);
 
-    onMount((): void => {
-        if (message) {
-            showToast(message, isSuccess ? 'success' : 'error');
+    $effect((): void => {
+        if (!page.form) {
+            return;
         }
 
-        if (profile) {
-            setProfile(profile);
+        if (page.form.message) {
+            showToast(page.form.message, page.form.isSuccess ? 'success' : 'error');
         }
-    });
+
+        if (page.form.profile) {
+            setProfile(page.form.profile);
+        }
+
+        console.log(page.form.profile, $profile);
+    })
 
     $effect((): void => {
         canSubmit = isValidEmail(email) && !!password;

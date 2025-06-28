@@ -21,9 +21,12 @@ export default class AuthController {
     public async login({ request, response, i18n }: HttpContext): Promise<void> {
         try {
             const { email, password } = await request.validateUsing(loginValidator);
+            console.log(email, password);
 
             const user: User = await User.verifyCredentials(email, password);
             await user.load('profilePicture');
+
+            console.log(user);
 
             response = await this.setAccessToken(user, response);
 
@@ -32,6 +35,7 @@ export default class AuthController {
                 user: user.apiSerialize(),
             });
         } catch (error: any) {
+            console.log(error)
             return response.unauthorized({ error: i18n.t('messages.auth.login.error') });
         }
     }
@@ -40,13 +44,7 @@ export default class AuthController {
         const user: User & { currentAccessToken: AccessToken } = await auth.use('api').authenticate();
         await User.accessTokens.delete(user, user.currentAccessToken.identifier);
 
-        response.clearCookie('apiToken', {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'none',
-            domain: env.get('API_URI'),
-            path: '/',
-        });
+        response.clearCookie('apiToken');
 
         return response.send({ message: i18n.t('messages.auth.logout.success') });
     }
@@ -112,6 +110,7 @@ export default class AuthController {
     }
 
     private async setAccessToken(user: User, response: Response): Promise<Response> {
+        console.log('ici')
         const accessToken: AccessToken = await User.accessTokens.create(user);
 
         if (!accessToken.expiresAt) {
@@ -121,14 +120,13 @@ export default class AuthController {
         const expiresAt: Date = new Date(accessToken.expiresAt);
         const now: Date = new Date();
 
+        console.log('là', accessToken)
+
         response.cookie('apiToken', accessToken.value!.release(), {
-            httpOnly: true,
-            secure: true,
-            sameSite: 'none',
-            domain: env.get('API_URI'),
-            path: '/',
             maxAge: Math.floor((expiresAt.getTime() - now.getTime()) / 1000),
         });
+
+        console.log(accessToken);
 
         return response;
     }
