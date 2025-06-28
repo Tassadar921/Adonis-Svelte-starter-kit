@@ -9,6 +9,7 @@ import { loginValidator, sendAccountCreationEmailValidator, confirmAccountCreati
 import BrevoMailService from '#services/brevo_mail_service';
 import env from '#start/env';
 import { randomUUID } from 'node:crypto';
+import { Response } from '@adonisjs/core/http';
 
 @inject()
 export default class AuthController {
@@ -24,23 +25,7 @@ export default class AuthController {
             const user: User = await User.verifyCredentials(email, password);
             await user.load('profilePicture');
 
-            const accessToken: AccessToken = await User.accessTokens.create(user);
-
-            if (!accessToken.expiresAt) {
-                throw new Error();
-            }
-
-            const expiresAt: Date = new Date(accessToken.expiresAt);
-            const now: Date = new Date();
-
-            response.cookie('apiToken', accessToken.value!.release(), {
-                httpOnly: true,
-                secure: true,
-                sameSite: 'none',
-                domain: env.get('API_URI'),
-                path: '/',
-                maxAge: Math.floor((expiresAt.getTime() - now.getTime()) / 1000),
-            });
+            response = await this.setAccessToken(user, response);
 
             return response.send({
                 message: i18n.t('messages.auth.login.success'),
@@ -118,6 +103,15 @@ export default class AuthController {
         user.creationToken = null;
         await user.save();
 
+        response = await this.setAccessToken(user, response);
+
+        return response.send({
+            message: i18n.t('messages.auth.confirm-account-creation.success'),
+            user: user.apiSerialize(),
+        });
+    }
+
+    private async setAccessToken(user: User, response: Response): Promise<Response> {
         const accessToken: AccessToken = await User.accessTokens.create(user);
 
         if (!accessToken.expiresAt) {
@@ -136,9 +130,6 @@ export default class AuthController {
             maxAge: Math.floor((expiresAt.getTime() - now.getTime()) / 1000),
         });
 
-        return response.send({
-            message: i18n.t('messages.auth.confirm-account-creation.success'),
-            user: user.apiSerialize(),
-        });
+        return response;
     }
 }
