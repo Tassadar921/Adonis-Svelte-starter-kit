@@ -40,13 +40,11 @@
 </script>
 
 <script lang="ts">
-    import { onMount } from 'svelte';
-
     let { class: className, variant = 'default', size = 'default', ref = $bindable(), href = undefined, type = 'button', disabled, children, ...restProps }: ButtonProps = $props();
 
     let path: string = $state('/');
 
-    onMount(() => {
+    $effect(() => {
         if (href) {
             path = href.startsWith(`/${$language}`) ? href : `/${$language}${href}`;
             disabled = path === `/${$language}${$location}`;
