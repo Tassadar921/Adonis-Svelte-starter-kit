@@ -9,8 +9,6 @@
     import axios from 'axios';
     import Breadcrumbs from '#components/Breadcrumbs.svelte';
     import Meta from '#components/Meta.svelte';
-    import MenuItem from '#menu/MenuItem.svelte';
-    import Icon from '#components/Icon.svelte';
 
     let showModal: boolean = true;
 

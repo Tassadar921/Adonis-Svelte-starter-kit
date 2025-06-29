@@ -31,14 +31,14 @@ export const menuItems: Items = {
             title: m['profile.title'](),
         },
         {
-            href: '/logout',
-            icon: LogOut,
-            title: m['logout.title'](),
-        },
-        {
             href: '/admin',
             icon: Lock,
             title: m['admin.title'](),
+        },
+        {
+            href: '/logout',
+            icon: LogOut,
+            title: m['logout.title'](),
         },
     ],
     notConnected: [

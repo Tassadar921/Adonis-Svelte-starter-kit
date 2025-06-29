@@ -7,7 +7,6 @@
     import { m } from '$lib/paraglide/messages';
     import { checkPassword } from '#services/checkStringService';
     import { profile } from '#stores/profileStore';
-    import Breadcrumbs from '#components/Breadcrumbs.svelte';
     import Meta from '#components/Meta.svelte';
 
     interface Props {
@@ -52,8 +51,6 @@
 />
 
 <Title title={m['reset-password.confirm.title']()} hasBackground />
-
-<Breadcrumbs items={[{ label: m['home.title'](), path: '/' }, { label: m['reset-password.confirm.title']() }]} />
 
 <Form isValid={canSubmit}>
     <PasswordInput name="password" bind:value={password} />

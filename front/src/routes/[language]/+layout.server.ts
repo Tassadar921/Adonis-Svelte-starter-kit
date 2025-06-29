@@ -28,16 +28,11 @@ export const load: LayoutServerLoad = loadFlash(async (event): Promise<{ languag
         }
     }
 
-    console.log('connecté');
-    console.log(url.pathname);
-
     if (openedPathNames.some((path: string): boolean => clearedPathName.startsWith(path))) {
-        console.log('là');
         throw redirect(304, `/${languageCode}`);
     } else {
         const user: SerializedUser = <SerializedUser>JSON.parse(userCookie);
         if (clearedPathName.startsWith('/admin') && user.role !== 'admin') {
-            console.log('aaaa');
             throw redirect(
                 303,
                 `/${languageCode}`,
@@ -48,7 +43,6 @@ export const load: LayoutServerLoad = loadFlash(async (event): Promise<{ languag
                 event
             );
         } else {
-            console.log('nbbbbbbb');
             return { language: languageCode as LanguageCode, clearedPathName };
         }
     }

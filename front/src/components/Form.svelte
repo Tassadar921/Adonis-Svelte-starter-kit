@@ -5,6 +5,7 @@
     import FormBackground from '#components/background/FormBackground.svelte';
     import { Button } from '$lib/components/ui/button';
     import { SendHorizontal } from '@lucide/svelte';
+    import * as Card from '$lib/components/ui/card/index';
 
     type Props = {
         children: import('svelte').Snippet;
@@ -31,21 +32,20 @@
     <FormBackground />
 {/if}
 
-<div class="flex items-center justify-center">
+<Card.Root class="w-full max-w-sm">
     <form use:enhance method="POST" class:mt-20={hasBackground} class="relative z-10 bg-gray-300 dark:bg-gray-700 rounded-2xl p-2 md:p-6 w-4/5 md:w-2/3 max-w-xl flex flex-col gap-3">
-        <div class="flex flex-col gap-8">
-            {@render children?.()}
-        </div>
+        <Card.Content>
+            <div class="flex flex-col gap-8">
+                {@render children?.()}
+            </div>
 
-        {#if form?.error}
-            <p class="error">{form.error}</p>
-        {/if}
+            {#if form?.error}
+                <p class="error">{form.error}</p>
+            {/if}
+        </Card.Content>
 
         {#if submittable}
-            <div class="w-full flex justify-between">
-                <div>
-                    {@render otherOption?.()}
-                </div>
+            <Card.Footer class="flex justify-between">
                 <Button type="submit" disabled={isSendButtonDisabled} size="lg">
                     {#if isLoading}
                         <Icon name="spinner" size={40} />
@@ -54,7 +54,8 @@
                         <SendHorizontal class="size-6" />
                     {/if}
                 </Button>
-            </div>
+                {@render otherOption?.()}
+            </Card.Footer>
         {/if}
     </form>
-</div>
+</Card.Root>

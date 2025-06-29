@@ -1,8 +1,4 @@
-<script lang="ts">
-    import { navigate } from '#stores/locationStore';
-    import { language } from '#stores/languageStore';
-    import { cn } from '$lib/utils.js';
-
+<script lang="ts" module>
     const sizes = {
         default: 'h-9 px-4 py-2 has-[>svg]:px-3',
         sm: 'h-8 gap-1.5 rounded-md px-3 has-[>svg]:px-2.5',
@@ -12,7 +8,7 @@
 
     type SizeKeys = keyof typeof sizes;
 
-    interface Props {
+    export type LinkProps = {
         children: import('svelte').Snippet;
         ref?: HTMLAnchorElement;
         onclick?: (event: MouseEvent) => void;
@@ -25,9 +21,15 @@
         target?: string;
         ariaLabel?: string;
         size?: SizeKeys;
-    }
+    };
+</script>
 
-    let { children, ref, onclick, onmouseover, onfocus, onblur, onmouseout, href, target = '', class: className = '', ariaLabel, size = 'default' }: Props = $props();
+<script lang="ts">
+    import { navigate } from '#stores/locationStore';
+    import { language } from '#stores/languageStore';
+    import { cn } from '$lib/utils.js';
+
+    let { children, ref, onclick, onmouseover, onfocus, onblur, onmouseout, href, target = '', class: className = '', ariaLabel, size = 'default' }: LinkProps = $props();
 
     let isAbsolute: boolean = href.startsWith('http://') || href.startsWith('https://');
 

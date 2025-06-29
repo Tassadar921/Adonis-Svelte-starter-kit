@@ -40,7 +40,7 @@
 <div class="app">
     <main class="flex flex-col w-screen">
         <Menu>
-            {@render children()}
+            {@render children?.()}
         </Menu>
     </main>
 </div>

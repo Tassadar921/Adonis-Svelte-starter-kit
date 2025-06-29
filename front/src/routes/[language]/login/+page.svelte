@@ -5,8 +5,8 @@
     import OauthProviders from '#partials/login/OauthProviders.svelte';
     import Meta from '#components/Meta.svelte';
     import { Input } from '$lib/components/ui/input';
-    import { Button } from '$lib/components/ui/button';
     import { isValidEmail } from '#services/checkStringService';
+    import { Link } from '$lib/components/ui/link';
 
     let email: string = $state('');
     let password: string = $state('');
@@ -22,7 +22,7 @@
     <Input type="email" name="email" placeholder={m['common.email.placeholder']()} label={m['common.email.label']()} bind:value={email} required />
     <Input type="password" name="password" placeholder={m['common.password.placeholder']()} label={m['common.password.label']()} bind:value={password} required />
     <div class="w-full flex justify-between">
-        <Button href="/reset-password" variant="link" class="bg-transparent">{m['login.forgot-password']()}</Button>
-        <Button href="/create-account" variant="link">{m['login.create-account']()}</Button>
+        <Link href="/reset-password">{m['login.forgot-password']()}</Link>
+        <Link href="/create-account">{m['login.create-account']()}</Link>
     </div>
 </Form>

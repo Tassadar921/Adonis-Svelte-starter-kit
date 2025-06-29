@@ -3,11 +3,11 @@
     import Icon from '#components/Icon.svelte';
 
     type Props = {
-        type: 'text' | 'password' | 'email';
+        type?: 'text' | 'password' | 'email';
         value: string;
         placeholder: string;
         name: string;
-        required: boolean;
+        required?: boolean;
         disabled?: boolean;
         label: string;
         readonly?: boolean;

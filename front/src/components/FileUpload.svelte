@@ -10,13 +10,13 @@
         name: string;
         description: string;
         title: string;
-        width: number;
+        width?: number;
         accept: string;
-        fileName: string;
+        fileName?: string;
         file?: File;
         pathPrefix: string;
         id: number;
-        disabled: boolean;
+        disabled?: boolean;
     };
 
     let { name, description, title, width = 96, accept, fileName, file, pathPrefix, id, disabled = false }: Props = $props();

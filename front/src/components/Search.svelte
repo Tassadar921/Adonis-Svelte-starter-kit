@@ -6,19 +6,19 @@
 
     type Props = {
         search: string;
-        placeholder: string;
-        debounce: number;
+        placeholder?: string;
+        debounce?: number;
         minChars?: number;
-        name: string;
-        disabled: boolean;
-        label: string;
-        selected: boolean;
+        name?: string;
+        disabled?: boolean;
+        label?: string;
+        selected?: boolean;
         results: any[];
-        selectedObserver: boolean;
+        selectedObserver?: boolean;
     };
 
     let {
-        search = '',
+        search = $bindable(''),
         placeholder = m['common.search'](),
         debounce = 300,
         minChars,
@@ -26,7 +26,7 @@
         disabled = false,
         label = '',
         selected = false,
-        results = [],
+        results = $bindable([]),
         selectedObserver = false,
     }: Props = $props();
 

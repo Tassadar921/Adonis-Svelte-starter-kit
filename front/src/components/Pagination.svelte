@@ -18,10 +18,10 @@
         containerElement: Window | HTMLElement;
     };
 
-    let { baseUri, paginatedObject, containerElement = window }: Props = $props();
+    let { baseUri, paginatedObject = $bindable(), containerElement = window }: Props = $props();
 
-    let canGoBack: boolean = $state(false);
-    let canGoForward: boolean = $state(false);
+    let canGoBack: boolean = $derived(paginatedObject.currentPage > paginatedObject.firstPage);
+    let canGoForward: boolean = $derived(paginatedObject.currentPage < paginatedObject.lastPage);
     let isLoading: boolean = $state(false);
 
     const handleClick = async (page: number, perPage: number) => {
@@ -41,21 +41,16 @@
             }
         }
     };
-
-    $effect((): void => {
-        canGoBack = paginatedObject.currentPage > paginatedObject.firstPage;
-        canGoForward = paginatedObject.currentPage < paginatedObject.lastPage;
-    });
 </script>
 
 <div class="my-2 flex gap-3 justify-center" class:hidden={paginatedObject.lastPage === 1}>
     {#if paginatedObject.currentPage}
         {#if !isLoading}
-            <!-- First Page Button -->
+            <!-- First Page Link -->
             <Button disabled={!canGoBack} onclick={() => handleClick(paginatedObject.firstPage, paginatedObject.perPage)}>
                 <Icon name="doubleChevronLeft" />
             </Button>
-            <!-- Previous Page Button -->
+            <!-- Previous Page Link -->
             <Button disabled={!canGoBack} onclick={() => handleClick(paginatedObject.currentPage - 1, paginatedObject.perPage)}>
                 <Icon name="arrowLeft" />
             </Button>
@@ -63,11 +58,11 @@
             <p>
                 {paginatedObject.currentPage} / {paginatedObject.lastPage}
             </p>
-            <!-- Next Page Button -->
+            <!-- Next Page Link -->
             <Button disabled={!canGoForward} onclick={() => handleClick(paginatedObject.currentPage + 1, paginatedObject.perPage)}>
                 <Icon name="chevronRight" />
             </Button>
-            <!-- Last Page Button -->
+            <!-- Last Page Link -->
             <Button disabled={!canGoForward} onclick={() => handleClick(paginatedObject.lastPage, paginatedObject.perPage)}>
                 <Icon name="doubleChevronRight" />
             </Button>

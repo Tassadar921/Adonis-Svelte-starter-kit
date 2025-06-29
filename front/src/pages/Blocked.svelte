@@ -62,25 +62,9 @@
     };
 </script>
 
-<Meta
-    title={m['social.blocked.meta.title']()}
-    description={m['social.blocked.meta.description']()}
-    keywords={m['social.blocked.meta.keywords']().split(', ')}
-    languageAlternates={[
-        {
-            hrefLang: 'en',
-            href: `${PUBLIC_FRONT_URI}/en/social/blocked`,
-        },
-        {
-            hrefLang: 'fr',
-            href: `${PUBLIC_FRONT_URI}/fr/social/blocked`,
-        },
-    ]}
-/>
+<Meta title={m['social.blocked.meta.title']()} description={m['social.blocked.meta.description']()} keywords={m['social.blocked.meta.keywords']().split(', ')} pathname="/social/blocked" />
 
 <Title title={m['social.blocked.title']()} />
-
-<Breadcrumbs items={[{ label: m['home.title'](), path: '/' }, { label: m['social.title'](), path: '/social' }, { label: m['social.blocked.title']() }]} />
 
 {#if paginatedBlockedUsers}
     <Search
@@ -128,7 +112,7 @@
             <p class="my-5">{m['social.blocked.none']()}</p>
         {/if}
     </div>
-    <Pagination bind:paginatedObject={paginatedBlockedUsers} baseUrl={searchBaseUrl} />
+    <Pagination bind:paginatedObject={paginatedBlockedUsers} baseUri={searchBaseUrl} />
 {:else}
     <Loader {isLoading} />
 {/if}

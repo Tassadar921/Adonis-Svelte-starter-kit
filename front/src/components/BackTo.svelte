@@ -1,16 +1,16 @@
 <script lang="ts">
-    import { Button } from '$lib/components/ui/button/index';
     import { ArrowLeft } from '@lucide/svelte';
+    import { Link } from '$lib/components/ui/link';
 
     type Props = {
-        href?: string;
-        text?: string;
+        href: string;
+        text: string;
     };
 
     let { href, text }: Props = $props();
 </script>
 
-<Button variant="link" {href} class="flex items-center">
+<Link {href} class="flex items-center">
     <ArrowLeft class="mb-0.5" />
     <p>{text}</p>
-</Button>
+</Link>

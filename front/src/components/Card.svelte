@@ -1,6 +1,6 @@
 <script lang="ts">
     import Icon from '#components/Icon.svelte';
-    import Link from '#components/Link.svelte';
+    import { Link } from '$lib/components/ui/link';
 
     type Props = {
         title: string;
@@ -14,18 +14,17 @@
     let hovering = $state(false);
 </script>
 
-<Link {href} onmouseover={() => (hovering = true)} onmouseout={() => (hovering = false)} className="flex flex-col md:flex-row items-center p-6 rounded-lg shadow-lg bg-gray-300 dark:bg-gray-700 h-40">
-    <div class="flex flex-col items-center justify-center order-1 md:order-2 text-center transition-opacity duration-300 {description && hovering ? 'opacity-50' : ''}">
-        <p class="text-gray-800 text-2xl mb-1">{title}</p>
-        <div class="size-12 dark:bg-gray-700 text-primary-500 shadow-lg rounded-full flex items-center justify-center">
-            <Icon name={icon} size={32} />
-        </div>
+<Link
+    {href}
+    onmouseover={() => (hovering = true)}
+    onmouseout={() => (hovering = false)}
+    class="flex flex-col gap-5 md:flex-row items-center p-6 rounded-lg shadow-lg bg-gray-300 dark:bg-gray-700 h-40"
+>
+    <div class:opacity-70={description && hovering} class="flex flex-col gap-5 items-center justify-center text-center transition-opacity duration-300">
+        <p class="text-2xl">{title}</p>
+        <Icon name={icon} size={32} />
     </div>
-    <div
-        class="flex flex-col items-center justify-center text-center text-gray-600 dark:text-gray-400 order-2 md:order-3 transition-opacity duration-300 md:ml-10 {description && hovering
-            ? ''
-            : 'opacity-0'}"
-    >
-        <p>{description}</p>
-    </div>
+    <p class:opacity-0={!description || !hovering} class="flex flex-col items-center justify-center text-center text-gray-600 dark:text-gray-300 transition-opacity duration-300 whitespace-normal">
+        {description}
+    </p>
 </Link>
