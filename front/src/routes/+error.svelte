@@ -1,6 +1,6 @@
 <script lang="ts">
     import { page } from '$app/state';
-    import Title from '#components/Title.svelte';
+    import { Title } from '$lib/components/ui/title';
     import BackTo from '#components/BackTo.svelte';
     import { m } from '$lib/paraglide/messages';
     import Meta from '#components/Meta.svelte';

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Title from '#components/Title.svelte';
+    import { Title } from '$lib/components/ui/title';
     import { m } from '$lib/paraglide/messages';
     import Breadcrumbs from '#components/Breadcrumbs.svelte';
     import { notifications, removeNotification, setPendingFriendRequests } from '#stores/notificationStore';

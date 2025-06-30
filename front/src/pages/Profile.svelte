@@ -1,10 +1,9 @@
 <script lang="ts">
     import Form from '#components/Form.svelte';
     import Input from '#components/Input.svelte';
-    import Title from '#components/Title.svelte';
+    import { Title } from '$lib/components/ui/title';
     import { Link } from '$lib/components/ui/link';
     import { profile, setProfile } from '#stores/profileStore';
-    import { showToast } from '#services/toastService';
     import { m } from '$lib/paraglide/messages';
     import { onMount } from 'svelte';
     import FileUpload from '#components/FileUpload.svelte';

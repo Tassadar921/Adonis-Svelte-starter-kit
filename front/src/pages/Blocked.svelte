@@ -1,11 +1,10 @@
 <script lang="ts">
     import { m } from '$lib/paraglide/messages';
-    import Title from '#components/Title.svelte';
+    import { Title } from '$lib/components/ui/title';
     import { onMount } from 'svelte';
     import axios from 'axios';
     import Search from '#components/Search.svelte';
     import Pagination from '#components/Pagination.svelte';
-    import Breadcrumbs from '#components/Breadcrumbs.svelte';
     import Button from '#components/Button.svelte';
     import { showToast } from '#services/toastService';
     import Subtitle from '#components/Subtitle.svelte';
@@ -15,7 +14,7 @@
     import type SerializedBlockedUser from 'adonis-svelte-starter-kit-backend/app/types/serialized/serialized_blocked_user';
     import Loader from '#components/Loader.svelte';
     import Icon from '#components/Icon.svelte';
-    import { PUBLIC_FRONT_URI, PUBLIC_API_BASE_URI, PUBLIC_DEFAULT_IMAGE } from '$env/static/public';
+    import { PUBLIC_API_BASE_URI, PUBLIC_DEFAULT_IMAGE } from '$env/static/public';
     import Meta from '#components/Meta.svelte';
 
     let isLoading: boolean = false;

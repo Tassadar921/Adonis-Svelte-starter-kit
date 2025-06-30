@@ -1,13 +1,14 @@
 <script lang="ts">
-    import Card from '#components/Card.svelte';
+    import SmallCard from '#components/SmallCard.svelte';
     import { m } from '$lib/paraglide/messages';
-    import Title from '#components/Title.svelte';
-    import Breadcrumbs from '#components/Breadcrumbs.svelte';
+    import { Title } from '$lib/components/ui/title';
     import Meta from '#components/Meta.svelte';
+    import { Users, Ban, Handshake } from '@lucide/svelte';
+    import type { Component } from 'svelte';
 
     interface Page {
         title: string;
-        icon: string;
+        icon: Component;
         href: string;
         description: string;
     }
@@ -15,19 +16,19 @@
     const pages: Page[] = [
         {
             title: m['social.friends.title'](),
-            icon: 'people',
+            icon: Handshake,
             href: '/social/friends',
             description: m['social.friends.description'](),
         },
         {
             title: m['social.blocked.title'](),
-            icon: 'stop',
+            icon: Ban,
             href: '/social/blocked',
             description: m['social.blocked.description'](),
         },
         {
             title: m['profile.title'](),
-            icon: 'user',
+            icon: Users,
             href: '/profile',
             description: m['profile.description'](),
         },
@@ -40,6 +41,6 @@
 
 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-5">
     {#each pages as page}
-        <Card title={page.title} icon={page.icon} href={page.href} description={page.description} />
+        <SmallCard title={page.title} icon={page.icon} href={page.href} description={page.description} />
     {/each}
 </div>

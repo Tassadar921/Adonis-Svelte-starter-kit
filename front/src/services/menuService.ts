@@ -2,18 +2,18 @@ import { m } from '$lib/paraglide/messages';
 import type { Component } from 'svelte';
 import { Home, Handshake, UserPen, LogOut, Lock, User } from '@lucide/svelte';
 
-interface Item {
+export type MenuItemsListItem = {
     href: string;
     icon: Component;
     title: string;
+};
+
+interface MenuItemsList {
+    connected: MenuItemsListItem[];
+    notConnected: MenuItemsListItem[];
 }
 
-interface Items {
-    connected: Item[];
-    notConnected: Item[];
-}
-
-export const menuItems: Items = {
+export const menuItems: MenuItemsList = {
     connected: [
         {
             href: '/',

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Title from '#components/Title.svelte';
+    import { Title } from '$lib/components/ui/title';
     import { onMount } from 'svelte';
     import { showToast } from '#services/toastService';
     import { navigate } from '#stores/locationStore';

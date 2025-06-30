@@ -1,13 +1,10 @@
 <script lang="ts">
     import Form from '#components/Form.svelte';
-    import PasswordInput from '#components/PasswordInput.svelte';
-    import Title from '#components/Title.svelte';
-    import { showToast } from '#services/toastService';
-    import { navigate } from '#stores/locationStore';
+    import { Title } from '$lib/components/ui/title';
     import { m } from '$lib/paraglide/messages';
     import { checkPassword } from '#services/checkStringService';
-    import { profile } from '#stores/profileStore';
     import Meta from '#components/Meta.svelte';
+    import {Input} from "$lib/components/ui/input";
 
     interface Props {
         token: string;
@@ -19,15 +16,6 @@
     let confirmPassword: string = $state('');
     let canSubmit: boolean = $state(false);
     let message: string = $state('');
-
-    const handleSuccess = (event: CustomEvent): void => {
-        showToast(event.detail.message);
-        if (!$profile) {
-            navigate('/login');
-        } else {
-            navigate('/');
-        }
-    };
 
     $effect((): void => {
         if (password && confirmPassword) {
@@ -53,8 +41,8 @@
 <Title title={m['reset-password.confirm.title']()} hasBackground />
 
 <Form isValid={canSubmit}>
-    <PasswordInput name="password" bind:value={password} />
-    <PasswordInput name="confirmPassword" label={m['common.confirm-password.label']()} bind:value={confirmPassword} />
+    <Input type="password" name="password" placeholder={m['common.password.placeholder']()} label={m['common.password.label']()} bind:value={password} required />
+    <Input type="password" name="confirm-password" placeholder={m['common.confirm-password.placeholder']()} label={m['common.confirm-password.label']()} bind:value={confirmPassword} required />
 </Form>
 
 {#if message}

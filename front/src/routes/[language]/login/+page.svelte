@@ -1,6 +1,6 @@
 <script lang="ts">
     import Form from '#components/Form.svelte';
-    import Title from '#components/Title.svelte';
+    import { Title } from '$lib/components/ui/title';
     import { m } from '$lib/paraglide/messages';
     import OauthProviders from '#partials/login/OauthProviders.svelte';
     import Meta from '#components/Meta.svelte';

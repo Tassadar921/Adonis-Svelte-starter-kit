@@ -27,27 +27,29 @@
                             <FlagMenu />
                             <Theme />
                         </div>
-                        {#if $profile}
-                            {#each menuItems.connected as item (item.title)}
-                                {#if !item.href.startsWith('/admin') || $profile.role === 'admin'}
+                        <div class="flex flex-col gap-5 mt-3">
+                            {#if $profile}
+                                {#each menuItems.connected as item (item.title)}
+                                    {#if !item.href.startsWith('/admin') || $profile.role === 'admin'}
+                                        <Sidebar.MenuItem>
+                                            <Link href={item.href} class="flex justify-start items-center gap-3">
+                                                <item.icon class="size-6" />
+                                                <p class="text-2xl">{item.title}</p>
+                                            </Link>
+                                        </Sidebar.MenuItem>
+                                    {/if}
+                                {/each}
+                            {:else}
+                                {#each menuItems.notConnected as item (item.title)}
                                     <Sidebar.MenuItem>
-                                        <Link href={item.href} class="flex justify-start items-center">
-                                            <item.icon classname="size-8" />
-                                            <p class="text-xl">{item.title}</p>
+                                        <Link href={item.href} class="flex justify-start items-center gap-3">
+                                            <item.icon class="size-6" />
+                                            <p class="text-2xl">{item.title}</p>
                                         </Link>
                                     </Sidebar.MenuItem>
-                                {/if}
-                            {/each}
-                        {:else}
-                            {#each menuItems.notConnected as item (item.title)}
-                                <Sidebar.MenuItem>
-                                    <Link href={item.href} class="flex justify-start items-center">
-                                        <item.icon classname="size-8" />
-                                        <p class="text-xl">{item.title}</p>
-                                    </Link>
-                                </Sidebar.MenuItem>
-                            {/each}
-                        {/if}
+                                {/each}
+                            {/if}
+                        </div>
                     </Sidebar.Menu>
                 </Sidebar.GroupContent>
             </Sidebar.Group>

@@ -1,6 +1,6 @@
 <script lang="ts">
     import Form from '#components/Form.svelte';
-    import Title from '#components/Title.svelte';
+    import { Title } from '$lib/components/ui/title';
     import { showToast } from '#services/toastService';
     import { m } from '$lib/paraglide/messages';
     import { Input } from '$lib/components/ui/input';

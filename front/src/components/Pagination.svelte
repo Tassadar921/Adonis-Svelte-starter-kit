@@ -46,11 +46,11 @@
 <div class="my-2 flex gap-3 justify-center" class:hidden={paginatedObject.lastPage === 1}>
     {#if paginatedObject.currentPage}
         {#if !isLoading}
-            <!-- First Page Link -->
+            <!-- First Page Footer -->
             <Button disabled={!canGoBack} onclick={() => handleClick(paginatedObject.firstPage, paginatedObject.perPage)}>
                 <Icon name="doubleChevronLeft" />
             </Button>
-            <!-- Previous Page Link -->
+            <!-- Previous Page Footer -->
             <Button disabled={!canGoBack} onclick={() => handleClick(paginatedObject.currentPage - 1, paginatedObject.perPage)}>
                 <Icon name="arrowLeft" />
             </Button>
@@ -58,11 +58,11 @@
             <p>
                 {paginatedObject.currentPage} / {paginatedObject.lastPage}
             </p>
-            <!-- Next Page Link -->
+            <!-- Next Page Footer -->
             <Button disabled={!canGoForward} onclick={() => handleClick(paginatedObject.currentPage + 1, paginatedObject.perPage)}>
                 <Icon name="chevronRight" />
             </Button>
-            <!-- Last Page Link -->
+            <!-- Last Page Footer -->
             <Button disabled={!canGoForward} onclick={() => handleClick(paginatedObject.lastPage, paginatedObject.perPage)}>
                 <Icon name="doubleChevronRight" />
             </Button>

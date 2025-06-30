@@ -1,5 +1,5 @@
 <script lang="ts">
-    import Title from '#components/Title.svelte';
+    import { Title } from '$lib/components/ui/title';
     import Form from '#components/Form.svelte';
     import Input from '#components/Input.svelte';
     import { onMount } from 'svelte';
@@ -20,10 +20,6 @@
             readonly = true;
         }
     });
-
-    const handleSuccess = (event: CustomEvent): void => {
-        showToast(event.detail.message);
-    };
 
     $effect((): void => {
         canSubmit = !!email && isValidEmail(email);

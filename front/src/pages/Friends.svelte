@@ -1,11 +1,10 @@
 <script lang="ts">
     import { m } from '$lib/paraglide/messages';
-    import Title from '#components/Title.svelte';
+    import { Title } from '$lib/components/ui/title';
     import { onMount } from 'svelte';
     import axios from 'axios';
     import Search from '#components/Search.svelte';
     import Pagination from '#components/Pagination.svelte';
-    import Breadcrumbs from '#components/Breadcrumbs.svelte';
     import Modal from '#components/Modal.svelte';
     import Subtitle from '#components/Subtitle.svelte';
     import AddFriends from '#partials/friends/AddFriends.svelte';
@@ -116,15 +115,13 @@
 
 <Title title={m['social.friends.title']()} />
 
-<Breadcrumbs items={[{ label: m['home.title'](), path: '/' }, { label: m['social.title'](), path: '/social' }, { label: m['social.friends.title']() }]} />
-
 {#if paginatedFriends}
     <div class="flex gap-3 items-center">
         <Button
             ariaLabel="Add a friend"
             customStyle
             className="rounded-full bg-green-500 hover:bg-green-600 dark:bg-green-700 dark:hover:bg-green-600 transition-colors duration-300 p-1 mb-1.5"
-            on:click={() => (showAddFriendsModal = true)}
+            onclick={() => (showAddFriendsModal = true)}
         >
             <Icon name="plus" />
         </Button>
