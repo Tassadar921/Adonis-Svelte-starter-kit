@@ -1,8 +1,14 @@
+import { browser } from '$app/environment';
 import { type Writable, writable } from 'svelte/store';
 
-export const language: Writable<string> = writable('en');
+export type LanguageCode = 'en' | 'fr';
 
-export function setLanguage(value: string): void {
-    localStorage.setItem('language', value);
+export const language: Writable<LanguageCode> = writable('en');
+
+export function setLanguage(value: LanguageCode): void {
+    if (!browser) {
+        return;
+    }
+
     language.set(value);
 }

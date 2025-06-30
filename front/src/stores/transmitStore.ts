@@ -1,10 +1,11 @@
 import { type Writable, writable } from 'svelte/store';
 import { Transmit } from '@adonisjs/transmit-client';
+import { browser } from '$app/environment';
+import { PUBLIC_API_TRANSMIT_URI } from '$env/static/public';
 
-const baseUrl: string = import.meta.env.VITE_API_BASE_URI;
+export const transmit: Writable<Transmit | undefined> = writable(undefined);
 
-if (!baseUrl) {
-    throw new Error('VITE_API_BASE_URI is not defined');
+if (browser) {
+    const client = new Transmit({ baseUrl: PUBLIC_API_TRANSMIT_URI });
+    transmit.set(client);
 }
-
-export const transmit: Writable<Transmit> = writable(new Transmit({ baseUrl }));

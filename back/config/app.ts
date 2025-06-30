@@ -30,11 +30,11 @@ export const http = defineConfig({
      * defined inside the "config/session.ts" file.
      */
     cookie: {
-        domain: '',
+        domain: env.get('DOMAIN'),
         path: '/',
-        maxAge: '2h',
+        maxAge: '1h',
         httpOnly: true,
         secure: app.inProduction,
-        sameSite: 'lax',
+        sameSite: 'none',
     },
 });
