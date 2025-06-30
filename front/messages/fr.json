@@ -78,6 +78,10 @@
     "menu": {
         "source-code": "Code source"
     },
+    "footer": {
+        "navigation": "Navigation",
+        "about": "À propos"
+    },
     "profile": {
         "title": "Profil",
         "description": "Mettez à jour votre profil",

@@ -4,7 +4,7 @@
     import { m } from '$lib/paraglide/messages';
     import { checkPassword } from '#services/checkStringService';
     import Meta from '#components/Meta.svelte';
-    import {Input} from "$lib/components/ui/input";
+    import { Input } from '$lib/components/ui/input';
 
     interface Props {
         token: string;

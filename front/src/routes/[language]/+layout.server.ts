@@ -15,14 +15,28 @@ export const load: LayoutServerLoad = loadFlash(async (event): Promise<{ languag
         throw redirect(307, `/en${url.pathname}`);
     }
 
+    cookies.set('language', languageCode, {
+        path: '/',
+        httpOnly: false,
+        sameSite: 'lax',
+        maxAge: 60 * 60 * 24 * 7,
+    });
+
+    cookies.delete('user', { path: '/' });
+    console.log('ici : ', cookies.get('user'));
+    console.log(cookies.get('apiToken'));
+
     const clearedPathName: string = url.pathname.replace(`/${languageCode}`, '') || '/';
 
     const userCookie: string | undefined = cookies.get('user');
 
     if (!userCookie) {
+        console.log('no user cookie');
         if (openedPathNames.some((path: string): boolean => clearedPathName.startsWith(path))) {
+            console.log('ici');
             return { language: languageCode as LanguageCode, clearedPathName };
         } else {
+            console.log('là');
             // TODO: cache previous clearedPathName to redirect after login
             throw redirect(304, `/${languageCode}/login`);
         }

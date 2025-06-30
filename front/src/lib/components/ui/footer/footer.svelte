@@ -13,7 +13,7 @@
         <div class="flex justify-center items-center">
             <img src="/icons/favicon-96x96.png" alt="logo" class="w-48" />
         </div>
-        <FooterGroup title="navigation">
+        <FooterGroup title={m['footer.navigation']()}>
             {#if $profile}
                 {#each menuItems.connected as item (item.title)}
                     {#if !item.href.startsWith('/admin') || $profile.role === 'admin'}
@@ -25,10 +25,10 @@
                     <FooterGroupItem name={item.title} href={item.href} icon={item.icon} />
                 {/each}
             {/if}
-        </FooterGroup>
-        <FooterGroup title="More informations">
-            <FooterGroupItem name={m['menu.source-code']()} href={PUBLIC_GITHUB_REPOSITORY} icon={Github} />
             <p class="text-center">© 2025 Tassadraft Studio</p>
+        </FooterGroup>
+        <FooterGroup title={m['footer.about']()}>
+            <FooterGroupItem name={m['menu.source-code']()} href={PUBLIC_GITHUB_REPOSITORY} icon={Github} />
         </FooterGroup>
     </div>
 </footer>

@@ -68,7 +68,7 @@ router
                     return { sessionTokenIsValid: true };
                 });
 
-                router.get('/logout', [AuthController, 'logout']);
+                router.delete('/logout', [AuthController, 'logout']);
 
                 router
                     .group((): void => {
@@ -109,7 +109,7 @@ router
                     })
                     .prefix('notifications');
             })
-            .use([middleware.auth({ guards: ['api'] })]);
+            .use([middleware.auth()]);
 
         router
             .group((): void => {

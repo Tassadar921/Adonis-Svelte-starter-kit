@@ -78,6 +78,10 @@
     "menu": {
         "source-code": "Source code"
     },
+    "footer": {
+        "navigation": "Navigation",
+        "about": "About"
+    },
     "profile": {
         "title": "Profile",
         "description": "Update your profile",

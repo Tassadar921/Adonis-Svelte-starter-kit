@@ -6,6 +6,7 @@ import { m } from '$lib/paraglide/messages';
 
 export const actions: Actions = {
     default: async (event: RequestEvent) => {
+        console.log('login');
         const { request, params, cookies } = event;
 
         const formData: FormData = await request.formData();
@@ -22,8 +23,6 @@ export const actions: Actions = {
             const response = await axios.post('/api/auth', formData);
             data = response.data;
         } catch (error: any) {
-            console.error(error);
-
             return fail(error?.response?.status ?? 400, {
                 isSuccess: false,
                 message: error?.response?.data?.error ?? m['common.error.default-message'](),

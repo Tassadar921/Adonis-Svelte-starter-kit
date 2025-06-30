@@ -14,6 +14,8 @@
 
     let triggerButtonRef: HTMLButtonElement | undefined = $state();
     let isOpen: boolean = $state(false);
+
+    console.log($profile);
 </script>
 
 <Sidebar.Provider bind:open={isOpen}>
