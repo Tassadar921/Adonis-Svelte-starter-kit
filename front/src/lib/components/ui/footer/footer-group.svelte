@@ -2,16 +2,18 @@
     export type FooterGroupProps = {
         children: import('svelte').Snippet;
         title: string;
+        class: string;
     };
 </script>
 
 <script lang="ts">
     import { Separator } from '$lib/components/ui/separator';
+    import { cn } from '$lib/utils';
 
-    let { children, title }: FooterGroupProps = $props();
+    let { children, title, class: className }: FooterGroupProps = $props();
 </script>
 
-<div class="p-1 flex flex-col gap-3 mt-3 items-center">
+<div class={cn('p-1 flex flex-col gap-3 mt-3 items-center', className)}>
     <h3 class="uppercase font-bold">{title}</h3>
     <Separator />
     <ul class="flex flex-col gap-1">

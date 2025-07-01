@@ -1,7 +1,6 @@
 <script lang="ts">
     import Form from '#components/Form.svelte';
     import { Title } from '$lib/components/ui/title';
-    import { showToast } from '#services/toastService';
     import { m } from '$lib/paraglide/messages';
     import { Input } from '$lib/components/ui/input';
     import { checkPassword, isValidEmail } from '#services/checkStringService';
@@ -17,10 +16,6 @@
 
     let canSubmit: boolean = $state(false);
     let message: string = $state('');
-
-    const handleSuccess = (event: CustomEvent): void => {
-        showToast(event.detail.message);
-    };
 
     $effect((): void => {
         if (username && email && isValidEmail(email) && password && confirmPassword && consent) {
@@ -40,7 +35,9 @@
 <Title title={m['create-account.title']()} hasBackground />
 
 <Form isValid={canSubmit}>
-    <OauthProviders />
+    {#snippet header()}
+        <OauthProviders />
+    {/snippet}
     <Input name="username" placeholder={m['common.username.placeholder']()} label={m['common.username.label']()} bind:value={username} required />
     <Input type="email" name="email" placeholder={m['common.email.placeholder']()} label={m['common.email.label']()} bind:value={email} required />
     <Input type="password" name="password" placeholder={m['common.password.placeholder']()} label={m['common.password.label']()} bind:value={password} required />

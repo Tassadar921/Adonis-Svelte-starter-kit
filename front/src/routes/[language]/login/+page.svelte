@@ -18,11 +18,15 @@
 <Title title={m['login.title']()} hasBackground />
 
 <Form isValid={canSubmit()}>
-    <OauthProviders />
+    {#snippet header()}
+        <OauthProviders />
+    {/snippet}
     <Input type="email" name="email" placeholder={m['common.email.placeholder']()} label={m['common.email.label']()} bind:value={email} required />
     <Input type="password" name="password" placeholder={m['common.password.placeholder']()} label={m['common.password.label']()} bind:value={password} required />
-    <div class="w-full flex justify-between">
-        <Link href="/reset-password">{m['login.forgot-password']()}</Link>
-        <Link href="/create-account">{m['login.create-account']()}</Link>
-    </div>
+    {#snippet links()}
+        <div class="w-full flex justify-between">
+            <Link href="/reset-password">{m['login.forgot-password']()}</Link>
+            <Link href="/create-account">{m['login.create-account']()}</Link>
+        </div>
+    {/snippet}
 </Form>

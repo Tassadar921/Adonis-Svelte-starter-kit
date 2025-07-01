@@ -37,9 +37,12 @@ export const actions: Actions = {
             maxAge: 60 * 60 * 24 * 7,
         });
 
-        throw redirect(
+        const previousPathName: string | undefined = cookies.get('previousPathName');
+        cookies.delete('previousPathName', { path: '/' });
+
+        redirect(
             303,
-            `/${params.language}`,
+            `/${params.language}${previousPathName ? `/${previousPathName}` : ''}`,
             {
                 type: 'success',
                 message: data.message,

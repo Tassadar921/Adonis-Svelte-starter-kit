@@ -26,7 +26,7 @@ export const POST: RequestHandler = async (event): Promise<Response> => {
         );
     }
 
-    throw redirect(
+    redirect(
         303,
         `/${params.language}/login`,
         {
