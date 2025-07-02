@@ -25,10 +25,10 @@
                     <FooterGroupItem name={item.title} href={item.href} icon={item.icon} />
                 {/each}
             {/if}
-            <p class="text-center">© 2025 Tassadraft Studio</p>
         </FooterGroup>
         <FooterGroup title={m['footer.about']()} class="order-2 lg:order-3">
             <FooterGroupItem name={m['menu.source-code']()} href={PUBLIC_GITHUB_REPOSITORY} icon={Github} />
+            <p class="text-center mt-5">© 2025 Tassadraft Studio</p>
         </FooterGroup>
     </div>
 </footer>

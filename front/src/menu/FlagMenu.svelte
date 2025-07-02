@@ -3,9 +3,9 @@
     import { Button } from '$lib/components/ui/button/index';
     import Icon from '#components/Icon.svelte';
     import { type LanguageCode } from '#stores/languageStore';
-    import { location, navigate } from '#stores/locationStore';
     import { language } from '#stores/languageStore';
     import { ChevronDown } from '@lucide/svelte';
+    import { setLocale } from '../paraglide/runtime';
 
     type FlagName = 'englishFlag' | 'frenchFlag';
 
@@ -41,11 +41,11 @@
         if ($language === flag.value) {
             return;
         }
+
         selectedFlag = flag;
-
-        navigate(`/${flag.value}${$location}`);
-
         isExpanded = false;
+
+        setLocale(flag.value);
     };
 
     const handleClickOutside = (event: MouseEvent): void => {

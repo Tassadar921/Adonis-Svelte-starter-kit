@@ -9,6 +9,7 @@
     import { page as currentPage } from '$app/state';
     import { readable } from 'svelte/store';
     import { showToast } from '#services/toastService';
+    import { Footer } from '$lib/components/ui/footer';
 
     const page = readable(currentPage);
 
@@ -40,7 +41,11 @@
 <div class="app">
     <main class="flex flex-col w-screen">
         <Menu>
-            {@render children?.()}
+            <div class="min-h-screen px-3.5">
+                {@render children()}
+            </div>
+
+            <Footer />
         </Menu>
     </main>
 </div>
