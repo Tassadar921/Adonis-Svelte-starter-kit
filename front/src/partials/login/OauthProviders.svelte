@@ -2,6 +2,8 @@
     import Icon from '#components/Icon.svelte';
     import { showToast } from '#services/toastService';
     import { PUBLIC_GITHUB_REPOSITORY } from '$env/static/public';
+    import { Button } from '$lib/components/ui/button';
+    import { m } from '$lib/paraglide/messages';
 
     type Provider = 'google' | 'github' | 'discord';
 
@@ -14,14 +16,17 @@
     };
 </script>
 
-<div class="flex justify-around">
-    <button type="button" onclick={() => handleOauthClick('google')} class="rounded-full cursor-pointer">
+<div class="flex flex-col gap-1 items-center px-8">
+    <Button type="button" size="icon" class="w-full" onclick={() => handleOauthClick('google')}>
         <Icon name="google" size={42} />
-    </button>
-    <button type="button" onclick={() => handleOauthClick('github')} class="rounded-full cursor-pointer">
+        <p>{m['login.login-with']()} Google</p>
+    </Button>
+    <Button type="button" size="icon" class="w-full" onclick={() => handleOauthClick('github')}>
         <Icon name="github" size={42} />
-    </button>
-    <button type="button" onclick={() => handleOauthClick('discord')} class="rounded-full cursor-pointer">
-        <Icon name="discord" size={42} />
-    </button>
+        <p>{m['login.login-with']()} Github</p>
+    </Button>
+    <Button type="button" size="icon" class="w-full" onclick={() => handleOauthClick('discord')}>
+        <Icon name="discord" size={54} />
+        <p>{m['login.login-with']()} Discord</p>
+    </Button>
 </div>

@@ -2,11 +2,9 @@
     import { onMount } from 'svelte';
     import { Button } from '$lib/components/ui/button/index';
     import Icon from '#components/Icon.svelte';
-    import { setLocale } from '$lib/paraglide/runtime';
-    import { type LanguageCode, setLanguage } from '#stores/languageStore';
+    import { type LanguageCode } from '#stores/languageStore';
     import { location, navigate } from '#stores/locationStore';
     import { language } from '#stores/languageStore';
-    import axios from 'axios';
     import { ChevronDown } from '@lucide/svelte';
 
     type FlagName = 'englishFlag' | 'frenchFlag';
@@ -43,10 +41,6 @@
         if ($language === flag.value) {
             return;
         }
-
-        setLanguage(flag.value);
-        setLocale(flag.value);
-        axios.defaults.headers.common['Accept-Language'] = `${flag.value}-${flag.value.toUpperCase()}`;
         selectedFlag = flag;
 
         navigate(`/${flag.value}${$location}`);
@@ -72,7 +66,7 @@
     {#if isExpanded}
         <div class="absolute mt-2 bg-white dark:bg-gray-800 shadow-md rounded-lg z-50 w-32 p-2 border border-gray-200 right-0" bind:this={popoverEl}>
             {#each flags as flag}
-                <Button variant="outline" class="w-full {selectedFlag.value === flag.value ? 'shadow-green-500' : ''}" onclick={() => selectFlag(flag)}>
+                <Button aria-disabled={$language === flag.value} variant="outline" class="w-full" onclick={() => selectFlag(flag)}>
                     <Icon name={flag.icon} />
                     <p class="capitalize">{flag.label}</p>
                 </Button>

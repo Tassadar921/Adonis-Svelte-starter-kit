@@ -9,9 +9,14 @@ export const load: LayoutServerLoad = loadFlash(async (event): Promise<{ languag
     const { cookies, url, params } = event;
     const openedPathNames: string[] = ['/create-account', '/login', '/reset-password'];
 
-    const languageCode: string = params.language?.replace('/', '') ?? cookies.get('language') ?? 'en';
+    const languageCode: string = params.language?.replace('/', '') ?? cookies.get('PARAGLIDE_LOCALE') ?? 'en';
+
+    console.log('aaaaah');
+    console.log(url.pathname);
+    console.log(languageCode);
 
     if (!supportedLanguages.includes(languageCode)) {
+        console.log('ici');
         redirect(307, `/en${url.pathname}`);
     }
 

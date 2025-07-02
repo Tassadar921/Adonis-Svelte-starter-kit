@@ -37,7 +37,7 @@
         url: `${PUBLIC_FRONT_URI}/assets/logo-1200x1200.webp`,
         width: 1200,
         height: 1200,
-        alt: `${m['open-graph.logo.alt']()}`,
+        alt: `${m['common.logo.alt']()}`,
     };
 
     const meta: Meta = {

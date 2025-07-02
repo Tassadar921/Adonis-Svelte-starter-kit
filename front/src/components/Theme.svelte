@@ -3,7 +3,7 @@
     import { ModeWatcher } from 'mode-watcher';
 
     import { toggleMode } from 'mode-watcher';
-    import { Button } from '$lib/components/ui/button/index.js';
+    import { Button } from '$lib/components/ui/button';
 </script>
 
 <ModeWatcher />

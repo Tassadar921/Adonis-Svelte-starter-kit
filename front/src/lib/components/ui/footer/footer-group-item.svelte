@@ -9,7 +9,7 @@
 </script>
 
 <script lang="ts">
-    import { Link } from '$lib/components/ui/link/index.js';
+    import { Link } from '$lib/components/ui/link';
 
     let { name, href, icon: Icon }: FooterGroupItemProps = $props();
 </script>

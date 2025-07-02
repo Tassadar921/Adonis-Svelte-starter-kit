@@ -1,5 +1,5 @@
 <script lang="ts">
-    import * as Sidebar from '$lib/components/ui/sidebar/index.js';
+    import * as Sidebar from '$lib/components/ui/sidebar';
     import { menuItems } from '#services/menuService';
     import { profile } from '#stores/profileStore';
     import Theme from '#components/Theme.svelte';
@@ -22,10 +22,10 @@
             <Sidebar.Group>
                 <Sidebar.GroupContent>
                     <Sidebar.Menu>
-                        <div class="flex items-center gap-5">
+                        <div class="flex items-center gap-5 mt-1">
                             <Sidebar.Trigger bind:ref={triggerButtonRef} />
                             <FlagMenu />
-                            <Theme />
+                            <!--                            <Theme />-->
                         </div>
                         <div class="flex flex-col gap-5 mt-3">
                             {#if $profile}

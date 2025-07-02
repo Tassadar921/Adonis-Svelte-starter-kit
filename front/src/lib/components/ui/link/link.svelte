@@ -27,7 +27,7 @@
 <script lang="ts">
     import { navigate } from '#stores/locationStore';
     import { language } from '#stores/languageStore';
-    import { cn } from '$lib/utils.js';
+    import { cn } from '$lib/utils';
 
     let { children, ref, onclick, onmouseover, onfocus, onblur, onmouseout, href, target = '', class: className = '', ariaLabel, size = 'default' }: LinkProps = $props();
 

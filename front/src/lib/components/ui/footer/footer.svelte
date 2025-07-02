@@ -5,13 +5,13 @@
     import { Github } from '@lucide/svelte';
     import { menuItems } from '#services/menuService';
     import { FooterGroupItem } from './';
-    import { FooterGroup } from '$lib/components/ui/footer/index.js';
+    import { FooterGroup } from '$lib/components/ui/footer';
 </script>
 
 <footer class="w-full bg-neutral-300 dark:bg-gray-950 py-5 lg:py-10">
     <div class="grid grid-cols-1 lg:grid-cols-3">
         <div class="flex justify-center items-center order-3 lg:order-1">
-            <img src="/icons/favicon-96x96.png" alt="logo" class="w-48" />
+            <img src="/icons/favicon-96x96.png" alt={m['common.logo.alt']()} class="w-48 rounded-xl" />
         </div>
         <FooterGroup title={m['footer.navigation']()} class="order-1 lg:order-2">
             {#if $profile}
