@@ -8,7 +8,4 @@
 
 node_modules/
 package-lock.json
-
-front/.svelte-kit
-front/project.inlang
 save

@@ -9,7 +9,7 @@ format-check:
 	cd front && npx prettier --check "**/*.{js,ts,svelte,html,css,json,yml}"
 
 install:
-	rm -rf .vite node_modules package-lock.json back/node_modules front/node_modules
+	rm -rf node_modules package-lock.json back/node_modules front/node_modules
 	npm install
 
 upgrade:
@@ -41,6 +41,8 @@ stop:
 
 up:
 	${MAKE} stop
+	rm -rf front/.svelte-kit front/node_modules/.vite
+	cd front && npx paraglide-js compile
 	./compose-env.sh up -d --build
 
 rm:

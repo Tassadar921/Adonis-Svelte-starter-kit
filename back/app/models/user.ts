@@ -93,7 +93,6 @@ export default class User extends compose(BaseModel, AuthFinder) {
             username: this.username,
             email: this.email,
             role: this.role,
-            enabled: this.enabled,
             acceptedTermsAndConditions: this.acceptedTermsAndConditions,
             profilePicture: this.profilePicture?.apiSerialize(),
             updatedAt: this.updatedAt?.toString(),

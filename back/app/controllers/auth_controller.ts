@@ -9,6 +9,7 @@ import { loginValidator, sendAccountCreationEmailValidator, confirmAccountCreati
 import BrevoMailService from '#services/brevo_mail_service';
 import env from '#start/env';
 import { randomUUID } from 'node:crypto';
+import { Response } from '@adonisjs/core/http';
 
 @inject()
 export default class AuthController {
@@ -24,11 +25,10 @@ export default class AuthController {
             const user: User = await User.verifyCredentials(email, password);
             await user.load('profilePicture');
 
-            const token: AccessToken = await User.accessTokens.create(user);
+            response = await this.setAccessToken(user, response);
 
             return response.send({
                 message: i18n.t('messages.auth.login.success'),
-                token,
                 user: user.apiSerialize(),
             });
         } catch (error: any) {
@@ -39,6 +39,8 @@ export default class AuthController {
     public async logout({ auth, response, i18n }: HttpContext): Promise<void> {
         const user: User & { currentAccessToken: AccessToken } = await auth.use('api').authenticate();
         await User.accessTokens.delete(user, user.currentAccessToken.identifier);
+
+        response.clearCookie('apiToken');
 
         return response.send({ message: i18n.t('messages.auth.logout.success') });
     }
@@ -95,12 +97,28 @@ export default class AuthController {
         user.creationToken = null;
         await user.save();
 
-        const accessToken: AccessToken = await User.accessTokens.create(user);
+        response = await this.setAccessToken(user, response);
 
         return response.send({
             message: i18n.t('messages.auth.confirm-account-creation.success'),
-            token: accessToken,
             user: user.apiSerialize(),
         });
+    }
+
+    private async setAccessToken(user: User, response: Response): Promise<Response> {
+        const accessToken: AccessToken = await User.accessTokens.create(user);
+
+        if (!accessToken.expiresAt) {
+            throw new Error();
+        }
+
+        const expiresAt: Date = new Date(accessToken.expiresAt);
+        const now: Date = new Date();
+
+        response.cookie('apiToken', accessToken.value!.release(), {
+            maxAge: Math.floor((expiresAt.getTime() - now.getTime()) / 1000),
+        });
+
+        return response;
     }
 }
