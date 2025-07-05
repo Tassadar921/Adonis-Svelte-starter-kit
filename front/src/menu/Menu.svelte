@@ -1,5 +1,5 @@
 <script lang="ts">
-    import * as Sidebar from '$lib/components/ui/sidebar';
+    import { SidebarProvider, Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuItem, SidebarInset, SidebarTrigger } from '$lib/components/ui/sidebar';
     import { menuItems } from '#services/menuService';
     import { profile } from '#stores/profileStore';
     import Theme from '#components/Theme.svelte';
@@ -16,52 +16,52 @@
     let isOpen: boolean = $state(false);
 </script>
 
-<Sidebar.Provider bind:open={isOpen}>
-    <Sidebar.Root toggleButtonRef={triggerButtonRef}>
-        <Sidebar.Content>
-            <Sidebar.Group>
-                <Sidebar.GroupContent>
-                    <Sidebar.Menu>
+<SidebarProvider bind:open={isOpen}>
+    <Sidebar toggleButtonRef={triggerButtonRef}>
+        <SidebarContent>
+            <SidebarGroup>
+                <SidebarGroupContent>
+                    <SidebarMenu>
                         <div class="flex items-center gap-5 mt-1">
-                            <Sidebar.Trigger bind:ref={triggerButtonRef} />
+                            <SidebarTrigger bind:ref={triggerButtonRef} />
                             <FlagMenu />
-                            <!--                            <Theme />-->
+                            <Theme />
                         </div>
                         <div class="flex flex-col gap-5 mt-3">
                             {#if $profile}
                                 {#each menuItems.connected as item (item.title)}
                                     {#if !item.href.startsWith('/admin') || $profile.role === 'admin'}
-                                        <Sidebar.MenuItem>
+                                        <SidebarMenuItem>
                                             <Link href={item.href} class="flex justify-start items-center gap-3">
                                                 <item.icon class="size-6" />
                                                 <p class="text-2xl">{item.title}</p>
                                             </Link>
-                                        </Sidebar.MenuItem>
+                                        </SidebarMenuItem>
                                     {/if}
                                 {/each}
                             {:else}
                                 {#each menuItems.notConnected as item (item.title)}
-                                    <Sidebar.MenuItem>
+                                    <SidebarMenuItem>
                                         <Link href={item.href} class="flex justify-start items-center gap-3">
                                             <item.icon class="size-6" />
                                             <p class="text-2xl">{item.title}</p>
                                         </Link>
-                                    </Sidebar.MenuItem>
+                                    </SidebarMenuItem>
                                 {/each}
                             {/if}
                         </div>
-                    </Sidebar.Menu>
-                </Sidebar.GroupContent>
-            </Sidebar.Group>
-        </Sidebar.Content>
-    </Sidebar.Root>
+                    </SidebarMenu>
+                </SidebarGroupContent>
+            </SidebarGroup>
+        </SidebarContent>
+    </Sidebar>
 
-    <Sidebar.Inset>
+    <SidebarInset>
         <div class="mt-3">
             <div class="h-10">
-                <Sidebar.Trigger class={`${isOpen ? 'hidden' : ''}`} />
+                <SidebarTrigger class={`${isOpen ? 'hidden' : ''}`} />
             </div>
             {@render children()}
         </div>
-    </Sidebar.Inset>
-</Sidebar.Provider>
+    </SidebarInset>
+</SidebarProvider>

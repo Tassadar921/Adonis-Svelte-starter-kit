@@ -12,17 +12,6 @@ const Root = SheetPrimitive.Root;
 const Portal = SheetPrimitive.Portal;
 
 export {
-    Root,
-    Close,
-    Trigger,
-    Portal,
-    Overlay,
-    Content,
-    Header,
-    Footer,
-    Title,
-    Description,
-    //
     Root as Sheet,
     Close as SheetClose,
     Trigger as SheetTrigger,

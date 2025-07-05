@@ -25,7 +25,7 @@
 </script>
 
 <script lang="ts">
-    import * as Tooltip from '$lib/components/ui/tooltip';
+    import { Tooltip, TooltipContent, TooltipTrigger } from '$lib/components/ui/tooltip';
     import { cn, type WithElementRef, type WithoutChildrenOrChild } from '$lib/utils';
     import { mergeProps } from 'bits-ui';
     import type { ComponentProps, Snippet } from 'svelte';
@@ -48,7 +48,7 @@
         variant?: SidebarMenuButtonVariant;
         size?: SidebarMenuButtonSize;
         tooltipContent?: Snippet | string;
-        tooltipContentProps?: WithoutChildrenOrChild<ComponentProps<typeof Tooltip.Content>>;
+        tooltipContentProps?: WithoutChildrenOrChild<ComponentProps<typeof TooltipContent>>;
         child?: Snippet<[{ props: Record<string, unknown> }]>;
     } = $props();
 
@@ -78,18 +78,18 @@
 {#if !tooltipContent}
     {@render Button({})}
 {:else}
-    <Tooltip.Root>
-        <Tooltip.Trigger>
+    <Tooltip>
+        <TooltipTrigger>
             {#snippet child({ props })}
                 {@render Button({ props })}
             {/snippet}
-        </Tooltip.Trigger>
-        <Tooltip.Content side="right" align="center" hidden={sidebar.state !== 'collapsed' || sidebar.isMobile} {...tooltipContentProps}>
+        </TooltipTrigger>
+        <TooltipContent side="right" align="center" hidden={sidebar.state !== 'collapsed' || sidebar.isMobile} {...tooltipContentProps}>
             {#if typeof tooltipContent === 'string'}
                 {tooltipContent}
             {:else if tooltipContent}
                 {@render tooltipContent()}
             {/if}
-        </Tooltip.Content>
-    </Tooltip.Root>
+        </TooltipContent>
+    </Tooltip>
 {/if}

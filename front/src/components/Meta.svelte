@@ -4,7 +4,7 @@
     import { language } from '#stores/languageStore';
     import { m } from '$lib/paraglide/messages';
     import { get } from 'svelte/store';
-    import { supportedLanguages } from '#services/languageService';
+    import { locales } from '$lib/paraglide/runtime';
     import { PUBLIC_FRONT_URI, PUBLIC_TWITTER_HANDLE } from '$env/static/public';
 
     interface OpenGraphImage {
@@ -45,7 +45,7 @@
         description,
         keywords,
         languageAlternates: pathname
-            ? supportedLanguages.map((language: string) => ({
+            ? locales.map((language: string) => ({
                   hrefLang: language,
                   href: `${PUBLIC_FRONT_URI}/${language}${pathname}`,
               }))

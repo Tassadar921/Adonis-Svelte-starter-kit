@@ -1,5 +1,5 @@
 <script lang="ts">
-    import * as Tooltip from '$lib/components/ui/tooltip';
+    import { TooltipProvider } from '$lib/components/ui/tooltip';
     import { cn, type WithElementRef } from '$lib/utils';
     import type { HTMLAttributes } from 'svelte/elements';
     import { SIDEBAR_COOKIE_MAX_AGE, SIDEBAR_COOKIE_NAME, SIDEBAR_WIDTH, SIDEBAR_WIDTH_ICON } from './constants';
@@ -32,7 +32,7 @@
 
 <svelte:window onkeydown={sidebar.handleShortcutKeydown} />
 
-<Tooltip.Provider delayDuration={0}>
+<TooltipProvider delayDuration={0}>
     <div
         data-slot="sidebar-wrapper"
         style="--sidebar-width: {SIDEBAR_WIDTH}; --sidebar-width-icon: {SIDEBAR_WIDTH_ICON}; {style}"
@@ -42,4 +42,4 @@
     >
         {@render children?.()}
     </div>
-</Tooltip.Provider>
+</TooltipProvider>

@@ -69,7 +69,6 @@ export default class LogHttpRequest {
                 await log.save();
             } catch (err) {
                 ctx.logger.warn('Failed to save log', err);
-                console.error('Save log error:', err);
             }
         }
     }

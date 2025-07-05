@@ -2,10 +2,11 @@
     import { onMount } from 'svelte';
     import { Button } from '$lib/components/ui/button/index';
     import Icon from '#components/Icon.svelte';
-    import { type LanguageCode } from '#stores/languageStore';
-    import { language } from '#stores/languageStore';
+    import { type LanguageCode, language } from '#stores/languageStore';
+    import { location } from '#stores/locationStore';
     import { ChevronDown } from '@lucide/svelte';
-    import { setLocale } from '../paraglide/runtime';
+    import { setLocale } from '$lib/paraglide/runtime';
+    import { goto } from '$app/navigation';
 
     type FlagName = 'englishFlag' | 'frenchFlag';
 
@@ -37,7 +38,7 @@
         isExpanded = !isExpanded;
     };
 
-    const selectFlag = (flag: Flag): void => {
+    const selectFlag = async (flag: Flag): Promise<void> => {
         if ($language === flag.value) {
             return;
         }
@@ -45,7 +46,9 @@
         selectedFlag = flag;
         isExpanded = false;
 
+        await goto(`/${flag.value}${$location}`);
         setLocale(flag.value);
+        window.location.reload();
     };
 
     const handleClickOutside = (event: MouseEvent): void => {
@@ -66,7 +69,7 @@
     {#if isExpanded}
         <div class="absolute mt-2 bg-white dark:bg-gray-800 shadow-md rounded-lg z-50 w-32 p-2 border border-gray-200 right-0" bind:this={popoverEl}>
             {#each flags as flag}
-                <Button aria-disabled={$language === flag.value} variant="outline" class="w-full" onclick={() => selectFlag(flag)}>
+                <Button aria-disabled={$language === flag.value} variant="outline" class="w-full" onclick={async () => await selectFlag(flag)}>
                     <Icon name={flag.icon} />
                     <p class="capitalize">{flag.label}</p>
                 </Button>

@@ -4,7 +4,16 @@
     import { clearProfile } from '#stores/profileStore';
     import { m } from '$lib/paraglide/messages';
     import { Title } from '$lib/components/ui/title';
-    import * as AlertDialog from '$lib/components/ui/alert-dialog';
+    import {
+        AlertDialog,
+        AlertDialogCancel,
+        AlertDialogContent,
+        AlertDialogDescription,
+        AlertDialogFooter,
+        AlertDialogHeader,
+        AlertDialogTitle,
+        AlertDialogAction,
+    } from '$lib/components/ui/alert-dialog';
     import Meta from '#components/Meta.svelte';
     import axios from 'axios';
     import { language } from '#stores/languageStore';
@@ -32,15 +41,15 @@
 
 <Title title={m['logout.title']()} />
 
-<AlertDialog.Root open={true}>
-    <AlertDialog.Content>
-        <AlertDialog.Header>
-            <AlertDialog.Title>{m['logout.modal.title']()}</AlertDialog.Title>
-            <AlertDialog.Description>{m['logout.modal.text']()}</AlertDialog.Description>
-        </AlertDialog.Header>
-        <AlertDialog.Footer>
-            <AlertDialog.Cancel onclick={handleClose}>Cancel</AlertDialog.Cancel>
-            <AlertDialog.Action onclick={handleSuccess}>Continue</AlertDialog.Action>
-        </AlertDialog.Footer>
-    </AlertDialog.Content>
-</AlertDialog.Root>
+<AlertDialog open={true}>
+    <AlertDialogContent>
+        <AlertDialogHeader>
+            <AlertDialogTitle>{m['logout.modal.title']()}</AlertDialogTitle>
+            <AlertDialogDescription>{m['logout.modal.text']()}</AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+            <AlertDialogCancel onclick={handleClose}>Cancel</AlertDialogCancel>
+            <AlertDialogAction onclick={handleSuccess}>Continue</AlertDialogAction>
+        </AlertDialogFooter>
+    </AlertDialogContent>
+</AlertDialog>
