@@ -4,20 +4,6 @@ import { redirect } from 'sveltekit-flash-message/server';
 import { m } from '#lib/paraglide/messages';
 import { tuyau } from '#lib/api.server';
 
-interface AuthResponse {
-    message: string;
-    user: {
-        role: string;
-        // Add other user properties here
-    };
-    // Add other response properties here
-}
-
-interface AuthError {
-    message: string;
-    // Add other error properties here
-}
-
 export const actions: Actions = {
     default: async (event: RequestEvent) => {
         const { request, params, cookies } = event;
