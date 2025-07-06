@@ -5,8 +5,4 @@ export default class AuthAccessTokenRepository extends BaseRepository<typeof Aut
     constructor() {
         super(AuthAccessToken);
     }
-
-    public async findActiveByToken(token: string): Promise<AuthAccessToken | null> {
-        return AuthAccessToken.query().where('token', token).whereNull('deleted_at').first();
-    }
 }

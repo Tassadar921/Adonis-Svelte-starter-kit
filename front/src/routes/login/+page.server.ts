@@ -16,18 +16,20 @@ export const actions: Actions = {
             return fail(400, { error: 'Email and password are required' });
         }
 
+        console.log('===========================================');
+
         try {
-            console.log('coucou')
-            const { data, error } = await tuyau.api.auth.$post<AuthResponse, AuthError>({ // Add type parameters
+            console.log('coucou');
+            const { data, error } = await tuyau.api.auth.$post({
                 email,
                 password,
             });
             console.log(data, error);
 
-            if (data && data.message) {
-                console.log(data.message)
-                console.log(data.user.role)
-                // Removed undefined property access
+            if (data) {
+                console.log(data.message);
+                console.log(data.user.role);
+                console.log(data.a);
             }
             // cookies.set('user', JSON.stringify(data.user), {
             //     path: '/',

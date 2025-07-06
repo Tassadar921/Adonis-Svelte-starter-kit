@@ -73,9 +73,12 @@ export default class ProfileController {
     public async resetPassword({ request, response, i18n }: HttpContext) {
         const { token } = await resetPasswordParamsValidator.validate(request.params());
 
-        const resetPassword: ResetPassword = await this.resetPasswordRepository.firstOrFail({
-            token,
-        }, ['user']);
+        const resetPassword: ResetPassword = await this.resetPasswordRepository.firstOrFail(
+            {
+                token,
+            },
+            ['user']
+        );
 
         const { password } = await request.validateUsing(resetPasswordValidator);
 

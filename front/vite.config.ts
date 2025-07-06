@@ -20,8 +20,8 @@ export default defineConfig({
     ],
     resolve: {
         alias: {
-            'backend/.adonisjs/api': '../back/.adonisjs/api'
-        }
+            'backend/.adonisjs/api': '../back/.adonisjs/api',
+        },
     },
     test: {
         projects: [
