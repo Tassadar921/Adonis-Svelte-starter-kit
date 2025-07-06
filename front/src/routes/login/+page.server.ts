@@ -4,6 +4,20 @@ import { redirect } from 'sveltekit-flash-message/server';
 import { m } from '#lib/paraglide/messages';
 import { tuyau } from '#lib/api.server';
 
+interface AuthResponse {
+    message: string;
+    user: {
+        role: string;
+        // Add other user properties here
+    };
+    // Add other response properties here
+}
+
+interface AuthError {
+    message: string;
+    // Add other error properties here
+}
+
 export const actions: Actions = {
     default: async (event: RequestEvent) => {
         const { request, params, cookies } = event;
@@ -18,16 +32,16 @@ export const actions: Actions = {
 
         try {
             console.log('coucou')
-            const { data, error } = await tuyau.api.auth.$post({
+            const { data, error } = await tuyau.api.auth.$post<AuthResponse, AuthError>({ // Add type parameters
                 email,
                 password,
             });
             console.log(data, error);
 
-            if (data) {
+            if (data && data.message) {
                 console.log(data.message)
                 console.log(data.user.role)
-                console.log(data.a)
+                // Removed undefined property access
             }
             // cookies.set('user', JSON.stringify(data.user), {
             //     path: '/',
