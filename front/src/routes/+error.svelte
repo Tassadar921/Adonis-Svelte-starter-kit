@@ -1,8 +1,8 @@
 <script lang="ts">
     import { page } from '$app/state';
-    import { Title } from '$lib/components/ui/title';
+    import { Title } from '#lib/components/ui/title';
     import BackTo from '#components/BackTo.svelte';
-    import { m } from '$lib/paraglide/messages';
+    import { m } from '#lib/paraglide/messages';
     import Meta from '#components/Meta.svelte';
 
     let key: 'unauthorized' | 'forbidden' | 'not-found' | 'already-connected' | 'unknown-error' = 'unknown-error';

@@ -9,10 +9,10 @@ import PaginatedUsers from '#types/paginated/paginated_users';
 export default class UserController {
     constructor(private readonly userRepository: UserRepository) {}
 
-    public async searchNotFriends({ request, response, user }: HttpContext): Promise<void> {
+    public async searchNotFriends({ request, response, user }: HttpContext) {
         const { query, page, perPage } = await request.validateUsing(getUsersValidator);
 
-        return response.send({
+        return response.ok({
             users: await cache.getOrSet({
                 key: `user-not-friends:${user.id}`,
                 ttl: '5m',

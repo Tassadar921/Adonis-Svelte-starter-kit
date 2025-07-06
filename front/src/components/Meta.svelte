@@ -2,9 +2,9 @@
     import { MetaTags, type OpenGraph, type Twitter } from 'svelte-meta-tags';
     import { location } from '#stores/locationStore';
     import { language } from '#stores/languageStore';
-    import { m } from '$lib/paraglide/messages';
+    import { m } from '#lib/paraglide/messages';
     import { get } from 'svelte/store';
-    import { locales } from '$lib/paraglide/runtime';
+    import { locales } from '#lib/paraglide/runtime';
     import { PUBLIC_FRONT_URI, PUBLIC_TWITTER_HANDLE } from '$env/static/public';
 
     interface OpenGraphImage {

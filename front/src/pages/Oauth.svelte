@@ -1,11 +1,11 @@
 <script lang="ts">
-    import { Title } from '$lib/components/ui/title';
+    import { Title } from '#lib/components/ui/title';
     import { onMount } from 'svelte';
     import { showToast } from '#services/toastService';
     import { navigate } from '#stores/locationStore';
     import { updateProfile } from '#stores/profileStore';
     import Loader from '#components/Loader.svelte';
-    import { m } from '$lib/paraglide/messages';
+    import { m } from '#lib/paraglide/messages';
     import Meta from '#components/Meta.svelte';
 
     onMount(async () => {

@@ -1,9 +1,8 @@
 <script lang="ts">
-    import { Button } from '$lib/components/ui/button';
+    import { Button } from '#lib/components/ui/button';
     import type { ComponentProps } from 'svelte';
     import { useSidebar } from './context.svelte';
     import { Menu } from '@lucide/svelte';
-    import { cn } from '$lib/utils';
 
     let {
         ref = $bindable(),

@@ -1,5 +1,5 @@
 {
-    "name": "adonis-svelte-starter-kit-frontend",
+    "name": "app",
     "version": "1.0",
     "private": true,
     "type": "module",
@@ -27,8 +27,6 @@
         "@tailwindcss/vite": "^4.1.10",
         "@testing-library/jest-dom": "^6.6.3",
         "@testing-library/svelte": "^5.2.8",
-        "adonis-svelte-starter-kit-backend": "file:../back",
-        "axios": "^1.10.0",
         "bits-ui": "^2.8.8",
         "clsx": "^2.1.1",
         "jsdom": "^26.1.0",
@@ -47,6 +45,8 @@
     "dependencies": {
         "@adonisjs/transmit-client": "^1.0.0",
         "@inlang/paraglide-js": "^2.1.0",
+        "@tuyau/client": "^0.2.9",
+        "backend": "file:../back",
         "mode-watcher": "^1.0.8",
         "svelte-meta-tags": "^4.3.0",
         "toastify-js": "^1.12.0"

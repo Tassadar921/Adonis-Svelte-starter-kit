@@ -20,10 +20,10 @@ export default class PendingFriendController {
         private readonly userRepository: UserRepository
     ) {}
 
-    public async search({ request, response, user }: HttpContext): Promise<void> {
+    public async search({ request, response, user }: HttpContext) {
         const { query, page, perPage } = await request.validateUsing(searchPendingFriendsValidator);
 
-        return response.send({
+        return response.ok({
             pendingFriends: await cache.getOrSet({
                 key: `pending-friends:${user.id}`,
                 ttl: '5m',
@@ -34,13 +34,13 @@ export default class PendingFriendController {
         });
     }
 
-    public async add({ request, response, user, i18n }: HttpContext): Promise<void> {
+    public async add({ request, response, user, i18n }: HttpContext) {
         const { userId } = await request.validateUsing(addPendingFriendValidator);
 
         const askingToUser: User = await this.userRepository.firstOrFail({ frontId: userId });
         const existingFriend: Friend | null = await this.friendRepository.findOneFromUsers(user, askingToUser);
         if (existingFriend) {
-            return response.send({ message: i18n.t('messages.pending-friend.add.error', { username: askingToUser.username }) });
+            return response.conflict({ message: i18n.t('messages.pending-friend.add.error', { username: askingToUser.username }) });
         }
 
         let pendingFriend: PendingFriend | null;
@@ -67,13 +67,13 @@ export default class PendingFriendController {
             transmit.broadcast(`notification/add-friend/${userId}`, pendingFriend.apiSerialize());
         }
 
-        return response.send({
+        return response.ok({
             message: i18n.t('messages.pending-friend.add.success', { username: askingToUser.username }),
             pendingFriend: pendingFriend.apiSerialize(),
         });
     }
 
-    public async cancel({ request, response, user, i18n }: HttpContext): Promise<void> {
+    public async cancel({ request, response, user, i18n }: HttpContext) {
         const { userId } = await cancelPendingFriendValidator.validate(request.params());
 
         const askingToUser: User = await this.userRepository.firstOrFail({ frontId: userId });
@@ -84,7 +84,7 @@ export default class PendingFriendController {
             await pendingFriend.notification.delete();
             await pendingFriend.delete();
 
-            return response.send({ message: i18n.t('messages.pending-friend.cancel.success', { username: askingToUser.username }) });
+            return response.ok({ message: i18n.t('messages.pending-friend.cancel.success', { username: askingToUser.username }) });
         }
 
         return response.forbidden({ error: i18n.t('messages.pending-friend.cancel.error', { username: askingToUser.username }) });

@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { m } from '$lib/paraglide/messages';
+    import { m } from '#lib/paraglide/messages';
     import { onMount } from 'svelte';
     import { raw } from '#services/stringService';
     import Loader from '#components/Loader.svelte';

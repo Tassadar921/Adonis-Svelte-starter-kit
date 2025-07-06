@@ -22,10 +22,10 @@ export default class BlockedUserController {
         private readonly friendRepository: FriendRepository
     ) {}
 
-    public async search({ request, response, user }: HttpContext): Promise<void> {
+    public async search({ request, response, user }: HttpContext) {
         const { query, page, perPage } = await request.validateUsing(getBlockedUsersValidator);
 
-        return response.send({
+        return response.ok({
             blockedUsers: await cache.getOrSet({
                 key: `user-blocked:${user.id}`,
                 ttl: '5m',
@@ -36,14 +36,14 @@ export default class BlockedUserController {
         });
     }
 
-    public async block({ request, response, user, i18n }: HttpContext): Promise<void> {
+    public async block({ request, response, user, i18n }: HttpContext) {
         const { userId } = await blockValidator.validate(request.params());
 
         const blockingUser: User = await this.userRepository.firstOrFail({ frontId: userId });
 
         const blockedUsers: BlockedUser[] = await this.blockedUserRepository.findFromUsers(user, blockingUser);
         if (blockedUsers.length) {
-            return response.status(409).send({ error: i18n.t('messages.blocked-user.block.error', { username: blockingUser.username }) });
+            return response.conflict({ error: i18n.t('messages.blocked-user.block.error', { username: blockingUser.username }) });
         }
 
         const pendingFriends: PendingFriend[] = await this.pendingFriendRepository.findFromUsers(user, blockingUser);
@@ -63,10 +63,10 @@ export default class BlockedUserController {
         });
         transmit.broadcast(`notification/blocked/${userId}`, user.apiSerialize());
 
-        return response.send({ message: i18n.t('messages.blocked-user.block.success', { username: blockingUser.username }) });
+        return response.ok({ message: i18n.t('messages.blocked-user.block.success', { username: blockingUser.username }) });
     }
 
-    public async cancel({ request, response, user, i18n }: HttpContext): Promise<void> {
+    public async cancel({ request, response, user, i18n }: HttpContext) {
         const { userId } = await cancelValidator.validate(request.params());
 
         const blockingUser: User | null = await this.userRepository.firstOrFail({ frontId: userId });
@@ -82,6 +82,6 @@ export default class BlockedUserController {
 
         transmit.broadcast(`notification/unblocked/${userId}`);
 
-        return response.send({ message: i18n.t('messages.blocked-user.cancel.success', { username: blockingUser.username }) });
+        return response.ok({ message: i18n.t('messages.blocked-user.cancel.success', { username: blockingUser.username }) });
     }
 }

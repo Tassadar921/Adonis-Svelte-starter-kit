@@ -1,6 +1,6 @@
 <script lang="ts">
     import { createEventDispatcher } from 'svelte';
-    import { m } from '$lib/paraglide/messages';
+    import { m } from '#lib/paraglide/messages';
 
     const dispatch = createEventDispatcher();
 

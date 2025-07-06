@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { m } from '$lib/paraglide/messages';
+    import { m } from '#lib/paraglide/messages';
     import { onMount } from 'svelte';
     import axios from 'axios';
     import Pagination from '#components/Pagination.svelte';
@@ -12,9 +12,9 @@
     import { profile } from '#stores/profileStore';
     import { createEventDispatcher } from 'svelte';
     import { setPendingFriendRequests } from '#stores/notificationStore';
-    import type SerializedUser from 'adonis-svelte-starter-kit-backend/app/types/serialized/serialized_user';
-    import type PaginatedUsers from 'adonis-svelte-starter-kit-backend/app/types/paginated/paginated_users';
-    import type SerializedPendingFriend from 'adonis-svelte-starter-kit-backend/app/types/serialized/serialized_pending_friend';
+    import type SerializedUser from 'backend/app/types/serialized/serialized_user';
+    import type PaginatedUsers from 'backend/app/types/paginated/paginated_users';
+    import type SerializedPendingFriend from 'backend/app/types/serialized/serialized_pending_friend';
     import Loader from '#components/Loader.svelte';
     import Icon from '#components/Icon.svelte';
     import { PUBLIC_API_BASE_URI } from '$env/static/public';

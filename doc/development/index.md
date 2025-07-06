@@ -23,4 +23,6 @@
 - [Adminer](adminer.md) &rarr;
 - [Environment variables](environment.md) &rarr;
 - [Commands](commands.md) &rarr;
-- [Icons](commands.md) &rarr;
+- [Icons](icons.md) &rarr;
+- [Sveltekit translations](sveltekit-translations.md) &rarr;
+- [Tuyau](tuyau.md) &rarr;

@@ -1,22 +1,29 @@
 <script lang="ts">
-    import { Title } from '$lib/components/ui/title';
-    import { m } from '$lib/paraglide/messages';
+    import { Title } from '#lib/components/ui/title';
+    import { m } from '#lib/paraglide/messages';
     import Breadcrumbs from '#components/Breadcrumbs.svelte';
     import { notifications, removeNotification, setPendingFriendRequests } from '#stores/notificationStore';
     import NotificationModule from '#components/NotificationModule.svelte';
     import Loader from '#components/Loader.svelte';
-    import axios from 'axios';
     import { showToast } from '#services/toastService';
     import Meta from '#components/Meta.svelte';
-    import type SerializedPendingFriend from 'adonis-svelte-starter-kit-backend/app/types/serialized/serialized_pending_friend';
+    import type SerializedPendingFriend from 'backend/app/types/serialized/serialized_pending_friend';
 
     let isLoading: boolean = false;
 
     const handleAcceptPendingRequest = async (pendingFriend: SerializedPendingFriend): Promise<void> => {
         try {
-            const { data } = await axios.post('/api/friends/accept', { userId: pendingFriend.friend.id });
+            // const { data, error } = await tuyau.api.friends.accept.$post({ userId: pendingFriend.friend.id });
+            //
+            // error?.value.errors.forEach((error): void => {
+            //     showToast(error.message, 'error');
+            // });
+            //
+            // if (data) {
+            //     showToast(data., 'success', '/friends');
+            // }
+
             removeNotification(pendingFriend, 'friendRequests');
-            showToast(data.message, 'success', '/friends');
             if ($notifications.friendRequests.length <= 3) {
                 await setPendingFriendRequests();
             }
@@ -27,9 +34,9 @@
 
     const handleRefusePendingRequest = async (pendingFriend: SerializedPendingFriend): Promise<void> => {
         try {
-            const { data } = await axios.post('/api/friends/refuse', { userId: pendingFriend.friend.id });
-            removeNotification(pendingFriend, 'friendRequests');
-            showToast(data.message, 'success', '/friends');
+            // const { data } = await axios.post('/api/friends/refuse', { userId: pendingFriend.friend.id });
+            // removeNotification(pendingFriend, 'friendRequests');
+            // showToast(data.message, 'success', '/friends');
             if ($notifications.friendRequests.length <= 3) {
                 await setPendingFriendRequests();
             }

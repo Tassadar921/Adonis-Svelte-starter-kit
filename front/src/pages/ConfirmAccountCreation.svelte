@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { Title } from '$lib/components/ui/title';
-    import { m } from '$lib/paraglide/messages';
+    import { Title } from '#lib/components/ui/title';
+    import { m } from '#lib/paraglide/messages';
     import { onMount } from 'svelte';
     import axios from 'axios';
     import { showToast } from '#services/toastService';

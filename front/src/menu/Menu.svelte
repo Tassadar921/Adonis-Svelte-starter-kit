@@ -1,10 +1,10 @@
 <script lang="ts">
-    import { SidebarProvider, Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuItem, SidebarInset, SidebarTrigger } from '$lib/components/ui/sidebar';
+    import { SidebarProvider, Sidebar, SidebarContent, SidebarGroup, SidebarGroupContent, SidebarMenu, SidebarMenuItem, SidebarInset, SidebarTrigger } from '#lib/components/ui/sidebar';
     import { menuItems } from '#services/menuService';
     import { profile } from '#stores/profileStore';
     import Theme from '#components/Theme.svelte';
     import FlagMenu from '#menu/FlagMenu.svelte';
-    import { Link } from '$lib/components/ui/link';
+    import { Link } from '#lib/components/ui/link';
 
     type Props = {
         children: import('svelte').Snippet;

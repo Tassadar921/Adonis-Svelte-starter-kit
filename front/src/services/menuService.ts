@@ -1,4 +1,4 @@
-import { m } from '$lib/paraglide/messages';
+import { m } from '#lib/paraglide/messages';
 import type { Component } from 'svelte';
 import { Home, Handshake, UserPen, LogOut, Lock, User } from '@lucide/svelte';
 

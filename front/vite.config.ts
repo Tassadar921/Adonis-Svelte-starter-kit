@@ -18,6 +18,11 @@ export default defineConfig({
             outdir: './src/lib/paraglide',
         }),
     ],
+    resolve: {
+        alias: {
+            'backend/.adonisjs/api': '../back/.adonisjs/api'
+        }
+    },
     test: {
         projects: [
             {

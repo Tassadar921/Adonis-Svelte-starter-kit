@@ -25,8 +25,8 @@
 </script>
 
 <script lang="ts">
-    import { Tooltip, TooltipContent, TooltipTrigger } from '$lib/components/ui/tooltip';
-    import { cn, type WithElementRef, type WithoutChildrenOrChild } from '$lib/utils';
+    import { Tooltip, TooltipContent, TooltipTrigger } from '#lib/components/ui/tooltip';
+    import { cn, type WithElementRef, type WithoutChildrenOrChild } from '#lib/utils';
     import { mergeProps } from 'bits-ui';
     import type { ComponentProps, Snippet } from 'svelte';
     import type { HTMLAttributes } from 'svelte/elements';

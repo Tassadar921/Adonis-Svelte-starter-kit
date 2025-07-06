@@ -10,7 +10,7 @@ import cache from '@adonisjs/cache/services/main';
 export default class FileController {
     constructor(private readonly userRepository: UserRepository) {}
 
-    public async serveStaticProfilePictureFile({ request, response, i18n }: HttpContext): Promise<void> {
+    public async serveStaticProfilePictureFile({ request, response, i18n }: HttpContext) {
         const { userId } = await serveStaticProfilePictureFileValidator.validate(request.params());
 
         try {

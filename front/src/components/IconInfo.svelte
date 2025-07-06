@@ -1,6 +1,6 @@
 <script lang="ts">
     import Icon from '#components/Icon.svelte';
-    import { Popover, PopoverContent, PopoverTrigger } from '$lib/components/ui/popover';
+    import { Popover, PopoverContent, PopoverTrigger } from '#lib/components/ui/popover';
 
     type Props = {
         children: import('svelte').Snippet;

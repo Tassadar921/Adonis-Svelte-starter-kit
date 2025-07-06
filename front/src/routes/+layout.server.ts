@@ -1,9 +1,10 @@
 import { loadFlash, redirect } from 'sveltekit-flash-message/server';
 import type { LayoutServerLoad } from './$types';
-import type SerializedUser from 'adonis-svelte-starter-kit-backend/app/types/serialized/serialized_user';
-import { m } from '$lib/paraglide/messages';
+import type SerializedUser from 'backend/app/types/serialized/serialized_user';
+import { m } from '#lib/paraglide/messages';
 import { type LanguageCode } from '#stores/languageStore';
 import { locales } from '../paraglide/runtime';
+import { initializeTuyau } from '#lib/api.server';
 
 export const load: LayoutServerLoad = loadFlash(async (event): Promise<{ user?: SerializedUser; language: LanguageCode; location: string }> => {
     const { cookies, url } = event;
@@ -27,13 +28,15 @@ export const load: LayoutServerLoad = loadFlash(async (event): Promise<{ user?: 
         });
     }
 
+    initializeTuyau(language);
+
     const userCookie: string | undefined = cookies.get('user');
     const user: SerializedUser | undefined = userCookie ? <SerializedUser>JSON.parse(userCookie) : undefined;
 
     const location: string = url.pathname.replace(`/${language}/`, '/') || '/';
 
     if (!userCookie) {
-        if (openedPathNames.some((path) => location.startsWith(path))) {
+        if (openedPathNames.some((path: string): boolean => location.startsWith(path))) {
             return { language, location };
         } else {
             cookies.set('previousPathName', location, {
@@ -46,7 +49,7 @@ export const load: LayoutServerLoad = loadFlash(async (event): Promise<{ user?: 
         }
     }
 
-    if (openedPathNames.some((path) => location.startsWith(path))) {
+    if (openedPathNames.some((path: string): boolean => location.startsWith(path))) {
         return redirect(303, `/${language}/`);
     }
 

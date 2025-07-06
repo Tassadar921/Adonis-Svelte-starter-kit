@@ -2,8 +2,8 @@
     import { showToast } from '#services/toastService';
     import { navigate } from '#stores/locationStore';
     import { clearProfile } from '#stores/profileStore';
-    import { m } from '$lib/paraglide/messages';
-    import { Title } from '$lib/components/ui/title';
+    import { m } from '#lib/paraglide/messages';
+    import { Title } from '#lib/components/ui/title';
     import {
         AlertDialog,
         AlertDialogCancel,
@@ -13,18 +13,15 @@
         AlertDialogHeader,
         AlertDialogTitle,
         AlertDialogAction,
-    } from '$lib/components/ui/alert-dialog';
+    } from '#lib/components/ui/alert-dialog';
     import Meta from '#components/Meta.svelte';
-    import axios from 'axios';
     import { language } from '#stores/languageStore';
-
-    console.log(axios.defaults.baseURL);
 
     const handleSuccess = async (): Promise<void> => {
         try {
             clearProfile();
-            const { data } = await axios.post(`/${$language}/logout`);
-            console.log(data);
+            // const { data } = await axios.post(`/${$language}/logout`);
+            // console.log(data);
         } catch (error: any) {
             console.log(error);
             showToast(error.response.data.error, 'error');

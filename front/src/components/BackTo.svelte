@@ -1,6 +1,6 @@
 <script lang="ts">
     import { ArrowLeft } from '@lucide/svelte';
-    import { Link } from '$lib/components/ui/link';
+    import { Link } from '#lib/components/ui/link';
 
     type Props = {
         href: string;

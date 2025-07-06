@@ -1,10 +1,10 @@
 <script lang="ts">
-    import { Title } from '$lib/components/ui/title';
+    import { Title } from '#lib/components/ui/title';
     import Form from '#components/Form.svelte';
     import Input from '#components/Input.svelte';
     import { onMount } from 'svelte';
     import { showToast } from '#services/toastService';
-    import { m } from '$lib/paraglide/messages';
+    import { m } from '#lib/paraglide/messages';
     import { profile } from '#stores/profileStore';
     import { isValidEmail } from '#services/checkStringService';
     import Breadcrumbs from '#components/Breadcrumbs.svelte';

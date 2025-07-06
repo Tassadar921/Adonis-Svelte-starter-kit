@@ -17,6 +17,8 @@ const config = {
             '#stores': './src/stores',
             '#pages': './src/pages',
             '#icons': './src/icons',
+            '#lib': './src/lib',
+            '#backend/.adonisjs/api': '../back/.adonisjs/api',
         },
     },
 };

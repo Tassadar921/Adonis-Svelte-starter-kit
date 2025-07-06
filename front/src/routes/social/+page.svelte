@@ -1,7 +1,7 @@
 <script lang="ts">
     import SmallCard from '#components/SmallCard.svelte';
-    import { m } from '$lib/paraglide/messages';
-    import { Title } from '$lib/components/ui/title';
+    import { m } from '#lib/paraglide/messages';
+    import { Title } from '#lib/components/ui/title';
     import Meta from '#components/Meta.svelte';
     import { Users, Ban, Handshake } from '@lucide/svelte';
     import type { Component } from 'svelte';

@@ -1,7 +1,7 @@
 <script lang="ts">
     import Button from '#components/Button.svelte';
     import { onMount } from 'svelte';
-    import { m } from '$lib/paraglide/messages';
+    import { m } from '#lib/paraglide/messages';
 
     type Props = {
         children: import('svelte').Snippet;

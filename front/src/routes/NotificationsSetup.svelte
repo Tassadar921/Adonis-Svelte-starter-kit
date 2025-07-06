@@ -2,10 +2,10 @@
     import { transmit } from '#stores/transmitStore';
     import { addNotification, removeNotification, setPendingFriendRequests } from '#stores/notificationStore';
     import { showToast } from '#services/toastService';
-    import { m } from '$lib/paraglide/messages';
+    import { m } from '#lib/paraglide/messages';
     import { profile } from '#stores/profileStore';
-    import type SerializedPendingFriend from 'adonis-svelte-starter-kit-backend/app/types/serialized/serialized_pending_friend';
-    import type SerializedUser from 'adonis-svelte-starter-kit-backend/app/types/serialized/serialized_user';
+    import type SerializedPendingFriend from 'backend/app/types/serialized/serialized_pending_friend';
+    import type SerializedUser from 'backend/app/types/serialized/serialized_user';
 
     const setupPendingFriendRequests = async (): Promise<void> => {
         const addFriendNotification = $transmit!.subscription(`notification/add-friend/${$profile!.id}`);

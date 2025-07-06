@@ -2,8 +2,8 @@
     import Icon from '#components/Icon.svelte';
     import { showToast } from '#services/toastService';
     import { PUBLIC_GITHUB_REPOSITORY } from '$env/static/public';
-    import { Button } from '$lib/components/ui/button';
-    import { m } from '$lib/paraglide/messages';
+    import { Button } from '#lib/components/ui/button';
+    import { m } from '#lib/paraglide/messages';
 
     type Provider = 'google' | 'github' | 'discord';
 

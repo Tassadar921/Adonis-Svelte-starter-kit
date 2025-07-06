@@ -7,8 +7,8 @@
 </script>
 
 <script lang="ts">
-    import { Separator } from '$lib/components/ui/separator';
-    import { cn } from '$lib/utils';
+    import { Separator } from '#lib/components/ui/separator';
+    import { cn } from '#lib/utils';
 
     let { children, title, class: className }: FooterGroupProps = $props();
 </script>

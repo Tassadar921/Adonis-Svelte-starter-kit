@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { cn, type WithElementRef } from '$lib/utils';
+    import { cn, type WithElementRef } from '#lib/utils';
     import type { HTMLAttributes } from 'svelte/elements';
 
     let { ref = $bindable(null), children, class: className, ...restProps }: WithElementRef<HTMLAttributes<HTMLLIElement>> = $props();

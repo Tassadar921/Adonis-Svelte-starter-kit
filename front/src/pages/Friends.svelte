@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { m } from '$lib/paraglide/messages';
-    import { Title } from '$lib/components/ui/title';
+    import { m } from '#lib/paraglide/messages';
+    import { Title } from '#lib/components/ui/title';
     import { onMount } from 'svelte';
     import axios from 'axios';
     import Search from '#components/Search.svelte';
@@ -13,9 +13,9 @@
     import { showToast } from '#services/toastService';
     import { profile } from '#stores/profileStore';
     import { transmit } from '#stores/transmitStore';
-    import type PaginatedFriends from 'adonis-svelte-starter-kit-backend/app/types/paginated/paginated_friends';
-    import type SerializedUser from 'adonis-svelte-starter-kit-backend/app/types/serialized/serialized_user';
-    import type SerializedFriend from 'adonis-svelte-starter-kit-backend/app/types/serialized/serialized_friend';
+    import type PaginatedFriends from 'backend/app/types/paginated/paginated_friends';
+    import type SerializedUser from 'backend/app/types/serialized/serialized_user';
+    import type SerializedFriend from 'backend/app/types/serialized/serialized_friend';
     import Loader from '#components/Loader.svelte';
     import Icon from '#components/Icon.svelte';
     import Meta from '#components/Meta.svelte';

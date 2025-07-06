@@ -1,5 +1,5 @@
 {
-    "name": "adonis-svelte-starter-kit-backend",
+    "name": "backend",
     "version": "1.0.0",
     "private": true,
     "type": "module",
@@ -8,6 +8,9 @@
         "build": "node ace build",
         "dev": "node ace serve --hmr",
         "test": "node ace test"
+    },
+    "exports": {
+        "./api": "./.adonisjs/index.ts"
     },
     "imports": {
         "#controllers/*": "./app/controllers/*.js",
@@ -37,6 +40,7 @@
         "@japa/plugin-adonisjs": "^4.0.0",
         "@japa/runner": "^4.2.0",
         "@swc/core": "1.12.1",
+        "@tuyau/utils": "^0.0.8",
         "@types/luxon": "^3.6.2",
         "@types/mime-types": "^3.0.1",
         "@types/node": "^24.0.3",
@@ -53,14 +57,15 @@
         "@adonisjs/lucid": "^21.6.1",
         "@adonisjs/redis": "^9.2.0",
         "@adonisjs/transmit": "^2.0.2",
+        "@tuyau/core": "^0.4.1",
         "@vinejs/vine": "^3.0.1",
         "axios": "^1.10.0",
         "chokidar": "^4.0.3",
         "file-type": "^21.0.0",
         "luxon": "^3.6.1",
         "mime-types": "^3.0.1",
-        "pino-pretty": "^13.0.0",
         "pg": "^8.16.0",
+        "pino-pretty": "^13.0.0",
         "reflect-metadata": "^0.2.2",
         "ts-node-maintained": "^10.9.5"
     },

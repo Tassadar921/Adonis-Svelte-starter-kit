@@ -1,12 +1,12 @@
 import type { Handle } from '@sveltejs/kit';
-import { paraglideMiddleware } from '$lib/paraglide/server';
+import { paraglideMiddleware } from '#lib/paraglide/server';
 
-const handleParaglide: Handle = ({ event, resolve }) =>
+const handleParaglide: Handle = ({ event, resolve }): Promise<Response> =>
     paraglideMiddleware(event.request, ({ request, locale }) => {
         event.request = request;
 
         return resolve(event, {
-            transformPageChunk: ({ html }) => html.replace('%paraglide.lang%', locale),
+            transformPageChunk: ({ html }): string => html.replace('%paraglide.lang%', locale),
         });
     });
 

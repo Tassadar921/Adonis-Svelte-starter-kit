@@ -25,7 +25,7 @@ export default class OauthController {
         return ally.use('github').redirect();
     }
 
-    public async githubCallback({ ally, response, i18n }: HttpContext): Promise<void> {
+    public async githubCallback({ ally, response, i18n }: HttpContext) {
         const client: GithubDriver = ally.use('github');
         const handleResponse: { error?: string; token?: { token: string; expiresAt: Date } } = await this.handleCallback(client, i18n);
         if (handleResponse.error) {
@@ -39,7 +39,7 @@ export default class OauthController {
         return ally.use('discord').redirect();
     }
 
-    public async discordCallback({ ally, response, i18n }: HttpContext): Promise<void> {
+    public async discordCallback({ ally, response, i18n }: HttpContext) {
         const client: DiscordDriver = ally.use('discord');
         const handleResponse: { error?: string; token?: { token: string; expiresAt: Date } } = await this.handleCallback(client, i18n);
         if (handleResponse.error) {
@@ -53,7 +53,7 @@ export default class OauthController {
         return ally.use('google').redirect();
     }
 
-    public async googleCallback({ ally, response, i18n }: HttpContext): Promise<void> {
+    public async googleCallback({ ally, response, i18n }: HttpContext) {
         const client: GoogleDriver = ally.use('google');
         const handleResponse: { error?: string; token?: { token: string; expiresAt: Date } } = await this.handleCallback(client, i18n);
         if (handleResponse.error) {

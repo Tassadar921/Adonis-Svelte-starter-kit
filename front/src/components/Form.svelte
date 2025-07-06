@@ -1,11 +1,11 @@
 <script lang="ts">
     import { enhance } from '$app/forms';
     import Icon from '#components/Icon.svelte';
-    import { m } from '$lib/paraglide/messages';
+    import { m } from '#lib/paraglide/messages';
     import FormBackground from '#components/background/FormBackground.svelte';
-    import { Button } from '$lib/components/ui/button';
+    import { Button } from '#lib/components/ui/button';
     import { SendHorizontal } from '@lucide/svelte';
-    import { Card, CardHeader, CardContent, CardFooter } from '$lib/components/ui/card/index';
+    import { Card, CardHeader, CardContent, CardFooter } from '#lib/components/ui/card/index';
 
     type Props = {
         children: import('svelte').Snippet;

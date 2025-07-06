@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { m } from '$lib/paraglide/messages';
-    import { Title } from '$lib/components/ui/title';
+    import { m } from '#lib/paraglide/messages';
+    import { Title } from '#lib/components/ui/title';
     import { onMount } from 'svelte';
     import axios from 'axios';
     import Search from '#components/Search.svelte';
@@ -9,9 +9,9 @@
     import { showToast } from '#services/toastService';
     import Subtitle from '#components/Subtitle.svelte';
     import ConfirmModal from '#components/ConfirmModal.svelte';
-    import type PaginatedBlockedUsers from 'adonis-svelte-starter-kit-backend/app/types/paginated/paginated_blocked_users';
-    import type SerializedUser from 'adonis-svelte-starter-kit-backend/app/types/serialized/serialized_user';
-    import type SerializedBlockedUser from 'adonis-svelte-starter-kit-backend/app/types/serialized/serialized_blocked_user';
+    import type PaginatedBlockedUsers from 'backend/app/types/paginated/paginated_blocked_users';
+    import type SerializedUser from 'backend/app/types/serialized/serialized_user';
+    import type SerializedBlockedUser from 'backend/app/types/serialized/serialized_blocked_user';
     import Loader from '#components/Loader.svelte';
     import Icon from '#components/Icon.svelte';
     import { PUBLIC_API_BASE_URI, PUBLIC_DEFAULT_IMAGE } from '$env/static/public';

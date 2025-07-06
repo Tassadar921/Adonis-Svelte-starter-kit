@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { Button } from '$lib/components/ui/button/index';
-    import axios from 'axios';
+    import { Button } from '#lib/components/ui/button/index';
+    // import axios from 'axios';
     import Loader from '#components/Loader.svelte';
     import Icon from '#components/Icon.svelte';
 

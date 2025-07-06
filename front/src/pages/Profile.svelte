@@ -1,13 +1,13 @@
 <script lang="ts">
     import Form from '#components/Form.svelte';
     import Input from '#components/Input.svelte';
-    import { Title } from '$lib/components/ui/title';
-    import { Link } from '$lib/components/ui/link';
+    import { Title } from '#lib/components/ui/title';
+    import { Link } from '#lib/components/ui/link';
     import { profile, setProfile } from '#stores/profileStore';
-    import { m } from '$lib/paraglide/messages';
+    import { m } from '#lib/paraglide/messages';
     import { onMount } from 'svelte';
     import FileUpload from '#components/FileUpload.svelte';
-    import type SerializedUser from 'adonis-svelte-starter-kit-backend/app/types/serialized/serialized_user';
+    import type SerializedUser from 'backend/app/types/serialized/serialized_user';
     import Meta from '#components/Meta.svelte';
     import { PUBLIC_API_BASE_URI } from '$env/static/public';
 

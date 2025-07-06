@@ -1,12 +1,12 @@
 <script lang="ts">
     import Form from '#components/Form.svelte';
-    import { Title } from '$lib/components/ui/title';
-    import { m } from '$lib/paraglide/messages';
+    import { Title } from '#lib/components/ui/title';
+    import { m } from '#lib/paraglide/messages';
     import OauthProviders from '#partials/login/OauthProviders.svelte';
     import Meta from '#components/Meta.svelte';
-    import { Input } from '$lib/components/ui/input';
+    import { Input } from '#lib/components/ui/input';
     import { isValidEmail } from '#services/checkStringService';
-    import { Link } from '$lib/components/ui/link';
+    import { Link } from '#lib/components/ui/link';
 
     let email: string = $state('');
     let password: string = $state('');

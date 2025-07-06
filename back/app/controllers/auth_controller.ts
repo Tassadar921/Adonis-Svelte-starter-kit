@@ -10,6 +10,7 @@ import BrevoMailService from '#services/brevo_mail_service';
 import env from '#start/env';
 import { randomUUID } from 'node:crypto';
 import { Response } from '@adonisjs/core/http';
+import app from '@adonisjs/core/services/app';
 
 @inject()
 export default class AuthController {
@@ -18,7 +19,7 @@ export default class AuthController {
         private readonly mailService: BrevoMailService
     ) {}
 
-    public async login({ request, response, i18n }: HttpContext): Promise<void> {
+    public async login({ request, response, i18n }: HttpContext) {
         try {
             const { email, password } = await request.validateUsing(loginValidator);
 
@@ -27,7 +28,7 @@ export default class AuthController {
 
             response = await this.setAccessToken(user, response);
 
-            return response.send({
+            return response.ok({
                 message: i18n.t('messages.auth.login.success'),
                 user: user.apiSerialize(),
             });
@@ -36,16 +37,16 @@ export default class AuthController {
         }
     }
 
-    public async logout({ auth, response, i18n }: HttpContext): Promise<void> {
+    public async logout({ auth, response, i18n }: HttpContext) {
         const user: User & { currentAccessToken: AccessToken } = await auth.use('api').authenticate();
         await User.accessTokens.delete(user, user.currentAccessToken.identifier);
 
         response.clearCookie('apiToken');
 
-        return response.send({ message: i18n.t('messages.auth.logout.success') });
+        return response.ok({ message: i18n.t('messages.auth.logout.success') });
     }
 
-    public async sendAccountCreationEmail({ request, response, language, i18n }: HttpContext): Promise<void> {
+    public async sendAccountCreationEmail({ request, response, language, i18n }: HttpContext) {
         const { username, email, password, consent } = await request.validateUsing(sendAccountCreationEmailValidator);
 
         if (!consent) {
@@ -56,12 +57,12 @@ export default class AuthController {
         if (user) {
             if (!user.enabled) {
                 if (user.createdAt > DateTime.now().minus({ minutes: 5 })) {
-                    return response.send({ message: i18n.t('messages.auth.send-account-creation-email.success') });
+                    return response.ok({ message: i18n.t('messages.auth.send-account-creation-email.success') });
                 } else {
                     await user.delete();
                 }
             } else {
-                return response.status(409).send({ error: i18n.t('messages.auth.send-account-creation-email.error.email-already-in-use') });
+                return response.conflict({ error: i18n.t('messages.auth.send-account-creation-email.error.email-already-in-use') });
             }
         }
 
@@ -80,10 +81,10 @@ export default class AuthController {
             return response.badGateway({ error: i18n.t('messages.auth.send-account-creation-email.error.mail-not-sent') });
         }
 
-        return response.send({ message: i18n.t('messages.auth.send-account-creation-email.success') });
+        return response.ok({ message: i18n.t('messages.auth.send-account-creation-email.success') });
     }
 
-    public async confirmAccountCreation({ request, response, i18n }: HttpContext): Promise<void> {
+    public async confirmAccountCreation({ request, response, i18n }: HttpContext) {
         const { token } = await confirmAccountCreationValidator.validate(request.params());
 
         const user: User | null = await this.userRepository.findOneBy({ creationToken: token });
@@ -99,7 +100,7 @@ export default class AuthController {
 
         response = await this.setAccessToken(user, response);
 
-        return response.send({
+        return response.ok({
             message: i18n.t('messages.auth.confirm-account-creation.success'),
             user: user.apiSerialize(),
         });
@@ -117,6 +118,10 @@ export default class AuthController {
 
         response.cookie('apiToken', accessToken.value!.release(), {
             maxAge: Math.floor((expiresAt.getTime() - now.getTime()) / 1000),
+            httpOnly: true,
+            secure: app.inProduction,
+            path: '/',
+            sameSite: app.inProduction ? 'none' : 'lax',
         });
 
         return response;

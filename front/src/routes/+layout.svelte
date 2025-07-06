@@ -3,13 +3,13 @@
     import Menu from '#menu/Menu.svelte';
     import { onMount } from 'svelte';
     import Meta from '#components/Meta.svelte';
-    import { m } from '$lib/paraglide/messages';
+    import { m } from '#lib/paraglide/messages';
     import NotificationsSetup from './NotificationsSetup.svelte';
     import { initFlash } from 'sveltekit-flash-message/client';
     import { page as currentPage } from '$app/state';
     import { readable } from 'svelte/store';
     import { showToast } from '#services/toastService';
-    import { Footer } from '$lib/components/ui/footer';
+    import { Footer } from '#lib/components/ui/footer';
 
     const page = readable(currentPage);
 

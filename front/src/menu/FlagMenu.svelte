@@ -1,11 +1,11 @@
 <script lang="ts">
     import { onMount } from 'svelte';
-    import { Button } from '$lib/components/ui/button/index';
+    import { Button } from '#lib/components/ui/button/index';
     import Icon from '#components/Icon.svelte';
     import { type LanguageCode, language } from '#stores/languageStore';
     import { location } from '#stores/locationStore';
     import { ChevronDown } from '@lucide/svelte';
-    import { setLocale } from '$lib/paraglide/runtime';
+    import { setLocale } from '#lib/paraglide/runtime';
     import { goto } from '$app/navigation';
 
     type FlagName = 'englishFlag' | 'frenchFlag';

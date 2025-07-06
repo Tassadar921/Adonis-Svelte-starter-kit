@@ -1,7 +1,7 @@
 <script lang="ts">
     import Button from '#components/Button.svelte';
     import Subtitle from '#components/Subtitle.svelte';
-    import type SerializedPendingFriend from 'adonis-svelte-starter-kit-backend/app/types/serialized/serialized_pending_friend';
+    import type SerializedPendingFriend from 'backend/app/types/serialized/serialized_pending_friend';
     import Icon from '#components/Icon.svelte';
     import { PUBLIC_API_BASE_URI, PUBLIC_DEFAULT_IMAGE } from '$env/static/public';
 

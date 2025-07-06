@@ -1,7 +1,7 @@
 import type { RequestHandler } from '@sveltejs/kit';
 import { redirect } from 'sveltekit-flash-message/server';
-import axios from '$lib/api';
-import { m } from '$lib/paraglide/messages';
+import { tuyau } from '#lib/api.server';
+import { m } from '#lib/paraglide/messages';
 
 export const POST: RequestHandler = async (event): Promise<Response> => {
     const { cookies, params } = event;
@@ -9,9 +9,11 @@ export const POST: RequestHandler = async (event): Promise<Response> => {
     let data;
 
     try {
-        const response = await axios.delete('/api/logout');
-        cookies.delete('user', { path: '/' });
-        data = response.data;
+        console.log(cookies.get('apiToken'));
+        console.log(cookies.get('api_token'));
+        const data = await tuyau.api.logout.$delete();
+        // cookies.delete('user', { path: '/' });
+        // data = returnedData;
     } catch (error: any) {
         return new Response(
             JSON.stringify({

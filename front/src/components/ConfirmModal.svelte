@@ -1,6 +1,6 @@
 <script lang="ts">
     import Modal from '#components/Modal.svelte';
-    import { m } from '$lib/paraglide/messages';
+    import { m } from '#lib/paraglide/messages';
 
     type Props = {
         children: import('svelte').Snippet;
