@@ -9,7 +9,7 @@ import type { NextFn } from '@adonisjs/core/types/http';
 export default class QueryStringAuthMiddleware {
     constructor(private readonly userRepository: UserRepository) {}
 
-    public async handle(ctx: HttpContext, next: NextFn): Promise<void> {
+    public async handle(ctx: HttpContext, next: NextFn) {
         const { token } = await ctx.request.validateUsing(queryStringAccessTokenValidator);
 
         try {
@@ -21,7 +21,6 @@ export default class QueryStringAuthMiddleware {
             ctx.user = await this.userRepository.findOneByToken(decodedToken.identifier);
             await next();
         } catch (error) {
-            console.error(error);
             return ctx.response.unauthorized({ error: 'Invalid or expired token' });
         }
     }
