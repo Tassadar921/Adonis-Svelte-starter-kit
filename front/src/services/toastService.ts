@@ -37,9 +37,9 @@ const showToast: ShowToast = (text: string, status: 'success' | 'error' | 'warni
         text,
         duration: 5000,
         style,
-        onClick: (): void => {
+        onClick: async (): Promise<void> => {
             if (typeof redirect === 'string') {
-                navigate(redirect);
+                await navigate(redirect);
             } else if (redirect) {
                 redirect();
             }

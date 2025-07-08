@@ -49,6 +49,15 @@ export const load: LayoutServerLoad = loadFlash(async (event): Promise<{ user?: 
         }
     }
 
+    if (cookies.get('token')) {
+        client.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('token')}`;
+    } else {
+        client.defaults.headers.common['Authorization'] = undefined;
+        cookies.delete('token', { path: '/' });
+        cookies.delete('user', { path: '/' });
+        return redirect(303, `/${language}/login`);
+    }
+
     if (openedPathNames.some((path: string): boolean => location.startsWith(path))) {
         return redirect(303, `/${language}/`);
     }

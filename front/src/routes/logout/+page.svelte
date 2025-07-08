@@ -1,5 +1,4 @@
 <script lang="ts">
-    import { showToast } from '#services/toastService';
     import { navigate } from '#stores/locationStore';
     import { clearProfile } from '#stores/profileStore';
     import { m } from '#lib/paraglide/messages';
@@ -15,14 +14,18 @@
         AlertDialogAction,
     } from '#lib/components/ui/alert-dialog';
     import Meta from '#components/Meta.svelte';
-    import { language } from '#stores/languageStore';
+    import { wrappedFetch } from '#services/requestService';
 
     const handleSuccess = async (): Promise<void> => {
         clearProfile();
-        const response = await fetch('/logout', {
+        const data = await wrappedFetch('/logout', {
             method: 'POST',
         });
-        console.log(response);
+        if (data?.isSuccess) {
+            await navigate('/login');
+        } else {
+            await navigate('/');
+        }
     };
 
     const handleClose = (): void => {
