@@ -35,7 +35,7 @@ export default class User extends compose(BaseModel, AuthFinder) {
     declare password: string;
 
     @column()
-    declare creationToken: string | null;
+    declare token: string | null;
 
     @column()
     declare role: UserRoleEnum;

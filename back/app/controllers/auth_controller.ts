@@ -8,7 +8,7 @@ import UserRepository from '#repositories/user_repository';
 import { loginValidator, sendAccountCreationEmailValidator, confirmAccountCreationValidator } from '#validators/auth';
 import BrevoMailService from '#services/brevo_mail_service';
 import env from '#start/env';
-import { randomUUID } from 'node:crypto';
+import { cuid } from '@adonisjs/core/helpers';
 
 @inject()
 export default class AuthController {
@@ -64,14 +64,14 @@ export default class AuthController {
         }
 
         try {
-            const token: string = randomUUID();
+            const token: string = cuid();
             await this.mailService.sendAccountCreationEmail(email, `${env.get('FRONT_URI')}/${language.code}/create-account/confirm/${token}`);
             await User.create({
                 username,
                 email,
                 password,
                 role: UserRoleEnum.USER,
-                creationToken: token,
+                token,
                 acceptedTermsAndConditions: true,
             });
         } catch (error: any) {
@@ -84,7 +84,7 @@ export default class AuthController {
     public async confirmAccountCreation({ request, response, i18n }: HttpContext) {
         const { token: creationToken } = await confirmAccountCreationValidator.validate(request.params());
 
-        const user: User | null = await this.userRepository.findOneBy({ creationToken });
+        const user: User | null = await this.userRepository.findOneBy({ token: creationToken });
         if (!user) {
             return response.notFound({ error: i18n.t('messages.auth.confirm-account-creation.invalid-token') });
         } else if (user.createdAt > DateTime.now().minus({ minutes: 5 })) {
@@ -92,7 +92,7 @@ export default class AuthController {
         }
 
         user.enabled = true;
-        user.creationToken = null;
+        user.token = null;
         await user.save();
 
         const token: AccessToken = await User.accessTokens.create(user);

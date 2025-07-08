@@ -2,7 +2,6 @@ import { HttpContext } from '@adonisjs/core/http';
 import { GithubDriver } from '@adonisjs/ally/drivers/github';
 import { DiscordDriver } from '@adonisjs/ally/drivers/discord';
 import { GoogleDriver } from '@adonisjs/ally/drivers/google';
-import { AccessToken } from '@adonisjs/auth/access_tokens';
 import FileService from '#services/file_service';
 import { inject } from '@adonisjs/core';
 import app from '@adonisjs/core/services/app';
@@ -13,12 +12,17 @@ import env from '#start/env';
 import UserRepository from '#repositories/user_repository';
 import { I18n } from '@adonisjs/i18n';
 import FileTypeEnum from '#types/enum/file_type_enum';
+import { cuid } from '@adonisjs/core/helpers';
+import { confirmOauthConnectionValidator } from '#validators/oauth';
+import { AccessToken } from '@adonisjs/auth/access_tokens';
+import StringService from '#services/string_service';
 
 @inject()
 export default class OauthController {
     constructor(
         private readonly userRepository: UserRepository,
-        private readonly fileService: FileService
+        private readonly fileService: FileService,
+        private readonly stringService: StringService
     ) {}
 
     public async github({ ally }: HttpContext): Promise<void> {
@@ -27,12 +31,12 @@ export default class OauthController {
 
     public async githubCallback({ ally, response, i18n }: HttpContext) {
         const client: GithubDriver = ally.use('github');
-        const handleResponse: { error?: string; token?: { token: string; expiresAt: Date } } = await this.handleCallback(client, i18n);
-        if (handleResponse.error) {
-            return response.badRequest({ error: handleResponse.error });
+        const { error, token } = await this.handleCallback(client, i18n);
+        if (error) {
+            return response.badRequest({ error });
         }
 
-        return response.redirect(`${env.get('FRONT_URI')}/en/oauth/${handleResponse.token!.token}?apiTokenExpiration=${handleResponse.token!.expiresAt}`);
+        return response.redirect(`${env.get('FRONT_URI')}/en/oauth?token=${token}&provider=github`);
     }
 
     public async discord({ ally }: HttpContext): Promise<void> {
@@ -41,12 +45,12 @@ export default class OauthController {
 
     public async discordCallback({ ally, response, i18n }: HttpContext) {
         const client: DiscordDriver = ally.use('discord');
-        const handleResponse: { error?: string; token?: { token: string; expiresAt: Date } } = await this.handleCallback(client, i18n);
-        if (handleResponse.error) {
-            return response.badRequest({ error: handleResponse.error });
+        const { error, token } = await this.handleCallback(client, i18n);
+        if (error) {
+            return response.badRequest({ error });
         }
 
-        return response.redirect(`${env.get('FRONT_URI')}/en/oauth/${handleResponse.token!.token}?apiTokenExpiration=${handleResponse.token!.expiresAt}`);
+        return response.redirect(`${env.get('FRONT_URI')}/en/oauth?token=${token}&provider=discord`);
     }
 
     public async google({ ally }: HttpContext): Promise<void> {
@@ -55,15 +59,37 @@ export default class OauthController {
 
     public async googleCallback({ ally, response, i18n }: HttpContext) {
         const client: GoogleDriver = ally.use('google');
-        const handleResponse: { error?: string; token?: { token: string; expiresAt: Date } } = await this.handleCallback(client, i18n);
-        if (handleResponse.error) {
-            return response.badRequest({ error: handleResponse.error });
+        const { error, token } = await this.handleCallback(client, i18n);
+        if (error) {
+            return response.badRequest({ error });
         }
 
-        return response.redirect(`${env.get('FRONT_URI')}/en/oauth/${handleResponse.token!.token}?apiTokenExpiration=${handleResponse.token!.expiresAt}`);
+        console.log(`${env.get('FRONT_URI')}/en/oauth?token=${token}`);
+
+        return response.redirect(`${env.get('FRONT_URI')}/en/oauth?token=${token}&provider=google`);
     }
 
-    private async handleCallback(client: GithubDriver | DiscordDriver | GoogleDriver, i18n: I18n): Promise<{ error?: string; token?: { token: string; expiresAt: Date } }> {
+    public async confirmOauthConnection({ request, response, i18n }: HttpContext) {
+        const { provider, token: creationToken } = await confirmOauthConnectionValidator.validate(request.params());
+
+        const user: User | null = await this.userRepository.findOneBy({ token: creationToken });
+        if (!user) {
+            return response.notFound({ error: i18n.t('messages.oauth.confirm.error') });
+        }
+
+        // user.token = null;
+        // await user.save();
+
+        const token: AccessToken = await User.accessTokens.create(user);
+
+        return response.ok({
+            message: i18n.t('messages.oauth.confirm.success', { provider: this.stringService.capitalize(provider) }),
+            token,
+            user: user.apiSerialize(),
+        });
+    }
+
+    private async handleCallback(client: GithubDriver | DiscordDriver | GoogleDriver, i18n: I18n): Promise<{ error?: string; token?: string }> {
         /**
          * User has denied access by canceling
          * the login flow
@@ -92,16 +118,20 @@ export default class OauthController {
         if (user) {
             if (!user.isOauth) {
                 user.isOauth = true;
-                await user.save();
             }
+
             if (oauthUser.avatarUrl && !user.profilePictureId) {
                 const profilePicture: File = await this.storeAndGetFileFromUrl(oauthUser.avatarUrl);
                 user.profilePictureId = profilePicture.id;
-                await user.save();
             }
-            const accessToken: AccessToken = await User.accessTokens.create(user);
-            const { token, expiresAt } = accessToken.toJSON();
-            return { token: { token: token!, expiresAt: expiresAt! } };
+
+            const token: string = cuid();
+
+            user.token = token;
+            user.isOauth = true;
+            await user.save();
+
+            return { token };
         }
 
         let profilePicture: File | null = null;
@@ -110,7 +140,9 @@ export default class OauthController {
             profilePicture = await this.storeAndGetFileFromUrl(oauthUser.avatarUrl);
         }
 
-        user = await User.create({
+        const token: string = cuid();
+
+        await User.create({
             username: oauthUser.nickName,
             email: oauthUser.email,
             isOauth: true,
@@ -118,11 +150,10 @@ export default class OauthController {
             enabled: true,
             acceptedTermsAndConditions: true,
             role: UserRoleEnum.USER,
+            token,
         });
 
-        const accessToken: AccessToken = await User.accessTokens.create(user);
-        const { token, expiresAt } = accessToken.toJSON();
-        return { token: { token: token!, expiresAt: expiresAt! } };
+        return { token };
     }
 
     private async storeAndGetFileFromUrl(url: string): Promise<File> {

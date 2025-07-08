@@ -49,7 +49,6 @@ export const actions: Actions = {
 
             const previousPathName: string | undefined = cookies.get('previousPathName');
             cookies.delete('previousPathName', { path: '/' });
-            console.log(previousPathName);
             redirect(
                 303,
                 `/${cookies.get('PARAGLIDE_LOCALE')}${previousPathName ? `/${previousPathName}` : ''}`,

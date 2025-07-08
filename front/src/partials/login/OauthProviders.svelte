@@ -1,7 +1,7 @@
 <script lang="ts">
     import Icon from '#components/Icon.svelte';
     import { showToast } from '#services/toastService';
-    import { PUBLIC_GITHUB_REPOSITORY } from '$env/static/public';
+    import { PUBLIC_API_REAL_URI } from '$env/static/public';
     import { Button } from '#lib/components/ui/button';
     import { m } from '#lib/paraglide/messages';
 
@@ -9,7 +9,7 @@
 
     const handleOauthClick = async (provider: Provider): Promise<void> => {
         try {
-            window.location.href = `${PUBLIC_GITHUB_REPOSITORY}/api/auth/${provider}`;
+            window.location.href = `${PUBLIC_API_REAL_URI}/api/auth/${provider}`;
         } catch (error: any) {
             showToast(error.response.data.error, 'error');
         }

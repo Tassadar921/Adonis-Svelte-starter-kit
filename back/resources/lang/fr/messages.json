@@ -58,6 +58,10 @@
                 "state-mismatch": "Nous ne pouvons pas vérifier la requête. Veuillez réessayer",
                 "default": "Erreur inconnue du fournisseur OAuth"
             }
+        },
+        "confirm": {
+            "success": "Connexion réussie avec {provider}",
+            "error": "Token invalide"
         }
     },
     "pending-friend": {

@@ -8,14 +8,18 @@
     import { m } from '#lib/paraglide/messages';
     import Meta from '#components/Meta.svelte';
 
+    type Props = { token: string };
+
+    let { token }: Props = $props();
+
     onMount(async () => {
-        await updateProfile();
-        showToast(m['toast.login.success']());
-        await navigate('/');
+        // await updateProfile();
+        // showToast(m['toast.login.success']());
+        // await navigate('/');
     });
 </script>
 
-<Meta title={m['home.meta.title']()} description={m['home.meta.description']()} keywords={m['home.meta.keywords']().split(', ')} pathname="{`/oauth/${apiToken}`}," />
+<Meta title={m['home.meta.title']()} description={m['home.meta.description']()} keywords={m['home.meta.keywords']().split(', ')} pathname="{`/oauth/${token}`}," />
 
 <Title title={m['oauth.title']()} hasBackground />
 

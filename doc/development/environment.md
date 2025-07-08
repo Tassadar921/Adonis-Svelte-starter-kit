@@ -88,7 +88,7 @@ Note that `PUBLIC_FRONT_URI` and `PUBLIC_API_BASE_URI` are automatically generat
 PUBLIC_FRONT_PORT=""
 PUBLIC_FRONT_URI=""
 PUBLIC_API_BASE_URI=""
-PUBLIC_API_TRANSMIT_URI=""
+PUBLIC_API_REAL_URI=""
 PUBLIC_GITHUB_REPOSITORY=""
 PUBLIC_DEFAULT_IMAGE=/assets/default/image.png
 PUBLIC_TWITTER_HANDLE=""
@@ -99,7 +99,7 @@ PUBLIC_TWITTER_HANDLE=""
 | `PUBLIC_FRONT_PORT`        | ""                                                        |
 | `PUBLIC_FRONT_URI`         | ""                                                        |
 | `PUBLIC_API_BASE_URI`      | ""                                                        |
-| `PUBLIC_API_TRANSMIT_URI`  | ""                                                        |
+| `PUBLIC_API_REAL_URI`      | ""                                                        |
 | `PUBLIC_GITHUB_REPOSITORY` | ""                                                        |
 | `PUBLIC_DEFAULT_IMAGE`     | /assets/default/image.png                                 |
 | `PUBLIC_TWITTER_HANDLE`    | **`Put your twitter @ here, for example : @Tassadar921`** |

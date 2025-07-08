@@ -18,14 +18,14 @@
 
     const handleSuccess = async (): Promise<void> => {
         clearProfile();
-        const data = await wrappedFetch('/logout', {
-            method: 'POST',
-        });
-        if (data?.isSuccess) {
-            await navigate('/login');
-        } else {
-            await navigate('/');
-        }
+        await wrappedFetch(
+            '/logout',
+            {
+                method: 'POST',
+            },
+            () => navigate('/'),
+            () => navigate('/logout')
+        );
     };
 
     const handleClose = (): void => {

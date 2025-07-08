@@ -44,6 +44,8 @@ router
                         router.get('/callback', [OauthController, 'googleCallback']);
                     })
                     .prefix('google');
+
+                router.post('/confirm/:provider/:token', [OauthController, 'confirmOauthConnection']);
             })
             .prefix('auth');
 

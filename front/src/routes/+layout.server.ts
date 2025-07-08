@@ -8,7 +8,7 @@ import { client } from '#lib/api.server';
 
 export const load: LayoutServerLoad = loadFlash(async (event): Promise<{ user?: SerializedUser; language: LanguageCode; location: string }> => {
     const { cookies, url } = event;
-    const openedPathNames: string[] = ['/create-account', '/login', '/reset-password'];
+    const openedPathNames: string[] = ['/create-account', '/login', '/oauth', '/reset-password'];
 
     const match: RegExpMatchArray | null = url.pathname.match(/^\/([a-z]{2})(\/|$)/);
     const language: LanguageCode | undefined = match ? (match[1] as LanguageCode) : undefined;
@@ -27,8 +27,6 @@ export const load: LayoutServerLoad = loadFlash(async (event): Promise<{ user?: 
     }
 
     client.defaults.headers.common['Accept-Language'] = `${language}-${language.toUpperCase()}`;
-
-    // cookies.delete('user', { path: '/' });
 
     const userCookie: string | undefined = cookies.get('user');
     const user: SerializedUser | undefined = userCookie ? <SerializedUser>JSON.parse(userCookie) : undefined;

@@ -23,6 +23,6 @@ export const sendAccountCreationEmailValidator = vine.compile(
 
 export const confirmAccountCreationValidator = vine.compile(
     vine.object({
-        token: vine.string().trim().uuid(),
+        token: vine.string().trim(),
     })
 );

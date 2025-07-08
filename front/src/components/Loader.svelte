@@ -3,7 +3,7 @@
         isLoading?: boolean;
     }
 
-    let { isLoading }: Props = $props();
+    let { isLoading = false }: Props = $props();
 </script>
 
 {#if isLoading}

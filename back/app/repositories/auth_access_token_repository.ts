@@ -1,8 +1,0 @@
-import BaseRepository from '#repositories/base/base_repository';
-import AuthAccessToken from '#models/auth_access_token';
-
-export default class AuthAccessTokenRepository extends BaseRepository<typeof AuthAccessToken> {
-    constructor() {
-        super(AuthAccessToken);
-    }
-}
