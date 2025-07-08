@@ -1,6 +1,6 @@
-import SerializedBlockedUser from '#types/serialized/serialized_blocked_user';
+import { type SerializedBlockedUser } from '#types/serialized/serialized_blocked_user';
 
-type PaginatedBlockedUsers = {
+export type PaginatedBlockedUsers = {
     blockedUsers: SerializedBlockedUser[];
     firstPage: number;
     lastPage: number;

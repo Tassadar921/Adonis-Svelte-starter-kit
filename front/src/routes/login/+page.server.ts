@@ -2,7 +2,7 @@ import type { Actions, RequestEvent } from '@sveltejs/kit';
 import { fail } from '@sveltejs/kit';
 import { redirect } from 'sveltekit-flash-message/server';
 import { m } from '#lib/paraglide/messages';
-import { tuyau } from '#lib/api.server';
+import { client } from '#lib/api.server';
 
 export const actions: Actions = {
     default: async (event: RequestEvent) => {
@@ -16,48 +16,50 @@ export const actions: Actions = {
             return fail(400, { error: 'Email and password are required' });
         }
 
-        console.log('===========================================');
+        let data: any;
+        let isSuccess: boolean = true;
 
         try {
-            console.log('coucou');
-            const { data, error } = await tuyau.api.auth.$post({
+            const { data: returnedData } = await client.post('api/auth', {
                 email,
                 password,
             });
-            console.log(data, error);
-
-            if (data) {
-                console.log(data.message);
-                console.log(data.user.role);
-                console.log(data.a);
-            }
-            // cookies.set('user', JSON.stringify(data.user), {
-            //     path: '/',
-            //     httpOnly: false,
-            //     sameSite: 'lax',
-            //     maxAge: 60 * 60 * 24 * 7,
-            // });
-            //
-            // const previousPathName: string | undefined = cookies.get('previousPathName');
-            // cookies.delete('previousPathName', { path: '/' });
-            //
-            // redirect(
-            //     303,
-            //     `/${params.language}${previousPathName ? `/${previousPathName}` : ''}`,
-            //     {
-            //         type: 'success',
-            //         message: data?.message,
-            //     },
-            //     event
-            // );
-            throw new Error('test');
+            data = returnedData;
         } catch (error: any) {
-            console.log(error);
-            return fail(error?.response?.status ?? 400, {
-                isSuccess: false,
-                message: error?.response?.data?.error ?? m['common.error.default-message'](),
-                language: params.language,
+            isSuccess = false;
+            data = error?.response?.data;
+        }
+
+        if (isSuccess) {
+            cookies.set('user', JSON.stringify(data.user), {
+                path: '/',
+                httpOnly: false,
+                sameSite: 'lax',
+                maxAge: 60 * 60 * 24 * 7,
             });
+
+            client.defaults.headers.common['Authorization'] = `Bearer ${data.token.token}`;
+
+            const previousPathName: string | undefined = cookies.get('previousPathName');
+            cookies.delete('previousPathName', { path: '/' });
+            console.log(previousPathName);
+            redirect(
+                303,
+                `/${cookies.get('PARAGLIDE_LOCALE')}${previousPathName ? `/${previousPathName}` : ''}`,
+                {
+                    type: 'success',
+                    message: data?.message,
+                },
+                event
+            );
+        } else {
+            redirect(
+                {
+                    type: 'error',
+                    message: data?.error ?? m['common.error.default-message'](),
+                },
+                event
+            );
         }
     },
 };

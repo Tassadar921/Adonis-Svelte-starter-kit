@@ -14,7 +14,6 @@
 | `make db-seed`       | Seed both app & logs databases with initial data using Docker.                                           |
 | `make db`            | Runs `db-fresh` and `db-seed`.                                                                           |
 | `make paraglide`     | Updates frontend translations.                                                                           |
-| `make tuyau`         | Updates Tuyau routes.                                                                                    |
 | `make stop`          | Stops all Docker containers and removes orphans.                                                         |
 | `make up`            | Stops containers and then builds and starts them in detached mode.                                       |
 | `make rm`            | Fully stops and resets app Docker containers and volumes.                                                |

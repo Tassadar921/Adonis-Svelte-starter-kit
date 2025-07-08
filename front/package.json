@@ -45,7 +45,7 @@
     "dependencies": {
         "@adonisjs/transmit-client": "^1.0.0",
         "@inlang/paraglide-js": "^2.1.0",
-        "@tuyau/client": "^0.2.9",
+        "axios": "^1.10.0",
         "backend": "file:../back",
         "mode-watcher": "^1.0.8",
         "svelte-meta-tags": "^4.3.0",

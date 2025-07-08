@@ -27,7 +27,9 @@
         if (theme !== 'light' && theme !== 'dark') {
             localStorage.setItem('theme', 'light');
         }
+    });
 
+    $effect((): void => {
         if ($flash) {
             showToast($flash.message, $flash.type);
         }

@@ -1,6 +1,6 @@
-import SerializedPendingFriendNotification from '#types/serialized/serialized_pending_friend_notification';
+import { type SerializedPendingFriendNotification } from '#types/serialized/serialized_pending_friend_notification';
 
-type PaginatedPendingFriendNotifications = {
+export type PaginatedPendingFriendNotifications = {
     notifications: SerializedPendingFriendNotification[];
     firstPage: number;
     lastPage: number;

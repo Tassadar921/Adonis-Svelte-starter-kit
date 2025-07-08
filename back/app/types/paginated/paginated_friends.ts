@@ -1,6 +1,6 @@
-import SerializedFriend from '#types/serialized/serialized_friend';
+import { type SerializedFriend } from '#types/serialized/serialized_friend';
 
-type PaginatedFriends = {
+export type PaginatedFriends = {
     friends: SerializedFriend[];
     firstPage: number;
     lastPage: number;

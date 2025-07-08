@@ -1,4 +1,4 @@
-enum NotificationTypeEnum {
+export enum NotificationTypeEnum {
     PENDING_FRIEND = 'pending-friend',
 }
 

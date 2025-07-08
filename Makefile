@@ -39,16 +39,13 @@ db: init-logs-db db-fresh db-seed
 paraglide:
 	cd front && npx paraglide-js compile
 
-tuyau:
-	cd back && node ace tuyau:generate
 stop:
 	./compose-env.sh down --remove-orphans
 
 up:
 	${MAKE} stop
-	rm -rf front/.svelte-kit front/node_modules/.vite
+	rm -rf front/node_modules/.vite
 	${MAKE} paraglide
-	${MAKE} tuyau
 	./compose-env.sh up -d --build
 
 rm:

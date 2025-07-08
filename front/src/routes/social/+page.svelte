@@ -39,7 +39,7 @@
 
 <Title title={m['social.title']()} />
 
-<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 p-5">
+<div class="grid grid-cols-1 lg:grid-cols-2 2xl:grid-cols-3 gap-4 p-5">
     {#each pages as page}
         <SmallCard title={page.title} icon={page.icon} href={page.href} description={page.description} />
     {/each}

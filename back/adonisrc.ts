@@ -10,7 +10,7 @@ export default defineConfig({
 | will be scanned automatically from the "./commands" directory.
 |
 */
-    commands: [() => import('@adonisjs/core/commands'), () => import('@adonisjs/lucid/commands'), () => import('@adonisjs/cache/commands'), () => import('@tuyau/core/commands')],
+    commands: [() => import('@adonisjs/core/commands'), () => import('@adonisjs/lucid/commands'), () => import('@adonisjs/cache/commands')],
 
     /*
 |--------------------------------------------------------------------------
@@ -37,7 +37,6 @@ export default defineConfig({
         () => import('@adonisjs/redis/redis_provider'),
         () => import('@adonisjs/ally/ally_provider'),
         () => import('@adonisjs/i18n/i18n_provider'),
-        () => import('@tuyau/core/tuyau_provider'),
     ],
 
     /*

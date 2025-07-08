@@ -20,15 +20,12 @@
         { icon: 'englishFlag', label: 'English', value: 'en' },
         { icon: 'frenchFlag', label: 'Français', value: 'fr' },
     ];
-    let selectedFlag: Flag = flags[0];
-    let isExpanded: boolean = false;
-    let popoverEl: HTMLDivElement;
-    let buttonContainerElement: HTMLDivElement;
+    let selectedFlag: Flag = $state(flags[0]);
+    let isExpanded: boolean = $state(false);
+    let popoverRef: HTMLDivElement | undefined = $state();
+    let buttonContainerElement: HTMLDivElement | undefined = $state();
 
     onMount(() => {
-        const match: Flag | undefined = flags.find((flag) => flag.value === $language);
-        selectedFlag = match || flags[0];
-
         document.addEventListener('click', handleClickOutside);
 
         return () => document.removeEventListener('click', handleClickOutside);
@@ -52,10 +49,15 @@
     };
 
     const handleClickOutside = (event: MouseEvent): void => {
-        if (popoverEl && !popoverEl.contains(event.target as Node) && !buttonContainerElement.contains(event.target as Node)) {
+        if (popoverRef && !popoverRef.contains(event.target as Node) && !buttonContainerElement?.contains(event.target as Node)) {
             isExpanded = false;
         }
     };
+
+    $effect((): void => {
+        const match: Flag | undefined = flags.find((flag) => flag.value === $language);
+        selectedFlag = match || flags[0];
+    });
 </script>
 
 <div class="relative inline-block" bind:this={buttonContainerElement}>
@@ -67,7 +69,7 @@
     </Button>
 
     {#if isExpanded}
-        <div class="absolute mt-2 bg-white dark:bg-gray-800 shadow-md rounded-lg z-50 w-32 p-2 border border-gray-200 right-0" bind:this={popoverEl}>
+        <div class="absolute mt-2 bg-white dark:bg-gray-800 shadow-md rounded-lg z-50 w-32 p-2 border border-gray-200 right-0" bind:this={popoverRef}>
             {#each flags as flag}
                 <Button aria-disabled={$language === flag.value} variant="outline" class="w-full" onclick={async () => await selectFlag(flag)}>
                     <Icon name={flag.icon} />

@@ -10,7 +10,8 @@
         "test": "node ace test"
     },
     "exports": {
-        "./api": "./.adonisjs/index.ts"
+        "./api": "./.adonisjs/index.ts",
+        "./types": "./app/types/index.ts"
     },
     "imports": {
         "#controllers/*": "./app/controllers/*.js",
@@ -57,7 +58,6 @@
         "@adonisjs/lucid": "^21.6.1",
         "@adonisjs/redis": "^9.2.0",
         "@adonisjs/transmit": "^2.0.2",
-        "@tuyau/core": "^0.4.1",
         "@vinejs/vine": "^3.0.1",
         "axios": "^1.10.0",
         "chokidar": "^4.0.3",

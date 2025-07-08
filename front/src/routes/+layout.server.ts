@@ -1,26 +1,24 @@
 import { loadFlash, redirect } from 'sveltekit-flash-message/server';
 import type { LayoutServerLoad } from './$types';
-import type SerializedUser from 'backend/app/types/serialized/serialized_user';
+import type { SerializedUser } from 'backend/types';
 import { m } from '#lib/paraglide/messages';
 import { type LanguageCode } from '#stores/languageStore';
 import { locales } from '../paraglide/runtime';
-import { initializeTuyau } from '#lib/api.server';
+import { client } from '#lib/api.server';
 
 export const load: LayoutServerLoad = loadFlash(async (event): Promise<{ user?: SerializedUser; language: LanguageCode; location: string }> => {
     const { cookies, url } = event;
     const openedPathNames: string[] = ['/create-account', '/login', '/reset-password'];
 
     const match: RegExpMatchArray | null = url.pathname.match(/^\/([a-z]{2})(\/|$)/);
-    const urlLanguage: LanguageCode | undefined = match ? (match[1] as LanguageCode) : undefined;
+    const language: LanguageCode | undefined = match ? (match[1] as LanguageCode) : undefined;
 
-    const language: LanguageCode = urlLanguage ?? 'en';
-
-    if (!urlLanguage || !locales.includes(urlLanguage)) {
-        return redirect(307, `/${language}${url.pathname}`);
+    if (!language || !locales.includes(language)) {
+        return redirect(307, `/${cookies.get('PARAGLIDE_LOCALE') ?? 'en'}${url.pathname}`);
     }
 
-    if (urlLanguage !== cookies.get('PARAGLIDE_LOCALE')) {
-        cookies.set('PARAGLIDE_LOCALE', urlLanguage, {
+    if (language !== cookies.get('PARAGLIDE_LOCALE')) {
+        cookies.set('PARAGLIDE_LOCALE', language, {
             path: '/',
             httpOnly: false,
             sameSite: 'lax',
@@ -28,12 +26,14 @@ export const load: LayoutServerLoad = loadFlash(async (event): Promise<{ user?: 
         });
     }
 
-    initializeTuyau(language);
+    client.defaults.headers.common['Accept-Language'] = `${language}-${language.toUpperCase()}`;
+
+    // cookies.delete('user', { path: '/' });
 
     const userCookie: string | undefined = cookies.get('user');
     const user: SerializedUser | undefined = userCookie ? <SerializedUser>JSON.parse(userCookie) : undefined;
 
-    const location: string = url.pathname.replace(`/${language}/`, '/') || '/';
+    const location: string = url.pathname.replace(`/${language}`, '') || '/';
 
     if (!userCookie) {
         if (openedPathNames.some((path: string): boolean => location.startsWith(path))) {

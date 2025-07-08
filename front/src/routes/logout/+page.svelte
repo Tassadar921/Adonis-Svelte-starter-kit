@@ -18,15 +18,11 @@
     import { language } from '#stores/languageStore';
 
     const handleSuccess = async (): Promise<void> => {
-        try {
-            clearProfile();
-            // const { data } = await axios.post(`/${$language}/logout`);
-            // console.log(data);
-        } catch (error: any) {
-            console.log(error);
-            showToast(error.response.data.error, 'error');
-            await navigate('/');
-        }
+        clearProfile();
+        const response = await fetch('/logout', {
+            method: 'POST',
+        });
+        console.log(response);
     };
 
     const handleClose = (): void => {

@@ -1,6 +1,6 @@
-import SerializedUser from '#types/serialized/serialized_user';
+import { type SerializedUser } from '#types/serialized/serialized_user';
 
-type SerializedFriend = {
+export type SerializedFriend = {
     id: number;
     friend: SerializedUser;
     createdAt?: string;
