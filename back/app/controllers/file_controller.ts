@@ -18,7 +18,7 @@ export default class FileController {
                 key: `user-profile-picture:${userId}`,
                 ttl: '1h',
                 factory: async (): Promise<string> => {
-                    const otherUser: User = await this.userRepository.firstOrFail({ frontId: userId }, ['profilePicture']);
+                    const otherUser: User = await this.userRepository.firstOrFail({ frontId: userId });
 
                     if (!otherUser.profilePicture) {
                         throw new Error('NO_PICTURE');

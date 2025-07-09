@@ -1,5 +1,4 @@
 import type { Actions, RequestEvent } from '@sveltejs/kit';
-import { fail } from '@sveltejs/kit';
 import { redirect } from 'sveltekit-flash-message/server';
 import { m } from '#lib/paraglide/messages';
 import { client } from '#lib/api.server';
@@ -9,22 +8,25 @@ export const actions: Actions = {
         const { request, cookies } = event;
 
         const formData: FormData = await request.formData();
-        const username: string | null = <string | null>formData.get('username');
-        const profilePicture: File | null = <File | null>formData.get('profilePicture');
-
-        console.log(profilePicture);
 
         let data: any;
         let isSuccess: boolean = true;
 
+        const form = new FormData();
+        form.append('username', formData.get('username') || '');
+        const profilePicture: File | null = <File | null>formData.get('profilePicture');
+        if (profilePicture) {
+            form.append('profilePicture', profilePicture);
+        }
+
         try {
-            const { data: returnedData } = await client.post('api/profile/update', {
-                username,
-                profilePicture,
+            const { data: returnedData } = await client.post('api/profile/update', form, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
             });
             data = returnedData;
         } catch (error: any) {
-            console.log(error.response?.data?.errors);
             isSuccess = false;
             data = error?.response?.data;
         }

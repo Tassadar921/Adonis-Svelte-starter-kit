@@ -16,6 +16,7 @@ import { resetPasswordParamsValidator, resetPasswordValidator, sendResetPassword
 import path from 'node:path';
 import env from '#start/env';
 import FileTypeEnum from '#types/enum/file_type_enum';
+import cache from '@adonisjs/cache/services/main';
 
 @inject()
 export default class ProfileController {
@@ -103,13 +104,14 @@ export default class ProfileController {
 
                 // Database file clear
                 user.profilePictureId = null;
+                await user.save();
                 await user.profilePicture.delete();
             }
 
             profilePicture.clientName = `${cuid()}-${this.slugifyService.slugify(profilePicture.clientName)}`;
             const profilePicturePath = `static/profile-picture`;
             await profilePicture.move(app.makePath(profilePicturePath));
-            const file: File = await File.create({
+            const newProfilePicture: File = await File.create({
                 name: profilePicture.clientName,
                 path: `${profilePicturePath}/${profilePicture.clientName}`,
                 extension: path.extname(profilePicture.clientName),
@@ -117,12 +119,19 @@ export default class ProfileController {
                 size: profilePicture.size,
                 type: FileTypeEnum.PROFILE_PICTURE,
             });
-            await file.refresh();
-            user.profilePictureId = file.id;
+            await newProfilePicture.refresh();
+            user.profilePictureId = newProfilePicture.id;
+
+            await cache.delete({ key: `user-profile-picture:${user.frontId}` });
+            await cache.set({
+                key: `user-profile-picture:${user.frontId}`,
+                ttl: '1h',
+                value: app.makePath(newProfilePicture.path),
+            });
         }
 
         await user.save();
-        await user.refresh();
+        await user.load('profilePicture');
 
         return response.ok({
             message: i18n.t('messages.profile.update-profile.success'),

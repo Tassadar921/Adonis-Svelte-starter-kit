@@ -31,10 +31,6 @@
         }
     });
 
-    const handleSuccess = (event: CustomEvent): void => {
-        setProfile(event.detail.user);
-    };
-
     const handleError = (): void => {
         formValues = {
             username: $profile!.username,
@@ -44,7 +40,6 @@
 
     $effect((): void => {
         canSubmit = !!formValues.username && !!formValues.email;
-        console.log($profile);
     });
 </script>
 

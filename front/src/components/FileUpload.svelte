@@ -27,11 +27,13 @@
     );
     let isDragging = $state(false);
     let isLoading = false;
-    let previewSrc: string = $state(`/assets/${pathPrefix}/${id}`);
+    let previewSrc: string = $state(`/assets/${pathPrefix}/${id}?no-cache=true`);
 
     const handleFileChange = (event: Event): void => {
         const target = event.target as HTMLInputElement;
-        if (disabled || !target.files || target.files.length === 0) return;
+        if (disabled || !target.files || target.files.length === 0) {
+            return;
+        }
 
         const file = target.files[0];
         fileName = file.name;
@@ -64,9 +66,9 @@
         isDragging = false;
 
         if (event.dataTransfer?.files?.length) {
-            const dt = new DataTransfer();
-            dt.items.add(event.dataTransfer.files[0]);
-            inputRef.files = dt.files;
+            const dataTransfert = new DataTransfer();
+            dataTransfert.items.add(event.dataTransfer.files[0]);
+            inputRef.files = dataTransfert.files;
             inputRef.dispatchEvent(new Event('change', { bubbles: true }));
         }
     };

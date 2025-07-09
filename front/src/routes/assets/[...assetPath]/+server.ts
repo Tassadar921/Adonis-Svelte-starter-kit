@@ -4,7 +4,8 @@ import { m } from '#lib/paraglide/messages';
 import type { AxiosResponse } from 'axios';
 
 export const GET: RequestHandler = async (event): Promise<Response> => {
-    const { params } = event;
+    const { params, url } = event;
+    const noCache: boolean = url.searchParams.get('no-cache') === 'true';
 
     try {
         const response = await client.get(`/api/static/${params.assetPath}`, {
@@ -15,11 +16,10 @@ export const GET: RequestHandler = async (event): Promise<Response> => {
             headers: {
                 'Content-Type': response.headers['content-type'] || 'application/octet-stream',
                 'Content-Disposition': response.headers['content-disposition'] || 'inline',
-                'Cache-Control': 'public, max-age=3600',
+                'Cache-Control': noCache ? 'no-cache, no-store, must-revalidate' : 'public, max-age=3600',
             },
         });
     } catch (error: any) {
-        console.log(error);
         return new Response(
             JSON.stringify({
                 isSuccess: false,
