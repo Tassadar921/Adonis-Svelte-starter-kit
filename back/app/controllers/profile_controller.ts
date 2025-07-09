@@ -28,7 +28,6 @@ export default class ProfileController {
     ) {}
 
     public async getProfile({ response, user }: HttpContext) {
-        await user.load('profilePicture');
         return response.ok({ user: user.apiSerialize() });
     }
 
@@ -96,7 +95,6 @@ export default class ProfileController {
         const { username, profilePicture } = await request.validateUsing(updateProfileValidator);
 
         user.username = username;
-        await user.load('profilePicture');
 
         if (profilePicture) {
             if (user.profilePictureId) {

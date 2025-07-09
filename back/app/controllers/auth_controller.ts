@@ -22,7 +22,6 @@ export default class AuthController {
             const { email, password } = await request.validateUsing(loginValidator);
 
             const user: User = await User.verifyCredentials(email, password);
-            await user.load('profilePicture');
 
             const token: AccessToken = await User.accessTokens.create(user);
 

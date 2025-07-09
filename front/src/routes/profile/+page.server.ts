@@ -6,26 +6,25 @@ import { client } from '#lib/api.server';
 
 export const actions: Actions = {
     default: async (event: RequestEvent) => {
-        const { request, params, cookies } = event;
+        const { request, cookies } = event;
 
         const formData: FormData = await request.formData();
-        const email: string | null = <string | null>formData.get('email');
-        const password: string | null = <string | null>formData.get('password');
+        const username: string | null = <string | null>formData.get('username');
+        const profilePicture: File | null = <File | null>formData.get('profilePicture');
 
-        if (!email || !password) {
-            return fail(400, { error: 'Email and password are required' });
-        }
+        console.log(profilePicture);
 
         let data: any;
         let isSuccess: boolean = true;
 
         try {
-            const { data: returnedData } = await client.post('api/auth', {
-                email,
-                password,
+            const { data: returnedData } = await client.post('api/profile/update', {
+                username,
+                profilePicture,
             });
             data = returnedData;
         } catch (error: any) {
+            console.log(error.response?.data?.errors);
             isSuccess = false;
             data = error?.response?.data;
         }
@@ -38,20 +37,7 @@ export const actions: Actions = {
                 maxAge: 60 * 60 * 24 * 7,
             });
 
-            cookies.set('token', data.token.token, {
-                path: '/',
-                httpOnly: true,
-                sameSite: 'lax',
-                maxAge: 60 * 60 * 24 * 7,
-            });
-
-            client.defaults.headers.common['Authorization'] = `Bearer ${data.token.token}`;
-
-            const previousPathName: string | undefined = cookies.get('previousPathName');
-            cookies.delete('previousPathName', { path: '/' });
             redirect(
-                303,
-                `/${cookies.get('PARAGLIDE_LOCALE')}${previousPathName ? `${previousPathName}` : ''}`,
                 {
                     type: 'success',
                     message: data?.message,

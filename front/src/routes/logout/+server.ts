@@ -5,11 +5,12 @@ import { m } from '#lib/paraglide/messages';
 export const POST: RequestHandler = async (event): Promise<Response> => {
     const { cookies } = event;
 
+    cookies.delete('user', { path: '/' });
+    cookies.delete('token', { path: '/' });
+    client.defaults.headers.common['Authorization'] = undefined;
+
     try {
         const { data } = await client.delete('/api/logout');
-
-        cookies.delete('user', { path: '/' });
-        client.defaults.headers.common['Authorization'] = undefined;
 
         return new Response(
             JSON.stringify({

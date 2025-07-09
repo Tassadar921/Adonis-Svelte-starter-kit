@@ -77,8 +77,8 @@ export default class OauthController {
             return response.notFound({ error: i18n.t('messages.oauth.confirm.error') });
         }
 
-        // user.token = null;
-        // await user.save();
+        user.token = null;
+        await user.save();
 
         const token: AccessToken = await User.accessTokens.create(user);
 

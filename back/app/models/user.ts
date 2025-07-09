@@ -1,7 +1,7 @@
 import { DateTime } from 'luxon';
 import hash from '@adonisjs/core/services/hash';
 import { compose } from '@adonisjs/core/helpers';
-import { afterCreate, BaseModel, belongsTo, column, hasMany } from '@adonisjs/lucid/orm';
+import { afterCreate, beforeFind, beforeFetch, BaseModel, belongsTo, column, hasMany } from '@adonisjs/lucid/orm';
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid';
 import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations';
 import SerializedUser from '#types/serialized/serialized_user';
@@ -77,6 +77,12 @@ export default class User extends compose(BaseModel, AuthFinder) {
         await LogUser.create({
             email: user.email,
         });
+    }
+
+    @beforeFind()
+    @beforeFetch()
+    public static preloadDefaults(userQuery: any): void {
+        userQuery.preload('profilePicture');
     }
 
     static accessTokens: DbAccessTokensProvider<typeof User> = DbAccessTokensProvider.forModel(User, {

@@ -37,7 +37,7 @@
 
 <div class:mt-20={hasBackground} class="flex items-center justify-center">
     <Card class="w-10/12 sm:w-lg">
-        <form use:enhance method="POST" class="z-10 flex flex-col gap-3">
+        <form use:enhance method="POST" enctype="multipart/form-data" class="z-10 flex flex-col gap-3">
             <CardHeader>
                 {@render header?.()}
             </CardHeader>

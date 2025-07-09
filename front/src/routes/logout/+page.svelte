@@ -16,15 +16,15 @@
     import Meta from '#components/Meta.svelte';
     import { wrappedFetch } from '#services/requestService';
 
-    const handleSuccess = async (): Promise<void> => {
+    const handleConfirm = async (): Promise<void> => {
         clearProfile();
         await wrappedFetch(
             '/logout',
             {
                 method: 'POST',
             },
-            () => navigate('/'),
-            () => navigate('/logout')
+            () => navigate('/login'),
+            () => navigate('/login')
         );
     };
 
@@ -45,7 +45,7 @@
         </AlertDialogHeader>
         <AlertDialogFooter>
             <AlertDialogCancel onclick={handleClose}>Cancel</AlertDialogCancel>
-            <AlertDialogAction onclick={handleSuccess}>Continue</AlertDialogAction>
+            <AlertDialogAction onclick={handleConfirm}>Continue</AlertDialogAction>
         </AlertDialogFooter>
     </AlertDialogContent>
 </AlertDialog>

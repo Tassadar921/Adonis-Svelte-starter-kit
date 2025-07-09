@@ -147,14 +147,6 @@
             }
         }
     },
-    "oauth": {
-        "title": "Login with OAuth",
-        "meta": {
-            "title": "OAuth Callback – Adonis & Svelte Starter Kit",
-            "description": "Processing OAuth callback to authenticate and retrieve user profile. Securely handling access token before redirecting you.",
-            "keywords": "OAuth callback, access token, user authentication, bearer token, Adonis & Svelte Starter Kit"
-        }
-    },
     "logout": {
         "title": "Logout",
         "meta": {

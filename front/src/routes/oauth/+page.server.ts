@@ -49,6 +49,7 @@ export const load: PageServerLoad = loadFlash(async (event) => {
         );
     } else {
         redirect(
+            `/${cookies.get('PARAGLIDE_LOCALE')}/login`,
             {
                 type: 'error',
                 message: data?.error ?? m['common.error.default-message'](),

@@ -1,13 +1,13 @@
 <script lang="ts">
     import Form from '#components/Form.svelte';
-    import Input from '#components/Input.svelte';
+    import { Input } from '#lib/components/ui/input';
     import { Title } from '#lib/components/ui/title';
     import { Link } from '#lib/components/ui/link';
     import { profile, setProfile } from '#stores/profileStore';
     import { m } from '#lib/paraglide/messages';
     import { onMount } from 'svelte';
     import FileUpload from '#components/FileUpload.svelte';
-    import type SerializedUser from 'backend/app/types/serialized/serialized_user';
+    import { type SerializedUser } from 'backend/types';
     import Meta from '#components/Meta.svelte';
     import { PUBLIC_API_BASE_URI } from '$env/static/public';
 
@@ -44,6 +44,7 @@
 
     $effect((): void => {
         canSubmit = !!formValues.username && !!formValues.email;
+        console.log($profile);
     });
 </script>
 
@@ -52,11 +53,13 @@
 <Title title={m['profile.title']()} hasBackground />
 
 <Form isValid={canSubmit}>
-    <Input name="username" placeholder={m['common.username.label']()} label={m['common.username.label']()} bind:value={formValues.username} min={3} max={50} />
-    <Input name="email" placeholder={m['common.email.label']()} label={m['common.email.label']()} bind:value={formValues.email} disabled />
-    <Link href="/reset-password">
-        {m['profile.reset-password']()}
-    </Link>
+    <Input name="username" placeholder={m['common.username.label']()} label={m['common.username.label']()} bind:value={formValues.username} min={3} max={50} required />
+    <Input name="email" placeholder={m['common.email.label']()} label={m['common.email.label']()} bind:value={formValues.email} disabled required />
+    {#snippet links()}
+        <Link href="/reset-password">
+            {m['profile.reset-password']()}
+        </Link>
+    {/snippet}
     <FileUpload
         name="profilePicture"
         accept="png jpg gif jpeg webp"

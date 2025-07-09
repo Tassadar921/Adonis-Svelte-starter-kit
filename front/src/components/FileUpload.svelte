@@ -4,7 +4,6 @@
     import { raw } from '#services/stringService';
     import Loader from '#components/Loader.svelte';
     import Icon from '#components/Icon.svelte';
-    import { PUBLIC_API_BASE_URI } from '$env/static/public';
 
     type Props = {
         name: string;
@@ -23,7 +22,7 @@
 
     let acceptedFormats: string = $state('');
     let isDragging: boolean = $state(false);
-    let previewSrc: string = $state(`${PUBLIC_API_BASE_URI}/api/static/${pathPrefix}/${id}?token=${localStorage.getItem('apiToken')}`);
+    let previewSrc: string = $state(`/assets/${pathPrefix}/${id}`);
     let inputRef: HTMLInputElement;
     let isLoading: boolean = $state(false);
 
@@ -107,7 +106,7 @@
     {/if}
     <button
         type="button"
-        class={`w-${width} flex flex-col items-center justify-center border-2 border-gray-400 dark:border-white rounded-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 m-auto p-3`}
+        class={`w-${width} flex flex-col items-center justify-center border-2 border-gray-400 dark:border-white rounded-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 m-auto p-3 cursor-pointer`}
         class:bg-blue-50={isDragging && !disabled}
         class:border-blue-500={isDragging && !disabled}
         onclick={() => !disabled && inputRef.click()}
@@ -126,7 +125,7 @@
             {#if fileName}
                 {#if previewSrc}
                     <div class="mt-3 flex justify-center">
-                        <img src={previewSrc} alt="Preview" class="w-24 h-24 object-cover rounded" />
+                        <img src={previewSrc} alt="Preview" class="size-24 object-cover rounded" />
                     </div>
                 {:else}
                     {fileName}

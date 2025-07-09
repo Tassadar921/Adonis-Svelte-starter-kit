@@ -110,15 +110,14 @@ router
                         router.get('/pending-friends', [NotificationController, 'getPendingFriends']);
                     })
                     .prefix('notifications');
+
+                router
+                    .group((): void => {
+                        router.get('/profile-picture/:userId', [FileController, 'serveStaticProfilePictureFile']);
+                    })
+                    .prefix('static');
             })
             .use([middleware.auth()]);
-
-        router
-            .group((): void => {
-                router.get('/profile-picture/:userId', [FileController, 'serveStaticProfilePictureFile']);
-            })
-            .prefix('static')
-            .use([middleware.queryStringAuth()]);
     })
     .prefix('api')
     .use([middleware.log(), middleware.language()]);

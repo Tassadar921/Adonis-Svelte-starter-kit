@@ -1,4 +1,5 @@
 import { showToast } from '#services/toastService';
+import { navigate } from '#stores/locationStore';
 
 export const wrappedFetch = async (
     input: RequestInfo,
@@ -8,9 +9,13 @@ export const wrappedFetch = async (
 ): Promise<any | undefined> => {
     const response: Response = await fetch(input, options);
 
-    if (!response.ok) {
-        showToast(response.statusText, 'error');
-        return undefined;
+    if (response.status === 401) {
+        try {
+            await fetch('/logout', { method: 'POST' });
+        } catch (error: any) {
+            console.error(error);
+        }
+        await navigate('/login');
     }
 
     try {
