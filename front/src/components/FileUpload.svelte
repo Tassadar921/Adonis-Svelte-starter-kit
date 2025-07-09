@@ -1,93 +1,73 @@
 <script lang="ts">
     import { m } from '#lib/paraglide/messages';
-    import { onMount } from 'svelte';
     import { raw } from '#services/stringService';
-    import Loader from '#components/Loader.svelte';
     import Icon from '#components/Icon.svelte';
+    import Loader from '#components/Loader.svelte';
 
     type Props = {
         name: string;
-        description: string;
-        title: string;
+        title?: string;
+        description?: string;
         width?: number;
         accept: string;
         fileName?: string;
-        file?: File;
         pathPrefix: string;
         id: number;
         disabled?: boolean;
     };
 
-    let { name, description, title, width = 96, accept, fileName, file, pathPrefix, id, disabled = false }: Props = $props();
+    let { name, title = m['common.file.title'](), description = m['common.file.description'](), width = 96, accept, fileName = '', pathPrefix, id, disabled = false }: Props = $props();
 
-    let acceptedFormats: string = $state('');
-    let isDragging: boolean = $state(false);
-    let previewSrc: string = $state(`/assets/${pathPrefix}/${id}`);
     let inputRef: HTMLInputElement;
-    let isLoading: boolean = $state(false);
-
-    onMount((): void => {
-        title = title ?? m['common.file.description']();
-        description = description ?? m['common.file.description']();
-        acceptedFormats = accept
+    let acceptedFormats = $state(
+        accept
             .split(' ')
-            .map((format) => `.${format}`)
-            .join(',');
-    });
+            .map((format: string) => `.${format}`)
+            .join(',')
+    );
+    let isDragging = $state(false);
+    let isLoading = false;
+    let previewSrc: string = $state(`/assets/${pathPrefix}/${id}`);
 
-    const processFiles = (files: FileList): void => {
-        if (disabled) {
-            return;
-        }
-        if (files.length > 0) {
-            isLoading = true;
-            file = files[0];
-            fileName = file.name;
+    const handleFileChange = (event: Event): void => {
+        const target = event.target as HTMLInputElement;
+        if (disabled || !target.files || target.files.length === 0) return;
 
-            if (file.type.startsWith('image/')) {
-                const reader = new FileReader();
-                reader.onload = (e: ProgressEvent<FileReader>) => {
-                    previewSrc = e.target?.result as string;
-                };
-                reader.readAsDataURL(file);
-            } else {
-                previewSrc = '';
-            }
-            isLoading = false;
+        const file = target.files[0];
+        fileName = file.name;
+
+        if (file.type.startsWith('image/')) {
+            const reader = new FileReader();
+            reader.onload = (e: ProgressEvent<FileReader>) => {
+                previewSrc = e.target?.result as string;
+            };
+            reader.readAsDataURL(file);
         } else {
-            file = undefined;
-            fileName = '';
             previewSrc = '';
         }
     };
 
-    const handleFileChange = (event: Event): void => {
-        const target = event.target as HTMLInputElement;
-        if (!disabled && target.files) {
-            processFiles(target.files);
-        }
-    };
-
     const handleDragOver = (event: DragEvent): void => {
-        if (!disabled) {
-            event.preventDefault();
-            isDragging = true;
-        }
+        if (disabled) return;
+        event.preventDefault();
+        isDragging = true;
     };
 
     const handleDragLeave = (): void => {
-        if (!disabled) {
-            isDragging = false;
-        }
+        if (disabled) return;
+        isDragging = false;
     };
 
     const handleDrop = (event: DragEvent): void => {
-        if (!disabled) {
-            event.preventDefault();
-            isDragging = false;
-            if (event.dataTransfer?.files) {
-                processFiles(event.dataTransfer.files);
-            }
+        if (disabled) return;
+        event.preventDefault();
+        isDragging = false;
+
+        if (event.dataTransfer?.files?.length) {
+            const dt = new DataTransfer();
+            dt.items.add(event.dataTransfer.files[0]);
+            inputRef.files = dt.files;
+            inputRef.dispatchEvent(new Event('change', { bubbles: true }));
         }
     };
 
@@ -104,6 +84,7 @@
     {#if title}
         <h3 class="font-semibold text-center mb-2">{title}</h3>
     {/if}
+
     <button
         type="button"
         class={`w-${width} flex flex-col items-center justify-center border-2 border-gray-400 dark:border-white rounded-lg transition-colors duration-300 focus:outline-none focus:ring-2 focus:ring-blue-500 w-48 m-auto p-3 cursor-pointer`}
@@ -118,9 +99,11 @@
         {disabled}
     >
         <input bind:this={inputRef} type="file" class="hidden" {name} accept={acceptedFormats} onchange={handleFileChange} {disabled} />
+
         <span class="text-primary-500">
             <Icon name="upload" size={35} />
         </span>
+
         <span class="text-center text-sm text-gray-500 my-3">
             {#if fileName}
                 {#if previewSrc}
