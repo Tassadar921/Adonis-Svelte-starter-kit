@@ -1,7 +1,9 @@
-import type { Actions, RequestEvent } from '@sveltejs/kit';
+import { type Actions, fail, type RequestEvent } from '@sveltejs/kit';
 import { redirect } from 'sveltekit-flash-message/server';
 import { m } from '#lib/paraglide/messages';
 import { client } from '#lib/api.server';
+import type { PageDataError } from '../../app';
+import { extractFormErrors } from '#services/requestService';
 
 export const actions: Actions = {
     default: async (event: RequestEvent) => {
@@ -47,13 +49,16 @@ export const actions: Actions = {
                 event
             );
         } else {
-            redirect(
-                {
-                    type: 'error',
-                    message: data?.error ?? m['common.error.default-message'](),
-                },
-                event
-            );
+            const errors: PageDataError[] = extractFormErrors(data);
+
+            cookies.set('formErrors', JSON.stringify(errors), {
+                path: '/',
+                httpOnly: true,
+                sameSite: 'lax',
+                maxAge: 60 * 60 * 24 * 7,
+            });
+
+            fail(400);
         }
     },
 };

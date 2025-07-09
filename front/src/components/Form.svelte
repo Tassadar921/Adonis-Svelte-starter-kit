@@ -6,6 +6,9 @@
     import { Button } from '#lib/components/ui/button';
     import { SendHorizontal } from '@lucide/svelte';
     import { Card, CardHeader, CardContent, CardFooter } from '#lib/components/ui/card/index';
+    import { page } from '$app/state';
+    import type { PageDataError } from '../app';
+    import { showToast } from '#services/toastService';
 
     type Props = {
         children: import('svelte').Snippet;
@@ -13,21 +16,27 @@
         links?: import('svelte').Snippet;
         footer?: import('svelte').Snippet;
         submitContent?: import('svelte').Snippet;
-        form?: {
-            error?: string;
-        };
+        onError?: (data?: any) => void;
+        form?: any;
         isValid?: boolean;
         submittable?: boolean;
         hasBackground?: boolean;
     };
 
-    let { children, header, links, footer, form, isValid = false, submittable = true, hasBackground = true, submitContent }: Props = $props();
+    let { children, header, links, footer, form, onError, isValid = false, submittable = true, hasBackground = true, submitContent }: Props = $props();
 
     let isLoading: boolean = $state(false);
     let isSendButtonDisabled: boolean = $state(false);
 
     $effect((): void => {
         isSendButtonDisabled = isLoading || !isValid;
+    });
+
+    $effect((): void => {
+        page.data.formErrors?.forEach((error: PageDataError) => {
+            showToast(error.message, error.type);
+            onError?.();
+        });
     });
 </script>
 

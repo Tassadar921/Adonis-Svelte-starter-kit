@@ -5,8 +5,9 @@ import { m } from '#lib/paraglide/messages';
 import { type LanguageCode } from '#stores/languageStore';
 import { locales } from '../paraglide/runtime';
 import { client } from '#lib/api.server';
+import type { PageDataError } from '../app';
 
-export const load: LayoutServerLoad = loadFlash(async (event): Promise<{ user?: SerializedUser; language: LanguageCode; location: string }> => {
+export const load: LayoutServerLoad = loadFlash(async (event): Promise<{ user?: SerializedUser; language: LanguageCode; location: string; formErrors?: PageDataError[] }> => {
     const { cookies, url } = event;
     const openedPathNames: string[] = ['/create-account', '/login', '/oauth', '/reset-password'];
 
@@ -70,6 +71,17 @@ export const load: LayoutServerLoad = loadFlash(async (event): Promise<{ user?: 
             },
             event
         );
+    }
+
+    const formErrors: string | undefined = cookies.get('formErrors');
+    if (formErrors) {
+        cookies.delete('formErrors', { path: '/' });
+        return {
+            user,
+            language,
+            location,
+            formErrors: JSON.parse(formErrors),
+        };
     }
 
     return {

@@ -3,7 +3,7 @@
     import { Input } from '#lib/components/ui/input';
     import { Title } from '#lib/components/ui/title';
     import { Link } from '#lib/components/ui/link';
-    import { profile, setProfile } from '#stores/profileStore';
+    import { profile } from '#stores/profileStore';
     import { m } from '#lib/paraglide/messages';
     import { onMount } from 'svelte';
     import FileUpload from '#components/FileUpload.svelte';
@@ -46,15 +46,13 @@
 <Meta title={m['profile.meta.title']()} description={m['profile.meta.description']()} keywords={m['profile.meta.keywords']().split(', ')} pathname="/profile" />
 
 <Title title={m['profile.title']()} hasBackground />
+<Link href="/reset-password">
+    {m['profile.reset-password']()}
+</Link>
 
-<Form isValid={canSubmit}>
+<Form isValid={canSubmit} onError={handleError}>
     <Input name="username" placeholder={m['common.username.label']()} label={m['common.username.label']()} bind:value={formValues.username} min={3} max={50} required />
     <Input name="email" placeholder={m['common.email.label']()} label={m['common.email.label']()} bind:value={formValues.email} disabled required />
-    {#snippet links()}
-        <Link href="/reset-password">
-            {m['profile.reset-password']()}
-        </Link>
-    {/snippet}
     <FileUpload
         name="profilePicture"
         accept="png jpg gif jpeg webp"

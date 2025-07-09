@@ -1,5 +1,6 @@
 import { showToast } from '#services/toastService';
 import { navigate } from '#stores/locationStore';
+import type { PageDataError } from '../app';
 
 export const wrappedFetch = async (
     input: RequestInfo,
@@ -36,4 +37,28 @@ export const wrappedFetch = async (
         console.error(error);
         return undefined;
     }
+};
+
+export const extractFormErrors = (data: any): PageDataError[] => {
+    const errors: PageDataError[] = [];
+
+    // Adonis validator
+    if (data?.errors) {
+        for (const error of data.errors) {
+            errors.push({
+                type: 'error',
+                message: error.message,
+            });
+        }
+    }
+
+    // Adonis error
+    if (data?.error) {
+        errors.push({
+            type: 'error',
+            message: data.error,
+        });
+    }
+
+    return errors;
 };
