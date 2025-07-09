@@ -1,6 +1,5 @@
 import { type Actions, fail, type RequestEvent } from '@sveltejs/kit';
 import { redirect } from 'sveltekit-flash-message/server';
-import { m } from '#lib/paraglide/messages';
 import { client } from '#lib/api.server';
 import type { PageDataError } from '../../app';
 import { extractFormErrors } from '#services/requestService';
