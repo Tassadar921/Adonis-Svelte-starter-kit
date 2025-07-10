@@ -64,7 +64,7 @@ export default class AuthController {
 
         try {
             const token: string = cuid();
-            await this.mailService.sendAccountCreationEmail(email, `${env.get('FRONT_URI')}/${language.code}/create-account/confirm/${token}`);
+            await this.mailService.sendAccountCreationEmail(email, encodeURI(`${env.get('FRONT_URI')}/${language.code}/create-account/confirm?token=${token}`));
             await User.create({
                 username,
                 email,

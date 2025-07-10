@@ -4,7 +4,6 @@ import ResetPasswordRepository from '#repositories/reset_password_repository';
 import BrevoMailService from '#services/brevo_mail_service';
 import User from '#models/user';
 import ResetPassword from '#models/reset_password';
-import crypto from 'crypto';
 import { DateTime } from 'luxon';
 import { inject } from '@adonisjs/core';
 import File from '#models/file';
@@ -50,7 +49,7 @@ export default class ProfileController {
         let token: string = '';
         let resetPassword: ResetPassword | null = null;
         do {
-            token = crypto.randomBytes(32).toString('hex');
+            token = cuid();
             resetPassword = await this.resetPasswordRepository.findOneBy({
                 token,
             });
