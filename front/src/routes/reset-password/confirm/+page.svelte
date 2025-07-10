@@ -15,17 +15,10 @@
     let password: string = $state('');
     let confirmPassword: string = $state('');
     let canSubmit: boolean = $state(false);
-    let message: string = $state('');
 
     $effect((): void => {
         if (password && confirmPassword) {
-            const checkPasswordMessageKey = checkPassword(password, confirmPassword);
-            if (checkPasswordMessageKey) {
-                message = m[checkPasswordMessageKey]();
-                canSubmit = false;
-            } else {
-                canSubmit = true;
-            }
+            canSubmit = !checkPassword(password, confirmPassword);
         }
     });
 </script>
@@ -44,7 +37,3 @@
     <Input type="password" name="password" placeholder={m['common.password.placeholder']()} label={m['common.password.label']()} bind:value={password} required />
     <Input type="password" name="confirm-password" placeholder={m['common.confirm-password.placeholder']()} label={m['common.confirm-password.label']()} bind:value={confirmPassword} required />
 </Form>
-
-{#if message}
-    <p class="text-red-500 text-sm mt-2">{message}</p>
-{/if}

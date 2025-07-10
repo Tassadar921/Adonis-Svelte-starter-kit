@@ -14,14 +14,10 @@ export const actions: Actions = {
         let isSuccess: boolean = true;
 
         const form = new FormData();
-        form.append('username', formData.get('username') || '');
-        const profilePicture: File | null = <File | null>formData.get('profilePicture');
-        if (profilePicture) {
-            form.append('profilePicture', profilePicture);
-        }
+        form.append('email', formData.get('email') || '');
 
         try {
-            const { data: returnedData } = await client.post('api/profile/update', form, {
+            const { data: returnedData } = await client.post('api/reset-password/send-mail', form, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -33,13 +29,6 @@ export const actions: Actions = {
         }
 
         if (isSuccess) {
-            cookies.set('user', JSON.stringify(data.user), {
-                path: '/',
-                httpOnly: true,
-                sameSite: 'lax',
-                maxAge: 60 * 60 * 24 * 7,
-            });
-
             redirect(
                 {
                     type: 'success',

@@ -1,6 +1,7 @@
 import { showToast } from '#services/toastService';
 import { navigate } from '#stores/locationStore';
 import type { PageDataError } from '../app';
+import { m } from '#lib/paraglide/messages';
 
 export const wrappedFetch = async (
     input: RequestInfo,
@@ -57,6 +58,13 @@ export const extractFormErrors = (data: any): PageDataError[] => {
         errors.push({
             type: 'error',
             message: data.error,
+        });
+    }
+
+    if (!errors.length) {
+        errors.push({
+            type: 'error',
+            message: data?.error ?? m['common.error.default-message'](),
         });
     }
 

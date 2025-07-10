@@ -3,7 +3,7 @@ import type { PageServerLoad } from './$types';
 import { client } from '#lib/api.server';
 import { m } from '#lib/paraglide/messages';
 
-export const load: PageServerLoad = loadFlash(async (event) => {
+export const load: PageServerLoad = loadFlash(async (event): Promise<never> => {
     const { url, cookies } = event;
     const provider: string | null = url.searchParams.get('provider');
     const token: string | null = url.searchParams.get('token');

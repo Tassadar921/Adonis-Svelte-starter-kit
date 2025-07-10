@@ -7,15 +7,25 @@ import { locales } from '../paraglide/runtime';
 import { client } from '#lib/api.server';
 import type { PageDataError } from '../app';
 
+interface OpenedPathName {
+    pathname: string;
+    hybrid: boolean;
+}
+
 export const load: LayoutServerLoad = loadFlash(async (event): Promise<{ user?: SerializedUser; language: LanguageCode; location: string; formErrors?: PageDataError[] }> => {
     const { cookies, url } = event;
-    const openedPathNames: string[] = ['/create-account', '/login', '/oauth', '/reset-password'];
+    const openedPathNames: OpenedPathName[] = [
+        { pathname: '/create-account', hybrid: false },
+        { pathname: '/login', hybrid: false },
+        { pathname: '/oauth', hybrid: false },
+        { pathname: '/reset-password', hybrid: true },
+    ];
 
     const match: RegExpMatchArray | null = url.pathname.match(/^\/([a-z]{2})(\/|$)/);
     const language: LanguageCode | undefined = match ? (match[1] as LanguageCode) : undefined;
 
     if (!language || !locales.includes(language)) {
-        return redirect(307, `/${cookies.get('PARAGLIDE_LOCALE') ?? 'en'}${url.pathname}`);
+        return redirect(307, `/${cookies.get('PARAGLIDE_LOCALE') ?? 'en'}${url.pathname}${url.search}`);
     }
 
     if (language !== cookies.get('PARAGLIDE_LOCALE')) {
@@ -35,10 +45,10 @@ export const load: LayoutServerLoad = loadFlash(async (event): Promise<{ user?: 
     const location: string = url.pathname.replace(`/${language}`, '') || '/';
 
     if (!userCookie) {
-        if (openedPathNames.some((path: string): boolean => location.startsWith(path))) {
+        if (openedPathNames.some((openedPathName: OpenedPathName): boolean => location.startsWith(openedPathName.pathname))) {
             return { language, location };
         } else {
-            cookies.set('previousPathName', location, {
+            cookies.set('previousPathName', `${location}${url.search}`, {
                 path: '/',
                 httpOnly: false,
                 sameSite: 'lax',
@@ -57,7 +67,7 @@ export const load: LayoutServerLoad = loadFlash(async (event): Promise<{ user?: 
         return redirect(303, `/${language}/login`);
     }
 
-    if (openedPathNames.some((path: string): boolean => location.startsWith(path))) {
+    if (openedPathNames.some((openedPathName: OpenedPathName): boolean => location.startsWith(openedPathName.pathname) && !openedPathName.hybrid)) {
         return redirect(303, `/${language}/`);
     }
 
