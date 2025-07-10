@@ -7,6 +7,7 @@
     import OauthProviders from '#partials/login/OauthProviders.svelte';
     import Meta from '#components/Meta.svelte';
     import { Switch } from '#lib/components/ui/switch';
+    import { page } from '$app/state';
 
     let username: string = $state('');
     let email: string = $state('');
@@ -15,17 +16,24 @@
     let consent: boolean = $state(false);
 
     let canSubmit: boolean = $state(false);
-    let message: string = $state('');
+
+    $effect((): void => {
+        const errorData = page.data.formError?.data;
+        if (errorData) {
+            username = errorData.username ?? '';
+            email = errorData.email ?? '';
+            password = errorData.password ?? '';
+            confirmPassword = errorData.confirmPassword ?? '';
+            consent = errorData.consent ?? false;
+        }
+    });
 
     $effect((): void => {
         if (username && email && isValidEmail(email) && password && confirmPassword && consent) {
             const checkPasswordMessageKey = checkPassword(password, confirmPassword);
-            if (checkPasswordMessageKey) {
-                message = m[checkPasswordMessageKey]();
-                canSubmit = false;
-            } else {
-                canSubmit = true;
-            }
+            canSubmit = !checkPasswordMessageKey;
+        } else {
+            canSubmit = false;
         }
     });
 </script>
@@ -35,16 +43,12 @@
 <Title title={m['create-account.title']()} hasBackground />
 
 <Form isValid={canSubmit}>
-    {#snippet header()}
-        <OauthProviders />
-    {/snippet}
     <Input name="username" placeholder={m['common.username.placeholder']()} label={m['common.username.label']()} bind:value={username} required />
     <Input type="email" name="email" placeholder={m['common.email.placeholder']()} label={m['common.email.label']()} bind:value={email} required />
     <Input type="password" name="password" placeholder={m['common.password.placeholder']()} label={m['common.password.label']()} bind:value={password} required />
-    <Input type="password" name="confirmPassword" placeholder={m['common.confirm-password.placeholder']()} label={m['common.confirm-password.label']()} bind:value={confirmPassword} required />
+    <Input type="password" name="confirm-password" placeholder={m['common.confirm-password.placeholder']()} label={m['common.confirm-password.label']()} bind:value={confirmPassword} required />
     <Switch name="consent" label={m['common.consent']()} bind:checked={consent} required />
+    {#snippet footer()}
+        <OauthProviders />
+    {/snippet}
 </Form>
-
-{#if message}
-    <p class="text-red-500 text-sm mt-2">{message}</p>
-{/if}

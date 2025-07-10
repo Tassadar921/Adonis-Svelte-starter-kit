@@ -61,7 +61,10 @@
         },
         "confirm": {
             "success": "Connexion réussie avec {provider}",
-            "error": "Token invalide"
+            "error": {
+                "invalid-token": "Jeton invalide",
+                "token-expired": "Jeton expiré, veuillez en demander un nouveau"
+            }
         }
     },
     "pending-friend": {

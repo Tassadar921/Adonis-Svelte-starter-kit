@@ -5,15 +5,19 @@ import { inject } from '@adonisjs/core';
 import UserRoleEnum from '#types/enum/user_role_enum';
 import { DateTime } from 'luxon';
 import UserRepository from '#repositories/user_repository';
-import { loginValidator, sendAccountCreationEmailValidator, confirmAccountCreationValidator } from '#validators/auth';
+import { confirmAccountCreationValidator, loginValidator, sendAccountCreationEmailValidator } from '#validators/auth';
 import BrevoMailService from '#services/brevo_mail_service';
 import env from '#start/env';
 import { cuid } from '@adonisjs/core/helpers';
+import UserToken from '#models/user_token';
+import UserTokenTypeEnum from '#types/enum/user_token_type_enum';
+import UserTokenRepository from '#repositories/user_token_repository';
 
 @inject()
 export default class AuthController {
     constructor(
         private readonly userRepository: UserRepository,
+        private readonly userTokenRepository: UserTokenRepository,
         private readonly mailService: BrevoMailService
     ) {}
 
@@ -36,8 +40,8 @@ export default class AuthController {
     }
 
     public async logout({ auth, response, i18n }: HttpContext) {
-        const user: User & { currentAccessToken: AccessToken } = await auth.use('api').authenticate();
-        await User.accessTokens.delete(user, user.currentAccessToken.identifier);
+        const user: User = await auth.use('api').authenticate();
+        await User.accessTokens.delete(user, user.currentAccessToken!.identifier);
 
         return response.ok({ message: i18n.t('messages.auth.logout.success') });
     }
@@ -49,30 +53,45 @@ export default class AuthController {
             return response.badRequest({ error: i18n.t('messages.auth.send-account-creation-email.error.consent-required') });
         }
 
-        let user: User | null = await this.userRepository.findOneBy({ email });
-        if (user) {
-            if (!user.enabled) {
-                if (user.createdAt > DateTime.now().minus({ minutes: 5 })) {
-                    return response.ok({ message: i18n.t('messages.auth.send-account-creation-email.success') });
-                } else {
-                    await user.delete();
-                }
-            } else {
+        const creationAccountToken: UserToken | null = await this.userTokenRepository.findOneByEmailAndType(email, UserTokenTypeEnum.ACCOUNT_CREATION);
+
+        if (creationAccountToken) {
+            if (creationAccountToken.user.enabled) {
                 return response.conflict({ error: i18n.t('messages.auth.send-account-creation-email.error.email-already-in-use') });
             }
+
+            if (creationAccountToken.createdAt > DateTime.now().minus({ minutes: 5 })) {
+                return response.ok({ message: i18n.t('messages.auth.send-account-creation-email.success') });
+            }
+
+            await creationAccountToken.delete();
         }
 
-        try {
-            const token: string = cuid();
-            await this.mailService.sendAccountCreationEmail(email, encodeURI(`${env.get('FRONT_URI')}/${language.code}/create-account/confirm?token=${token}`));
-            await User.create({
+        let existingUser: User | null = await this.userRepository.findOneBy({ email });
+        if (existingUser) {
+            if (existingUser.enabled) {
+                return response.conflict({ error: i18n.t('messages.auth.send-account-creation-email.error.email-already-in-use') });
+            }
+        } else {
+            existingUser = await User.create({
                 username,
                 email,
                 password,
                 role: UserRoleEnum.USER,
-                token,
                 acceptedTermsAndConditions: true,
             });
+            await existingUser.refresh();
+        }
+
+        try {
+            const token: string = cuid();
+            await UserToken.create({
+                userId: existingUser.id,
+                token,
+                type: UserTokenTypeEnum.ACCOUNT_CREATION,
+            });
+
+            await this.mailService.sendAccountCreationEmail(email, encodeURI(`${env.get('FRONT_URI')}/${language.code}/create-account/confirm?token=${token}`));
         } catch (error: any) {
             return response.badGateway({ error: i18n.t('messages.auth.send-account-creation-email.error.mail-not-sent') });
         }
@@ -83,22 +102,24 @@ export default class AuthController {
     public async confirmAccountCreation({ request, response, i18n }: HttpContext) {
         const { token: creationToken } = await confirmAccountCreationValidator.validate(request.params());
 
-        const user: User | null = await this.userRepository.findOneBy({ token: creationToken });
-        if (!user) {
-            return response.notFound({ error: i18n.t('messages.auth.confirm-account-creation.invalid-token') });
-        } else if (user.createdAt > DateTime.now().minus({ minutes: 5 })) {
-            return response.badRequest({ error: i18n.t('messages.auth.confirm-account-creation.token-expired') });
+        const token: UserToken | null = await this.userTokenRepository.findOneBy({ token: creationToken }, ['user']);
+        if (!token) {
+            return response.notFound({ error: i18n.t('messages.auth.confirm-account-creation.error.invalid-token') });
+        } else if (token.createdAt < DateTime.now().minus({ minutes: 5 })) {
+            return response.badRequest({ error: i18n.t('messages.auth.confirm-account-creation.error.token-expired') });
         }
 
-        user.enabled = true;
-        user.token = null;
-        await user.save();
+        const user: User = token.user;
 
-        const token: AccessToken = await User.accessTokens.create(user);
+        token.user.enabled = true;
+        await token.user.save();
+        await token.delete();
+
+        const accessToken: AccessToken = await User.accessTokens.create(user);
 
         return response.ok({
             message: i18n.t('messages.auth.confirm-account-creation.success'),
-            token,
+            token: accessToken,
             user: user.apiSerialize(),
         });
     }

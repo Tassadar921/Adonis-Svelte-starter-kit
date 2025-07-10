@@ -33,7 +33,7 @@
     });
 
     $effect((): void => {
-        page.data.formErrors?.forEach((error: PageDataError) => {
+        page.data.formError?.errors.forEach((error: PageDataError) => {
             showToast(error.message, error.type);
             onError?.();
         });

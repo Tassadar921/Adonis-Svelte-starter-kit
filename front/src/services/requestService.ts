@@ -70,3 +70,35 @@ export const extractFormErrors = (data: any): PageDataError[] => {
 
     return errors;
 };
+
+export const extractFormData = (formData: FormData): Record<string, any> => {
+    const data: Record<string, any> = {};
+
+    formData.forEach((value: FormDataEntryValue, key: string): void => {
+        if (value instanceof File) {
+            if (value.size === 0 && value.name === '') {
+                return;
+            }
+
+            data[key] = {
+                name: value.name,
+                type: value.type,
+                size: value.size,
+            };
+        } else {
+            const str: string = value.toString().trim();
+
+            if (str === 'true') {
+                data[key] = true;
+            } else if (str === 'false') {
+                data[key] = false;
+            } else if (!isNaN(Number(str)) && str !== '') {
+                data[key] = Number(str);
+            } else {
+                data[key] = str;
+            }
+        }
+    });
+
+    return data;
+};

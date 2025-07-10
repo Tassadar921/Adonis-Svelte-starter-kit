@@ -61,7 +61,10 @@
         },
         "confirm": {
             "success": "Successfully connected with {provider}",
-            "error": "Invalid token"
+            "error": {
+                "invalid-token": "Invalid token",
+                "token-expired": "Token expired, please request a new one"
+            }
         }
     },
     "pending-friend": {

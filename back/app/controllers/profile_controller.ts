@@ -1,9 +1,8 @@
 import { HttpContext } from '@adonisjs/core/http';
 import UserRepository from '#repositories/user_repository';
-import ResetPasswordRepository from '#repositories/reset_password_repository';
+import UserTokenRepository from '#repositories/user_token_repository';
 import BrevoMailService from '#services/brevo_mail_service';
 import User from '#models/user';
-import ResetPassword from '#models/reset_password';
 import { DateTime } from 'luxon';
 import { inject } from '@adonisjs/core';
 import File from '#models/file';
@@ -16,12 +15,14 @@ import path from 'node:path';
 import env from '#start/env';
 import FileTypeEnum from '#types/enum/file_type_enum';
 import cache from '@adonisjs/cache/services/main';
+import UserToken from '#models/user_token';
+import UserTokenTypeEnum from '#types/enum/user_token_type_enum';
 
 @inject()
 export default class ProfileController {
     constructor(
         private readonly userRepository: UserRepository,
-        private readonly resetPasswordRepository: ResetPasswordRepository,
+        private readonly userTokenRepository: UserTokenRepository,
         private readonly mailService: BrevoMailService,
         private readonly fileService: FileService,
         private readonly slugifyService: SlugifyService
@@ -36,28 +37,24 @@ export default class ProfileController {
 
         const user: User = await this.userRepository.firstOrFail({ email });
 
-        const previousResetPassword: ResetPassword | null = await this.resetPasswordRepository.findOneBy({ userId: user.id });
-        if (previousResetPassword) {
-            if (previousResetPassword.createdAt && previousResetPassword.createdAt > DateTime.now().minus({ minutes: 5 })) {
+        const previousToken: UserToken | null = await this.userTokenRepository.findOneBy({ userId: user.id, type: UserTokenTypeEnum.PASSWORD_RESET });
+        if (previousToken) {
+            if (previousToken.createdAt && previousToken.createdAt > DateTime.now().minus({ minutes: 5 })) {
                 return response.ok({
                     message: i18n.t('messages.profile.send-reset-password-email.success'),
                 });
             } else {
-                await previousResetPassword.delete();
+                await previousToken.delete();
             }
         }
-        let token: string = '';
-        let resetPassword: ResetPassword | null = null;
-        do {
-            token = cuid();
-            resetPassword = await this.resetPasswordRepository.findOneBy({
-                token,
-            });
-        } while (resetPassword);
-        await ResetPassword.create({
+
+        let token: string = cuid();
+        await UserToken.create({
             userId: user.id,
             token,
+            type: UserTokenTypeEnum.PASSWORD_RESET,
         });
+
         try {
             await this.mailService.sendResetPasswordEmail(user, encodeURI(`${env.get('FRONT_URI')}/reset-password/confirm?token=${token}`));
         } catch (error: any) {
@@ -72,19 +69,20 @@ export default class ProfileController {
     public async resetPassword({ request, response, i18n }: HttpContext) {
         const { token } = await resetPasswordParamsValidator.validate(request.params());
 
-        const resetPassword: ResetPassword = await this.resetPasswordRepository.firstOrFail(
+        const userToken: UserToken = await this.userTokenRepository.firstOrFail(
             {
                 token,
+                type: UserTokenTypeEnum.PASSWORD_RESET,
             },
             ['user']
         );
 
         const { password } = await request.validateUsing(resetPasswordValidator);
 
-        resetPassword.user.password = password;
-        await resetPassword.user.save();
+        userToken.user.password = password;
+        await userToken.user.save();
 
-        await resetPassword.delete();
+        await userToken.delete();
 
         return response.ok({
             message: i18n.t('messages.profile.reset.success'),

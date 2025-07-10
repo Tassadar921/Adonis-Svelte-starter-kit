@@ -14,7 +14,9 @@ export const actions: Actions = {
         let isSuccess: boolean = true;
 
         try {
-            const { data: returnedData } = await client.post('api/profile/update', formData, {
+            formData.append('confirmPassword', <string>formData.get('confirm-password'));
+            formData.delete('confirm-password');
+            const { data: returnedData } = await client.post('api/account-creation/send-mail', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -26,13 +28,6 @@ export const actions: Actions = {
         }
 
         if (isSuccess) {
-            cookies.set('user', JSON.stringify(data.user), {
-                path: '/',
-                httpOnly: true,
-                sameSite: 'lax',
-                maxAge: 60 * 60 * 24 * 7,
-            });
-
             redirect(
                 {
                     type: 'success',

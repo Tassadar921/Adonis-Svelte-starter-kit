@@ -7,10 +7,11 @@ export const POST: RequestHandler = async (event): Promise<Response> => {
 
     cookies.delete('user', { path: '/' });
     cookies.delete('token', { path: '/' });
-    client.defaults.headers.common['Authorization'] = undefined;
 
     try {
         const { data } = await client.delete('/api/logout');
+
+        client.defaults.headers.common['Authorization'] = undefined;
 
         return new Response(
             JSON.stringify({

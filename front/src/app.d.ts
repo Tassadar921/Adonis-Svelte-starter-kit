@@ -5,6 +5,11 @@ export type PageDataError = {
     message: string;
 };
 
+export type FormError = {
+    data: Record<string, any>;
+    errors: PageDataError[];
+};
+
 declare global {
     namespace App {
         // interface Error {}

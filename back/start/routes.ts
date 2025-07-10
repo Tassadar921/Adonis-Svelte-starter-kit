@@ -53,7 +53,7 @@ router
         router
             .group((): void => {
                 router.post('/send-mail', [AuthController, 'sendAccountCreationEmail']);
-                router.get('/confirm/:token', [AuthController, 'confirmAccountCreation']);
+                router.post('/confirm/:token', [AuthController, 'confirmAccountCreation']);
             })
             .prefix('account-creation');
 

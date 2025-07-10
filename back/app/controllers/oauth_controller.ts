@@ -16,11 +16,16 @@ import { cuid } from '@adonisjs/core/helpers';
 import { confirmOauthConnectionValidator } from '#validators/oauth';
 import { AccessToken } from '@adonisjs/auth/access_tokens';
 import StringService from '#services/string_service';
+import UserTokenRepository from '#repositories/user_token_repository';
+import UserToken from '#models/user_token';
+import { DateTime } from 'luxon';
+import UserTokenTypeEnum from '#types/enum/user_token_type_enum';
 
 @inject()
 export default class OauthController {
     constructor(
         private readonly userRepository: UserRepository,
+        private readonly userTokenRepository: UserTokenRepository,
         private readonly fileService: FileService,
         private readonly stringService: StringService
     ) {}
@@ -64,23 +69,24 @@ export default class OauthController {
             return response.badRequest({ error });
         }
 
-        console.log(`${env.get('FRONT_URI')}/en/oauth?token=${token}`);
-
         return response.redirect(`${env.get('FRONT_URI')}/en/oauth?token=${token}&provider=google`);
     }
 
     public async confirmOauthConnection({ request, response, i18n }: HttpContext) {
         const { provider, token: creationToken } = await confirmOauthConnectionValidator.validate(request.params());
 
-        const user: User | null = await this.userRepository.findOneBy({ token: creationToken });
-        if (!user) {
-            return response.notFound({ error: i18n.t('messages.oauth.confirm.error') });
+        const oauthToken: UserToken | null = await this.userTokenRepository.findOneBy({ token: creationToken, type: UserTokenTypeEnum.OAUTH }, ['user']);
+        if (!oauthToken) {
+            return response.notFound({ error: i18n.t('messages.oauth.confirm.error.invalid-token') });
+        } else if (oauthToken.createdAt < DateTime.now().minus({ minutes: 5 })) {
+            await oauthToken.delete();
+            return response.badRequest({ error: i18n.t('messages.oauth.confirm.error.token-expired') });
         }
 
-        user.token = null;
-        await user.save();
-
+        const user: User = oauthToken.user;
         const token: AccessToken = await User.accessTokens.create(user);
+
+        await oauthToken.delete();
 
         return response.ok({
             message: i18n.t('messages.oauth.confirm.success', { provider: this.stringService.capitalize(provider) }),
@@ -90,25 +96,17 @@ export default class OauthController {
     }
 
     private async handleCallback(client: GithubDriver | DiscordDriver | GoogleDriver, i18n: I18n): Promise<{ error?: string; token?: string }> {
-        /**
-         * User has denied access by canceling
-         * the login flow
-         */
+        // User has denied access by canceling the login flow
         if (client.accessDenied()) {
             return { error: i18n.t('messages.oauth.callback.error.access-denied') };
         }
 
-        /**
-         * OAuth state verification failed. This happens when the
-         * CSRF cookie gets expired.
-         */
+        // OAuth state verification failed. This happens when the CSRF cookie gets expired.
         if (client.stateMisMatch()) {
             return { error: i18n.t('messages.oauth.callback.error.state-mismatch') };
         }
 
-        /**
-         * Client responded with some error
-         */
+        // Client responded with some error
         if (client.hasError()) {
             return { error: client.getError() ?? i18n.t('messages.oauth.callback.error.default') };
         }
@@ -116,18 +114,19 @@ export default class OauthController {
         const oauthUser = await client.user();
         let user: User | null = await this.userRepository.findOneBy({ email: oauthUser.email });
         if (user) {
+            await this.revokeAccessToken(user);
+
             if (!user.isOauth) {
                 user.isOauth = true;
             }
 
-            if (oauthUser.avatarUrl && !user.profilePictureId) {
-                const profilePicture: File = await this.storeAndGetFileFromUrl(oauthUser.avatarUrl);
-                user.profilePictureId = profilePicture.id;
-            }
-
             const token: string = cuid();
 
-            user.token = token;
+            await UserToken.create({
+                userId: user.id,
+                token,
+                type: UserTokenTypeEnum.OAUTH,
+            });
             user.isOauth = true;
             await user.save();
 
@@ -142,7 +141,7 @@ export default class OauthController {
 
         const token: string = cuid();
 
-        await User.create({
+        const createdUser: User = await User.create({
             username: oauthUser.nickName,
             email: oauthUser.email,
             isOauth: true,
@@ -150,7 +149,13 @@ export default class OauthController {
             enabled: true,
             acceptedTermsAndConditions: true,
             role: UserRoleEnum.USER,
+        });
+        await createdUser.refresh();
+
+        await UserToken.create({
+            userId: createdUser.id,
             token,
+            type: UserTokenTypeEnum.OAUTH,
         });
 
         return { token };
@@ -170,5 +175,11 @@ export default class OauthController {
         });
 
         return await profilePicture.refresh();
+    }
+
+    private async revokeAccessToken(user: User): Promise<void> {
+        if (user.currentAccessToken) {
+            await User.accessTokens.delete(user, user.currentAccessToken.identifier);
+        }
     }
 }

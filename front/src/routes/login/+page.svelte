@@ -7,10 +7,19 @@
     import { Input } from '#lib/components/ui/input';
     import { isValidEmail } from '#services/checkStringService';
     import { Link } from '#lib/components/ui/link';
+    import { page } from '$app/state';
 
     let email: string = $state('');
     let password: string = $state('');
     let canSubmit = $derived((): boolean => isValidEmail(email) && !!password);
+
+    $effect((): void => {
+        const errorData = page.data.formError?.data;
+        if (errorData) {
+            email = errorData.email ?? '';
+            password = errorData.password ?? '';
+        }
+    });
 </script>
 
 <Meta title={m['login.meta.title']()} description={m['login.meta.description']()} keywords={m['login.meta.keywords']().split(', ')} pathname="/login" />

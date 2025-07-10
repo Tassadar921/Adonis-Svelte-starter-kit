@@ -5,7 +5,7 @@ import { afterCreate, beforeFind, beforeFetch, BaseModel, belongsTo, column, has
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid';
 import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations';
 import SerializedUser from '#types/serialized/serialized_user';
-import { DbAccessTokensProvider } from '@adonisjs/auth/access_tokens';
+import { AccessToken, DbAccessTokensProvider } from '@adonisjs/auth/access_tokens';
 import File from '#models/file';
 import UserRoleEnum from '#types/enum/user_role_enum';
 import Friend from '#models/friend';
@@ -19,6 +19,8 @@ const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
 });
 
 export default class User extends compose(BaseModel, AuthFinder) {
+    public currentAccessToken?: AccessToken;
+
     @column({ isPrimary: true })
     declare id: string;
 
@@ -33,9 +35,6 @@ export default class User extends compose(BaseModel, AuthFinder) {
 
     @column()
     declare password: string;
-
-    @column()
-    declare token: string | null;
 
     @column()
     declare role: UserRoleEnum;

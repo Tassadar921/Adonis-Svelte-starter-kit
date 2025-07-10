@@ -5,14 +5,14 @@ import { m } from '#lib/paraglide/messages';
 import { type LanguageCode } from '#stores/languageStore';
 import { locales } from '../paraglide/runtime';
 import { client } from '#lib/api.server';
-import type { PageDataError } from '../app';
+import type { FormError } from '../app';
 
 interface OpenedPathName {
     pathname: string;
     hybrid: boolean;
 }
 
-export const load: LayoutServerLoad = loadFlash(async (event): Promise<{ user?: SerializedUser; language: LanguageCode; location: string; formErrors?: PageDataError[] }> => {
+export const load: LayoutServerLoad = loadFlash(async (event): Promise<{ user?: SerializedUser; language: LanguageCode; location: string; formError?: FormError }> => {
     const { cookies, url } = event;
     const openedPathNames: OpenedPathName[] = [
         { pathname: '/create-account', hybrid: false },
@@ -44,8 +44,20 @@ export const load: LayoutServerLoad = loadFlash(async (event): Promise<{ user?: 
 
     const location: string = url.pathname.replace(`/${language}`, '') || '/';
 
+    const formError: string | undefined = cookies.get('formError');
+
     if (!userCookie) {
         if (openedPathNames.some((openedPathName: OpenedPathName): boolean => location.startsWith(openedPathName.pathname))) {
+            if (formError) {
+                cookies.delete('formError', { path: '/' });
+
+                return {
+                    language,
+                    location,
+                    formError: JSON.parse(formError),
+                };
+            }
+
             return { language, location };
         } else {
             cookies.set('previousPathName', `${location}${url.search}`, {
@@ -54,6 +66,7 @@ export const load: LayoutServerLoad = loadFlash(async (event): Promise<{ user?: 
                 sameSite: 'lax',
                 maxAge: 60 * 60,
             });
+
             return redirect(303, `/${language}/login`);
         }
     }
@@ -64,6 +77,7 @@ export const load: LayoutServerLoad = loadFlash(async (event): Promise<{ user?: 
         client.defaults.headers.common['Authorization'] = undefined;
         cookies.delete('token', { path: '/' });
         cookies.delete('user', { path: '/' });
+
         return redirect(303, `/${language}/login`);
     }
 
@@ -83,14 +97,14 @@ export const load: LayoutServerLoad = loadFlash(async (event): Promise<{ user?: 
         );
     }
 
-    const formErrors: string | undefined = cookies.get('formErrors');
-    if (formErrors) {
-        cookies.delete('formErrors', { path: '/' });
+    if (formError) {
+        cookies.delete('formError', { path: '/' });
+
         return {
             user,
             language,
             location,
-            formErrors: JSON.parse(formErrors),
+            formError: JSON.parse(formError),
         };
     }
 

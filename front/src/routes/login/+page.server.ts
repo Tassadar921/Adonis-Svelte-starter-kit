@@ -1,28 +1,25 @@
-import type { Actions, RequestEvent } from '@sveltejs/kit';
-import { fail } from '@sveltejs/kit';
+import { type Actions, fail, type RequestEvent } from '@sveltejs/kit';
 import { redirect } from 'sveltekit-flash-message/server';
-import { m } from '#lib/paraglide/messages';
 import { client } from '#lib/api.server';
+import type { FormError } from '../../app';
+import { extractFormData, extractFormErrors } from '#services/requestService';
 
 export const actions: Actions = {
-    default: async (event: RequestEvent) => {
-        const { request, params, cookies } = event;
+    default: async (event: RequestEvent): Promise<void> => {
+        const { request, cookies } = event;
 
         const formData: FormData = await request.formData();
-        const email: string | null = <string | null>formData.get('email');
-        const password: string | null = <string | null>formData.get('password');
-
-        if (!email || !password) {
-            return fail(400, { error: 'Email and password are required' });
-        }
 
         let data: any;
         let isSuccess: boolean = true;
 
         try {
-            const { data: returnedData } = await client.post('api/auth', {
-                email,
-                password,
+            formData.append('confirmPassword', <string>formData.get('confirm-password'));
+            formData.delete('confirm-password');
+            const { data: returnedData } = await client.post('api/auth', formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
             });
             data = returnedData;
         } catch (error: any) {
@@ -59,13 +56,19 @@ export const actions: Actions = {
                 event
             );
         } else {
-            redirect(
-                {
-                    type: 'error',
-                    message: data?.error ?? m['common.error.default-message'](),
-                },
-                event
-            );
+            const form: FormError = {
+                data: extractFormData(formData),
+                errors: extractFormErrors(data),
+            };
+
+            cookies.set('formError', JSON.stringify(form), {
+                path: '/',
+                httpOnly: true,
+                sameSite: 'lax',
+                maxAge: 60 * 60 * 24 * 7,
+            });
+
+            fail(400);
         }
     },
 };
