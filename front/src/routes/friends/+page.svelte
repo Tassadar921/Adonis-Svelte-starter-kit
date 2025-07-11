@@ -8,18 +8,27 @@
     import Modal from '#components/Modal.svelte';
     import Subtitle from '#components/Subtitle.svelte';
     import AddFriends from '#partials/friends/AddFriends.svelte';
-    import Button from '#components/Button.svelte';
-    import ConfirmModal from '#components/ConfirmModal.svelte';
+    import { Button } from '#lib/components/ui/button';
     import { showToast } from '#services/toastService';
     import { profile } from '#stores/profileStore';
     import { transmit } from '#stores/transmitStore';
-    import type PaginatedFriends from 'backend/app/types/paginated/paginated_friends';
-    import type SerializedUser from 'backend/app/types/serialized/serialized_user';
-    import type SerializedFriend from 'backend/app/types/serialized/serialized_friend';
+    import { type PaginatedFriends } from 'backend/types';
+    import { type SerializedUser } from 'backend/types';
+    import { type SerializedFriend } from 'backend/types';
     import Loader from '#components/Loader.svelte';
     import Icon from '#components/Icon.svelte';
     import Meta from '#components/Meta.svelte';
     import { PUBLIC_API_BASE_URI, PUBLIC_DEFAULT_IMAGE } from '$env/static/public';
+    import {
+        AlertDialog,
+        AlertDialogAction,
+        AlertDialogCancel,
+        AlertDialogContent,
+        AlertDialogDescription,
+        AlertDialogFooter,
+        AlertDialogHeader,
+        AlertDialogTitle,
+    } from '#lib/components/ui/alert-dialog';
 
     let isLoading: boolean = $state(false);
     let paginatedFriends: PaginatedFriends | undefined = $state();
@@ -117,12 +126,7 @@
 
 {#if paginatedFriends}
     <div class="flex gap-3 items-center">
-        <Button
-            ariaLabel="Add a friend"
-            customStyle
-            className="rounded-full bg-green-500 hover:bg-green-600 dark:bg-green-700 dark:hover:bg-green-600 transition-colors duration-300 p-1 mb-1.5"
-            onclick={() => (showAddFriendsModal = true)}
-        >
+        <Button aria-label="Add a friend" onclick={() => (showAddFriendsModal = true)}>
             <Icon name="plus" />
         </Button>
     </div>
@@ -157,20 +161,10 @@
                             <p>{friendObject.friend.username}</p>
                         </div>
                         <div class="flex gap-10 pr-5">
-                            <Button
-                                ariaLabel="Remove friend"
-                                customStyle
-                                className="transition-all duration-300 hover:scale-110 transform text-red-600 hover:text-red-400"
-                                on:click={() => handleShowRemoveFriendModal(friendObject.friend)}
-                            >
+                            <Button aria-label="Remove friend" onclick={() => handleShowRemoveFriendModal(friendObject.friend)}>
                                 <Icon name="removeUser" />
                             </Button>
-                            <Button
-                                ariaLabel="Block user"
-                                customStyle
-                                className="transition-all duration-300 hover:scale-110 transform text-red-600 hover:text-red-400"
-                                on:click={() => handleShowBlockingModal(friendObject.friend)}
-                            >
+                            <Button aria-label="Block user" onclick={() => handleShowBlockingModal(friendObject.friend)}>
                                 <Icon name="stop" />
                             </Button>
                         </div>
@@ -191,12 +185,28 @@
     <AddFriends on:updateFriends={updateFriends} />
 </Modal>
 
-<ConfirmModal bind:showModal={showConfirmRemoveFriendModal} on:success={handleRemoveFriend}>
-    <Subtitle slot="header">{m['social.friends.remove.modal.title']()}</Subtitle>
-    <p>{selectedFriend?.username} {m['social.friends.remove.modal.text']()}</p>
-</ConfirmModal>
+<AlertDialog open={showConfirmRemoveFriendModal}>
+    <AlertDialogContent>
+        <AlertDialogHeader>
+            <AlertDialogTitle>{m['social.friends.remove.modal.title']()}</AlertDialogTitle>
+            <AlertDialogDescription>{m['social.friends.remove.modal.text']({ username: selectedFriend?.username || '' })}</AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+            <AlertDialogCancel>{m['common.cancel']()}</AlertDialogCancel>
+            <AlertDialogAction onclick={handleRemoveFriend}>{m['common.continue']()}</AlertDialogAction>
+        </AlertDialogFooter>
+    </AlertDialogContent>
+</AlertDialog>
 
-<ConfirmModal bind:showModal={showBlockingModal} on:success={handleBlockUser}>
-    <Subtitle slot="header">{m['social.blocked.modal.title']()}</Subtitle>
-    <p>{selectedFriend?.username} {m['social.blocked.modal.text']()}</p>
-</ConfirmModal>
+<AlertDialog open={showBlockingModal}>
+    <AlertDialogContent>
+        <AlertDialogHeader>
+            <AlertDialogTitle>{m['social.blocked.modal.title']()}</AlertDialogTitle>
+            <AlertDialogDescription>{m['social.blocked.modal.text']({ username: selectedFriend?.username || '' })}</AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+            <AlertDialogCancel>{m['common.cancel']()}</AlertDialogCancel>
+            <AlertDialogAction onclick={handleBlockUser}>{m['common.continue']()}</AlertDialogAction>
+        </AlertDialogFooter>
+    </AlertDialogContent>
+</AlertDialog>

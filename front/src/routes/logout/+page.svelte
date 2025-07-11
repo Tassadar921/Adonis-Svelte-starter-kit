@@ -44,8 +44,8 @@
             <AlertDialogDescription>{m['logout.modal.text']()}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-            <AlertDialogCancel onclick={handleClose}>Cancel</AlertDialogCancel>
-            <AlertDialogAction onclick={handleConfirm}>Continue</AlertDialogAction>
+            <AlertDialogCancel onclick={handleClose}>{m['common.cancel']()}</AlertDialogCancel>
+            <AlertDialogAction onclick={handleConfirm}>{m['common.continue']()}</AlertDialogAction>
         </AlertDialogFooter>
     </AlertDialogContent>
 </AlertDialog>

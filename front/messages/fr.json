@@ -2,6 +2,7 @@
     "common": {
         "yes": "Oui",
         "no": "Non",
+        "continue": "Continuer",
         "language": "Langue",
         "close": "Fermer",
         "close-modal": "Fermer la fenêtre",
@@ -212,7 +213,7 @@
             "none": "Pas d'ami trouvé",
             "search": {
                 "placeholder": "Jean123",
-                "label": "Pseudonyme de l'ami"
+                "label": "Nom d'utilisateur de l'ami"
             },
             "add": {
                 "title": "Inviter un nouvel ami",
@@ -225,7 +226,7 @@
             "remove": {
                 "modal": {
                     "title": "Retirer un ami",
-                    "text": "sera supprimé de vos amis"
+                    "text": "{username} sera supprimé de vos amis"
                 }
             }
         },
@@ -244,13 +245,13 @@
             },
             "modal": {
                 "title": "Bloquer l'utilisateur",
-                "text": "sera bloqué"
+                "text": "{username} sera bloqué"
             }
         },
         "unblock": {
             "modal": {
                 "title": "Débloquer l'utilisateur",
-                "text": "sera débloqué"
+                "text": "{username} sera débloqué"
             }
         }
     },

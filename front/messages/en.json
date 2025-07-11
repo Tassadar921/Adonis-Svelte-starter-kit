@@ -2,6 +2,7 @@
     "common": {
         "yes": "Yes",
         "no": "No",
+        "continue": "Continue",
         "language": "Language",
         "close": "Close",
         "close-modal": "Close modal",
@@ -225,7 +226,7 @@
             "remove": {
                 "modal": {
                     "title": "Remove a friend",
-                    "text": "will be removed from your friends"
+                    "text": "{username} will be removed from your friends"
                 }
             }
         },
@@ -244,13 +245,13 @@
             },
             "modal": {
                 "title": "Blocking user",
-                "text": "will be blocked"
+                "text": "{username} will be blocked"
             }
         },
         "unblock": {
             "modal": {
                 "title": "Unblocking user",
-                "text": "will be unblocked"
+                "text": "{username} will be unblocked"
             }
         }
     },
