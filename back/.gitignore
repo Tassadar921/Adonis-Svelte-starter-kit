@@ -12,6 +12,7 @@ tmp
 # Assets & compiled code
 static/profile-picture
 .persist
+.adonisjs
 
 # Build tools specific
 npm-debug.log

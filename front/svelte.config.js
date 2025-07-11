@@ -1,5 +1,26 @@
+import adapter from '@sveltejs/adapter-node';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 
-export default {
+const config = {
     preprocess: vitePreprocess(),
+    kit: {
+        env: {
+            publicPrefix: 'PUBLIC_',
+            privatePrefix: 'PRIVATE_',
+        },
+        adapter: adapter(),
+        alias: {
+            '#menu': './src/menu',
+            '#components': './src/components',
+            '#partials': './src/partials',
+            '#services': './src/services',
+            '#stores': './src/stores',
+            '#pages': './src/pages',
+            '#icons': './src/icons',
+            '#lib': './src/lib',
+            '#backend/.adonisjs/api': '../back/.adonisjs/api',
+        },
+    },
 };
+
+export default config;

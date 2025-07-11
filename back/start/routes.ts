@@ -44,6 +44,8 @@ router
                         router.get('/callback', [OauthController, 'googleCallback']);
                     })
                     .prefix('google');
+
+                router.post('/confirm/:provider/:token', [OauthController, 'confirmOauthConnection']);
             })
             .prefix('auth');
 
@@ -51,7 +53,7 @@ router
         router
             .group((): void => {
                 router.post('/send-mail', [AuthController, 'sendAccountCreationEmail']);
-                router.get('/confirm/:token', [AuthController, 'confirmAccountCreation']);
+                router.post('/confirm/:token', [AuthController, 'confirmAccountCreation']);
             })
             .prefix('account-creation');
 
@@ -68,7 +70,7 @@ router
                     return { sessionTokenIsValid: true };
                 });
 
-                router.get('/logout', [AuthController, 'logout']);
+                router.delete('/logout', [AuthController, 'logout']);
 
                 router
                     .group((): void => {
@@ -108,15 +110,14 @@ router
                         router.get('/pending-friends', [NotificationController, 'getPendingFriends']);
                     })
                     .prefix('notifications');
-            })
-            .use([middleware.auth({ guards: ['api'] })]);
 
-        router
-            .group((): void => {
-                router.get('/profile-picture/:userId', [FileController, 'serveStaticProfilePictureFile']);
+                router
+                    .group((): void => {
+                        router.get('/profile-picture/:userId', [FileController, 'serveStaticProfilePictureFile']);
+                    })
+                    .prefix('static');
             })
-            .prefix('static')
-            .use([middleware.queryStringAuth()]);
+            .use([middleware.auth()]);
     })
     .prefix('api')
     .use([middleware.log(), middleware.language()]);

@@ -19,10 +19,10 @@ export default class FriendController {
         private readonly pendingFriendRepository: PendingFriendRepository
     ) {}
 
-    public async search({ request, response, user }: HttpContext): Promise<void> {
+    public async search({ request, response, user }: HttpContext) {
         const { query, page, perPage } = await request.validateUsing(searchFriendsValidator);
 
-        return response.send({
+        return response.ok({
             friends: await cache.getOrSet({
                 key: `user-friends:${user.id}`,
                 ttl: '5m',
@@ -33,13 +33,13 @@ export default class FriendController {
         });
     }
 
-    public async accept({ request, response, user, i18n }: HttpContext): Promise<void> {
+    public async accept({ request, response, user, i18n }: HttpContext) {
         const { userId } = await request.validateUsing(acceptFriendValidator);
 
         const askingUser: User | null = await this.userRepository.firstOrFail({ frontId: userId });
         const existingFriend: PendingFriend | null = await this.pendingFriendRepository.findOneFromUsers(user, askingUser);
         if (existingFriend) {
-            return response.send({ message: i18n.t('messages.friend.accept.error', { username: askingUser.username }) });
+            return response.conflict({ message: i18n.t('messages.friend.accept.error', { username: askingUser.username }) });
         }
 
         const pendingFriend: PendingFriend = await this.pendingFriendRepository.findOneFromUsers(user, askingUser);
@@ -57,10 +57,10 @@ export default class FriendController {
         ]);
         await pendingFriend.notification.delete();
         await pendingFriend.delete();
-        return response.send({ message: i18n.t('messages.friend.accept.success', { username: askingUser.username }) });
+        return response.ok({ message: i18n.t('messages.friend.accept.success', { username: askingUser.username }) });
     }
 
-    public async refuse({ request, response, user, i18n }: HttpContext): Promise<void> {
+    public async refuse({ request, response, user, i18n }: HttpContext) {
         const { userId } = await request.validateUsing(refuseFriendValidator);
 
         const askingUser: User | null = await this.userRepository.firstOrFail({ frontId: userId });
@@ -70,10 +70,10 @@ export default class FriendController {
         transmit.broadcast(`notification/add-friend/refuse/${userId}`, user.apiSerialize());
         await pendingFriend.notification.delete();
         await pendingFriend.delete();
-        return response.send({ message: i18n.t('messages.friend.refuse.success') });
+        return response.ok({ message: i18n.t('messages.friend.refuse.success') });
     }
 
-    public async remove({ request, response, user, i18n }: HttpContext): Promise<void> {
+    public async remove({ request, response, user, i18n }: HttpContext) {
         const { userId } = await removeFriendValidator.validate(request.params());
 
         const friend: User | null = await this.userRepository.firstOrFail({ frontId: userId });
@@ -90,6 +90,6 @@ export default class FriendController {
         transmit.broadcast(`notification/friend/remove/${userId}`, user.apiSerialize());
         transmit.broadcast(`notification/friend/remove/${user.frontId}`, friend.apiSerialize());
 
-        return response.send({ message: i18n.t('messages.friend.remove.success', { username: friend.username }) });
+        return response.ok({ message: i18n.t('messages.friend.remove.success', { username: friend.username }) });
     }
 }

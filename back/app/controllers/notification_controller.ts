@@ -9,8 +9,8 @@ import PaginatedPendingFriendNotifications from '#types/paginated/paginated_pend
 export default class NotificationController {
     constructor(private readonly pendingFriendNotificationRepository: PendingFriendNotificationRepository) {}
 
-    public async getTotalCount({ response, user }: HttpContext): Promise<void> {
-        return response.send({
+    public async getTotalCount({ response, user }: HttpContext) {
+        return response.ok({
             count: await cache.getOrSet({
                 key: `notifications-count:${user.id}`,
                 ttl: '5m',
@@ -21,10 +21,10 @@ export default class NotificationController {
         });
     }
 
-    public async getPendingFriends({ request, response, user }: HttpContext): Promise<void> {
+    public async getPendingFriends({ request, response, user }: HttpContext) {
         const { page, perPage, seen } = await request.validateUsing(getPendingFriendNotificationsValidator);
 
-        return response.send({
+        return response.ok({
             notifications: await cache.getOrSet({
                 key: `notifications:${user.id}`,
                 ttl: '5m',

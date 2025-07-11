@@ -1,6 +1,6 @@
-import SerializedLog from '#types/serialized/serialized_log';
+import { type SerializedLog } from '#types/serialized/serialized_log';
 
-type SerializedLogUser = {
+export type SerializedLogUser = {
     id: number;
     email: string;
     logs?: SerializedLog[];

@@ -9,7 +9,7 @@ format-check:
 	cd front && npx prettier --check "**/*.{js,ts,svelte,html,css,json,yml}"
 
 install:
-	rm -rf .vite node_modules package-lock.json back/node_modules front/node_modules
+	rm -rf node_modules package-lock.json back/node_modules front/node_modules
 	npm install
 
 upgrade:
@@ -36,11 +36,16 @@ init-logs-db:
 
 db: init-logs-db db-fresh db-seed
 
+paraglide:
+	cd front && npx paraglide-js compile
+
 stop:
 	./compose-env.sh down --remove-orphans
 
 up:
 	${MAKE} stop
+	rm -rf front/node_modules/.vite
+	${MAKE} paraglide
 	./compose-env.sh up -d --build
 
 rm:

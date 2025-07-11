@@ -8,7 +8,7 @@ export default class extends BaseSchema {
         this.schema.createTable(this.tableName, (table: Knex.CreateTableBuilder): void => {
             table.uuid('id').primary().defaultTo(this.raw('uuid_generate_v4()'));
             table.specificType('front_id', 'serial').notNullable();
-            table.string('route', 255).notNullable();
+            table.string('route').notNullable();
             table.string('route_method').notNullable();
             table.jsonb('query_string').notNullable().defaultTo('{}');
             table.jsonb('params').nullable();

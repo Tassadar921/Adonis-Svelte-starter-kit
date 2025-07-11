@@ -16,7 +16,7 @@ export default class FileService {
      * @returns {void}
      */
     public delete(file: File): void {
-        fs.unlink(`public/${file.path}`, (error: any): void => {
+        fs.unlink(file.path, (error: any): void => {
             if (error) {
                 console.error(error.message);
             }

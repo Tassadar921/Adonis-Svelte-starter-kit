@@ -74,4 +74,4 @@ You can access the application at http://localhost:5173.
 
 ### Development index documentation
 
-[&larr; Back to index](index.md)
+&larr; [Back to index](index.md)

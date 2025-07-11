@@ -58,6 +58,13 @@
                 "state-mismatch": "Nous ne pouvons pas vérifier la requête. Veuillez réessayer",
                 "default": "Erreur inconnue du fournisseur OAuth"
             }
+        },
+        "confirm": {
+            "success": "Connexion réussie avec {provider}",
+            "error": {
+                "invalid-token": "Jeton invalide",
+                "token-expired": "Jeton expiré, veuillez en demander un nouveau"
+            }
         }
     },
     "pending-friend": {

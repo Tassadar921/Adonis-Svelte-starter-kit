@@ -1,4 +1,4 @@
-type SerializedLanguage = {
+export type SerializedLanguage = {
     name: string;
     code: string;
     updatedAt?: string;

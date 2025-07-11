@@ -1,5 +1,4 @@
 import { type Writable, writable } from 'svelte/store';
-import axios from 'axios';
 import type SerializedPendingFriend from 'adonis-svelte-starter-kit-backend/app/types/serialized/serialized_pending_friend';
 
 interface Notifications {
@@ -44,6 +43,6 @@ export function removeNotification(notification: SerializedPendingFriend, type: 
 }
 
 export async function setPendingFriendRequests(): Promise<void> {
-    const { data } = await axios.get('/api/notifications/pending-friends?perPage=99');
-    updateNotifications(data.notifications.notifications, 'friendRequests');
+    // const { data } = await axios.get('/api/notifications/pending-friends?perPage=99');
+    // updateNotifications(data.notifications.notifications, 'friendRequests');
 }
