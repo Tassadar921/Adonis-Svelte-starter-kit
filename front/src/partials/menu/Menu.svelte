@@ -3,7 +3,7 @@
     import { menuItems } from '#services/menuService';
     import { profile } from '#stores/profileStore';
     import Theme from '#components/Theme.svelte';
-    import FlagMenu from '#menu/FlagMenu.svelte';
+    import FlagMenu from '#partials/menu/FlagMenu.svelte';
     import { Link } from '#lib/components/ui/link';
 
     type Props = {

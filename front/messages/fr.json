@@ -137,14 +137,6 @@
             "title": "Créer votre compte – Adonis & Svelte Starter Kit",
             "description": "Inscrivez-vous sur Adonis & Svelte Starter Kit en créant un compte avec nom d'utilisateur, email et mot de passe. Ou connectez-vous rapidement via Google, Discord ou GitHub.",
             "keywords": "créer un compte, inscription, nom d'utilisateur, email, mot de passe, OAuth, connexion Google, connexion Discord, connexion GitHub, Adonis & Svelte Starter Kit"
-        },
-        "confirm": {
-            "title": "Confirmer la création du compte",
-            "meta": {
-                "title": "Confirmation de compte – Bienvenue sur Adonis & Svelte Starter Kit",
-                "description": "Confirmez la création de votre compte en cliquant sur le lien envoyé par email. Commencez dès maintenant avec Adonis & Svelte Starter Kit.",
-                "keywords": "confirmation de compte, vérification email, création de compte, Adonis & Svelte Starter Kit"
-            }
         }
     },
     "logout": {

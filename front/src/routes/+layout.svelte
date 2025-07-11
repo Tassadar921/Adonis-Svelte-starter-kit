@@ -1,6 +1,6 @@
 <script lang="ts">
     import '../app.css';
-    import Menu from '#menu/Menu.svelte';
+    import Menu from '#partials/menu/Menu.svelte';
     import { onMount } from 'svelte';
     import Meta from '#components/Meta.svelte';
     import { m } from '#lib/paraglide/messages';

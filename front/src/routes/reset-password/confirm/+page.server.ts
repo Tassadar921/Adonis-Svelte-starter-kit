@@ -15,6 +15,8 @@ export const actions: Actions = {
         let isSuccess: boolean = true;
 
         try {
+            formData.append('confirmPassword', <string>formData.get('confirm-password'));
+            formData.delete('confirm-password');
             const { data: returnedData } = await client.post(`api/reset-password/confirm/${token}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
