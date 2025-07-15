@@ -1,13 +1,12 @@
 <script lang="ts">
     import { Title } from '#lib/components/ui/title';
     import { m } from '#lib/paraglide/messages';
-    import Breadcrumbs from '#components/Breadcrumbs.svelte';
     import { notifications, removeNotification, setPendingFriendRequests } from '#stores/notificationStore';
-    import NotificationModule from '#components/NotificationModule.svelte';
+    import NotificationModule from '#partials/notifications/NotificationModule.svelte';
     import Loader from '#components/Loader.svelte';
     import { showToast } from '#services/toastService';
     import Meta from '#components/Meta.svelte';
-    import type SerializedPendingFriend from 'backend/app/types/serialized/serialized_pending_friend';
+    import { type SerializedPendingFriend } from 'backend/types';
 
     let isLoading: boolean = false;
 
@@ -51,8 +50,6 @@
 <Loader {isLoading} />
 
 <Title title={m['notifications.title']()} />
-
-<Breadcrumbs items={[{ label: m['home.title'](), path: '/' }, { label: m['notifications.title']() }]} />
 
 <div class="grid grid-cols-1 md:grid-cols-2">
     <NotificationModule

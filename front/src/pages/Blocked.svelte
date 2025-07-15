@@ -5,17 +5,23 @@
     import axios from 'axios';
     import Search from '#components/Search.svelte';
     import Pagination from '#components/Pagination.svelte';
-    import Button from '#components/Button.svelte';
+    import { Button } from '$lib/components/ui/button';
     import { showToast } from '#services/toastService';
-    import Subtitle from '#components/Subtitle.svelte';
-    import ConfirmModal from '#components/ConfirmModal.svelte';
-    import type PaginatedBlockedUsers from 'backend/app/types/paginated/paginated_blocked_users';
-    import type SerializedUser from 'backend/app/types/serialized/serialized_user';
-    import type SerializedBlockedUser from 'backend/app/types/serialized/serialized_blocked_user';
     import Loader from '#components/Loader.svelte';
     import Icon from '#components/Icon.svelte';
     import { PUBLIC_API_BASE_URI, PUBLIC_DEFAULT_IMAGE } from '$env/static/public';
+    import { type PaginatedBlockedUsers, type SerializedUser, type SerializedBlockedUser } from 'backend/types';
     import Meta from '#components/Meta.svelte';
+    import {
+        AlertDialog,
+        AlertDialogAction,
+        AlertDialogCancel,
+        AlertDialogContent,
+        AlertDialogDescription,
+        AlertDialogFooter,
+        AlertDialogHeader,
+        AlertDialogTitle,
+    } from '#lib/components/ui/alert-dialog';
 
     let isLoading: boolean = false;
     let paginatedBlockedUsers: PaginatedBlockedUsers;
@@ -96,12 +102,7 @@
                             {/if}
                             <p>{blocked.user.username}</p>
                         </div>
-                        <Button
-                            ariaLabel="Unblock user"
-                            customStyle
-                            className="transition-all duration-300 hover:scale-110 transform text-green-600 hover:text-green-400"
-                            on:click={() => handleShowUnblockModal(blocked.user)}
-                        >
+                        <Button aria-label="Unblock user" onclick={() => handleShowUnblockModal(blocked.user)}>
                             <Icon name="unblock" />
                         </Button>
                     </div>
@@ -116,7 +117,15 @@
     <Loader {isLoading} />
 {/if}
 
-<ConfirmModal bind:showModal on:success={handleUnblockUser}>
-    <Subtitle slot="header">{m['social.unblock.modal.title']()}</Subtitle>
-    <p>{selectedBlockedUser.username} {m['social.unblock.modal.text']()}</p>
-</ConfirmModal>
+<AlertDialog open={showModal}>
+    <AlertDialogContent>
+        <AlertDialogHeader>
+            <AlertDialogTitle>{m['social.unblock.modal.title']()}</AlertDialogTitle>
+            <AlertDialogDescription>{m['social.unblock.modal.text']({ username: selectedBlockedUser.username || '' })}</AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+            <AlertDialogCancel>{m['common.cancel']()}</AlertDialogCancel>
+            <AlertDialogAction onclick={handleUnblockUser}>{m['common.continue']()}</AlertDialogAction>
+        </AlertDialogFooter>
+    </AlertDialogContent>
+</AlertDialog>

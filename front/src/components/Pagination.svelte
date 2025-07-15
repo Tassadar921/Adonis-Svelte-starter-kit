@@ -15,7 +15,7 @@
     type Props = {
         baseUri: string;
         paginatedObject: PaginatedObject;
-        containerElement: Window | HTMLElement;
+        containerElement?: Window | HTMLElement;
     };
 
     let { baseUri, paginatedObject = $bindable(), containerElement = window }: Props = $props();

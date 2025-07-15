@@ -5,25 +5,31 @@
     import Pagination from '#components/Pagination.svelte';
     import { showToast } from '#services/toastService';
     import Search from '#components/Search.svelte';
-    import Button from '#components/Button.svelte';
-    import ConfirmModal from '#components/ConfirmModal.svelte';
-    import Subtitle from '#components/Subtitle.svelte';
+    import { Button } from '#lib/components/ui/button';
     import { transmit } from '#stores/transmitStore';
     import { profile } from '#stores/profileStore';
     import { createEventDispatcher } from 'svelte';
     import { setPendingFriendRequests } from '#stores/notificationStore';
-    import type SerializedUser from 'backend/app/types/serialized/serialized_user';
-    import type PaginatedUsers from 'backend/app/types/paginated/paginated_users';
-    import type SerializedPendingFriend from 'backend/app/types/serialized/serialized_pending_friend';
     import Loader from '#components/Loader.svelte';
     import Icon from '#components/Icon.svelte';
     import { PUBLIC_API_BASE_URI } from '$env/static/public';
+    import { type PaginatedUsers, type SerializedUser, type SerializedPendingFriend } from 'backend/types';
+    import {
+        AlertDialog,
+        AlertDialogAction,
+        AlertDialogCancel,
+        AlertDialogContent,
+        AlertDialogDescription,
+        AlertDialogFooter,
+        AlertDialogHeader,
+        AlertDialogTitle,
+    } from '#lib/components/ui/alert-dialog';
 
     const dispatch = createEventDispatcher();
 
     let isLoading: boolean = $state(false);
     let paginatedUsers: PaginatedUsers | undefined = $state();
-    let searchBaseUrl: string = $state('/api/friends/add?');
+    let searchBaseUri: string = $state('/api/friends/add?');
     let query: string = $state('');
     let showModal: boolean = $state(false);
     let blockingUser: SerializedUser | undefined = $state();
@@ -33,13 +39,13 @@
     });
 
     const handleSearch = async (): Promise<void> => {
-        searchBaseUrl = `/api/friends/add?${query ? `query=${query}` : ''}`;
+        searchBaseUri = `/api/friends/add?${query ? `query=${query}` : ''}`;
         await updateAddFriends();
     };
 
     const updateAddFriends = async (): Promise<void> => {
         try {
-            const { data } = await axios.get(searchBaseUrl);
+            const { data } = await axios.get(searchBaseUri);
             paginatedUsers = data.users;
         } catch (error: any) {
             showToast(error.response.data.error, 'error');
@@ -133,7 +139,7 @@
         await blockedUser.create();
         blockedUser.onMessage((user: SerializedUser) => {
             if (paginatedUsers) {
-                paginatedUsers.users = paginatedUsers.users.filter((currentUser) => currentUser.id !== user?.id);
+                paginatedUsers.users = paginatedUsers.users.filter((currentUser: SerializedUser) => currentUser.id !== user?.id);
             }
         });
 
@@ -158,7 +164,7 @@
             showToast(data.message, 'success', '/friends');
             await setPendingFriendRequests();
             if (paginatedUsers) {
-                paginatedUsers.users = paginatedUsers.users.filter((currentUser) => currentUser.id !== user?.id);
+                paginatedUsers.users = paginatedUsers.users.filter((currentUser: SerializedUser) => currentUser.id !== user?.id);
             }
             dispatch('updateFriends');
         } catch (error: any) {
@@ -213,49 +219,24 @@
                         </div>
                         <div class="flex gap-5">
                             {#if user.sentFriendRequest}
-                                <Button
-                                    ariaLabel="Cancel friend request"
-                                    customStyle
-                                    className="transition-all duration-300 hover:scale-110 transform text-red-600 hover:text-red-500"
-                                    on:click={() => handleCancelFriendRequest(user)}
-                                >
+                                <Button aria-label="Cancel friend request" onclick={() => handleCancelFriendRequest(user)}>
                                     <Icon name="close" />
                                 </Button>
                             {:else if user.receivedFriendRequest}
                                 <div class="flex gap-5">
-                                    <Button
-                                        ariaLabel="Accept as friend"
-                                        customStyle
-                                        className="transition-all duration-300 hover:scale-110 transform text-green-600 hover:text-green-400"
-                                        on:click={() => handleAcceptPendingRequest(user)}
-                                    >
+                                    <Button aria-label="Accept as friend" onclick={() => handleAcceptPendingRequest(user)}>
                                         <Icon name="confirm" />
                                     </Button>
-                                    <Button
-                                        ariaLabel="Refuse friend request"
-                                        customStyle
-                                        className="transition-all duration-300 hover:scale-110 transform text-red-600 hover:text-red-400"
-                                        on:click={() => handleRefusePendingRequest(user)}
-                                    >
+                                    <Button aria-label="Refuse friend request" onclick={() => handleRefusePendingRequest(user)}>
                                         <Icon name="close" />
                                     </Button>
                                 </div>
                             {:else}
-                                <Button
-                                    ariaLabel="Send friend request"
-                                    customStyle
-                                    className="transition-all duration-300 hover:scale-110 transform text-green-600 hover:text-green-400 flex gap-1"
-                                    on:click={() => handleAddFriend(user)}
-                                >
+                                <Button aria-label="Send friend request" onclick={() => handleAddFriend(user)}>
                                     <Icon name="addUser" />
                                 </Button>
                             {/if}
-                            <Button
-                                ariaLabel="Block user"
-                                customStyle
-                                className="transition-all duration-300 hover:scale-110 transform text-red-600 hover:text-red-400"
-                                on:click={() => handleShowBlockingModal(user)}
-                            >
+                            <Button aria-label="Block user" onclick={() => handleShowBlockingModal(user)}>
                                 <Icon name="stop" />
                             </Button>
                         </div>
@@ -266,12 +247,20 @@
             <p class="my-5">{m['social.friends.add.none']()}</p>
         {/if}
     </div>
-    <Pagination bind:paginatedObject={paginatedUsers} baseUrl={searchBaseUrl} />
+    <Pagination bind:paginatedObject={paginatedUsers} baseUri={searchBaseUri} />
 {:else}
     <Loader {isLoading} />
 {/if}
 
-<ConfirmModal bind:showModal on:success={handleBlockUser}>
-    <Subtitle slot="header">{m['social.blocked.modal.title']()}</Subtitle>
-    <p>{blockingUser?.username} {m['social.blocked.modal.text']()}</p>
-</ConfirmModal>
+<AlertDialog open={showModal}>
+    <AlertDialogContent>
+        <AlertDialogHeader>
+            <AlertDialogTitle>{m['social.blocked.modal.title']()}</AlertDialogTitle>
+            <AlertDialogDescription>{m['social.blocked.modal.text']({ username: blockingUser?.username || '' })}</AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+            <AlertDialogCancel>{m['common.cancel']()}</AlertDialogCancel>
+            <AlertDialogAction onclick={handleBlockUser}>{m['common.continue']()}</AlertDialogAction>
+        </AlertDialogFooter>
+    </AlertDialogContent>
+</AlertDialog>

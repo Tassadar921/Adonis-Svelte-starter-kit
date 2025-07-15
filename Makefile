@@ -5,8 +5,8 @@ format:
 	cd front && npx prettier --write "**/*.{js,ts,svelte,html,css,json,yml}"
 
 format-check:
-	cd back && npx prettier --check "**/*.{js,ts,json,yml}"
-	cd front && npx prettier --check "**/*.{js,ts,svelte,html,css,json,yml}"
+	cd back && npm run format
+	cd front && npm run format
 
 install:
 	rm -rf node_modules package-lock.json back/node_modules front/node_modules

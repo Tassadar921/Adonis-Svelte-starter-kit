@@ -5,9 +5,7 @@
     import axios from 'axios';
     import Search from '#components/Search.svelte';
     import Pagination from '#components/Pagination.svelte';
-    import Modal from '#components/Modal.svelte';
-    import Subtitle from '#components/Subtitle.svelte';
-    import AddFriends from '#partials/friends/AddFriends.svelte';
+    import AddFriends from '#partials/social/friends/AddFriends.svelte';
     import { Button } from '#lib/components/ui/button';
     import { showToast } from '#services/toastService';
     import { profile } from '#stores/profileStore';
@@ -29,6 +27,7 @@
         AlertDialogHeader,
         AlertDialogTitle,
     } from '#lib/components/ui/alert-dialog';
+    import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '#lib/components/ui/dialog';
 
     let isLoading: boolean = $state(false);
     let paginatedFriends: PaginatedFriends | undefined = $state();
@@ -175,15 +174,20 @@
             <p class="mt-5">{m['social.friends.none']()}</p>
         {/if}
     </div>
-    <Pagination bind:paginatedObject={paginatedFriends} baseUrl={searchBaseUrl} />
+    <Pagination bind:paginatedObject={paginatedFriends} baseUri={searchBaseUrl} />
 {:else}
     <Loader {isLoading} />
 {/if}
 
-<Modal bind:showModal={showAddFriendsModal} fullWidth>
-    <Subtitle slot="header">{m['social.friends.add.title']()}</Subtitle>
-    <AddFriends on:updateFriends={updateFriends} />
-</Modal>
+<Dialog open={showAddFriendsModal}>
+    <DialogTrigger>Open</DialogTrigger>
+    <DialogContent>
+        <DialogHeader>
+            <DialogTitle>{m['social.friends.add.title']()}</DialogTitle>
+        </DialogHeader>
+        <AddFriends on:updateFriends={updateFriends} />
+    </DialogContent>
+</Dialog>
 
 <AlertDialog open={showConfirmRemoveFriendModal}>
     <AlertDialogContent>
