@@ -38,7 +38,7 @@ GOOGLE_CLIENT_SECRET=
 
 FRONT_PORT=5173
 GITHUB_REPOSITORY=https://github.com/Tassadar921/Adonis-Svelte-starter-kit
-ACCOUNT_SENDER_EMAIL=account@adonis_svelte_starter_kit_db.fr
+ACCOUNT_SENDER_EMAIL=account@adonis_svelte_starter_kit.fr
 BREVO_API_KEY=
 ADMIN_EMAIL=
 FRIEND_EMAILS=[]

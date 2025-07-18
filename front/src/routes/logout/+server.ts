@@ -1,3 +1,4 @@
+import { json } from '@sveltejs/kit';
 import type { RequestHandler } from '@sveltejs/kit';
 import { client } from '#lib/api.server';
 import { m } from '#lib/paraglide/messages';
@@ -13,21 +14,16 @@ export const POST: RequestHandler = async (event): Promise<Response> => {
 
         client.defaults.headers.common['Authorization'] = undefined;
 
-        return new Response(
-            JSON.stringify({
-                isSuccess: true,
-                message: data.message,
-            })
-        );
+        return json({
+            isSuccess: true,
+            message: data.message,
+        });
     } catch (error: any) {
-        return new Response(
-            JSON.stringify({
-                isSuccess: false,
-                message: error?.response?.data?.error ?? m['common.error.default-message'](),
-            }),
-            {
-                status: error?.response?.status ?? 400,
-            }
-        );
+        return json({
+            isSuccess: false,
+            message: error?.response?.data?.error ?? m['common.error.default-message'](),
+        }, {
+            status: error?.response?.status ?? 400,
+        });
     }
 };

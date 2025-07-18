@@ -2,12 +2,10 @@
     import { m } from '#lib/paraglide/messages';
     import { Title } from '#lib/components/ui/title';
     import { onMount } from 'svelte';
-    import axios from 'axios';
     import Search from '#components/Search.svelte';
     import Pagination from '#components/Pagination.svelte';
     import AddFriends from '#partials/social/friends/AddFriends.svelte';
     import { Button } from '#lib/components/ui/button';
-    import { showToast } from '#services/toastService';
     import { profile } from '#stores/profileStore';
     import { transmit } from '#stores/transmitStore';
     import { type PaginatedFriends } from 'backend/types';
@@ -25,9 +23,10 @@
         AlertDialogDescription,
         AlertDialogFooter,
         AlertDialogHeader,
-        AlertDialogTitle,
+        AlertDialogTitle
     } from '#lib/components/ui/alert-dialog';
-    import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from '#lib/components/ui/dialog';
+    import { Dialog, DialogContent, DialogHeader, DialogTitle } from '#lib/components/ui/dialog';
+    import { wrappedFetch } from '#services/requestService';
 
     let isLoading: boolean = $state(false);
     let paginatedFriends: PaginatedFriends | undefined = $state();
@@ -41,20 +40,23 @@
     let showBlockingModal: boolean = $state(false);
 
     onMount(async (): Promise<void> => {
+        await setupEvents();
         await updateFriends();
     });
 
-    const handleSearch = async (): Promise<void> => {
-        searchBaseUrl = `/api/friends?${query ? `query=${query}` : ''}`;
-        const { data } = await axios.get(searchBaseUrl);
-        paginatedFriends = data.friends;
+    const updateFriends = async (): Promise<void> => {
+        await wrappedFetch(
+            searchBaseUrl,
+            { method: 'GET' },
+            (data) => {
+                paginatedFriends = data.friends;
+            }
+        );
     };
 
-    const updateFriends = async (): Promise<void> => {
-        try {
-            const { data } = await axios.get(searchBaseUrl);
-            paginatedFriends = data.friends;
-        } catch (error: any) {}
+    const handleSearch = async (): Promise<void> => {
+        searchBaseUrl = `/api/friends?${query ? `query=${query}` : ''}`;
+        await updateFriends();
     };
 
     const handleShowRemoveFriendModal = (user: SerializedUser): void => {
@@ -63,16 +65,18 @@
     };
 
     const handleRemoveFriend = async (): Promise<void> => {
-        try {
-            const { data } = await axios.delete(`/api/friends/remove/${selectedFriend?.id}`);
-            if (paginatedFriends) {
-                paginatedFriends.friends = paginatedFriends.friends.filter((friendObject: SerializedFriend) => friendObject.friend.id !== selectedFriend?.id);
+        await wrappedFetch(
+            `/api/friends/remove/${selectedFriend?.id}`,
+            { method: 'DELETE' },
+            () => {
+                if (paginatedFriends) {
+                    paginatedFriends.friends = paginatedFriends.friends.filter(
+                        (friendObject) => friendObject.friend.id !== selectedFriend?.id
+                    );
+                }
+                showConfirmRemoveFriendModal = false;
             }
-            showToast(data.message);
-            showConfirmRemoveFriendModal = false;
-        } catch (error: any) {
-            showToast(error.response.data.error, 'error');
-        }
+        );
     };
 
     const handleShowBlockingModal = (user: SerializedUser): void => {
@@ -81,25 +85,26 @@
     };
 
     const handleBlockUser = async (): Promise<void> => {
-        try {
-            const { data } = await axios.get(`/api/blocked/add/${selectedFriend?.id}`);
-            if (paginatedFriends) {
-                paginatedFriends.friends = paginatedFriends.friends.filter((friendObject: SerializedFriend) => friendObject.friend.id !== selectedFriend?.id);
+        await wrappedFetch(
+            `/api/blocked/add/${selectedFriend?.id}`,
+            { method: 'GET' },
+            () => {
+                if (paginatedFriends) {
+                    paginatedFriends.friends = paginatedFriends.friends.filter(
+                        (friendObject) => friendObject.friend.id !== selectedFriend?.id
+                    );
+                }
+                showBlockingModal = false;
             }
-            showToast(data.message);
-            showBlockingModal = false;
-        } catch (error: any) {
-            showToast(error.response.data.error, 'error');
-        }
+        );
     };
 
     const setupEvents = async (): Promise<void> => {
-        // update when a friend removes us from its friends
         const removeFriend = $transmit!.subscription(`notification/friend/remove/${$profile!.id}`);
         await removeFriend.create();
         removeFriend.onMessage(async (user: SerializedUser) => {
             if (paginatedFriends) {
-                paginatedFriends.friends = paginatedFriends?.friends.filter((friendObject: SerializedFriend) => friendObject.friend.id !== user.id);
+                paginatedFriends.friends = paginatedFriends.friends.filter((f: SerializedFriend) => f.friend.id !== user.id);
             }
         });
 
@@ -107,16 +112,10 @@
         await blockFriend.create();
         blockFriend.onMessage(async (user: SerializedUser) => {
             if (paginatedFriends) {
-                paginatedFriends.friends = paginatedFriends?.friends.filter((friendObject: SerializedFriend) => friendObject.friend.id !== user.id);
+                paginatedFriends.friends = paginatedFriends.friends.filter((f: SerializedFriend) => f.friend.id !== user.id);
             }
         });
     };
-
-    $effect((): void => {
-        if ($profile) {
-            setupEvents();
-        }
-    });
 </script>
 
 <Meta title={m['social.friends.meta.title']()} description={m['social.friends.meta.description']()} keywords={m['social.friends.meta.keywords']().split(', ')} pathname="/social/friends" />
@@ -144,9 +143,7 @@
         {#if paginatedFriends.friends.length}
             <div class="flex flex-col gap-1 w-full">
                 {#each paginatedFriends.friends as friendObject}
-                    <div
-                        class="flex justify-between items-center h-12 border border-gray-300 dark:border-gray-800 rounded-xl hover:bg-gray-300 dark:hover:bg-gray-800 transition-colors duration-300 px-3"
-                    >
+                    <div class="flex justify-between items-center h-12 border border-gray-300 dark:border-gray-800 rounded-xl hover:bg-gray-300 dark:hover:bg-gray-800 transition-colors duration-300 px-3">
                         <div class="flex gap-5 flex-wrap items-center">
                             {#if friendObject.friend.profilePicture}
                                 <img
@@ -179,13 +176,12 @@
     <Loader {isLoading} />
 {/if}
 
-<Dialog open={showAddFriendsModal}>
-    <DialogTrigger>Open</DialogTrigger>
+<Dialog bind:open={showAddFriendsModal}>
     <DialogContent>
         <DialogHeader>
             <DialogTitle>{m['social.friends.add.title']()}</DialogTitle>
         </DialogHeader>
-        <AddFriends on:updateFriends={updateFriends} />
+<!--        <AddFriends on:updateFriends={updateFriends} />-->
     </DialogContent>
 </Dialog>
 

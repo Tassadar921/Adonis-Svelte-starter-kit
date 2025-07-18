@@ -6,8 +6,8 @@ import { m } from '#lib/paraglide/messages';
 export const wrappedFetch = async (
     input: RequestInfo,
     options: RequestInit,
-    handleSuccess?: (data: any) => void | Promise<void>,
-    handleError?: (data: any) => void | Promise<void>
+    onSuccess?: (data: any) => void | Promise<void>,
+    onError?: (data: any) => void | Promise<void>
 ): Promise<any | undefined> => {
     const response: Response = await fetch(input, options);
 
@@ -28,9 +28,9 @@ export const wrappedFetch = async (
         }
 
         if (data.isSuccess) {
-            await handleSuccess?.(data);
+            await onSuccess?.(data);
         } else {
-            await handleError?.(data);
+            await onError?.(data);
         }
 
         return data;
