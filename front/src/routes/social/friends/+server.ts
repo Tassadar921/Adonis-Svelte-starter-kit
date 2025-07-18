@@ -10,13 +10,13 @@ export const GET: RequestHandler = async ({ url }): Promise<Response> => {
         const query: string = url.searchParams.get('query') || '';
 
         const response = await client.get('/friends', {
-            params: { page, limit, query }
+            params: { page, limit, query },
         });
 
         return json({
             isSuccess: true,
             message: response.data.message,
-            friends: response.data.friends
+            friends: response.data.friends,
         });
     } catch (err: any) {
         return json(

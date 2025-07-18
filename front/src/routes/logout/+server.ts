@@ -19,11 +19,14 @@ export const POST: RequestHandler = async (event): Promise<Response> => {
             message: data.message,
         });
     } catch (error: any) {
-        return json({
-            isSuccess: false,
-            message: error?.response?.data?.error ?? m['common.error.default-message'](),
-        }, {
-            status: error?.response?.status ?? 400,
-        });
+        return json(
+            {
+                isSuccess: false,
+                message: error?.response?.data?.error ?? m['common.error.default-message'](),
+            },
+            {
+                status: error?.response?.status ?? 400,
+            }
+        );
     }
 };

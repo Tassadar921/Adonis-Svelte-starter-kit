@@ -23,7 +23,7 @@
         AlertDialogDescription,
         AlertDialogFooter,
         AlertDialogHeader,
-        AlertDialogTitle
+        AlertDialogTitle,
     } from '#lib/components/ui/alert-dialog';
     import { Dialog, DialogContent, DialogHeader, DialogTitle } from '#lib/components/ui/dialog';
     import { wrappedFetch } from '#services/requestService';
@@ -45,13 +45,9 @@
     });
 
     const updateFriends = async (): Promise<void> => {
-        await wrappedFetch(
-            searchBaseUrl,
-            { method: 'GET' },
-            (data) => {
-                paginatedFriends = data.friends;
-            }
-        );
+        await wrappedFetch(searchBaseUrl, { method: 'GET' }, (data) => {
+            paginatedFriends = data.friends;
+        });
     };
 
     const handleSearch = async (): Promise<void> => {
@@ -65,18 +61,12 @@
     };
 
     const handleRemoveFriend = async (): Promise<void> => {
-        await wrappedFetch(
-            `/api/friends/remove/${selectedFriend?.id}`,
-            { method: 'DELETE' },
-            () => {
-                if (paginatedFriends) {
-                    paginatedFriends.friends = paginatedFriends.friends.filter(
-                        (friendObject) => friendObject.friend.id !== selectedFriend?.id
-                    );
-                }
-                showConfirmRemoveFriendModal = false;
+        await wrappedFetch(`/api/friends/remove/${selectedFriend?.id}`, { method: 'DELETE' }, () => {
+            if (paginatedFriends) {
+                paginatedFriends.friends = paginatedFriends.friends.filter((friendObject) => friendObject.friend.id !== selectedFriend?.id);
             }
-        );
+            showConfirmRemoveFriendModal = false;
+        });
     };
 
     const handleShowBlockingModal = (user: SerializedUser): void => {
@@ -85,18 +75,12 @@
     };
 
     const handleBlockUser = async (): Promise<void> => {
-        await wrappedFetch(
-            `/api/blocked/add/${selectedFriend?.id}`,
-            { method: 'GET' },
-            () => {
-                if (paginatedFriends) {
-                    paginatedFriends.friends = paginatedFriends.friends.filter(
-                        (friendObject) => friendObject.friend.id !== selectedFriend?.id
-                    );
-                }
-                showBlockingModal = false;
+        await wrappedFetch(`/api/blocked/add/${selectedFriend?.id}`, { method: 'GET' }, () => {
+            if (paginatedFriends) {
+                paginatedFriends.friends = paginatedFriends.friends.filter((friendObject) => friendObject.friend.id !== selectedFriend?.id);
             }
-        );
+            showBlockingModal = false;
+        });
     };
 
     const setupEvents = async (): Promise<void> => {
@@ -143,7 +127,9 @@
         {#if paginatedFriends.friends.length}
             <div class="flex flex-col gap-1 w-full">
                 {#each paginatedFriends.friends as friendObject}
-                    <div class="flex justify-between items-center h-12 border border-gray-300 dark:border-gray-800 rounded-xl hover:bg-gray-300 dark:hover:bg-gray-800 transition-colors duration-300 px-3">
+                    <div
+                        class="flex justify-between items-center h-12 border border-gray-300 dark:border-gray-800 rounded-xl hover:bg-gray-300 dark:hover:bg-gray-800 transition-colors duration-300 px-3"
+                    >
                         <div class="flex gap-5 flex-wrap items-center">
                             {#if friendObject.friend.profilePicture}
                                 <img
@@ -181,7 +167,7 @@
         <DialogHeader>
             <DialogTitle>{m['social.friends.add.title']()}</DialogTitle>
         </DialogHeader>
-<!--        <AddFriends on:updateFriends={updateFriends} />-->
+        <!--        <AddFriends on:updateFriends={updateFriends} />-->
     </DialogContent>
 </Dialog>
 

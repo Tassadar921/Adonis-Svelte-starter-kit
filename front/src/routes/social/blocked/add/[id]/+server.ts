@@ -9,13 +9,13 @@ export const GET: RequestHandler = async ({ params }): Promise<Response> => {
 
         return json({
             isSuccess: true,
-            message: data.message
+            message: data.message,
         });
     } catch (err: any) {
         return json(
             {
                 isSuccess: false,
-                message: err?.response?.data?.error || err.message || m['common.error.default-message']()
+                message: err?.response?.data?.error || err.message || m['common.error.default-message'](),
             },
             { status: err?.response?.status || 500 }
         );
