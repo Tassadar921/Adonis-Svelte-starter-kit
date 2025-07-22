@@ -9,6 +9,9 @@ export default defineConfig({
         host: true,
         port: Number(process.env.PUBLIC_PORT),
         allowedHosts: ['localhost', 'app.adonis-svelte-starter-kit.fr'],
+        fs: {
+            allow: ['.', '../back/app/types'],
+        },
     },
     plugins: [
         tailwindcss(),

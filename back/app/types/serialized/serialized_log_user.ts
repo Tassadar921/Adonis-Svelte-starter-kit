@@ -1,4 +1,4 @@
-import { type SerializedLog } from '#types/serialized/serialized_log';
+import type { SerializedLog } from './serialized_log.js';
 
 export type SerializedLogUser = {
     id: number;

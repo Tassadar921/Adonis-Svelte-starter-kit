@@ -1,5 +1,5 @@
-import { type UserRoleEnum } from '#types/enum/user_role_enum';
-import { type SerializedFile } from '#types/serialized/serialized_file';
+import type { UserRoleEnum } from '../enum/user_role_enum.js';
+import type { SerializedFile } from './serialized_file.js';
 
 export type SerializedUser = {
     id: number;

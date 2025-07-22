@@ -1,4 +1,4 @@
-import { type SerializedBlockedUser } from '#types/serialized/serialized_blocked_user';
+import type { SerializedBlockedUser } from '../serialized/serialized_blocked_user.js';
 
 export type PaginatedBlockedUsers = {
     blockedUsers: SerializedBlockedUser[];

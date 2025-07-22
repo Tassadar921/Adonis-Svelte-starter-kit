@@ -1,4 +1,4 @@
-import { type SerializedPendingFriendNotification } from '#types/serialized/serialized_pending_friend_notification';
+import type { SerializedPendingFriendNotification } from '../serialized/serialized_pending_friend_notification.js';
 
 export type PaginatedPendingFriendNotifications = {
     notifications: SerializedPendingFriendNotification[];

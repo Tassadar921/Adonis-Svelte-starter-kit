@@ -1,4 +1,4 @@
-import { type SerializedUser } from '#types/serialized/serialized_user';
+import type { SerializedUser } from './serialized_user.js';
 
 export type SerializedFriend = {
     id: number;

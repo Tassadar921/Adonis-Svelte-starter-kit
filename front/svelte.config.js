@@ -1,5 +1,6 @@
 import adapter from '@sveltejs/adapter-node';
 import { vitePreprocess } from '@sveltejs/vite-plugin-svelte';
+import * as path from 'node:path';
 
 const config = {
     preprocess: vitePreprocess(),
@@ -18,7 +19,7 @@ const config = {
             '#pages': './src/pages',
             '#icons': './src/icons',
             '#lib': './src/lib',
-            '#backend/.adonisjs/api': '../back/.adonisjs/api',
+            'backend/types': path.resolve('back/app/types/index.ts'),
         },
     },
 };
