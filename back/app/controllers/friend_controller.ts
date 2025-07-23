@@ -20,21 +20,21 @@ export default class FriendController {
     ) {}
 
     public async search({ request, response, user }: HttpContext) {
-        const { query, page, perPage } = await request.validateUsing(searchFriendsValidator);
+        const { query, page, limit } = await request.validateUsing(searchFriendsValidator);
 
         return response.ok({
             friends: await cache.getOrSet({
                 key: `user-friends:${user.id}`,
                 ttl: '5m',
                 factory: async (): Promise<PaginatedFriends> => {
-                    return await this.friendRepository.search(query ?? '', page ?? 1, perPage ?? 10, user);
+                    return await this.friendRepository.search(query ?? '', page ?? 1, limit ?? 10, user);
                 },
             }),
         });
     }
 
     public async accept({ request, response, user, i18n }: HttpContext) {
-        const { userId } = await request.validateUsing(acceptFriendValidator);
+        const { userId } = await acceptFriendValidator.validate(request.params());
 
         const askingUser: User | null = await this.userRepository.firstOrFail({ frontId: userId });
         const existingFriend: PendingFriend | null = await this.pendingFriendRepository.findOneFromUsers(user, askingUser);
@@ -61,7 +61,7 @@ export default class FriendController {
     }
 
     public async refuse({ request, response, user, i18n }: HttpContext) {
-        const { userId } = await request.validateUsing(refuseFriendValidator);
+        const { userId } = await refuseFriendValidator.validate(request.params());
 
         const askingUser: User | null = await this.userRepository.firstOrFail({ frontId: userId });
 

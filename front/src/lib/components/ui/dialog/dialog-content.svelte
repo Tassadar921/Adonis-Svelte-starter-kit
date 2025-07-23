@@ -1,8 +1,9 @@
 <script lang="ts">
     import { Dialog as DialogPrimitive } from 'bits-ui';
     import type { Snippet } from 'svelte';
-    import { DialogPortal, DialogOverlay, DialogContent } from './index.js';
+    import { DialogPortal, DialogOverlay } from './index.js';
     import { cn, type WithoutChildrenOrChild } from '#lib/utils.js';
+    import { XIcon } from '@lucide/svelte';
 
     let {
         ref = $bindable(null),
@@ -20,7 +21,7 @@
 
 <DialogPortal {...portalProps}>
     <DialogOverlay />
-    <DialogContent
+    <DialogPrimitive.Content
         bind:ref
         data-slot="dialog-content"
         class={cn(
@@ -38,5 +39,5 @@
                 <span class="sr-only">Close</span>
             </DialogPrimitive.Close>
         {/if}
-    </DialogContent>
+    </DialogPrimitive.Content>
 </DialogPortal>

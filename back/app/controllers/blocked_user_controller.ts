@@ -23,14 +23,14 @@ export default class BlockedUserController {
     ) {}
 
     public async search({ request, response, user }: HttpContext) {
-        const { query, page, perPage } = await request.validateUsing(getBlockedUsersValidator);
+        const { query, page, limit } = await request.validateUsing(getBlockedUsersValidator);
 
         return response.ok({
             blockedUsers: await cache.getOrSet({
                 key: `user-blocked:${user.id}`,
                 ttl: '5m',
                 factory: async (): Promise<PaginatedBlockedUsers> => {
-                    return await this.blockedUserRepository.search(query ?? '', page ?? 1, perPage ?? 10, user);
+                    return await this.blockedUserRepository.search(query ?? '', page ?? 1, limit ?? 10, user);
                 },
             }),
         });

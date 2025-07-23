@@ -13,7 +13,7 @@ export const wrappedFetch = async (
 
     if (response.status === 401) {
         try {
-            await fetch('/logout', { method: 'POST' });
+            await fetch(new URL('/logout'), { method: 'POST' });
         } catch (error: any) {
             console.error(error);
         }
@@ -21,6 +21,10 @@ export const wrappedFetch = async (
     }
 
     try {
+        if (!response.ok) {
+            throw new Error(response.statusText);
+        }
+
         const data: any = await response.json();
 
         if (data.message) {

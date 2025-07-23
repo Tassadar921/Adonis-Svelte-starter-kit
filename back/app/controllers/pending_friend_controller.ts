@@ -21,21 +21,21 @@ export default class PendingFriendController {
     ) {}
 
     public async search({ request, response, user }: HttpContext) {
-        const { query, page, perPage } = await request.validateUsing(searchPendingFriendsValidator);
+        const { query, page, limit } = await request.validateUsing(searchPendingFriendsValidator);
 
         return response.ok({
             pendingFriends: await cache.getOrSet({
                 key: `pending-friends:${user.id}`,
                 ttl: '5m',
                 factory: async (): Promise<PaginatedPendingFriends> => {
-                    return await this.pendingFriendRepository.search(query ?? '', page ?? 1, perPage ?? 10, user);
+                    return await this.pendingFriendRepository.search(query ?? '', page ?? 1, limit ?? 10, user);
                 },
             }),
         });
     }
 
     public async add({ request, response, user, i18n }: HttpContext) {
-        const { userId } = await request.validateUsing(addPendingFriendValidator);
+        const { userId } = await addPendingFriendValidator.validate(request.params());
 
         const askingToUser: User = await this.userRepository.firstOrFail({ frontId: userId });
         const existingFriend: Friend | null = await this.friendRepository.findOneFromUsers(user, askingToUser);

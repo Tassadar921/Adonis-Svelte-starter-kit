@@ -8,26 +8,13 @@
 
     type Props = WithElementRef<Omit<HTMLInputAttributes, 'type'> & ({ type: 'file'; files?: FileList; label?: undefined } | { type?: InputType; files?: undefined; label: string })>;
 
-    let {
-        ref = $bindable(null),
-        value = $bindable(),
-        type = 'text',
-        files = $bindable(),
-        class: className,
-        name,
-        placeholder,
-        required = false,
-        onfocus,
-        onblur,
-        label,
-        ...restProps
-    }: Props = $props();
+    let { ref = $bindable(), value = $bindable(), type = 'text', files = $bindable(), class: className, name, placeholder, required = false, onfocus, onblur, label, ...restProps }: Props = $props();
 
     let showPassword = $state(false);
     let isFocused = $state(false);
 
-    let isPassword = $derived((): boolean => type === 'password');
-    let actualType = $derived((): string => (isPassword() ? (showPassword ? 'text' : 'password') : type));
+    let isPassword: boolean = $derived(type === 'password');
+    let actualType: InputType = $derived(isPassword ? (showPassword ? 'text' : 'password') : type);
 
     const togglePasswordVisibility = () => {
         showPassword = !showPassword;
@@ -79,7 +66,7 @@
         </label>
         <input
             bind:this={ref}
-            type={actualType()}
+            type={actualType}
             data-slot="input"
             placeholder={isFocused ? placeholder : ''}
             onfocus={handleFocus}
@@ -88,7 +75,7 @@
                 'border-input bg-background selection:bg-primary dark:bg-input/30 selection:text-primary-foreground ring-offset-background placeholder:text-muted-foreground shadow-xs flex h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base outline-none transition-[color,box-shadow] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
                 'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
                 'aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
-                isPassword() ? 'pr-10' : '',
+                isPassword ? 'pr-10' : '',
                 className
             )}
             {name}
@@ -96,7 +83,7 @@
             {...restProps}
         />
 
-        {#if isPassword()}
+        {#if isPassword}
             <Button type="button" onclick={togglePasswordVisibility} aria-label="Toggle password visibility" variant="ghost" size="icon" class="absolute -top-0.5 right-0 rounded-full">
                 {#if showPassword}
                     <EyeOff class="size-6" />

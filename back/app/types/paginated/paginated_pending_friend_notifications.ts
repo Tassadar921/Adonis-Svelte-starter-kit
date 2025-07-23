@@ -4,7 +4,7 @@ export type PaginatedPendingFriendNotifications = {
     notifications: SerializedPendingFriendNotification[];
     firstPage: number;
     lastPage: number;
-    perPage: number;
+    limit: number;
     total: number;
     currentPage: number;
 };

@@ -22,14 +22,14 @@ export default class NotificationController {
     }
 
     public async getPendingFriends({ request, response, user }: HttpContext) {
-        const { page, perPage, seen } = await request.validateUsing(getPendingFriendNotificationsValidator);
+        const { page, limit, seen } = await request.validateUsing(getPendingFriendNotificationsValidator);
 
         return response.ok({
             notifications: await cache.getOrSet({
                 key: `notifications:${user.id}`,
                 ttl: '5m',
                 factory: async (): Promise<PaginatedPendingFriendNotifications> => {
-                    return await this.pendingFriendNotificationRepository.getPagination(page ?? 1, perPage ?? 30, user, seen);
+                    return await this.pendingFriendNotificationRepository.getPagination(page ?? 1, limit ?? 30, user, seen);
                 },
             }),
         });

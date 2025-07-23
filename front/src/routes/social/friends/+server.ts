@@ -9,7 +9,7 @@ export const GET: RequestHandler = async ({ url }): Promise<Response> => {
         const limit: number = Number(url.searchParams.get('limit')) || 10;
         const query: string = url.searchParams.get('query') || '';
 
-        const response = await client.get('/friends', {
+        const response = await client.get('/api/friends', {
             params: { page, limit, query },
         });
 

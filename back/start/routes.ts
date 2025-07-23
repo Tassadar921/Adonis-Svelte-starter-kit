@@ -84,9 +84,9 @@ router
                         router.get('/', [FriendController, 'search']);
                         router.get('/add', [UserController, 'searchNotFriends']);
 
-                        router.post('/ask', [PendingFriendController, 'add']);
-                        router.post('/accept', [FriendController, 'accept']);
-                        router.post('/refuse', [FriendController, 'refuse']);
+                        router.post('/ask/:userId', [PendingFriendController, 'add']);
+                        router.post('/accept/:userId', [FriendController, 'accept']);
+                        router.delete('/refuse/:userId', [FriendController, 'refuse']);
                         router
                             .group((): void => {
                                 router.get('/', [PendingFriendController, 'search']);

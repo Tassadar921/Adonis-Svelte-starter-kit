@@ -1,38 +1,32 @@
 <script lang="ts">
     import { Button } from '#lib/components/ui/button/index';
-    // import axios from 'axios';
-    import Loader from '#components/Loader.svelte';
     import Icon from '#components/Icon.svelte';
 
     interface PaginatedObject {
         currentPage: number;
         firstPage: number;
         lastPage: number;
-        perPage: number;
+        limit: number;
         total: number;
     }
 
     type Props = {
-        baseUri: string;
         paginatedObject: PaginatedObject;
         containerElement?: Window | HTMLElement;
+        onChange: (page: number, limit: number) => void;
     };
 
-    let { baseUri, paginatedObject = $bindable(), containerElement = window }: Props = $props();
+    let { paginatedObject, containerElement = window, onChange }: Props = $props();
 
     let canGoBack: boolean = $derived(paginatedObject.currentPage > paginatedObject.firstPage);
     let canGoForward: boolean = $derived(paginatedObject.currentPage < paginatedObject.lastPage);
-    let isLoading: boolean = $state(false);
 
-    const handleClick = async (page: number, perPage: number) => {
+    const handleClick = async (page: number, limit: number): Promise<void> => {
         try {
-            isLoading = true;
-            const { data } = await axios.get(`${baseUri}&page=${page}&perPage=${perPage}`);
-            paginatedObject = data;
+            await onChange(page, limit);
         } catch (error: any) {
             console.error('Failed to fetch paginated data:', error);
         } finally {
-            isLoading = false;
             if (containerElement) {
                 containerElement.scrollTo({
                     top: 0,
@@ -45,29 +39,25 @@
 
 <div class="my-2 flex gap-3 justify-center" class:hidden={paginatedObject.lastPage === 1}>
     {#if paginatedObject.currentPage}
-        {#if !isLoading}
-            <!-- First Page Footer -->
-            <Button disabled={!canGoBack} onclick={() => handleClick(paginatedObject.firstPage, paginatedObject.perPage)}>
-                <Icon name="doubleChevronLeft" />
-            </Button>
-            <!-- Previous Page Footer -->
-            <Button disabled={!canGoBack} onclick={() => handleClick(paginatedObject.currentPage - 1, paginatedObject.perPage)}>
-                <Icon name="arrowLeft" />
-            </Button>
-            <!-- Page Indicator -->
-            <p>
-                {paginatedObject.currentPage} / {paginatedObject.lastPage}
-            </p>
-            <!-- Next Page Footer -->
-            <Button disabled={!canGoForward} onclick={() => handleClick(paginatedObject.currentPage + 1, paginatedObject.perPage)}>
-                <Icon name="chevronRight" />
-            </Button>
-            <!-- Last Page Footer -->
-            <Button disabled={!canGoForward} onclick={() => handleClick(paginatedObject.lastPage, paginatedObject.perPage)}>
-                <Icon name="doubleChevronRight" />
-            </Button>
-        {:else}
-            <Loader {isLoading} />
-        {/if}
+        <!-- First Page Footer -->
+        <Button disabled={!canGoBack} onclick={() => handleClick(paginatedObject.firstPage, paginatedObject.limit)}>
+            <Icon name="doubleChevronLeft" />
+        </Button>
+        <!-- Previous Page Footer -->
+        <Button disabled={!canGoBack} onclick={() => handleClick(paginatedObject.currentPage - 1, paginatedObject.limit)}>
+            <Icon name="arrowLeft" />
+        </Button>
+        <!-- Page Indicator -->
+        <p>
+            {paginatedObject.currentPage} / {paginatedObject.lastPage}
+        </p>
+        <!-- Next Page Footer -->
+        <Button disabled={!canGoForward} onclick={() => handleClick(paginatedObject.currentPage + 1, paginatedObject.limit)}>
+            <Icon name="chevronRight" />
+        </Button>
+        <!-- Last Page Footer -->
+        <Button disabled={!canGoForward} onclick={() => handleClick(paginatedObject.lastPage, paginatedObject.limit)}>
+            <Icon name="doubleChevronRight" />
+        </Button>
     {/if}
 </div>

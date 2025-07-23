@@ -10,14 +10,14 @@ export default class UserController {
     constructor(private readonly userRepository: UserRepository) {}
 
     public async searchNotFriends({ request, response, user }: HttpContext) {
-        const { query, page, perPage } = await request.validateUsing(getUsersValidator);
+        const { query, page, limit } = await getUsersValidator.validate(request.params());
 
         return response.ok({
             users: await cache.getOrSet({
                 key: `user-not-friends:${user.id}`,
-                ttl: '5m',
+                ttl: '1m',
                 factory: async (): Promise<PaginatedUsers> => {
-                    return await this.userRepository.searchNotFriends(query ?? '', page ?? 1, perPage ?? 10, user);
+                    return await this.userRepository.searchNotFriends(query ?? '', page ?? 1, limit ?? 10, user);
                 },
             }),
         });

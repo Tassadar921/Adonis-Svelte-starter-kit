@@ -11,7 +11,7 @@
 
     let email: string = $state('');
     let password: string = $state('');
-    let canSubmit = $derived((): boolean => isValidEmail(email) && !!password);
+    let canSubmit = $derived(isValidEmail(email) && !!password);
 
     $effect((): void => {
         const errorData = page.data.formError?.data;
@@ -26,7 +26,7 @@
 
 <Title title={m['login.title']()} hasBackground />
 
-<Form isValid={canSubmit()}>
+<Form isValid={canSubmit}>
     <Input type="email" name="email" placeholder={m['common.email.placeholder']()} label={m['common.email.label']()} bind:value={email} required />
     <Input type="password" name="password" placeholder={m['common.password.placeholder']()} label={m['common.password.label']()} bind:value={password} required />
     {#snippet links()}

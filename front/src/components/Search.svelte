@@ -1,10 +1,9 @@
 <script lang="ts">
-    import { createEventDispatcher } from 'svelte';
     import { m } from '#lib/paraglide/messages';
-
-    const dispatch = createEventDispatcher();
+    import { Input } from '#lib/components/ui/input';
 
     type Props = {
+        onSearch: () => void;
         search: string;
         placeholder?: string;
         debounce?: number;
@@ -13,11 +12,12 @@
         disabled?: boolean;
         label?: string;
         selected?: boolean;
-        results: any[];
+        resultsArray: any;
         selectedObserver?: boolean;
     };
 
     let {
+        onSearch,
         search = $bindable(''),
         placeholder = m['common.search'](),
         debounce = 300,
@@ -26,20 +26,20 @@
         disabled = false,
         label = '',
         selected = false,
-        results = $bindable([]),
+        resultsArray = $bindable(),
         selectedObserver = false,
     }: Props = $props();
 
     let searchTimeout: NodeJS.Timeout | undefined;
-    let inputElement: HTMLInputElement;
+    let inputElement: HTMLInputElement | undefined = $state();
     let focused: boolean = $state(false);
 
     const searchFunction = async (): Promise<void> => {
         if (minChars && search.length < minChars) {
-            results = [];
+            resultsArray = [];
             return;
         }
-        dispatch('search');
+        await onSearch();
     };
 
     const searchDebounced = (event: KeyboardEvent): void => {
@@ -47,7 +47,6 @@
 
         if (event.key === 'Enter') {
             event.preventDefault();
-            dispatch('search', true);
         } else {
             searchTimeout = setTimeout(searchFunction, debounce);
         }
@@ -55,30 +54,22 @@
 
     const handleFocus = (): void => {
         focused = true;
-        dispatch('focus');
     };
 
     const handleBlur = (): void => {
         focused = false;
-        dispatch('blur');
     };
 
     $effect((): void => {
         if (selectedObserver && selected) {
-            inputElement.focus();
+            inputElement!.focus();
         }
     });
 </script>
 
-<div class="relative w-full mt-8">
-    <label
-        for={name}
-        class="absolute pointer-events-none z-10 transition-all duration-800 ease-in-out {focused || search.length ? 'text-primary-500 bottom-11 left-1' : 'text-gray-500 bottom-2.5 left-3'}"
-    >
-        {label}
-    </label>
-    <input
-        bind:this={inputElement}
+<div class="mt-8">
+    <Input
+        bind:ref={inputElement}
         onfocus={handleFocus}
         onblur={handleBlur}
         onkeydown={searchDebounced}
@@ -87,16 +78,6 @@
         placeholder={focused || search.length ? placeholder : ''}
         {name}
         {disabled}
-        class="block w-full px-3 py-2 mt-1 text-base text-gray-800 placeholder-gray-500 border border-gray-300 rounded-md
-            shadow-xs focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+        {label}
     />
 </div>
-
-<style>
-    label {
-        transition:
-            bottom 0.8s ease,
-            left 0.8s ease,
-            color 0.8s ease;
-    }
-</style>

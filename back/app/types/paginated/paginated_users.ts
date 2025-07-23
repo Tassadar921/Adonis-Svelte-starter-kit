@@ -4,7 +4,7 @@ export type PaginatedUsers = {
     users: SerializedUser[];
     firstPage: number;
     lastPage: number;
-    perPage: number;
+    limit: number;
     total: number;
     currentPage: number;
 };

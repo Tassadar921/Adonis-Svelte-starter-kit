@@ -27,10 +27,11 @@
     } from '#lib/components/ui/alert-dialog';
     import { Dialog, DialogContent, DialogHeader, DialogTitle } from '#lib/components/ui/dialog';
     import { wrappedFetch } from '#services/requestService';
+    import { UserRoundPlus } from '@lucide/svelte';
 
     let isLoading: boolean = $state(false);
     let paginatedFriends: PaginatedFriends | undefined = $state();
-    let searchBaseUrl: string = $state('/api/friends');
+    let friends = $derived(paginatedFriends?.friends || []);
     let query: string = $state('');
 
     let selectedFriend: SerializedUser | undefined = $state();
@@ -39,20 +40,18 @@
     let showConfirmRemoveFriendModal: boolean = $state(false);
     let showBlockingModal: boolean = $state(false);
 
+    // To avoid a tailwindcss bug where it's trying to parse the result of the placeholder if put directly into search's placeholder attribute
+    const searchPlaceholder: string = m['social.friends.search.placeholder']();
+
     onMount(async (): Promise<void> => {
         await setupEvents();
         await updateFriends();
     });
 
-    const updateFriends = async (): Promise<void> => {
-        await wrappedFetch(searchBaseUrl, { method: 'GET' }, (data) => {
+    const updateFriends = async (page: number = 1, limit: number = 10): Promise<void> => {
+        await wrappedFetch(`/social/friends?page=${page}&limit=${limit}&query=${query}`, { method: 'GET' }, (data) => {
             paginatedFriends = data.friends;
         });
-    };
-
-    const handleSearch = async (): Promise<void> => {
-        searchBaseUrl = `/api/friends?${query ? `query=${query}` : ''}`;
-        await updateFriends();
     };
 
     const handleShowRemoveFriendModal = (user: SerializedUser): void => {
@@ -61,7 +60,7 @@
     };
 
     const handleRemoveFriend = async (): Promise<void> => {
-        await wrappedFetch(`/api/friends/remove/${selectedFriend?.id}`, { method: 'DELETE' }, () => {
+        await wrappedFetch(`/social/friends/remove/${selectedFriend?.id}`, { method: 'DELETE' }, () => {
             if (paginatedFriends) {
                 paginatedFriends.friends = paginatedFriends.friends.filter((friendObject) => friendObject.friend.id !== selectedFriend?.id);
             }
@@ -75,7 +74,7 @@
     };
 
     const handleBlockUser = async (): Promise<void> => {
-        await wrappedFetch(`/api/blocked/add/${selectedFriend?.id}`, { method: 'GET' }, () => {
+        await wrappedFetch(`/social/blocked/add/${selectedFriend?.id}`, { method: 'GET' }, () => {
             if (paginatedFriends) {
                 paginatedFriends.friends = paginatedFriends.friends.filter((friendObject) => friendObject.friend.id !== selectedFriend?.id);
             }
@@ -106,23 +105,15 @@
 
 <Title title={m['social.friends.title']()} />
 
+<div class="flex gap-3 items-center">
+    <Button class="bg-green-500 rounded-full" size="icon" aria-label="Add a friend" onclick={() => (showAddFriendsModal = true)}>
+        <UserRoundPlus class="size-6" />
+    </Button>
+</div>
+
+<Search selected placeholder={searchPlaceholder} label={m['social.friends.search.label']()} name="search-friend" onSearch={() => updateFriends()} bind:search={query} bind:resultsArray={friends} />
+
 {#if paginatedFriends}
-    <div class="flex gap-3 items-center">
-        <Button aria-label="Add a friend" onclick={() => (showAddFriendsModal = true)}>
-            <Icon name="plus" />
-        </Button>
-    </div>
-
-    <Search
-        selected
-        bind:results={paginatedFriends.friends}
-        placeholder={m['social.friends.search.placeholder']()}
-        label={m['social.friends.search.label']()}
-        name="search-friend"
-        bind:search={query}
-        on:search={handleSearch}
-    />
-
     <div class="flex flex-wrap gap-5 justify-center my-5">
         {#if paginatedFriends.friends.length}
             <div class="flex flex-col gap-1 w-full">
@@ -157,7 +148,7 @@
             <p class="mt-5">{m['social.friends.none']()}</p>
         {/if}
     </div>
-    <Pagination bind:paginatedObject={paginatedFriends} baseUri={searchBaseUrl} />
+    <Pagination paginatedObject={paginatedFriends} onChange={async (page: number, limit: number) => await updateFriends(page, limit)} />
 {:else}
     <Loader {isLoading} />
 {/if}

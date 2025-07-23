@@ -4,7 +4,7 @@ export type PaginatedBlockedUsers = {
     blockedUsers: SerializedBlockedUser[];
     firstPage: number;
     lastPage: number;
-    perPage: number;
+    limit: number;
     total: number;
     currentPage: number;
 };

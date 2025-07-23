@@ -14,7 +14,7 @@ export default class UserRepository extends BaseRepository<typeof User> {
         return await this.Model.query().select('users.*').leftJoin('auth_access_tokens', 'auth_access_tokens.tokenable_id', 'users.id').where('auth_access_tokens.id', tokenId).firstOrFail();
     }
 
-    public async searchNotFriends(query: string, page: number, perPage: number, user: User): Promise<PaginatedUsers> {
+    public async searchNotFriends(query: string, page: number, limit: number, user: User): Promise<PaginatedUsers> {
         const users: ModelPaginatorContract<User> = await this.Model.query()
             .select('users.*', 'received_pending_friends.id AS receivedPendingFriendId', 'sent_pending_friends.id AS sentPendingFriendId')
             .joinRaw(
@@ -52,7 +52,7 @@ export default class UserRepository extends BaseRepository<typeof User> {
             .whereNull('blocked.blocker_id')
             .whereNull('friends.user_id')
             .whereNot('users.id', user.id)
-            .paginate(page, perPage);
+            .paginate(page, limit);
 
         return {
             users: await Promise.all(
@@ -62,7 +62,7 @@ export default class UserRepository extends BaseRepository<typeof User> {
             ),
             firstPage: users.firstPage,
             lastPage: users.lastPage,
-            perPage,
+            limit,
             total: users.total,
             currentPage: page,
         };

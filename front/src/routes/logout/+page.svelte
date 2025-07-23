@@ -17,13 +17,15 @@
     import { wrappedFetch } from '#services/requestService';
 
     const handleConfirm = async (): Promise<void> => {
-        clearProfile();
         await wrappedFetch(
             '/logout',
             {
                 method: 'POST',
             },
-            () => navigate('/login'),
+            () => {
+                clearProfile();
+                navigate('/login');
+            },
             () => navigate('/login')
         );
     };

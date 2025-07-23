@@ -4,7 +4,7 @@ export type PaginatedFriends = {
     friends: SerializedFriend[];
     firstPage: number;
     lastPage: number;
-    perPage: number;
+    limit: number;
     total: number;
     currentPage: number;
 };
