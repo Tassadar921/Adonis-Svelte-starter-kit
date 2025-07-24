@@ -7,7 +7,7 @@
     import AddFriends from '#partials/social/friends/AddFriends.svelte';
     import { Button } from '#lib/components/ui/button';
     import { profile } from '#stores/profileStore';
-    import { transmit } from '#stores/transmitStore';
+    import { waitForTransmit } from '#stores/transmitStore';
     import { type PaginatedFriends } from 'backend/types';
     import { type SerializedUser } from 'backend/types';
     import { type SerializedFriend } from 'backend/types';
@@ -28,6 +28,7 @@
     import { Dialog, DialogContent, DialogHeader, DialogTitle } from '#lib/components/ui/dialog';
     import { wrappedFetch } from '#services/requestService';
     import { UserRoundPlus } from '@lucide/svelte';
+    import type { Transmit } from '@adonisjs/transmit-client';
 
     let isLoading: boolean = $state(false);
     let paginatedFriends: PaginatedFriends | undefined = $state();
@@ -83,7 +84,9 @@
     };
 
     const setupEvents = async (): Promise<void> => {
-        const removeFriend = $transmit!.subscription(`notification/friend/remove/${$profile!.id}`);
+        const transmit: Transmit = await waitForTransmit();
+
+        const removeFriend = transmit.subscription(`notification/friend/remove/${$profile!.id}`);
         await removeFriend.create();
         removeFriend.onMessage(async (user: SerializedUser) => {
             if (paginatedFriends) {
@@ -91,7 +94,7 @@
             }
         });
 
-        const blockFriend = $transmit!.subscription(`notification/blocked/${$profile!.id}`);
+        const blockFriend = transmit.subscription(`notification/blocked/${$profile!.id}`);
         await blockFriend.create();
         blockFriend.onMessage(async (user: SerializedUser) => {
             if (paginatedFriends) {
@@ -158,7 +161,7 @@
         <DialogHeader>
             <DialogTitle>{m['social.friends.add.title']()}</DialogTitle>
         </DialogHeader>
-        <!--        <AddFriends on:updateFriends={updateFriends} />-->
+        <AddFriends onUpdateFriends={updateFriends} />
     </DialogContent>
 </Dialog>
 

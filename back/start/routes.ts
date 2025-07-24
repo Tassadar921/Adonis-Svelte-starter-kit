@@ -85,12 +85,12 @@ router
                         router.get('/add', [UserController, 'searchNotFriends']);
 
                         router.post('/ask/:userId', [PendingFriendController, 'add']);
-                        router.post('/accept/:userId', [FriendController, 'accept']);
-                        router.delete('/refuse/:userId', [FriendController, 'refuse']);
                         router
                             .group((): void => {
                                 router.get('/', [PendingFriendController, 'search']);
                                 router.delete('/cancel/:userId', [PendingFriendController, 'cancel']);
+                                router.post('/accept/:userId', [FriendController, 'accept']);
+                                router.delete('/refuse/:userId', [FriendController, 'refuse']);
                             })
                             .prefix('pending');
                         router.delete('/remove/:userId', [FriendController, 'remove']);
@@ -100,10 +100,10 @@ router
                 router
                     .group((): void => {
                         router.get('/', [BlockedUserController, 'search']);
-                        router.get('/add/:userId', [BlockedUserController, 'block']);
                         router.delete('/cancel/:userId', [BlockedUserController, 'cancel']);
                     })
                     .prefix('blocked');
+                router.post('/block/:userId', [BlockedUserController, 'block']);
 
                 router
                     .group((): void => {

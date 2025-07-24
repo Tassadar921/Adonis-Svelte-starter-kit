@@ -1,11 +1,16 @@
 import { type Writable, writable } from 'svelte/store';
 import { Transmit } from '@adonisjs/transmit-client';
-import { browser } from '$app/environment';
-import { PUBLIC_API_REAL_URI } from '$env/static/public';
 
-export const transmit: Writable<Transmit | undefined> = writable(undefined);
+export const transmit: Writable<Transmit | null> = writable(null);
 
-if (browser) {
-    const client = new Transmit({ baseUrl: PUBLIC_API_REAL_URI });
-    transmit.set(client);
-}
+export const waitForTransmit = async (): Promise<Transmit> => {
+    return new Promise((resolve): void => {
+        function handleValue(value: Transmit | null): void {
+            if (value) {
+                resolve(value);
+            }
+        }
+
+        transmit.subscribe(handleValue);
+    });
+};

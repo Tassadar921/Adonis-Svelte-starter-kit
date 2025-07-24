@@ -10,6 +10,9 @@
     import { readable } from 'svelte/store';
     import { showToast } from '#services/toastService';
     import { Footer } from '#lib/components/ui/footer';
+    import { Transmit } from '@adonisjs/transmit-client';
+    import { transmit } from '#stores/transmitStore';
+    import { PUBLIC_API_REAL_URI } from '$env/static/public';
 
     const page = readable(currentPage);
 
@@ -30,6 +33,7 @@
     });
 
     $effect((): void => {
+        transmit.set(new Transmit({ baseUrl: PUBLIC_API_REAL_URI }));
         if ($flash) {
             showToast($flash.message, $flash.type);
         }

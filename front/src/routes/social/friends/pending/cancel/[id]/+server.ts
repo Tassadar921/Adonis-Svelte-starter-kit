@@ -5,7 +5,7 @@ import { m } from '#lib/paraglide/messages';
 
 export const DELETE: RequestHandler = async ({ params }): Promise<Response> => {
     try {
-        const { data } = await client.delete(`/api/friends/remove/${params.id}`);
+        const { data } = await client.delete(`/api/friends/pending/cancel/${params.id}`);
 
         return json({
             isSuccess: true,

@@ -10,7 +10,6 @@ import PendingFriendNotification from '#models/pending_friend_notification';
 import cache from '@adonisjs/cache/services/main';
 import PaginatedPendingFriends from '#types/paginated/paginated_pending_friends';
 import FriendRepository from '#repositories/friend_repository';
-import Friend from '#models/friend';
 
 @inject()
 export default class PendingFriendController {
@@ -37,24 +36,25 @@ export default class PendingFriendController {
     public async add({ request, response, user, i18n }: HttpContext) {
         const { userId } = await addPendingFriendValidator.validate(request.params());
 
-        const askingToUser: User = await this.userRepository.firstOrFail({ frontId: userId });
-        const existingFriend: Friend | null = await this.friendRepository.findOneFromUsers(user, askingToUser);
-        if (existingFriend) {
-            return response.conflict({ message: i18n.t('messages.pending-friend.add.error', { username: askingToUser.username }) });
-        }
+        const targetUser: User = await this.userRepository.firstOrFail({ frontId: userId });
+
+        try {
+            await this.friendRepository.findOneFromUsers(user, targetUser);
+            return response.conflict({ message: i18n.t('messages.pending-friend.add.error', { username: targetUser.username }) });
+        } catch (error: any) {}
 
         let pendingFriend: PendingFriend | null;
         try {
-            pendingFriend = await this.pendingFriendRepository.findOneFromUsers(user, askingToUser);
+            pendingFriend = await this.pendingFriendRepository.findOneFromUsers(user, targetUser);
         } catch (error: any) {
             pendingFriend = await PendingFriend.create({
                 userId: user.id,
-                friendId: askingToUser.id,
+                friendId: targetUser.id,
             });
             await pendingFriend.refresh();
 
             await PendingFriendNotification.create({
-                forId: askingToUser.id,
+                forId: targetUser.id,
                 fromId: user.id,
                 pendingFriendId: pendingFriend.id,
             });
@@ -68,7 +68,7 @@ export default class PendingFriendController {
         }
 
         return response.ok({
-            message: i18n.t('messages.pending-friend.add.success', { username: askingToUser.username }),
+            message: i18n.t('messages.pending-friend.add.success', { username: targetUser.username }),
             pendingFriend: pendingFriend.apiSerialize(),
         });
     }
@@ -76,17 +76,17 @@ export default class PendingFriendController {
     public async cancel({ request, response, user, i18n }: HttpContext) {
         const { userId } = await cancelPendingFriendValidator.validate(request.params());
 
-        const askingToUser: User = await this.userRepository.firstOrFail({ frontId: userId });
-        const pendingFriend: PendingFriend = await this.pendingFriendRepository.findOneFromUsers(user, askingToUser);
+        const targetUser: User = await this.userRepository.firstOrFail({ frontId: userId });
+        const pendingFriend: PendingFriend = await this.pendingFriendRepository.findOneFromUsers(user, targetUser);
 
         if (pendingFriend.userId === user.id || pendingFriend.friendId === user.id) {
             transmit.broadcast(`notification/add-friend/cancel/${userId}`, pendingFriend.apiSerialize());
             await pendingFriend.notification.delete();
             await pendingFriend.delete();
 
-            return response.ok({ message: i18n.t('messages.pending-friend.cancel.success', { username: askingToUser.username }) });
+            return response.ok({ message: i18n.t('messages.pending-friend.cancel.success', { username: targetUser.username }) });
         }
 
-        return response.forbidden({ error: i18n.t('messages.pending-friend.cancel.error', { username: askingToUser.username }) });
+        return response.forbidden({ error: i18n.t('messages.pending-friend.cancel.error', { username: targetUser.username }) });
     }
 }

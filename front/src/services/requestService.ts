@@ -22,7 +22,8 @@ export const wrappedFetch = async (
 
     try {
         if (!response.ok) {
-            throw new Error(response.statusText);
+            console.log(response);
+            throw new Error(response.statusText, { cause: response });
         }
 
         const data: any = await response.json();

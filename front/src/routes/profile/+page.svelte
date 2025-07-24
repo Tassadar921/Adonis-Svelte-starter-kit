@@ -27,7 +27,7 @@
         };
 
         if ($profile!.profilePicture) {
-            path = `${PUBLIC_API_BASE_URI}/api/static/profile-picture/${$profile!.id}?token=${localStorage.getItem('apiToken')}`;
+            path = `${PUBLIC_API_BASE_URI}/api/static/profile-picture/${$profile!.id}`;
         }
     });
 

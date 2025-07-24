@@ -16,38 +16,29 @@ export default class UserRepository extends BaseRepository<typeof User> {
 
     public async searchNotFriends(query: string, page: number, limit: number, user: User): Promise<PaginatedUsers> {
         const users: ModelPaginatorContract<User> = await this.Model.query()
-            .select('users.*', 'received_pending_friends.id AS receivedPendingFriendId', 'sent_pending_friends.id AS sentPendingFriendId')
-            .joinRaw(
-                `
-                LEFT JOIN blocked_users AS blocked
-                ON (users.id = blocked.blocked_id AND blocked.blocker_id = ?)
-                OR (users.id = blocked.blocker_id AND blocked.blocked_id = ?)
-              `,
-                [user.id, user.id]
-            )
-            .joinRaw(
-                `
-                LEFT JOIN friends
-                ON users.id = friends.friend_id AND friends.user_id = ?
-              `,
-                [user.id]
-            )
-            .joinRaw(
-                `
-                LEFT JOIN pending_friends AS received_pending_friends
-                ON (users.id = received_pending_friends.user_id AND received_pending_friends.friend_id = ?)
-              `,
-                [user.id]
-            )
-            .joinRaw(
-                `
-                LEFT JOIN pending_friends AS sent_pending_friends
-                ON (users.id = sent_pending_friends.friend_id AND sent_pending_friends.user_id = ?)
-              `,
-                [user.id]
-            )
-            .if(query, (queryBuilder): void => {
-                queryBuilder.where('users.username', 'ILIKE', `%${query}%`);
+            .select('users.*')
+            .select('received_pending_friends.id as receivedPendingFriendId')
+            .select('sent_pending_friends.id as sentPendingFriendId')
+            .leftJoin('blocked_users as blocked', (blockedJoin) => {
+                blockedJoin
+                    .on((builder) => {
+                        builder.on('users.id', '=', 'blocked.blocked_id').andOnVal('blocked.blocker_id', '=', user.id);
+                    })
+                    .orOn((builder) => {
+                        builder.on('users.id', '=', 'blocked.blocker_id').andOnVal('blocked.blocked_id', '=', user.id);
+                    });
+            })
+            .leftJoin('friends', (friendJoin) => {
+                friendJoin.on('users.id', '=', 'friends.friend_id').andOnVal('friends.user_id', '=', user.id);
+            })
+            .leftJoin('pending_friends as received_pending_friends', (receivedJoin) => {
+                receivedJoin.on('users.id', '=', 'received_pending_friends.user_id').andOnVal('received_pending_friends.friend_id', '=', user.id);
+            })
+            .leftJoin('pending_friends as sent_pending_friends', (sentJoin) => {
+                sentJoin.on('users.id', '=', 'sent_pending_friends.friend_id').andOnVal('sent_pending_friends.user_id', '=', user.id);
+            })
+            .if(query, (queryBuilder) => {
+                queryBuilder.whereILike('users.username', `%${query}%`);
             })
             .whereNull('blocked.blocker_id')
             .whereNull('friends.user_id')

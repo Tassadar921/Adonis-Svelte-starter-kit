@@ -3,9 +3,9 @@ import type { RequestHandler } from '@sveltejs/kit';
 import { client } from '#lib/api.server';
 import { m } from '#lib/paraglide/messages';
 
-export const DELETE: RequestHandler = async ({ params }): Promise<Response> => {
+export const POST: RequestHandler = async ({ params }): Promise<Response> => {
     try {
-        const { data } = await client.delete(`/api/friends/remove/${params.id}`);
+        const { data } = await client.post(`/api/friends/pending/accept/${params.id}`);
 
         return json({
             isSuccess: true,

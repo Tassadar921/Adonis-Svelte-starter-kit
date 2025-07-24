@@ -5,13 +5,14 @@ import { m } from '#lib/paraglide/messages';
 
 export const POST: RequestHandler = async ({ params }): Promise<Response> => {
     try {
-        const { data } = await client.post(`/friends/ask/${params.id}`);
+        const { data } = await client.post(`/api/friends/ask/${params.id}`);
 
         return json({
             isSuccess: true,
             message: data.message,
         });
     } catch (error: any) {
+        console.log(error);
         return json(
             {
                 isSuccess: false,

@@ -39,41 +39,50 @@ export default class BlockedUserController {
     public async block({ request, response, user, i18n }: HttpContext) {
         const { userId } = await blockValidator.validate(request.params());
 
-        const blockingUser: User = await this.userRepository.firstOrFail({ frontId: userId });
+        const targetUser: User = await this.userRepository.firstOrFail({ frontId: userId });
 
-        const blockedUsers: BlockedUser[] = await this.blockedUserRepository.findFromUsers(user, blockingUser);
+        const blockedUsers: BlockedUser[] = await this.blockedUserRepository.findFromUsers(user, targetUser);
         if (blockedUsers.length) {
-            return response.conflict({ error: i18n.t('messages.blocked-user.block.error', { username: blockingUser.username }) });
+            return response.conflict({ error: i18n.t('messages.blocked-user.block.error', { username: targetUser.username }) });
         }
 
-        const pendingFriends: PendingFriend[] = await this.pendingFriendRepository.findFromUsers(user, blockingUser);
+        const pendingFriends: PendingFriend[] = await this.pendingFriendRepository.findFromUsers(user, targetUser);
         pendingFriends.map(async (pendingFriend: PendingFriend): Promise<void> => {
             transmit.broadcast(`notification/add-friend/cancel/${userId}`, pendingFriend.apiSerialize());
             await pendingFriend.delete();
         });
 
-        const friendRelationships: Friend[] = await this.friendRepository.findFromUsers(user, blockingUser);
-        friendRelationships.map(async (friend: Friend): Promise<void> => {
-            await friend.delete();
-        });
+        const friendRelationships: Friend[] = await this.friendRepository.findFromUsers(user, targetUser);
+        if (friendRelationships.length) {
+            friendRelationships.map(async (friend: Friend): Promise<void> => {
+                await friend.delete();
+            });
+        } else {
+            await cache.delete({ key: `user-not-friends:${user.id}` });
+            await cache.delete({ key: `user-not-friends:${targetUser.id}` });
+        }
 
         await BlockedUser.create({
             blockerId: user.id,
-            blockedId: blockingUser.id,
+            blockedId: targetUser.id,
         });
+
+        await cache.delete({ key: `user-blocked:${user.id}` });
+        await cache.delete({ key: `user-blocked:${targetUser.id}` });
+
         transmit.broadcast(`notification/blocked/${userId}`, user.apiSerialize());
 
-        return response.ok({ message: i18n.t('messages.blocked-user.block.success', { username: blockingUser.username }) });
+        return response.ok({ message: i18n.t('messages.blocked-user.block.success', { username: targetUser.username }) });
     }
 
     public async cancel({ request, response, user, i18n }: HttpContext) {
         const { userId } = await cancelValidator.validate(request.params());
 
-        const blockingUser: User | null = await this.userRepository.firstOrFail({ frontId: userId });
+        const targetUser: User | null = await this.userRepository.firstOrFail({ frontId: userId });
 
-        const blockedUsers: BlockedUser[] = await this.blockedUserRepository.findFromUsers(user, blockingUser);
+        const blockedUsers: BlockedUser[] = await this.blockedUserRepository.findFromUsers(user, targetUser);
         if (!blockedUsers.length) {
-            return response.notFound({ error: i18n.t('messages.blocked-user.cancel.error', { username: blockingUser.username }) });
+            return response.notFound({ error: i18n.t('messages.blocked-user.cancel.error', { username: targetUser.username }) });
         }
 
         blockedUsers.map(async (blockedUser: BlockedUser): Promise<void> => {
@@ -82,6 +91,6 @@ export default class BlockedUserController {
 
         transmit.broadcast(`notification/unblocked/${userId}`);
 
-        return response.ok({ message: i18n.t('messages.blocked-user.cancel.success', { username: blockingUser.username }) });
+        return response.ok({ message: i18n.t('messages.blocked-user.cancel.success', { username: targetUser.username }) });
     }
 }
