@@ -67,13 +67,7 @@
 
         // receiver updated when request received
         const receivedFriendRequest = transmit.subscription(`notification/add-friend/${$profile!.id}`);
-        console.log(`notification/add-friend/${$profile!.id}`);
-        try {
-            await receivedFriendRequest.create();
-        } catch (error: any) {
-            console.log(error);
-        }
-        console.log('ici');
+        await receivedFriendRequest.create();
         receivedFriendRequest.onMessage((pendingFriendRequest: SerializedPendingFriend) => {
             updateUser(pendingFriendRequest.notification.from.id, { receivedFriendRequest: true });
         });
