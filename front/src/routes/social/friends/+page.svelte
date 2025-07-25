@@ -12,9 +12,8 @@
     import { type SerializedUser } from 'backend/types';
     import { type SerializedFriend } from 'backend/types';
     import Loader from '#components/Loader.svelte';
-    import Icon from '#components/Icon.svelte';
     import Meta from '#components/Meta.svelte';
-    import { PUBLIC_API_BASE_URI, PUBLIC_DEFAULT_IMAGE } from '$env/static/public';
+    import { PUBLIC_DEFAULT_IMAGE } from '$env/static/public';
     import {
         AlertDialog,
         AlertDialogAction,
@@ -27,7 +26,7 @@
     } from '#lib/components/ui/alert-dialog';
     import { Dialog, DialogContent, DialogHeader, DialogTitle } from '#lib/components/ui/dialog';
     import { wrappedFetch } from '#services/requestService';
-    import { UserRoundPlus } from '@lucide/svelte';
+    import { UserRoundPlus, UserRoundMinus, XIcon } from '@lucide/svelte';
     import type { Transmit } from '@adonisjs/transmit-client';
 
     let isLoading: boolean = $state(false);
@@ -109,8 +108,8 @@
 <Title title={m['social.friends.title']()} />
 
 <div class="flex gap-3 items-center">
-    <Button class="bg-green-500 rounded-full" size="icon" aria-label="Add a friend" onclick={() => (showAddFriendsModal = true)}>
-        <UserRoundPlus class="size-6" />
+    <Button variant="outline" size="icon" aria-label="Add a friend" onclick={() => (showAddFriendsModal = true)}>
+        <UserRoundPlus class="size-6 text-green-500" />
     </Button>
 </div>
 
@@ -134,10 +133,10 @@
                         </div>
                         <div class="flex gap-10 pr-5">
                             <Button aria-label="Remove friend" variant="outline" onclick={() => handleShowRemoveFriendModal(friendObject.friend)}>
-                                <Icon name="removeUser" />
+                                <UserRoundMinus class="size-6 text-red-500" />
                             </Button>
                             <Button aria-label="Block user" variant="outline" onclick={() => handleShowBlockingModal(friendObject.friend)}>
-                                <Icon name="stop" />
+                                <XIcon class="size-6 text-red-500" />
                             </Button>
                         </div>
                     </div>
@@ -161,7 +160,7 @@
     </DialogContent>
 </Dialog>
 
-<AlertDialog open={showConfirmRemoveFriendModal}>
+<AlertDialog open={showConfirmRemoveFriendModal} onOpenChange={() => (showConfirmRemoveFriendModal = false)}>
     <AlertDialogContent>
         <AlertDialogHeader>
             <AlertDialogTitle>{m['social.friends.remove.modal.title']()}</AlertDialogTitle>
@@ -174,7 +173,7 @@
     </AlertDialogContent>
 </AlertDialog>
 
-<AlertDialog open={showBlockingModal}>
+<AlertDialog open={showBlockingModal} onOpenChange={() => (showBlockingModal = false)}>
     <AlertDialogContent>
         <AlertDialogHeader>
             <AlertDialogTitle>{m['social.blocked.modal.title']()}</AlertDialogTitle>

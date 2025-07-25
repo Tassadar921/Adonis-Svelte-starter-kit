@@ -39,14 +39,14 @@
 
 <Title title={m['logout.title']()} />
 
-<AlertDialog open={true}>
+<AlertDialog open={true} onOpenChange={handleClose}>
     <AlertDialogContent>
         <AlertDialogHeader>
             <AlertDialogTitle>{m['logout.modal.title']()}</AlertDialogTitle>
             <AlertDialogDescription>{m['logout.modal.text']()}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
-            <AlertDialogCancel onclick={handleClose}>{m['common.cancel']()}</AlertDialogCancel>
+            <AlertDialogCancel>{m['common.cancel']()}</AlertDialogCancel>
             <AlertDialogAction onclick={handleConfirm}>{m['common.continue']()}</AlertDialogAction>
         </AlertDialogFooter>
     </AlertDialogContent>

@@ -228,7 +228,7 @@
     <Loader {isLoading} />
 {/if}
 
-<AlertDialog open={showModal}>
+<AlertDialog open={showModal} onOpenChange={() => (showModal = false)}>
     <AlertDialogContent>
         <AlertDialogHeader>
             <AlertDialogTitle>{m['social.blocked.modal.title']()}</AlertDialogTitle>
