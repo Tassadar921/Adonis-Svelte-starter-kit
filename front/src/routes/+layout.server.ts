@@ -4,7 +4,6 @@ import type { SerializedUser } from 'backend/types';
 import { m } from '#lib/paraglide/messages';
 import { type LanguageCode } from '#stores/languageStore';
 import { locales } from '../paraglide/runtime';
-import { client } from '#lib/api.server';
 import type { FormError } from '../app';
 
 interface OpenedPathName {
@@ -37,8 +36,6 @@ export const load: LayoutServerLoad = loadFlash(async (event): Promise<{ user?: 
         });
     }
 
-    client.defaults.headers.common['Accept-Language'] = `${language}-${language.toUpperCase()}`;
-
     const userCookie: string | undefined = cookies.get('user');
     const user: SerializedUser | undefined = userCookie ? <SerializedUser>JSON.parse(userCookie) : undefined;
 
@@ -47,6 +44,7 @@ export const load: LayoutServerLoad = loadFlash(async (event): Promise<{ user?: 
     const formError: string | undefined = cookies.get('formError');
 
     if (!userCookie) {
+        cookies.delete('token', { path: '/' });
         if (openedPathNames.some((openedPathName: OpenedPathName): boolean => location.startsWith(openedPathName.pathname))) {
             if (formError) {
                 cookies.delete('formError', { path: '/' });
@@ -71,11 +69,7 @@ export const load: LayoutServerLoad = loadFlash(async (event): Promise<{ user?: 
         }
     }
 
-    if (cookies.get('token')) {
-        client.defaults.headers.common['Authorization'] = `Bearer ${cookies.get('token')}`;
-    } else {
-        client.defaults.headers.common['Authorization'] = undefined;
-        cookies.delete('token', { path: '/' });
+    if (!cookies.get('token')) {
         cookies.delete('user', { path: '/' });
 
         return redirect(303, `/${language}/login`);

@@ -13,7 +13,9 @@ export type FormError = {
 declare global {
     namespace App {
         // interface Error {}
-        // interface Locals {}
+        interface Locals {
+            client: AxiosInstance;
+        }
         interface PageData {
             flash?: PageDataError;
         }

@@ -1,17 +1,16 @@
 import { loadFlash, redirect } from 'sveltekit-flash-message/server';
 import type { PageServerLoad } from './$types';
-import { client } from '#lib/api.server';
 import { m } from '#lib/paraglide/messages';
 
 export const load: PageServerLoad = loadFlash(async (event): Promise<never> => {
-    const { url, cookies } = event;
+    const { url, cookies, locals } = event;
     const token: string | null = url.searchParams.get('token');
 
     let data: any;
     let isSuccess: boolean = true;
 
     try {
-        const { data: returnedData } = await client.post(`api/account-creation/confirm/${token}`);
+        const { data: returnedData } = await locals.client.post(`api/account-creation/confirm/${token}`);
         data = returnedData;
     } catch (error: any) {
         isSuccess = false;
@@ -32,8 +31,6 @@ export const load: PageServerLoad = loadFlash(async (event): Promise<never> => {
             sameSite: 'lax',
             maxAge: 60 * 60 * 24 * 7,
         });
-
-        client.defaults.headers.common['Authorization'] = `Bearer ${data.token.token}`;
 
         redirect(
             303,

@@ -21,7 +21,8 @@
     } from '#lib/components/ui/alert-dialog';
     import { wrappedFetch } from '#services/requestService';
     import type { Transmit } from '@adonisjs/transmit-client';
-    import { XIcon, UserRoundPlus, UserRoundX, UserRoundCheck } from '@lucide/svelte';
+    import { XIcon, UserRoundPlus, UserRoundX, Check } from '@lucide/svelte';
+    import { PUBLIC_DEFAULT_IMAGE } from '$env/static/public';
 
     type Props = {
         onUpdateFriends: () => void;
@@ -41,7 +42,7 @@
 
     onMount(async (): Promise<void> => {
         await setupEvents();
-        await updateAddFriends();
+        await getUsers();
     });
 
     const setupEvents = async (): Promise<void> => {
@@ -66,7 +67,13 @@
 
         // receiver updated when request received
         const receivedFriendRequest = transmit.subscription(`notification/add-friend/${$profile!.id}`);
-        await receivedFriendRequest.create();
+        console.log(`notification/add-friend/${$profile!.id}`);
+        try {
+            await receivedFriendRequest.create();
+        } catch (error: any) {
+            console.log(error);
+        }
+        console.log('ici');
         receivedFriendRequest.onMessage((pendingFriendRequest: SerializedPendingFriend) => {
             updateUser(pendingFriendRequest.notification.from.id, { receivedFriendRequest: true });
         });
@@ -91,37 +98,37 @@
         const unblockedUser = transmit.subscription(`notification/unblocked/${$profile!.id}`);
         await unblockedUser.create();
         unblockedUser.onMessage(async () => {
-            await updateAddFriends();
+            await getUsers();
         });
 
         // update when a user removes us from its friends
         const removeFriend = transmit.subscription(`notification/friend/remove/${$profile!.id}`);
         await removeFriend.create();
         removeFriend.onMessage(async () => {
-            await updateAddFriends();
+            await getUsers();
         });
     };
 
-    const updateAddFriends = async (page: number = 1, limit: number = 10): Promise<void> => {
-        await wrappedFetch(`/social/friends/add?page=${page}&limit=${limit}&query=${query}`, { method: 'GET' }, (data) => {
+    const getUsers = async (page: number = 1, limit: number = 10): Promise<void> => {
+        await wrappedFetch(`/social/friends/add?page=${page}&limit=${limit}&query=${query}`, { method: 'GET' }, (data): void => {
             paginatedUsers = data.users;
         });
     };
 
     const handleAskFriend = async (user: SerializedUser): Promise<void> => {
-        await wrappedFetch(`/social/friends/ask/${user.id}`, { method: 'POST' }, () => {
+        await wrappedFetch(`/social/friends/ask/${user.id}`, { method: 'POST' }, (): void => {
             updateUser(user.id, { sentFriendRequest: true });
         });
     };
 
     const handleCancelFriendRequest = async (user: SerializedUser): Promise<void> => {
-        await wrappedFetch(`/social/friends/pending/cancel/${user.id}`, { method: 'DELETE' }, () => {
+        await wrappedFetch(`/social/friends/pending/cancel/${user.id}`, { method: 'DELETE' }, (): void => {
             updateUser(user.id, { sentFriendRequest: false });
         });
     };
 
     const handleBlockUser = async (): Promise<void> => {
-        await wrappedFetch(`/social/block/${blockingUser!.id}`, { method: 'POST' }, () => {
+        await wrappedFetch(`/social/block/${blockingUser!.id}`, { method: 'POST' }, (): void => {
             if (!paginatedUsers) {
                 return;
             }
@@ -132,7 +139,7 @@
     };
 
     const handleAcceptPendingRequest = async (user: SerializedUser): Promise<void> => {
-        await wrappedFetch(`/social/friends/pending/accept/${user.id}`, { method: 'POST' }, async () => {
+        await wrappedFetch(`/social/friends/pending/accept/${user.id}`, { method: 'POST' }, async (): Promise<void> => {
             await setPendingFriendRequests();
             if (paginatedUsers) {
                 paginatedUsers.users = paginatedUsers.users.filter((currentUser: SerializedUser) => currentUser.id !== user?.id);
@@ -142,7 +149,7 @@
     };
 
     const handleRefusePendingRequest = async (user: SerializedUser): Promise<void> => {
-        await wrappedFetch(`/social/friends/pending/refuse/${user.id}`, { method: 'POST' }, async () => {
+        await wrappedFetch(`/social/friends/pending/refuse/${user.id}`, { method: 'POST' }, async (): Promise<void> => {
             await setPendingFriendRequests();
             updateUser(user.id, { receivedFriendRequest: false });
             onUpdateFriends();
@@ -155,7 +162,7 @@
         }
         paginatedUsers = {
             ...paginatedUsers,
-            users: paginatedUsers.users.map((user) => (user.id === userId ? { ...user, ...updates } : user)),
+            users: paginatedUsers.users.map((user: SerializedUser): SerializedUser => (user.id === userId ? { ...user, ...updates } : user)),
         };
     };
 
@@ -172,7 +179,7 @@
         label={m['social.friends.add.search.label']()}
         name="search-friend"
         minChars={3}
-        onSearch={() => updateAddFriends()}
+        onSearch={() => getUsers()}
         bind:search={query}
         bind:resultsArray={users}
     />
@@ -186,9 +193,9 @@
                     >
                         <div class="flex gap-5 flex-wrap items-center">
                             {#if user.profilePicture}
-                                <img alt={user.username} src={`/assets/profile-picture/${user.id}?token=${localStorage.getItem('apiToken')}`} class="w-8 rounded-full" />
+                                <img alt={user.username} src={`/assets/profile-picture/${user.id}`} class="w-8 rounded-full" />
                             {:else}
-                                <img alt={user.username} src="/default/image.png" class="w-8 rounded-full" />
+                                <img alt={user.username} src={PUBLIC_DEFAULT_IMAGE} class="w-8 rounded-full" />
                             {/if}
                             <p>{user.username}</p>
                         </div>
@@ -200,10 +207,10 @@
                             {:else if user.receivedFriendRequest}
                                 <div class="flex gap-5">
                                     <Button aria-label="Accept as friend" variant="outline" onclick={() => handleAcceptPendingRequest(user)}>
-                                        <UserRoundCheck class="size-6" />
+                                        <Check class="size-6 text-green-500" />
                                     </Button>
                                     <Button aria-label="Refuse friend request" variant="outline" onclick={() => handleRefusePendingRequest(user)}>
-                                        <XIcon class="size-6" />
+                                        <XIcon class="size-6 text-red-500" />
                                     </Button>
                                 </div>
                             {:else}
@@ -212,7 +219,7 @@
                                 </Button>
                             {/if}
                             <Button aria-label="Block user" variant="outline" onclick={() => handleShowBlockingModal(user)}>
-                                <UserRoundX class="size-6" />
+                                <UserRoundX class="size-6 text-red-500" />
                             </Button>
                         </div>
                     </div>
@@ -222,7 +229,7 @@
             <p class="my-5">{m['social.friends.add.none']()}</p>
         {/if}
     </div>
-    <Pagination paginatedObject={paginatedUsers} onChange={async (page: number, limit: number) => await updateAddFriends(page, limit)} />
+    <Pagination paginatedObject={paginatedUsers} onChange={async (page: number, limit: number) => await getUsers(page, limit)} />
 {:else}
     <Loader {isLoading} />
 {/if}

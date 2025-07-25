@@ -4,8 +4,7 @@
     import { PUBLIC_GITHUB_REPOSITORY } from '$env/static/public';
     import { Github } from '@lucide/svelte';
     import { menuItems } from '#services/menuService';
-    import { FooterGroupItem } from './';
-    import { FooterGroup } from '#lib/components/ui/footer';
+    import { FooterGroupItem, FooterGroup } from '#lib/components/ui/footer';
 </script>
 
 <footer class="w-full bg-neutral-300 dark:bg-gray-950 py-5 lg:py-10">

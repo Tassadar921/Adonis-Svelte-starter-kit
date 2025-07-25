@@ -2,14 +2,11 @@
     import { m } from '#lib/paraglide/messages';
     import { Title } from '#lib/components/ui/title';
     import { onMount } from 'svelte';
-    import axios from 'axios';
     import Search from '#components/Search.svelte';
     import Pagination from '#components/Pagination.svelte';
     import { Button } from '$lib/components/ui/button';
-    import { showToast } from '#services/toastService';
     import Loader from '#components/Loader.svelte';
-    import Icon from '#components/Icon.svelte';
-    import { PUBLIC_API_BASE_URI, PUBLIC_DEFAULT_IMAGE } from '$env/static/public';
+    import { PUBLIC_DEFAULT_IMAGE } from '$env/static/public';
     import { type PaginatedBlockedUsers, type SerializedUser, type SerializedBlockedUser } from 'backend/types';
     import Meta from '#components/Meta.svelte';
     import {
@@ -22,42 +19,39 @@
         AlertDialogHeader,
         AlertDialogTitle,
     } from '#lib/components/ui/alert-dialog';
+    import { wrappedFetch } from '#services/requestService';
+    import { Check } from '@lucide/svelte';
 
     let isLoading: boolean = false;
-    let paginatedBlockedUsers: PaginatedBlockedUsers;
-    let searchBaseUrl: string = '/api/blocked';
-    let query: string = '';
-    let selectedBlockedUser: SerializedUser;
-    let showModal: boolean = false;
+    let paginatedBlockedUsers: PaginatedBlockedUsers | undefined = $state();
+    let blockedUsers = $derived(paginatedBlockedUsers?.blockedUsers || []);
+    let query: string = $state('');
+    let selectedBlockedUser: SerializedUser | undefined = $state();
+    let showModal: boolean = $state(false);
+
+    // To avoid a tailwindcss bug where it's trying to parse the result of the placeholder if put directly into search's placeholder attribute
+    const searchPlaceholder: string = m['social.blocked.search.placeholder']();
 
     onMount(async (): Promise<void> => {
-        await updateBlockedUsers();
+        await getBlockedUsers();
     });
 
-    const handleSearch = async (): Promise<void> => {
-        searchBaseUrl = `/api/blocked?${query ? `query=${query}` : ''}`;
-        await updateBlockedUsers();
-    };
-
-    const updateBlockedUsers = async () => {
-        try {
-            const { data } = await axios.get(searchBaseUrl);
+    const getBlockedUsers = async (page: number = 1, limit: number = 10) => {
+        await wrappedFetch(`/social/blocked?page=${page}&limit=${limit}&query=${query}`, { method: 'GET' }, (data) => {
             paginatedBlockedUsers = data.blockedUsers;
-        } catch (error: any) {
-            showToast(error.response.data.error, 'error');
-        }
+        });
     };
 
     const handleUnblockUser = async (): Promise<void> => {
-        try {
-            const { data } = await axios.delete(`/api/blocked/cancel/${selectedBlockedUser.id}`);
-            paginatedBlockedUsers.blockedUsers = paginatedBlockedUsers.blockedUsers.filter((currentUser: SerializedBlockedUser) => {
-                return currentUser.user.id !== selectedBlockedUser.id;
-            });
-            showToast(data.message);
-        } catch (error: any) {
-            showToast(error.response.data.error, 'error');
+        if (!paginatedBlockedUsers || !selectedBlockedUser) {
+            return;
         }
+
+        await wrappedFetch(`/social/blocked/cancel/${selectedBlockedUser.id}`, { method: 'DELETE' }, () => {
+            paginatedBlockedUsers!.blockedUsers = paginatedBlockedUsers!.blockedUsers.filter((currentUser: SerializedBlockedUser) => {
+                return currentUser.user.id !== selectedBlockedUser!.id;
+            });
+        });
         showModal = false;
     };
 
@@ -74,13 +68,13 @@
 {#if paginatedBlockedUsers}
     <Search
         selected
-        bind:results={paginatedBlockedUsers.blockedUsers}
-        placeholder={m['social.blocked.search.placeholder']()}
-        label={m['social.blocked.search.label']()}
-        name="search-blocked"
+        placeholder={searchPlaceholder}
+        label={m['social.friends.add.search.label']()}
+        name="search-friend"
         minChars={3}
+        onSearch={() => getBlockedUsers()}
         bind:search={query}
-        on:search={handleSearch}
+        bind:resultsArray={blockedUsers}
     />
 
     <div class="flex flex-wrap gap-5 justify-center my-5">
@@ -92,18 +86,14 @@
                     >
                         <div class="flex gap-5 flex-wrap items-center">
                             {#if blocked.user.profilePicture}
-                                <img
-                                    alt={blocked.user.username}
-                                    src={`${PUBLIC_API_BASE_URI}/api/static/profile-picture/${blocked.user.id}?token=${localStorage.getItem('apiToken')}`}
-                                    class="w-10 rounded-full"
-                                />
+                                <img alt={blocked.user.username} src={`/assets/profile-picture/${blocked.user.id}`} class="w-8 rounded-full" />
                             {:else}
-                                <img alt={blocked.user.username} src={PUBLIC_DEFAULT_IMAGE} class="max-h-10 rounded-full" />
+                                <img alt={blocked.user.username} src={PUBLIC_DEFAULT_IMAGE} class="w-8 rounded-full" />
                             {/if}
                             <p>{blocked.user.username}</p>
                         </div>
-                        <Button aria-label="Unblock user" onclick={() => handleShowUnblockModal(blocked.user)}>
-                            <Icon name="unblock" />
+                        <Button aria-label="Unblock user" variant="outline" onclick={() => handleShowUnblockModal(blocked.user)}>
+                            <Check class="size-6" />
                         </Button>
                     </div>
                 {/each}
@@ -112,7 +102,7 @@
             <p class="my-5">{m['social.blocked.none']()}</p>
         {/if}
     </div>
-    <Pagination bind:paginatedObject={paginatedBlockedUsers} baseUri={searchBaseUrl} />
+    <Pagination paginatedObject={paginatedBlockedUsers} onChange={async (page: number, limit: number) => await getBlockedUsers(page, limit)} />
 {:else}
     <Loader {isLoading} />
 {/if}
@@ -121,7 +111,7 @@
     <AlertDialogContent>
         <AlertDialogHeader>
             <AlertDialogTitle>{m['social.unblock.modal.title']()}</AlertDialogTitle>
-            <AlertDialogDescription>{m['social.unblock.modal.text']({ username: selectedBlockedUser.username || '' })}</AlertDialogDescription>
+            <AlertDialogDescription>{m['social.unblock.modal.text']({ username: selectedBlockedUser?.username || '' })}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter>
             <AlertDialogCancel>{m['common.cancel']()}</AlertDialogCancel>

@@ -8,7 +8,7 @@ export const GET: RequestHandler = async ({ url, locals }): Promise<Response> =>
         const limit: number = Number(url.searchParams.get('limit')) || 10;
         const query: string = url.searchParams.get('query') || '';
 
-        const response = await locals.client.get('/api/friends', {
+        const response = await locals.client.get('/api/blocked', {
             params: { page, limit, query },
         });
 
@@ -19,7 +19,7 @@ export const GET: RequestHandler = async ({ url, locals }): Promise<Response> =>
         return json({
             isSuccess: true,
             message: response.data.message,
-            friends: response.data.friends,
+            blockedUsers: response.data.blockedUsers,
         });
     } catch (err: any) {
         return json(

@@ -1,15 +1,18 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from '@sveltejs/kit';
-import { client } from '#lib/api.server';
 import { m } from '#lib/paraglide/messages';
 
-export const POST: RequestHandler = async ({ params }): Promise<Response> => {
+export const POST: RequestHandler = async ({ params, locals }): Promise<Response> => {
     try {
-        const { data } = await client.post(`/api/friends/pending/accept/${params.id}`);
+        const response = await locals.client.post(`/api/friends/pending/accept/${params.id}`);
+
+        if (response.status !== 200) {
+            throw response;
+        }
 
         return json({
             isSuccess: true,
-            message: data.message,
+            message: response.data.message,
         });
     } catch (error: any) {
         return json(

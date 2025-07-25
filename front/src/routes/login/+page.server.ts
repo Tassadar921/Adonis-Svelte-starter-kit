@@ -1,12 +1,11 @@
 import { type Actions, fail, type RequestEvent } from '@sveltejs/kit';
 import { redirect } from 'sveltekit-flash-message/server';
-import { client } from '#lib/api.server';
 import type { FormError } from '../../app';
 import { extractFormData, extractFormErrors } from '#services/requestService';
 
 export const actions: Actions = {
     default: async (event: RequestEvent): Promise<void> => {
-        const { request, cookies } = event;
+        const { request, cookies, locals } = event;
 
         const formData: FormData = await request.formData();
 
@@ -14,7 +13,7 @@ export const actions: Actions = {
         let isSuccess: boolean = true;
 
         try {
-            const { data: returnedData } = await client.post('api/auth', formData, {
+            const { data: returnedData } = await locals.client.post('api/auth', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },
@@ -39,8 +38,6 @@ export const actions: Actions = {
                 sameSite: 'lax',
                 maxAge: 60 * 60 * 24 * 7,
             });
-
-            client.defaults.headers.common['Authorization'] = `Bearer ${data.token.token}`;
 
             const previousPathName: string | undefined = cookies.get('previousPathName');
             cookies.delete('previousPathName', { path: '/' });

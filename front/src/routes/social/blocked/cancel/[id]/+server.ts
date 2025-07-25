@@ -2,12 +2,9 @@ import { json } from '@sveltejs/kit';
 import type { RequestHandler } from '@sveltejs/kit';
 import { m } from '#lib/paraglide/messages';
 
-export const POST: RequestHandler = async ({ cookies, locals }): Promise<Response> => {
-    cookies.delete('user', { path: '/' });
-    cookies.delete('token', { path: '/' });
-
+export const DELETE: RequestHandler = async ({ params, locals }): Promise<Response> => {
     try {
-        const response = await locals.client.delete('/api/logout');
+        const response = await locals.client.delete(`/api/blocked/cancel/${params.id}`);
 
         if (response.status !== 200) {
             throw response;
@@ -21,11 +18,9 @@ export const POST: RequestHandler = async ({ cookies, locals }): Promise<Respons
         return json(
             {
                 isSuccess: false,
-                message: error?.response?.data?.error ?? m['common.error.default-message'](),
+                message: error?.response?.data?.error || error.message || m['common.error.default-message'](),
             },
-            {
-                status: error?.response?.status ?? 400,
-            }
+            { status: error?.response?.status || 500 }
         );
     }
 };

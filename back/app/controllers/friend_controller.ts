@@ -76,11 +76,15 @@ export default class FriendController {
 
         let pendingFriend: PendingFriend = await this.pendingFriendRepository.findOneFromUsers(user, targetUser);
 
+        await Promise.all([
+            pendingFriend.notification.delete(),
+            pendingFriend.delete(),
+            cache.delete({ key: `user-not-friends:${user.id}` }),
+            cache.delete({ key: `user-not-friends:${targetUser.id}` }),
+        ]);
+
         transmit.broadcast(`notification/add-friend/refuse/${userId}`, user.apiSerialize());
-        await pendingFriend.notification.delete();
-        await pendingFriend.delete();
-        await cache.delete({ key: `user-not-friends:${user.id}` });
-        await cache.delete({ key: `user-not-friends:${targetUser.id}` });
+
         return response.ok({ message: i18n.t('messages.friend.refuse.success') });
     }
 
@@ -94,9 +98,7 @@ export default class FriendController {
             return response.notFound({ error: i18n.t('messages.friend.remove.error', { username: targetUser.username }) });
         }
 
-        friendRelationships.map(async (friend: Friend): Promise<void> => {
-            await friend.delete();
-        });
+        await Promise.all(friendRelationships.map(async (friend: Friend): Promise<void> => friend.delete()));
 
         transmit.broadcast(`notification/friend/remove/${userId}`, user.apiSerialize());
         transmit.broadcast(`notification/friend/remove/${user.frontId}`, targetUser.apiSerialize());

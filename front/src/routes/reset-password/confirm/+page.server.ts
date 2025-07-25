@@ -1,12 +1,11 @@
 import { type Actions, type RequestEvent } from '@sveltejs/kit';
 import { redirect } from 'sveltekit-flash-message/server';
-import { client } from '#lib/api.server';
 import type { FormError, PageDataError } from '../../../app';
 import { extractFormData, extractFormErrors } from '#services/requestService';
 
 export const actions: Actions = {
     default: async (event: RequestEvent): Promise<void> => {
-        const { url, request, cookies } = event;
+        const { url, request, cookies, locals } = event;
         const token: string | null = url.searchParams.get('token');
 
         const formData: FormData = await request.formData();
@@ -17,7 +16,7 @@ export const actions: Actions = {
         try {
             formData.append('confirmPassword', <string>formData.get('confirm-password'));
             formData.delete('confirm-password');
-            const { data: returnedData } = await client.post(`api/reset-password/confirm/${token}`, formData, {
+            const { data: returnedData } = await locals.client.post(`api/reset-password/confirm/${token}`, formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

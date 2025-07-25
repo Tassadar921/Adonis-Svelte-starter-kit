@@ -1,19 +1,20 @@
 import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
-import { client } from '#lib/api.server';
 import { m } from '#lib/paraglide/messages';
 
-export const GET: RequestHandler = async ({ url }): Promise<Response> => {
+export const GET: RequestHandler = async ({ url, locals }): Promise<Response> => {
     try {
         const page: number = Number(url.searchParams.get('page')) || 1;
         const limit: number = Number(url.searchParams.get('limit')) || 10;
         const query: string = url.searchParams.get('query') || '';
 
-        const response = await client.get('/api/friends/add', {
+        const response = await locals.client.get('/api/friends/add', {
             params: { page, limit, query },
         });
 
-        console.log(response.data);
+        if (response.status !== 200) {
+            throw response;
+        }
 
         return json({
             isSuccess: true,

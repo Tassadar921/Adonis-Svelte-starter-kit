@@ -12,6 +12,10 @@ export default class UserController {
     public async searchNotFriends({ request, response, user }: HttpContext) {
         const { query, page, limit } = await getUsersValidator.validate(request.params());
 
+        await cache.delete({ key: `user-not-friends:${user.id}` });
+        console.log(`user-not-friends:${user.id}`);
+        console.log(user.username);
+
         return response.ok({
             users: await cache.getOrSet({
                 key: `user-not-friends:${user.id}`,

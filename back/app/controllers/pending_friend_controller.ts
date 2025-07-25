@@ -64,6 +64,7 @@ export default class PendingFriendController {
                 notificationQuery.preload('from');
             });
 
+            console.log(`notification/add-friend/${userId}`);
             transmit.broadcast(`notification/add-friend/${userId}`, pendingFriend.apiSerialize());
         }
 

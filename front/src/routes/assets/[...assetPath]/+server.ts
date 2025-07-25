@@ -1,16 +1,17 @@
 import type { RequestHandler } from '@sveltejs/kit';
-import { client } from '#lib/api.server';
 import { m } from '#lib/paraglide/messages';
-import type { AxiosResponse } from 'axios';
 
-export const GET: RequestHandler = async (event): Promise<Response> => {
-    const { params, url } = event;
+export const GET: RequestHandler = async ({ params, url, locals }): Promise<Response> => {
     const noCache: boolean = url.searchParams.get('no-cache') === 'true';
 
     try {
-        const response = await client.get(`/api/static/${params.assetPath}`, {
+        const response = await locals.client.get(`/api/static/${params.assetPath}`, {
             responseType: 'arraybuffer',
         });
+
+        if (response.status !== 200) {
+            throw response;
+        }
 
         return new Response(response.data, {
             headers: {

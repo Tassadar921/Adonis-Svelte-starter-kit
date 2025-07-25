@@ -1,10 +1,9 @@
 import { loadFlash, redirect } from 'sveltekit-flash-message/server';
 import type { PageServerLoad } from './$types';
-import { client } from '#lib/api.server';
 import { m } from '#lib/paraglide/messages';
 
 export const load: PageServerLoad = loadFlash(async (event): Promise<never> => {
-    const { url, cookies } = event;
+    const { url, cookies, locals } = event;
     const provider: string | null = url.searchParams.get('provider');
     const token: string | null = url.searchParams.get('token');
 
@@ -12,7 +11,7 @@ export const load: PageServerLoad = loadFlash(async (event): Promise<never> => {
     let isSuccess: boolean = true;
 
     try {
-        const { data: returnedData } = await client.post(`api/auth/confirm/${provider}/${token}`);
+        const { data: returnedData } = await locals.client.post(`api/auth/confirm/${provider}/${token}`);
         data = returnedData;
     } catch (error: any) {
         isSuccess = false;
@@ -33,8 +32,6 @@ export const load: PageServerLoad = loadFlash(async (event): Promise<never> => {
             sameSite: 'lax',
             maxAge: 60 * 60 * 24 * 7,
         });
-
-        client.defaults.headers.common['Authorization'] = `Bearer ${data.token.token}`;
 
         const previousPathName: string | undefined = cookies.get('previousPathName');
         cookies.delete('previousPathName', { path: '/' });

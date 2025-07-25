@@ -22,7 +22,6 @@ export const wrappedFetch = async (
 
     try {
         if (!response.ok) {
-            console.log(response);
             throw new Error(response.statusText, { cause: response });
         }
 
@@ -40,7 +39,6 @@ export const wrappedFetch = async (
 
         return data;
     } catch (error: any) {
-        console.error(error);
         return undefined;
     }
 };

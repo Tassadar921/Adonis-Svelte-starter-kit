@@ -47,28 +47,26 @@ export default class BlockedUserController {
         }
 
         const pendingFriends: PendingFriend[] = await this.pendingFriendRepository.findFromUsers(user, targetUser);
-        pendingFriends.map(async (pendingFriend: PendingFriend): Promise<void> => {
-            transmit.broadcast(`notification/add-friend/cancel/${userId}`, pendingFriend.apiSerialize());
-            await pendingFriend.delete();
-        });
 
         const friendRelationships: Friend[] = await this.friendRepository.findFromUsers(user, targetUser);
         if (friendRelationships.length) {
-            friendRelationships.map(async (friend: Friend): Promise<void> => {
-                await friend.delete();
-            });
+            await Promise.all([...friendRelationships.map(async (friend: Friend): Promise<void> => friend.delete())]);
         } else {
-            await cache.delete({ key: `user-not-friends:${user.id}` });
-            await cache.delete({ key: `user-not-friends:${targetUser.id}` });
+            await Promise.all([cache.delete({ key: `user-not-friends:${user.id}` }), cache.delete({ key: `user-not-friends:${targetUser.id}` })]);
         }
 
-        await BlockedUser.create({
-            blockerId: user.id,
-            blockedId: targetUser.id,
-        });
-
-        await cache.delete({ key: `user-blocked:${user.id}` });
-        await cache.delete({ key: `user-blocked:${targetUser.id}` });
+        await Promise.all([
+            ...pendingFriends.map(async (pendingFriend: PendingFriend): Promise<void> => {
+                transmit.broadcast(`notification/add-friend/cancel/${userId}`, pendingFriend.apiSerialize());
+                await pendingFriend.delete();
+            }),
+            BlockedUser.create({
+                blockerId: user.id,
+                blockedId: targetUser.id,
+            }),
+            cache.delete({ key: `user-blocked:${user.id}` }),
+            cache.delete({ key: `user-blocked:${targetUser.id}` }),
+        ]);
 
         transmit.broadcast(`notification/blocked/${userId}`, user.apiSerialize());
 
@@ -85,9 +83,11 @@ export default class BlockedUserController {
             return response.notFound({ error: i18n.t('messages.blocked-user.cancel.error', { username: targetUser.username }) });
         }
 
-        blockedUsers.map(async (blockedUser: BlockedUser): Promise<void> => {
-            await blockedUser.delete();
-        });
+        await Promise.all([
+            ...blockedUsers.map((blockedUser: BlockedUser): Promise<void> => blockedUser.delete()),
+            cache.delete({ key: `user-blocked:${user.id}` }),
+            cache.delete({ key: `user-blocked:${targetUser.id}` }),
+        ]);
 
         transmit.broadcast(`notification/unblocked/${userId}`);
 

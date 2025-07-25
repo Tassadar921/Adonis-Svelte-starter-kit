@@ -46,10 +46,10 @@
 
     onMount(async (): Promise<void> => {
         await setupEvents();
-        await updateFriends();
+        await getFriends();
     });
 
-    const updateFriends = async (page: number = 1, limit: number = 10): Promise<void> => {
+    const getFriends = async (page: number = 1, limit: number = 10): Promise<void> => {
         await wrappedFetch(`/social/friends?page=${page}&limit=${limit}&query=${query}`, { method: 'GET' }, (data) => {
             paginatedFriends = data.friends;
         });
@@ -114,7 +114,7 @@
     </Button>
 </div>
 
-<Search selected placeholder={searchPlaceholder} label={m['social.friends.search.label']()} name="search-friend" onSearch={() => updateFriends()} bind:search={query} bind:resultsArray={friends} />
+<Search selected placeholder={searchPlaceholder} label={m['social.friends.search.label']()} name="search-friend" onSearch={() => getFriends()} bind:search={query} bind:resultsArray={friends} />
 
 {#if paginatedFriends}
     <div class="flex flex-wrap gap-5 justify-center my-5">
@@ -126,21 +126,17 @@
                     >
                         <div class="flex gap-5 flex-wrap items-center">
                             {#if friendObject.friend.profilePicture}
-                                <img
-                                    alt={friendObject.friend.username}
-                                    src={`${PUBLIC_API_BASE_URI}/api/static/profile-picture/${friendObject.friend.id}?token=${localStorage.getItem('apiToken')}`}
-                                    class="w-10 rounded-full"
-                                />
+                                <img alt={friendObject.friend.username} src={`/assets/profile-picture/${friendObject.friend.id}`} class="w-8 rounded-full" />
                             {:else}
-                                <img alt={friendObject.friend.username} src={PUBLIC_DEFAULT_IMAGE} class="max-h-10 rounded-full" />
+                                <img alt={friendObject.friend.username} src={PUBLIC_DEFAULT_IMAGE} class="w-8 rounded-full" />
                             {/if}
                             <p>{friendObject.friend.username}</p>
                         </div>
                         <div class="flex gap-10 pr-5">
-                            <Button aria-label="Remove friend" onclick={() => handleShowRemoveFriendModal(friendObject.friend)}>
+                            <Button aria-label="Remove friend" variant="outline" onclick={() => handleShowRemoveFriendModal(friendObject.friend)}>
                                 <Icon name="removeUser" />
                             </Button>
-                            <Button aria-label="Block user" onclick={() => handleShowBlockingModal(friendObject.friend)}>
+                            <Button aria-label="Block user" variant="outline" onclick={() => handleShowBlockingModal(friendObject.friend)}>
                                 <Icon name="stop" />
                             </Button>
                         </div>
@@ -151,7 +147,7 @@
             <p class="mt-5">{m['social.friends.none']()}</p>
         {/if}
     </div>
-    <Pagination paginatedObject={paginatedFriends} onChange={async (page: number, limit: number) => await updateFriends(page, limit)} />
+    <Pagination paginatedObject={paginatedFriends} onChange={async (page: number, limit: number) => await getFriends(page, limit)} />
 {:else}
     <Loader {isLoading} />
 {/if}
@@ -161,7 +157,7 @@
         <DialogHeader>
             <DialogTitle>{m['social.friends.add.title']()}</DialogTitle>
         </DialogHeader>
-        <AddFriends onUpdateFriends={updateFriends} />
+        <AddFriends onUpdateFriends={getFriends} />
     </DialogContent>
 </Dialog>
 
