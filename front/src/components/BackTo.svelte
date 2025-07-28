@@ -3,14 +3,14 @@
     import { Link } from '#lib/components/ui/link';
 
     type Props = {
+        children: import('svelte').Snippet;
         href: string;
-        text: string;
     };
 
-    let { href, text }: Props = $props();
+    let { children, href }: Props = $props();
 </script>
 
 <Link {href} class="flex items-center">
     <ArrowLeft class="mb-0.5" />
-    <p>{text}</p>
+    {@render children?.()}
 </Link>

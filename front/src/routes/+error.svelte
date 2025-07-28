@@ -31,9 +31,9 @@
     <div class="flex flex-col gap-5 pointer-events-auto">
         <Title title={m[`${key}.title`]()} />
         {#if page.status === 401}
-            <BackTo href="/login" text={m['login.title']()} />
+            <BackTo href="/login">{m['login.title']()}</BackTo>
         {:else}
-            <BackTo href="/" text={m['common.back-to-home']()} />
+            <BackTo href="/">{m['common.back-to-home']()}</BackTo>
         {/if}
     </div>
 </div>

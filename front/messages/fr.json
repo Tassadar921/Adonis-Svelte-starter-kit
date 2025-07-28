@@ -256,14 +256,11 @@
         }
     },
     "admin": {
-        "title": "Admin",
-        "dashboard": {
-            "title": "Tableau de bord admin",
-            "meta": {
-                "title": "Tableau de bord Admin – Adonis & Svelte Starter Kit",
-                "description": "Accédez au tableau de bord admin pour gérer les utilisateurs, les contenus et les paramètres de l'application. Contrôlez votre application avec Adonis & Svelte Starter Kit.",
-                "keywords": "statistiques, tableau de bord admin, gestion des utilisateurs, gestion des contenus, paramètres admin, Adonis & Svelte Starter Kit"
-            }
+        "title": "Administration",
+        "meta": {
+            "title": "Tableau de bord administrateur – Adonis & Svelte Starter Kit",
+            "description": "Accédez au tableau de bord administrateur pour gérer les utilisateurs, les contenus et les paramètres de l'application. Contrôlez votre application avec Adonis & Svelte Starter Kit.",
+            "keywords": "statistiques, tableau de bord administrateur, gestion des utilisateurs, gestion des contenus, paramètres administrateur, Adonis & Svelte Starter Kit"
         },
         "users": {
             "title": "Utilisateurs",

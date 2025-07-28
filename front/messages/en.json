@@ -257,13 +257,10 @@
     },
     "admin": {
         "title": "Admin",
-        "dashboard": {
-            "title": "Admin Dashboard",
-            "meta": {
-                "title": "Admin Dashboard – Adonis & Svelte Starter Kit",
-                "description": "Access the admin dashboard to manage users, content, and application settings. Control your app with the Adonis & Svelte Starter Kit.",
-                "keywords": "statistics, admin dashboard, user management, content management, admin settings, Adonis & Svelte Starter Kit"
-            }
+        "meta": {
+            "title": "Admin Dashboard – Adonis & Svelte Starter Kit",
+            "description": "Access the admin dashboard to manage users, content, and application settings. Control your app with the Adonis & Svelte Starter Kit.",
+            "keywords": "statistics, admin dashboard, user management, content management, admin settings, Adonis & Svelte Starter Kit"
         },
         "users": {
             "title": "Users",
