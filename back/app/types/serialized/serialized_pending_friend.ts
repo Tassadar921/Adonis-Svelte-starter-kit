@@ -1,7 +1,7 @@
-import SerializedUser from '#types/serialized/serialized_user';
-import SerializedPendingFriendNotification from '#types/serialized/serialized_pending_friend_notification';
+import type { SerializedUser } from './serialized_user.js';
+import type { SerializedPendingFriendNotification } from './serialized_pending_friend_notification.js';
 
-type SerializedPendingFriend = {
+export type SerializedPendingFriend = {
     id: number;
     friend: SerializedUser;
     notification: SerializedPendingFriendNotification;

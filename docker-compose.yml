@@ -47,17 +47,19 @@ services:
         restart: always
         env_file: ./front/.env
         working_dir: /app
-        command: npm run dev -- --host --force
+        command: npm run dev -- --host --port ${FRONT_PORT}
         volumes:
             - ./front:/app
             - /app/node_modules
+            - ./back/app/types:/app/back/app/types:ro
         environment:
             - CHOKIDAR_USEPOLLING=true
             - WATCHPACK_POLLING=true
-            - VITE_PORT=${FRONT_PORT}
-            - VITE_FRONT_URI=http://localhost:${FRONT_PORT}
-            - VITE_API_BASE_URI=http://localhost:${PORT}
-            - VITE_GITHUB_REPOSITORY=${GITHUB_REPOSITORY}
+            - PUBLIC_PORT=${FRONT_PORT}
+            - PUBLIC_FRONT_URI=http://frontend:${FRONT_PORT}
+            - PUBLIC_API_BASE_URI=http://backend:${PORT}
+            - PUBLIC_API_REAL_URI=http://localhost:${PORT}
+            - PUBLIC_GITHUB_REPOSITORY=${GITHUB_REPOSITORY}
         ports:
             - '${FRONT_PORT}:${FRONT_PORT}'
         depends_on:

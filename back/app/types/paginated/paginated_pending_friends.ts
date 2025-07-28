@@ -1,10 +1,10 @@
-import SerializedFriend from '#types/serialized/serialized_friend';
+import type { SerializedFriend } from '../serialized/serialized_friend.js';
 
-type PaginatedPendingFriends = {
+export type PaginatedPendingFriends = {
     pendingFriends: SerializedFriend[];
     firstPage: number;
     lastPage: number;
-    perPage: number;
+    limit: number;
     total: number;
     currentPage: number;
 };

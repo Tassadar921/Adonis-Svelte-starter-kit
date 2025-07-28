@@ -1,12 +1,11 @@
-import UserRoleEnum from '#types/enum/user_role_enum';
-import SerializedFile from '#types/serialized/serialized_file';
+import type { UserRoleEnum } from '../enum/user_role_enum.js';
+import type { SerializedFile } from './serialized_file.js';
 
-type SerializedUser = {
+export type SerializedUser = {
     id: number;
     username: string;
     email: string;
     role: UserRoleEnum;
-    enabled: boolean;
     acceptedTermsAndConditions: boolean;
     receivedFriendRequest?: boolean;
     sentFriendRequest?: boolean;

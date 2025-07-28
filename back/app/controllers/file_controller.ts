@@ -10,7 +10,7 @@ import cache from '@adonisjs/cache/services/main';
 export default class FileController {
     constructor(private readonly userRepository: UserRepository) {}
 
-    public async serveStaticProfilePictureFile({ request, response, i18n }: HttpContext): Promise<void> {
+    public async serveStaticProfilePictureFile({ request, response, i18n }: HttpContext) {
         const { userId } = await serveStaticProfilePictureFileValidator.validate(request.params());
 
         try {
@@ -18,7 +18,7 @@ export default class FileController {
                 key: `user-profile-picture:${userId}`,
                 ttl: '1h',
                 factory: async (): Promise<string> => {
-                    const otherUser: User = await this.userRepository.firstOrFail({ frontId: userId }, ['profilePicture']);
+                    const otherUser: User = await this.userRepository.firstOrFail({ frontId: userId });
 
                     if (!otherUser.profilePicture) {
                         throw new Error('NO_PICTURE');

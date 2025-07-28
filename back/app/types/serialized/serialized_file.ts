@@ -1,6 +1,6 @@
-import FileTypeEnum from '#types/enum/file_type_enum';
+import type { FileTypeEnum } from '../enum/file_type_enum.js';
 
-type SerializedFile = {
+export type SerializedFile = {
     name: string;
     path: string;
     extension: string;

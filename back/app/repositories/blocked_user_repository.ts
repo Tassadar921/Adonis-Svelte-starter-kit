@@ -10,14 +10,14 @@ export default class BlockedUserRepository extends BaseRepository<typeof Blocked
         super(BlockedUser);
     }
 
-    public async search(query: string, page: number, perPage: number, user: User): Promise<PaginatedBlockedUsers> {
+    public async search(query: string, page: number, limit: number, user: User): Promise<PaginatedBlockedUsers> {
         const blockedUsers: ModelPaginatorContract<BlockedUser> = await this.Model.query()
             .where('blocker_id', user.id)
             .if(query, (queryBuilder): void => {
                 queryBuilder.leftJoin('users', 'blocked_users.blocked_id', 'users.id').andWhere('users.username', 'ILIKE', `%${query}%`);
             })
             .preload('blocked')
-            .paginate(page, perPage);
+            .paginate(page, limit);
 
         return {
             blockedUsers: await Promise.all(
@@ -27,7 +27,7 @@ export default class BlockedUserRepository extends BaseRepository<typeof Blocked
             ),
             firstPage: blockedUsers.firstPage,
             lastPage: blockedUsers.lastPage,
-            perPage,
+            limit,
             total: blockedUsers.total,
             currentPage: page,
         };

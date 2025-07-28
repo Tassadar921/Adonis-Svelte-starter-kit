@@ -1,6 +1,6 @@
-import SerializedUser from '#types/serialized/serialized_user';
+import type { SerializedUser } from './serialized_user.js';
 
-type SerializedBlockedUser = {
+export type SerializedBlockedUser = {
     id: number;
     user: SerializedUser;
     createdAt?: string;

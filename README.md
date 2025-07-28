@@ -4,7 +4,7 @@ This is a starter kit for building web applications using AdonisJS for the backe
 
 It is designed to be a solid foundation for your projects, allowing you to focus on building your application without worrying about the boilerplate code.
 
-### Front : Svelte 5, Tailwind 4, Axios
+### Front : Svelte 5, Sveltekit, Tailwind 4, Axios
 
 ### Back : Adonisjs 6, Redis, VineJS
 

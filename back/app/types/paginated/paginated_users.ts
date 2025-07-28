@@ -1,10 +1,10 @@
-import SerializedUser from '#types/serialized/serialized_user';
+import type { SerializedUser } from '../serialized/serialized_user.js';
 
-type PaginatedUsers = {
+export type PaginatedUsers = {
     users: SerializedUser[];
     firstPage: number;
     lastPage: number;
-    perPage: number;
+    limit: number;
     total: number;
     currentPage: number;
 };

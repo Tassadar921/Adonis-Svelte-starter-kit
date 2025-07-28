@@ -5,7 +5,7 @@
 ### 1) Clone the repository
 
 ```bash
-  git clone git@github.com:Tassadar921/MyRepository.git
+  git clone git@github.com:Tassadar921/Adonis-Svelte-starter-kit.git
 ```
 
 ---
@@ -74,4 +74,4 @@ You can access the application at http://localhost:5173.
 
 ### Development index documentation
 
-[&larr; Back to index](index.md)
+&larr; [Back to index](index.md)

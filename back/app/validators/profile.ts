@@ -18,7 +18,7 @@ export const resetPasswordValidator = vine.compile(
 
 export const resetPasswordParamsValidator = vine.compile(
     vine.object({
-        token: vine.string().trim().uuid(),
+        token: vine.string().trim(),
     })
 );
 
@@ -28,7 +28,7 @@ export const updateProfileValidator = vine.compile(
         profilePicture: vine
             .file({
                 size: '2mb',
-                extnames: ['jpg', 'png', 'gif', 'jpeg'],
+                extnames: ['png', 'jpg', 'gif', 'jpeg', 'webp'],
             })
             .optional(),
     })

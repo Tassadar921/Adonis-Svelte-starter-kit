@@ -1,10 +1,10 @@
-import SerializedBlockedUser from '#types/serialized/serialized_blocked_user';
+import type { SerializedBlockedUser } from '../serialized/serialized_blocked_user.js';
 
-type PaginatedBlockedUsers = {
+export type PaginatedBlockedUsers = {
     blockedUsers: SerializedBlockedUser[];
     firstPage: number;
     lastPage: number;
-    perPage: number;
+    limit: number;
     total: number;
     currentPage: number;
 };

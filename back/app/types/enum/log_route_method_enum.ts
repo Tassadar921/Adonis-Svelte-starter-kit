@@ -1,4 +1,4 @@
-enum LogRouteMethodEnum {
+export enum LogRouteMethodEnum {
     GET = 'GET',
     POST = 'POST',
     PATCH = 'PATCH',

@@ -1,11 +1,11 @@
 import { DateTime } from 'luxon';
 import hash from '@adonisjs/core/services/hash';
 import { compose } from '@adonisjs/core/helpers';
-import { afterCreate, BaseModel, belongsTo, column, hasMany } from '@adonisjs/lucid/orm';
+import { afterCreate, beforeFind, beforeFetch, BaseModel, belongsTo, column, hasMany } from '@adonisjs/lucid/orm';
 import { withAuthFinder } from '@adonisjs/auth/mixins/lucid';
 import type { BelongsTo, HasMany } from '@adonisjs/lucid/types/relations';
 import SerializedUser from '#types/serialized/serialized_user';
-import { DbAccessTokensProvider } from '@adonisjs/auth/access_tokens';
+import { AccessToken, DbAccessTokensProvider } from '@adonisjs/auth/access_tokens';
 import File from '#models/file';
 import UserRoleEnum from '#types/enum/user_role_enum';
 import Friend from '#models/friend';
@@ -19,6 +19,8 @@ const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
 });
 
 export default class User extends compose(BaseModel, AuthFinder) {
+    public currentAccessToken?: AccessToken;
+
     @column({ isPrimary: true })
     declare id: string;
 
@@ -33,9 +35,6 @@ export default class User extends compose(BaseModel, AuthFinder) {
 
     @column()
     declare password: string;
-
-    @column()
-    declare creationToken: string | null;
 
     @column()
     declare role: UserRoleEnum;
@@ -79,6 +78,12 @@ export default class User extends compose(BaseModel, AuthFinder) {
         });
     }
 
+    @beforeFind()
+    @beforeFetch()
+    public static preloadDefaults(userQuery: any): void {
+        userQuery.preload('profilePicture');
+    }
+
     static accessTokens: DbAccessTokensProvider<typeof User> = DbAccessTokensProvider.forModel(User, {
         expiresIn: '30 days',
         prefix: 'oat_',
@@ -93,7 +98,6 @@ export default class User extends compose(BaseModel, AuthFinder) {
             username: this.username,
             email: this.email,
             role: this.role,
-            enabled: this.enabled,
             acceptedTermsAndConditions: this.acceptedTermsAndConditions,
             profilePicture: this.profilePicture?.apiSerialize(),
             updatedAt: this.updatedAt?.toString(),

@@ -44,6 +44,8 @@ router
                         router.get('/callback', [OauthController, 'googleCallback']);
                     })
                     .prefix('google');
+
+                router.post('/confirm/:provider/:token', [OauthController, 'confirmOauthConnection']);
             })
             .prefix('auth');
 
@@ -51,7 +53,7 @@ router
         router
             .group((): void => {
                 router.post('/send-mail', [AuthController, 'sendAccountCreationEmail']);
-                router.get('/confirm/:token', [AuthController, 'confirmAccountCreation']);
+                router.post('/confirm/:token', [AuthController, 'confirmAccountCreation']);
             })
             .prefix('account-creation');
 
@@ -68,7 +70,7 @@ router
                     return { sessionTokenIsValid: true };
                 });
 
-                router.get('/logout', [AuthController, 'logout']);
+                router.delete('/logout', [AuthController, 'logout']);
 
                 router
                     .group((): void => {
@@ -82,13 +84,13 @@ router
                         router.get('/', [FriendController, 'search']);
                         router.get('/add', [UserController, 'searchNotFriends']);
 
-                        router.post('/ask', [PendingFriendController, 'add']);
-                        router.post('/accept', [FriendController, 'accept']);
-                        router.post('/refuse', [FriendController, 'refuse']);
+                        router.post('/ask/:userId', [PendingFriendController, 'add']);
                         router
                             .group((): void => {
                                 router.get('/', [PendingFriendController, 'search']);
                                 router.delete('/cancel/:userId', [PendingFriendController, 'cancel']);
+                                router.post('/accept/:userId', [FriendController, 'accept']);
+                                router.delete('/refuse/:userId', [FriendController, 'refuse']);
                             })
                             .prefix('pending');
                         router.delete('/remove/:userId', [FriendController, 'remove']);
@@ -98,25 +100,24 @@ router
                 router
                     .group((): void => {
                         router.get('/', [BlockedUserController, 'search']);
-                        router.get('/add/:userId', [BlockedUserController, 'block']);
                         router.delete('/cancel/:userId', [BlockedUserController, 'cancel']);
                     })
                     .prefix('blocked');
+                router.post('/block/:userId', [BlockedUserController, 'block']);
 
                 router
                     .group((): void => {
                         router.get('/pending-friends', [NotificationController, 'getPendingFriends']);
                     })
                     .prefix('notifications');
-            })
-            .use([middleware.auth({ guards: ['api'] })]);
 
-        router
-            .group((): void => {
-                router.get('/profile-picture/:userId', [FileController, 'serveStaticProfilePictureFile']);
+                router
+                    .group((): void => {
+                        router.get('/profile-picture/:userId', [FileController, 'serveStaticProfilePictureFile']);
+                    })
+                    .prefix('static');
             })
-            .prefix('static')
-            .use([middleware.queryStringAuth()]);
+            .use([middleware.auth()]);
     })
     .prefix('api')
     .use([middleware.log(), middleware.language()]);

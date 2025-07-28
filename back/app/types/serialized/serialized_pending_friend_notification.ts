@@ -1,7 +1,7 @@
-import SerializedUser from '#types/serialized/serialized_user';
-import NotificationTypeEnum from '#types/enum/notification_type_enum';
+import type { SerializedUser } from './serialized_user.js';
+import type { NotificationTypeEnum } from '../enum/notification_type_enum.js';
 
-type SerializedPendingFriendNotification = {
+export type SerializedPendingFriendNotification = {
     id: number;
     seen: boolean;
     from: SerializedUser;

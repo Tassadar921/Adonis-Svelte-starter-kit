@@ -5,11 +5,11 @@ format:
 	cd front && npx prettier --write "**/*.{js,ts,svelte,html,css,json,yml}"
 
 format-check:
-	cd back && npx prettier --check "**/*.{js,ts,json,yml}"
-	cd front && npx prettier --check "**/*.{js,ts,svelte,html,css,json,yml}"
+	cd back && npm run format
+	cd front && npm run format
 
 install:
-	rm -rf .vite node_modules package-lock.json back/node_modules front/node_modules
+	rm -rf node_modules package-lock.json back/node_modules front/node_modules
 	npm install
 
 upgrade:
@@ -36,11 +36,16 @@ init-logs-db:
 
 db: init-logs-db db-fresh db-seed
 
+paraglide:
+	cd front && npx paraglide-js compile
+
 stop:
 	./compose-env.sh down --remove-orphans
 
 up:
 	${MAKE} stop
+	rm -rf front/node_modules/.vite
+	${MAKE} paraglide
 	./compose-env.sh up -d --build
 
 rm:
@@ -78,7 +83,7 @@ migrate-prod:
 	cd back && node ace migration:run && node ace migration:run --connection=logs
 
 start-prod:
-	pm2 describe colonizadar > /dev/null
-	pm2 restart colonizadar || pm2 start back/build/bin/server.js --name adonis-svelte-starter-kit-backend
+	pm2 describe adonis-svelte-starter-kit-backend > /dev/null
+	pm2 restart adonis-svelte-starter-kit-backend || pm2 start back/build/bin/server.js --name adonis-svelte-starter-kit-backend
 
 deploy: build-prod migrate-prod start-prod

@@ -1,8 +1,8 @@
-import LogResponseStatusEnum from '#types/enum/log_response_status_enum';
-import LogRouteMethodEnum from '#types/enum/log_route_method_enum';
-import SerializedLogUser from '#types/serialized/serialized_log_user';
+import type { LogResponseStatusEnum } from '../enum/log_response_status_enum.js';
+import type { LogRouteMethodEnum } from '../enum/log_route_method_enum.js';
+import type { SerializedLogUser } from './serialized_log_user.js';
 
-type SerializedLog = {
+export type SerializedLog = {
     id: number;
     route: string;
     routeMethod: LogRouteMethodEnum;

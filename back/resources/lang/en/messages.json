@@ -58,6 +58,13 @@
                 "state-mismatch": "We are unable to verify the request. Please try again",
                 "default": "Unknown error from OAuth provider"
             }
+        },
+        "confirm": {
+            "success": "Successfully connected with {provider}",
+            "error": {
+                "invalid-token": "Invalid token",
+                "token-expired": "Token expired, please request a new one"
+            }
         }
     },
     "pending-friend": {

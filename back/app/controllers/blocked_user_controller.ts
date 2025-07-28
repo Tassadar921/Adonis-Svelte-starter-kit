@@ -22,66 +22,75 @@ export default class BlockedUserController {
         private readonly friendRepository: FriendRepository
     ) {}
 
-    public async search({ request, response, user }: HttpContext): Promise<void> {
-        const { query, page, perPage } = await request.validateUsing(getBlockedUsersValidator);
+    public async search({ request, response, user }: HttpContext) {
+        const { query, page, limit } = await request.validateUsing(getBlockedUsersValidator);
 
-        return response.send({
+        return response.ok({
             blockedUsers: await cache.getOrSet({
                 key: `user-blocked:${user.id}`,
                 ttl: '5m',
                 factory: async (): Promise<PaginatedBlockedUsers> => {
-                    return await this.blockedUserRepository.search(query ?? '', page ?? 1, perPage ?? 10, user);
+                    return await this.blockedUserRepository.search(query ?? '', page ?? 1, limit ?? 10, user);
                 },
             }),
         });
     }
 
-    public async block({ request, response, user, i18n }: HttpContext): Promise<void> {
+    public async block({ request, response, user, i18n }: HttpContext) {
         const { userId } = await blockValidator.validate(request.params());
 
-        const blockingUser: User = await this.userRepository.firstOrFail({ frontId: userId });
+        const targetUser: User = await this.userRepository.firstOrFail({ frontId: userId });
 
-        const blockedUsers: BlockedUser[] = await this.blockedUserRepository.findFromUsers(user, blockingUser);
+        const blockedUsers: BlockedUser[] = await this.blockedUserRepository.findFromUsers(user, targetUser);
         if (blockedUsers.length) {
-            return response.status(409).send({ error: i18n.t('messages.blocked-user.block.error', { username: blockingUser.username }) });
+            return response.conflict({ error: i18n.t('messages.blocked-user.block.error', { username: targetUser.username }) });
         }
 
-        const pendingFriends: PendingFriend[] = await this.pendingFriendRepository.findFromUsers(user, blockingUser);
-        pendingFriends.map(async (pendingFriend: PendingFriend): Promise<void> => {
-            transmit.broadcast(`notification/add-friend/cancel/${userId}`, pendingFriend.apiSerialize());
-            await pendingFriend.delete();
-        });
+        const pendingFriends: PendingFriend[] = await this.pendingFriendRepository.findFromUsers(user, targetUser);
 
-        const friendRelationships: Friend[] = await this.friendRepository.findFromUsers(user, blockingUser);
-        friendRelationships.map(async (friend: Friend): Promise<void> => {
-            await friend.delete();
-        });
+        const friendRelationships: Friend[] = await this.friendRepository.findFromUsers(user, targetUser);
+        if (friendRelationships.length) {
+            await Promise.all([...friendRelationships.map(async (friend: Friend): Promise<void> => friend.delete())]);
+        } else {
+            await Promise.all([cache.delete({ key: `user-not-friends:${user.id}` }), cache.delete({ key: `user-not-friends:${targetUser.id}` })]);
+        }
 
-        await BlockedUser.create({
-            blockerId: user.id,
-            blockedId: blockingUser.id,
-        });
+        await Promise.all([
+            ...pendingFriends.map(async (pendingFriend: PendingFriend): Promise<void> => {
+                transmit.broadcast(`notification/add-friend/cancel/${userId}`, pendingFriend.apiSerialize());
+                await pendingFriend.delete();
+            }),
+            BlockedUser.create({
+                blockerId: user.id,
+                blockedId: targetUser.id,
+            }),
+            cache.delete({ key: `user-blocked:${user.id}` }),
+            cache.delete({ key: `user-blocked:${targetUser.id}` }),
+        ]);
+
         transmit.broadcast(`notification/blocked/${userId}`, user.apiSerialize());
 
-        return response.send({ message: i18n.t('messages.blocked-user.block.success', { username: blockingUser.username }) });
+        return response.ok({ message: i18n.t('messages.blocked-user.block.success', { username: targetUser.username }) });
     }
 
-    public async cancel({ request, response, user, i18n }: HttpContext): Promise<void> {
+    public async cancel({ request, response, user, i18n }: HttpContext) {
         const { userId } = await cancelValidator.validate(request.params());
 
-        const blockingUser: User | null = await this.userRepository.firstOrFail({ frontId: userId });
+        const targetUser: User | null = await this.userRepository.firstOrFail({ frontId: userId });
 
-        const blockedUsers: BlockedUser[] = await this.blockedUserRepository.findFromUsers(user, blockingUser);
+        const blockedUsers: BlockedUser[] = await this.blockedUserRepository.findFromUsers(user, targetUser);
         if (!blockedUsers.length) {
-            return response.notFound({ error: i18n.t('messages.blocked-user.cancel.error', { username: blockingUser.username }) });
+            return response.notFound({ error: i18n.t('messages.blocked-user.cancel.error', { username: targetUser.username }) });
         }
 
-        blockedUsers.map(async (blockedUser: BlockedUser): Promise<void> => {
-            await blockedUser.delete();
-        });
+        await Promise.all([
+            ...blockedUsers.map((blockedUser: BlockedUser): Promise<void> => blockedUser.delete()),
+            cache.delete({ key: `user-blocked:${user.id}` }),
+            cache.delete({ key: `user-blocked:${targetUser.id}` }),
+        ]);
 
         transmit.broadcast(`notification/unblocked/${userId}`);
 
-        return response.send({ message: i18n.t('messages.blocked-user.cancel.success', { username: blockingUser.username }) });
+        return response.ok({ message: i18n.t('messages.blocked-user.cancel.success', { username: targetUser.username }) });
     }
 }

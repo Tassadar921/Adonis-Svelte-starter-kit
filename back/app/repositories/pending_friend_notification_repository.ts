@@ -15,7 +15,7 @@ export default class PendingFriendNotificationRepository extends BaseRepository<
         return countResult[0].$extras.total;
     }
 
-    public async getPagination(page: number, perPage: number, user: User, seen: boolean | undefined = undefined): Promise<PaginatedNotifications> {
+    public async getPagination(page: number, limit: number, user: User, seen: boolean | undefined = undefined): Promise<PaginatedNotifications> {
         const notifications: ModelPaginatorContract<PendingFriendNotification> = await this.Model.query()
             .if(seen !== undefined, (queryBuilder): void => {
                 queryBuilder.where('seen', <boolean>seen);
@@ -23,7 +23,7 @@ export default class PendingFriendNotificationRepository extends BaseRepository<
             .where('for_id', user.id)
             .orderBy('created_at', 'desc')
             .preload('from')
-            .paginate(page, perPage);
+            .paginate(page, limit);
 
         return {
             notifications: await Promise.all(
@@ -33,7 +33,7 @@ export default class PendingFriendNotificationRepository extends BaseRepository<
             ),
             firstPage: notifications.firstPage,
             lastPage: notifications.lastPage,
-            perPage,
+            limit,
             total: notifications.total,
             currentPage: page,
         };

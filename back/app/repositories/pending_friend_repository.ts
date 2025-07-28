@@ -10,7 +10,7 @@ export default class PendingFriendRepository extends BaseRepository<typeof Pendi
         super(PendingFriend);
     }
 
-    public async search(query: string, page: number, perPage: number, user: User): Promise<PaginatedPendingFriends> {
+    public async search(query: string, page: number, limit: number, user: User): Promise<PaginatedPendingFriends> {
         const pendingFriends: ModelPaginatorContract<PendingFriend> = await this.Model.query()
             .where('user_id', user.id)
             .if(query, (queryBuilder): void => {
@@ -20,7 +20,7 @@ export default class PendingFriendRepository extends BaseRepository<typeof Pendi
             .preload('notification', (notificationQuery): void => {
                 notificationQuery.preload('from');
             })
-            .paginate(page, perPage);
+            .paginate(page, limit);
 
         return {
             pendingFriends: await Promise.all(
@@ -30,7 +30,7 @@ export default class PendingFriendRepository extends BaseRepository<typeof Pendi
             ),
             firstPage: pendingFriends.firstPage,
             lastPage: pendingFriends.lastPage,
-            perPage,
+            limit,
             total: pendingFriends.total,
             currentPage: page,
         };

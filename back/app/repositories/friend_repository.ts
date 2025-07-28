@@ -10,14 +10,14 @@ export default class FriendRepository extends BaseRepository<typeof Friend> {
         super(Friend);
     }
 
-    public async search(query: string, page: number, perPage: number, user: User): Promise<PaginatedFriends> {
+    public async search(query: string, page: number, limit: number, user: User): Promise<PaginatedFriends> {
         const friends: ModelPaginatorContract<Friend> = await this.Model.query()
             .where('user_id', user.id)
             .if(query, (queryBuilder): void => {
                 queryBuilder.leftJoin('users', 'friends.friend_id', 'users.id').where('users.username', 'ILIKE', `%${query}%`);
             })
             .preload('friend')
-            .paginate(page, perPage);
+            .paginate(page, limit);
 
         return {
             friends: await Promise.all(
@@ -27,7 +27,7 @@ export default class FriendRepository extends BaseRepository<typeof Friend> {
             ),
             firstPage: friends.firstPage,
             lastPage: friends.lastPage,
-            perPage,
+            limit,
             total: friends.total,
             currentPage: page,
         };

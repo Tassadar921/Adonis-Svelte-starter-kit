@@ -1,10 +1,10 @@
-import SerializedFriend from '#types/serialized/serialized_friend';
+import type { SerializedFriend } from '../serialized/serialized_friend.js';
 
-type PaginatedFriends = {
+export type PaginatedFriends = {
     friends: SerializedFriend[];
     firstPage: number;
     lastPage: number;
-    perPage: number;
+    limit: number;
     total: number;
     currentPage: number;
 };
