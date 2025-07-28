@@ -1,6 +1,6 @@
 import 'toastify-js/src/toastify.css';
 import Toastify from 'toastify-js';
-import { navigate } from '#stores/locationStore';
+import { navigate } from '#lib/stores/locationStore';
 
 interface ToastStyle {
     [key: string]: string;

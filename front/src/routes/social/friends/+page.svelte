@@ -4,10 +4,10 @@
     import { onMount } from 'svelte';
     import Search from '#components/Search.svelte';
     import Pagination from '#components/Pagination.svelte';
-    import AddFriends from '#partials/social/friends/AddFriends.svelte';
+    import AddFriends from '#lib/partials/social/friends/AddFriends.svelte';
     import { Button } from '#lib/components/ui/button';
-    import { profile } from '#stores/profileStore';
-    import { waitForTransmit } from '#stores/transmitStore';
+    import { profile } from '#lib/stores/profileStore';
+    import { waitForTransmit } from '#lib/stores/transmitStore';
     import { type PaginatedFriends } from 'backend/types';
     import { type SerializedUser } from 'backend/types';
     import { type SerializedFriend } from 'backend/types';
@@ -25,7 +25,7 @@
         AlertDialogTitle,
     } from '#lib/components/ui/alert-dialog';
     import { Dialog, DialogContent, DialogHeader, DialogTitle } from '#lib/components/ui/dialog';
-    import { wrappedFetch } from '#services/requestService';
+    import { wrappedFetch } from '#lib/services/requestService';
     import { UserRoundPlus, UserRoundMinus, XIcon } from '@lucide/svelte';
     import type { Transmit } from '@adonisjs/transmit-client';
 

@@ -1,6 +1,6 @@
 <script lang="ts">
     import type { SvelteComponent } from 'svelte';
-    import { toCamelCase } from '#services/stringService';
+    import { toCamelCase } from '#lib/services/stringService';
 
     const iconNames = [
         'Book',

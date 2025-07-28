@@ -4,9 +4,9 @@
     import Pagination from '#components/Pagination.svelte';
     import Search from '#components/Search.svelte';
     import { Button } from '#lib/components/ui/button';
-    import { waitForTransmit } from '#stores/transmitStore';
-    import { profile } from '#stores/profileStore';
-    import { setPendingFriendRequests } from '#stores/notificationStore';
+    import { waitForTransmit } from '#lib/stores/transmitStore';
+    import { profile } from '#lib/stores/profileStore';
+    import { setPendingFriendRequests } from '#lib/stores/notificationStore';
     import Loader from '#components/Loader.svelte';
     import { type PaginatedUsers, type SerializedUser, type SerializedPendingFriend } from 'backend/types';
     import {
@@ -19,7 +19,7 @@
         AlertDialogHeader,
         AlertDialogTitle,
     } from '#lib/components/ui/alert-dialog';
-    import { wrappedFetch } from '#services/requestService';
+    import { wrappedFetch } from '#lib/services/requestService';
     import type { Transmit } from '@adonisjs/transmit-client';
     import { XIcon, UserRoundPlus, UserRoundX, Check } from '@lucide/svelte';
     import { PUBLIC_DEFAULT_IMAGE } from '$env/static/public';

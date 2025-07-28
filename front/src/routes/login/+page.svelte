@@ -2,10 +2,10 @@
     import Form from '#components/Form.svelte';
     import { Title } from '#lib/components/ui/title';
     import { m } from '#lib/paraglide/messages';
-    import OauthProviders from '#partials/login/OauthProviders.svelte';
+    import OauthProviders from '#lib/partials/login/OauthProviders.svelte';
     import Meta from '#components/Meta.svelte';
     import { Input } from '#lib/components/ui/input';
-    import { isValidEmail } from '#services/checkStringService';
+    import { isValidEmail } from '#lib/services/checkStringService';
     import { Link } from '#lib/components/ui/link';
     import { page } from '$app/state';
 

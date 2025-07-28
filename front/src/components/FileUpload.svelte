@@ -1,6 +1,6 @@
 <script lang="ts">
     import { m } from '#lib/paraglide/messages';
-    import { raw } from '#services/stringService';
+    import { raw } from '#lib/services/stringService';
     import Icon from '#components/Icon.svelte';
     import Loader from '#components/Loader.svelte';
 

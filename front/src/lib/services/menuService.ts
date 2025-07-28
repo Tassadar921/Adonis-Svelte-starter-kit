@@ -1,6 +1,6 @@
 import { m } from '#lib/paraglide/messages';
 import type { Component } from 'svelte';
-import { Home, Handshake, UserPen, LogOut, Lock, User } from '@lucide/svelte';
+import { Home, Handshake, UserPen, LogOut, Lock, User, UsersRound, ChartColumn, ArrowLeftFromLine } from '@lucide/svelte';
 
 export type MenuItemsListItem = {
     href: string;
@@ -13,7 +13,7 @@ interface MenuItemsList {
     notConnected: MenuItemsListItem[];
 }
 
-export const menuItems: MenuItemsList = {
+export const mainMenu: MenuItemsList = {
     connected: [
         {
             href: '/',
@@ -33,7 +33,7 @@ export const menuItems: MenuItemsList = {
         {
             href: '/admin',
             icon: Lock,
-            title: m['admin.title'](),
+            title: m['menu.admin'](),
         },
         {
             href: '/logout',
@@ -54,3 +54,21 @@ export const menuItems: MenuItemsList = {
         },
     ],
 };
+
+export const adminMenu: MenuItemsListItem[] = [
+    {
+        href: '/',
+        icon: ArrowLeftFromLine,
+        title: m['home.title'](),
+    },
+    {
+        href: '/admin',
+        icon: ChartColumn,
+        title: m['admin.title'](),
+    },
+    {
+        href: '/admin/users',
+        icon: UsersRound,
+        title: m['admin.users.title'](),
+    },
+];

@@ -25,8 +25,8 @@
 </script>
 
 <script lang="ts">
-    import { navigate } from '#stores/locationStore';
-    import { language } from '#stores/languageStore';
+    import { navigate } from '#lib/stores/locationStore';
+    import { language } from '#lib/stores/languageStore';
     import { cn } from '#lib/utils';
 
     let { children, ref, onclick, onmouseover, onfocus, onblur, onmouseout, href, target = '', class: className = '', ariaLabel, size = 'default' }: LinkProps = $props();

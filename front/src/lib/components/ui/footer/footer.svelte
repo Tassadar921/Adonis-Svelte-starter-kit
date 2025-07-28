@@ -1,9 +1,9 @@
 <script lang="ts">
-    import { profile } from '#stores/profileStore';
+    import { profile } from '#lib/stores/profileStore';
     import { m } from '#lib/paraglide/messages';
     import { PUBLIC_GITHUB_REPOSITORY } from '$env/static/public';
     import { Github } from '@lucide/svelte';
-    import { menuItems } from '#services/menuService';
+    import { mainMenu } from '#lib/services/menuService';
     import { FooterGroupItem, FooterGroup } from '#lib/components/ui/footer';
 </script>
 
@@ -14,13 +14,13 @@
         </div>
         <FooterGroup title={m['footer.navigation']()} class="order-1 lg:order-2">
             {#if $profile}
-                {#each menuItems.connected as item (item.title)}
+                {#each mainMenu.connected as item (item.title)}
                     {#if !item.href.startsWith('/admin') || $profile.role === 'admin'}
                         <FooterGroupItem name={item.title} href={item.href} icon={item.icon} />
                     {/if}
                 {/each}
             {:else}
-                {#each menuItems.notConnected as item (item.title)}
+                {#each mainMenu.notConnected as item (item.title)}
                     <FooterGroupItem name={item.title} href={item.href} icon={item.icon} />
                 {/each}
             {/if}

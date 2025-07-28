@@ -1,8 +1,7 @@
 import { loadFlash, redirect } from 'sveltekit-flash-message/server';
 import type { LayoutServerLoad } from './$types';
 import type { SerializedUser } from 'backend/types';
-import { m } from '#lib/paraglide/messages';
-import { type LanguageCode } from '#stores/languageStore';
+import { type LanguageCode } from '#lib/stores/languageStore';
 import { locales } from '../paraglide/runtime';
 import type { FormError } from '../app';
 
@@ -65,30 +64,18 @@ export const load: LayoutServerLoad = loadFlash(async (event): Promise<{ user?: 
                 maxAge: 60 * 60,
             });
 
-            return redirect(303, `/${language}/login`);
+            redirect(303, `/${language}/login`);
         }
     }
 
     if (!cookies.get('token')) {
         cookies.delete('user', { path: '/' });
 
-        return redirect(303, `/${language}/login`);
+        redirect(303, `/${language}/login`);
     }
 
     if (openedPathNames.some((openedPathName: OpenedPathName): boolean => location.startsWith(openedPathName.pathname) && !openedPathName.hybrid)) {
-        return redirect(303, `/${language}/`);
-    }
-
-    if (user && location.startsWith('/admin') && user.role !== 'admin') {
-        return redirect(
-            303,
-            `/${language}`,
-            {
-                type: 'error',
-                message: m['forbidden.title'](),
-            },
-            event
-        );
+        redirect(303, `/${language}/`);
     }
 
     if (formError) {

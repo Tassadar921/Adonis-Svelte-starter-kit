@@ -1,7 +1,7 @@
 import { type Actions, type RequestEvent } from '@sveltejs/kit';
 import { redirect } from 'sveltekit-flash-message/server';
 import type { FormError, PageDataError } from '../../../app';
-import { extractFormData, extractFormErrors } from '#services/requestService';
+import { extractFormData, extractFormErrors } from '#lib/services/requestService';
 
 export const actions: Actions = {
     default: async (event: RequestEvent): Promise<void> => {

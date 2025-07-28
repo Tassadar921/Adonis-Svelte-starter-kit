@@ -1,7 +1,7 @@
 <script lang="ts">
     import { MetaTags, type OpenGraph, type Twitter } from 'svelte-meta-tags';
-    import { location } from '#stores/locationStore';
-    import { language } from '#stores/languageStore';
+    import { location } from '#lib/stores/locationStore';
+    import { language } from '#lib/stores/languageStore';
     import { m } from '#lib/paraglide/messages';
     import { get } from 'svelte/store';
     import { locales } from '#lib/paraglide/runtime';

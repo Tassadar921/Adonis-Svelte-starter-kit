@@ -1,6 +1,6 @@
 <script lang="ts">
     import Icon from '#components/Icon.svelte';
-    import { showToast } from '#services/toastService';
+    import { showToast } from '#lib/services/toastService';
     import { PUBLIC_API_REAL_URI } from '$env/static/public';
     import { Button } from '#lib/components/ui/button';
     import { m } from '#lib/paraglide/messages';

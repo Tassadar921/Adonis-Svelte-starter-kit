@@ -1,7 +1,7 @@
 import type { LayoutLoad } from './$types';
-import { setProfile } from '#stores/profileStore';
-import { language } from '#stores/languageStore';
-import { location } from '#stores/locationStore';
+import { setProfile } from '#lib/stores/profileStore';
+import { language } from '#lib/stores/languageStore';
+import { location } from '#lib/stores/locationStore';
 
 export const load: LayoutLoad = async ({ data }): Promise<void> => {
     if (data.user) {

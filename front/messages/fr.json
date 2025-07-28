@@ -61,22 +61,10 @@
         }
     },
     "toast": {
-        "token-expired": "Votre session a expiré, veuillez vous reconnecter",
-        "copy": {
-            "success": "Copié dans le presse-papier"
-        },
-        "login": {
-            "success": "Vous êtes maintenant connecté",
-            "error": "Identifiants invalides"
-        },
-        "notification": {
-            "friend-request": {
-                "ask": "Vous avez reçu une demande d'ami de",
-                "accepted": "a accepté votre demande d'ami"
-            }
-        }
+        "token-expired": "Votre session a expiré, veuillez vous reconnecter"
     },
     "menu": {
+        "admin": "Admin",
         "source-code": "Code source"
     },
     "footer": {
@@ -256,19 +244,9 @@
         }
     },
     "admin": {
-        "title": "Administration",
-        "meta": {
-            "title": "Tableau de bord administrateur – Adonis & Svelte Starter Kit",
-            "description": "Accédez au tableau de bord administrateur pour gérer les utilisateurs, les contenus et les paramètres de l'application. Contrôlez votre application avec Adonis & Svelte Starter Kit.",
-            "keywords": "statistiques, tableau de bord administrateur, gestion des utilisateurs, gestion des contenus, paramètres administrateur, Adonis & Svelte Starter Kit"
-        },
+        "title": "Tableau de bord",
         "users": {
-            "title": "Utilisateurs",
-            "meta": {
-                "title": "Gérer les utilisateurs – Adonis & Svelte Starter Kit",
-                "description": "Consultez, modifiez et gérez les utilisateurs de votre application. Gérez les rôles, les permissions et les informations des utilisateurs facilement.",
-                "keywords": "gérer utilisateurs, modifier utilisateurs, rôles utilisateurs, permissions utilisateurs, Adonis & Svelte Starter Kit"
-            }
+            "title": "Utilisateurs"
         }
     },
     "notifications": {

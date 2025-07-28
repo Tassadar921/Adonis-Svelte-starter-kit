@@ -19,7 +19,7 @@
         AlertDialogHeader,
         AlertDialogTitle,
     } from '#lib/components/ui/alert-dialog';
-    import { wrappedFetch } from '#services/requestService';
+    import { wrappedFetch } from '#lib/services/requestService';
     import { Check } from '@lucide/svelte';
 
     let isLoading: boolean = false;

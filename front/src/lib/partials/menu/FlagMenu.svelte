@@ -2,8 +2,8 @@
     import { onMount } from 'svelte';
     import { Button } from '#lib/components/ui/button';
     import Icon from '#components/Icon.svelte';
-    import { type LanguageCode, language } from '#stores/languageStore';
-    import { location } from '#stores/locationStore';
+    import { type LanguageCode, language } from '#lib/stores/languageStore';
+    import { location } from '#lib/stores/locationStore';
     import { ChevronDown } from '@lucide/svelte';
     import { setLocale } from '#lib/paraglide/runtime';
     import { goto } from '$app/navigation';

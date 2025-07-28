@@ -1,6 +1,6 @@
 import { get, writable, type Writable } from 'svelte/store';
 import { goto } from '$app/navigation';
-import { language } from '#stores/languageStore';
+import { language } from '#lib/stores/languageStore';
 import { page } from '$app/state';
 
 export const location: Writable<string> = writable('');

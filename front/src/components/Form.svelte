@@ -8,7 +8,7 @@
     import { Card, CardHeader, CardContent, CardFooter } from '#lib/components/ui/card/index';
     import { page } from '$app/state';
     import type { PageDataError } from '../app';
-    import { showToast } from '#services/toastService';
+    import { showToast } from '#lib/services/toastService';
 
     type Props = {
         children: import('svelte').Snippet;

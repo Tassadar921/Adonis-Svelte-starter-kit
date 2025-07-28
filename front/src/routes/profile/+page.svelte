@@ -3,7 +3,7 @@
     import { Input } from '#lib/components/ui/input';
     import { Title } from '#lib/components/ui/title';
     import { Link } from '#lib/components/ui/link';
-    import { profile } from '#stores/profileStore';
+    import { profile } from '#lib/stores/profileStore';
     import { m } from '#lib/paraglide/messages';
     import { onMount } from 'svelte';
     import FileUpload from '#components/FileUpload.svelte';

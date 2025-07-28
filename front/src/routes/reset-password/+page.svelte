@@ -3,8 +3,8 @@
     import Form from '#components/Form.svelte';
     import { Input } from '#lib/components/ui/input';
     import { m } from '#lib/paraglide/messages';
-    import { profile } from '#stores/profileStore';
-    import { isValidEmail } from '#services/checkStringService';
+    import { profile } from '#lib/stores/profileStore';
+    import { isValidEmail } from '#lib/services/checkStringService';
     import Meta from '#components/Meta.svelte';
 
     let email: string = $state('');

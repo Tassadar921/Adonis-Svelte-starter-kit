@@ -1,19 +1,19 @@
 <script lang="ts">
     import '../app.css';
-    import Menu from '#partials/menu/Menu.svelte';
+    import Menu from '#lib/partials/menu/Menu.svelte';
     import { onMount } from 'svelte';
     import Meta from '#components/Meta.svelte';
     import { m } from '#lib/paraglide/messages';
     import { initFlash } from 'sveltekit-flash-message/client';
-    import { page as currentPage } from '$app/state';
+    import { page } from '$app/state';
     import { readable } from 'svelte/store';
-    import { showToast } from '#services/toastService';
+    import { showToast } from '#lib/services/toastService';
     import { Footer } from '#lib/components/ui/footer';
     import { Transmit } from '@adonisjs/transmit-client';
-    import { transmit } from '#stores/transmitStore';
+    import { transmit } from '#lib/stores/transmitStore';
     import { PUBLIC_API_REAL_URI } from '$env/static/public';
 
-    const page = readable(currentPage);
+    const currentPage = readable(page);
 
     interface Props {
         children: import('svelte').Snippet;
@@ -21,7 +21,7 @@
 
     let { children }: Props = $props();
 
-    const flash = initFlash(page);
+    const flash = initFlash(currentPage);
 
     onMount((): void => {
         const theme: string | null = localStorage.getItem('theme');
@@ -44,11 +44,13 @@
 <div class="app">
     <main class="flex flex-col w-screen">
         <Menu>
-            <div class="min-h-screen px-3.5">
+            <div class:min-h-screen={!page.data.isAdmin} class="px-3.5">
                 {@render children()}
             </div>
 
-            <Footer />
+            {#if !page.data.isAdmin}
+                <Footer />
+            {/if}
         </Menu>
     </main>
 </div>

@@ -13,10 +13,6 @@ const config = {
         alias: {
             '#menu': './src/menu',
             '#components': './src/components',
-            '#partials': './src/partials',
-            '#services': './src/services',
-            '#stores': './src/stores',
-            '#pages': './src/pages',
             '#icons': './src/icons',
             '#lib': './src/lib',
             'backend/types': path.resolve('back/app/types/index.ts'),

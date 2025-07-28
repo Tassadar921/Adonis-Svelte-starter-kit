@@ -1,6 +1,6 @@
 <script lang="ts">
-    import { navigate } from '#stores/locationStore';
-    import { clearProfile } from '#stores/profileStore';
+    import { navigate } from '#lib/stores/locationStore';
+    import { clearProfile } from '#lib/stores/profileStore';
     import { m } from '#lib/paraglide/messages';
     import { Title } from '#lib/components/ui/title';
     import {
@@ -14,7 +14,7 @@
         AlertDialogAction,
     } from '#lib/components/ui/alert-dialog';
     import Meta from '#components/Meta.svelte';
-    import { wrappedFetch } from '#services/requestService';
+    import { wrappedFetch } from '#lib/services/requestService';
 
     const handleConfirm = async (): Promise<void> => {
         await wrappedFetch(

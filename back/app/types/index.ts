@@ -1,8 +1,8 @@
-export type { FileTypeEnum } from './enum/file_type_enum.js';
-export type { LogResponseStatusEnum } from './enum/log_response_status_enum.js';
-export type { LogRouteMethodEnum } from './enum/log_route_method_enum.js';
-export type { NotificationTypeEnum } from './enum/notification_type_enum.js';
-export type { UserRoleEnum } from './enum/user_role_enum.js';
+export { FileTypeEnum } from './enum/file_type_enum.js';
+export { LogResponseStatusEnum } from './enum/log_response_status_enum.js';
+export { LogRouteMethodEnum } from './enum/log_route_method_enum.js';
+export { NotificationTypeEnum } from './enum/notification_type_enum.js';
+export { UserRoleEnum } from './enum/user_role_enum.js';
 
 export type { PaginatedBlockedUsers } from './paginated/paginated_blocked_users.js';
 export type { PaginatedFriends } from './paginated/paginated_friends.js';

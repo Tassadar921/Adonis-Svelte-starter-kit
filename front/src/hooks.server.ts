@@ -1,7 +1,7 @@
 import type { Handle } from '@sveltejs/kit';
 import { paraglideMiddleware } from '#lib/paraglide/server';
 import { getClient } from '#lib/api.server';
-import type { LanguageCode } from '#stores/languageStore';
+import type { LanguageCode } from '#lib/stores/languageStore';
 
 const handleParaglide: Handle = ({ event, resolve }): Promise<Response> =>
     paraglideMiddleware(event.request, ({ request, locale }) => {
