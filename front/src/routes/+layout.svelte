@@ -4,7 +4,6 @@
     import { onMount } from 'svelte';
     import Meta from '#components/Meta.svelte';
     import { m } from '#lib/paraglide/messages';
-    import NotificationsSetup from './NotificationsSetup.svelte';
     import { initFlash } from 'sveltekit-flash-message/client';
     import { page as currentPage } from '$app/state';
     import { readable } from 'svelte/store';
@@ -41,8 +40,6 @@
 </script>
 
 <Meta title={m['home.meta.title']()} description={m['home.meta.description']()} keywords={m['home.meta.keywords']().split(', ')} />
-
-<!--<NotificationsSetup />-->
 
 <div class="app">
     <main class="flex flex-col w-screen">

@@ -17,13 +17,12 @@
         footer?: import('svelte').Snippet;
         submitContent?: import('svelte').Snippet;
         onError?: (data?: any) => void;
-        form?: any;
         isValid?: boolean;
         submittable?: boolean;
         hasBackground?: boolean;
     };
 
-    let { children, header, links, footer, form, onError, isValid = false, submittable = true, hasBackground = true, submitContent }: Props = $props();
+    let { children, header, links, footer, onError, isValid = false, submittable = true, hasBackground = true, submitContent }: Props = $props();
 
     let isLoading: boolean = $state(false);
     let isSendButtonDisabled: boolean = $state(false);
@@ -37,6 +36,7 @@
             showToast(error.message, error.type);
             onError?.();
         });
+        page.data.formError = undefined;
     });
 </script>
 
@@ -55,10 +55,6 @@
                     {@render children?.()}
                 </div>
                 {@render links?.()}
-
-                {#if form?.error}
-                    <p class="error">{form.error}</p>
-                {/if}
             </CardContent>
 
             {#if submittable}
