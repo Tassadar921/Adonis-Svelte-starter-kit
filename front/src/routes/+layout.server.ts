@@ -11,7 +11,7 @@ interface OpenedPathName {
 }
 
 export const load: LayoutServerLoad = loadFlash(async (event): Promise<{ user?: SerializedUser; language: LanguageCode; location: string; formError?: FormError }> => {
-    const { cookies, url } = event;
+    const { cookies, url, locals } = event;
     const openedPathNames: OpenedPathName[] = [
         { pathname: '/create-account', hybrid: false },
         { pathname: '/login', hybrid: false },
@@ -68,7 +68,20 @@ export const load: LayoutServerLoad = loadFlash(async (event): Promise<{ user?: 
         }
     }
 
-    if (!cookies.get('token')) {
+    if (cookies.get('token')) {
+        try {
+            const response = await locals.client.get('/api');
+            if (response.status !== 200) {
+                console.log(response);
+                throw response;
+            }
+        } catch (error: any) {
+            cookies.delete('user', { path: '/' });
+            cookies.delete('token', { path: '/' });
+
+            redirect(303, `/${language}/login`);
+        }
+    } else {
         cookies.delete('user', { path: '/' });
 
         redirect(303, `/${language}/login`);

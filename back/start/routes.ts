@@ -66,8 +66,8 @@ router
 
         router
             .group((): void => {
-                router.get('/', (): { sessionTokenIsValid: boolean } => {
-                    return { sessionTokenIsValid: true };
+                router.get('/', (): { isSessionTokenValid: boolean } => {
+                    return { isSessionTokenValid: true };
                 });
 
                 router.delete('/logout', [AuthController, 'logout']);

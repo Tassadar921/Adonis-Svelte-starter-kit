@@ -1,6 +1,6 @@
 <script lang="ts">
     import { Button } from '#lib/components/ui/button/index';
-    import Icon from '#components/Icon.svelte';
+    import { ChevronsLeft, ChevronLeft, ChevronRight, ChevronsRight } from '@lucide/svelte';
 
     interface PaginatedObject {
         currentPage: number;
@@ -41,11 +41,11 @@
     {#if paginatedObject.currentPage}
         <!-- First Page Footer -->
         <Button disabled={!canGoBack} onclick={() => handleClick(paginatedObject.firstPage, paginatedObject.limit)}>
-            <Icon name="doubleChevronLeft" />
+            <ChevronsLeft class="size-6" />
         </Button>
         <!-- Previous Page Footer -->
         <Button disabled={!canGoBack} onclick={() => handleClick(paginatedObject.currentPage - 1, paginatedObject.limit)}>
-            <Icon name="arrowLeft" />
+            <ChevronLeft class="size-6" />
         </Button>
         <!-- Page Indicator -->
         <p>
@@ -53,11 +53,11 @@
         </p>
         <!-- Next Page Footer -->
         <Button disabled={!canGoForward} onclick={() => handleClick(paginatedObject.currentPage + 1, paginatedObject.limit)}>
-            <Icon name="chevronRight" />
+            <ChevronRight class="size-6" />
         </Button>
         <!-- Last Page Footer -->
         <Button disabled={!canGoForward} onclick={() => handleClick(paginatedObject.lastPage, paginatedObject.limit)}>
-            <Icon name="doubleChevronRight" />
+            <ChevronsRight class="size-6" />
         </Button>
     {/if}
 </div>

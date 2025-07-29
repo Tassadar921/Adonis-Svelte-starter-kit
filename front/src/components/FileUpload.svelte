@@ -1,8 +1,8 @@
 <script lang="ts">
     import { m } from '#lib/paraglide/messages';
     import { raw } from '#lib/services/stringService';
-    import Icon from '#components/Icon.svelte';
     import Loader from '#components/Loader.svelte';
+    import { Upload } from '@lucide/svelte';
 
     type Props = {
         name: string;
@@ -103,7 +103,7 @@
         <input bind:this={inputRef} type="file" class="hidden" {name} accept={acceptedFormats} onchange={handleFileChange} {disabled} />
 
         <span class="text-primary-500">
-            <Icon name="upload" size={35} />
+            <Upload class="size-6" />
         </span>
 
         <span class="text-center text-sm text-gray-500 my-3">
