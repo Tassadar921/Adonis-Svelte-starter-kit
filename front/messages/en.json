@@ -247,6 +247,9 @@
         "title": "Dashboard",
         "users": {
             "title": "Users"
+        },
+        "languages": {
+            "title": "Languages"
         }
     },
     "notifications": {

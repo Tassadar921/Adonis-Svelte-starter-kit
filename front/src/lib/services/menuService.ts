@@ -71,4 +71,9 @@ export const adminMenu: MenuItemsListItem[] = [
         icon: UsersRound,
         title: m['admin.users.title'](),
     },
+    {
+        href: '/admin/languages',
+        icon: UsersRound,
+        title: m['admin.languages.title'](),
+    },
 ];
