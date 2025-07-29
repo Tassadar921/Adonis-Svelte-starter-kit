@@ -6,8 +6,6 @@
     import FlagMenu from '#lib/partials/menu/FlagMenu.svelte';
     import { Link } from '#lib/components/ui/link';
     import { page } from '$app/state';
-    import { navigate } from '#lib/stores/locationStore';
-    import { showToast } from '#lib/services/toastService';
 
     type Props = {
         children: import('svelte').Snippet;
@@ -17,10 +15,6 @@
 
     let triggerButtonRef: HTMLButtonElement | undefined = $state();
     let isOpen: boolean = $state(false);
-
-    $effect((): void => {
-        console.log(page.data);
-    });
 </script>
 
 <SidebarProvider bind:open={isOpen}>
