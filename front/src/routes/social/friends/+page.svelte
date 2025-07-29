@@ -28,6 +28,7 @@
     import { wrappedFetch } from '#lib/services/requestService';
     import { UserRoundPlus, UserRoundMinus, XIcon } from '@lucide/svelte';
     import type { Transmit } from '@adonisjs/transmit-client';
+    import { page } from '$app/state';
 
     let isLoading: boolean = $state(false);
     let paginatedFriends: PaginatedFriends | undefined = $state();
@@ -45,7 +46,11 @@
 
     onMount(async (): Promise<void> => {
         await setupEvents();
-        await getFriends();
+        if (page.data.isSuccess) {
+            paginatedFriends = page.data.friends;
+        } else {
+            await getFriends();
+        }
     });
 
     const getFriends = async (page: number = 1, limit: number = 10): Promise<void> => {

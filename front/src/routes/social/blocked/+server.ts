@@ -18,7 +18,6 @@ export const GET: RequestHandler = async ({ url, locals }): Promise<Response> =>
 
         return json({
             isSuccess: true,
-            message: response.data.message,
             blockedUsers: response.data.blockedUsers,
         });
     } catch (err: any) {

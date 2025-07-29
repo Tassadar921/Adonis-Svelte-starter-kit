@@ -247,6 +247,9 @@
         "title": "Tableau de bord",
         "users": {
             "title": "Utilisateurs"
+        },
+        "languages": {
+            "title": "Langues"
         }
     },
     "notifications": {

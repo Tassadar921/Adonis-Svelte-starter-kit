@@ -21,6 +21,7 @@
     } from '#lib/components/ui/alert-dialog';
     import { wrappedFetch } from '#lib/services/requestService';
     import { Check } from '@lucide/svelte';
+    import { page } from '$app/state';
 
     let isLoading: boolean = false;
     let paginatedBlockedUsers: PaginatedBlockedUsers | undefined = $state();
@@ -33,7 +34,11 @@
     const searchPlaceholder: string = m['social.blocked.search.placeholder']();
 
     onMount(async (): Promise<void> => {
-        await getBlockedUsers();
+        if (page.data.isSuccess) {
+            paginatedBlockedUsers = page.data.blockedUsers;
+        } else {
+            await getBlockedUsers();
+        }
     });
 
     const getBlockedUsers = async (page: number = 1, limit: number = 10) => {
