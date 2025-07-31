@@ -65,7 +65,7 @@
     };
 
     const handleRemoveFriend = async (): Promise<void> => {
-        await wrappedFetch(`/social/friends/remove/${selectedFriend?.id}`, { method: 'DELETE' }, () => {
+        await wrappedFetch(`/social/friends/remove/${selectedFriend?.id}`, { method: 'DELETE' }, (): void => {
             if (paginatedFriends) {
                 paginatedFriends.friends = paginatedFriends.friends.filter((friendObject) => friendObject.friend.id !== selectedFriend?.id);
             }
@@ -79,7 +79,7 @@
     };
 
     const handleBlockUser = async (): Promise<void> => {
-        await wrappedFetch(`/social/blocked/add/${selectedFriend?.id}`, { method: 'GET' }, () => {
+        await wrappedFetch(`/social/blocked/add/${selectedFriend?.id}`, { method: 'GET' }, (): void => {
             if (paginatedFriends) {
                 paginatedFriends.friends = paginatedFriends.friends.filter((friendObject) => friendObject.friend.id !== selectedFriend?.id);
             }
@@ -92,7 +92,7 @@
 
         const removeFriend = transmit.subscription(`notification/friend/remove/${$profile!.id}`);
         await removeFriend.create();
-        removeFriend.onMessage(async (user: SerializedUser) => {
+        removeFriend.onMessage(async (user: SerializedUser): Promise<void> => {
             if (paginatedFriends) {
                 paginatedFriends.friends = paginatedFriends.friends.filter((f: SerializedFriend) => f.friend.id !== user.id);
             }
@@ -100,7 +100,7 @@
 
         const blockFriend = transmit.subscription(`notification/blocked/${$profile!.id}`);
         await blockFriend.create();
-        blockFriend.onMessage(async (user: SerializedUser) => {
+        blockFriend.onMessage(async (user: SerializedUser): Promise<void> => {
             if (paginatedFriends) {
                 paginatedFriends.friends = paginatedFriends.friends.filter((f: SerializedFriend) => f.friend.id !== user.id);
             }

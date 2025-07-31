@@ -1,6 +1,6 @@
 import BaseRepository from '#repositories/base/base_repository';
 import User from '#models/user';
-import { ModelPaginatorContract } from '@adonisjs/lucid/types/model';
+import { ModelPaginatorContract, ModelQueryBuilderContract } from '@adonisjs/lucid/types/model';
 import PaginatedNotifications from '#types/paginated/paginated_pending_friend_notifications';
 import SerializedPendingFriendNotification from '#types/serialized/serialized_pending_friend_notification';
 import PendingFriendNotification from '#models/pending_friend_notification';
@@ -17,7 +17,7 @@ export default class PendingFriendNotificationRepository extends BaseRepository<
 
     public async getPagination(page: number, limit: number, user: User, seen: boolean | undefined = undefined): Promise<PaginatedNotifications> {
         const notifications: ModelPaginatorContract<PendingFriendNotification> = await this.Model.query()
-            .if(seen !== undefined, (queryBuilder): void => {
+            .if(seen !== undefined, (queryBuilder: ModelQueryBuilderContract<typeof PendingFriendNotification>): void => {
                 queryBuilder.where('seen', <boolean>seen);
             })
             .where('for_id', user.id)
