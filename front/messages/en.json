@@ -245,11 +245,15 @@
     },
     "admin": {
         "title": "Dashboard",
-        "users": {
+        "user": {
             "title": "Users"
         },
-        "languages": {
-            "title": "Languages"
+        "language": {
+            "title": "Languages",
+            "columns": {
+                "code": "Code",
+                "name": "Name"
+            }
         }
     },
     "notifications": {

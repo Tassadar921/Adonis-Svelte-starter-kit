@@ -1,10 +1,15 @@
 import router from '@adonisjs/core/services/router';
 import { middleware } from '#start/kernel';
 
+// Transmit controllers
 const EventStreamController = () => import('@adonisjs/transmit/controllers/event_stream_controller');
 const SubscribeController = () => import('@adonisjs/transmit/controllers/subscribe_controller');
 const UnsubscribeController = () => import('@adonisjs/transmit/controllers/unsubscribe_controller');
 
+// Admin controllers
+const AdminLanguageController = () => import('#controllers/admin/language_controller');
+
+// App controllers
 const HealthCheckController = () => import('#controllers/health_checks_controller');
 const AuthController = () => import('#controllers/auth_controller');
 const ProfileController = () => import('#controllers/profile_controller');
@@ -64,11 +69,25 @@ router
             })
             .prefix('reset-password');
 
+        // Authenticated routes
         router
             .group((): void => {
+                // Authentication check route
                 router.get('/', (): { isSessionTokenValid: boolean } => {
                     return { isSessionTokenValid: true };
                 });
+
+                // Admin routes
+                router
+                    .group((): void => {
+                        router
+                            .group((): void => {
+                                router.get('/', [AdminLanguageController, 'getAll']);
+                            })
+                            .prefix('language');
+                    })
+                    .prefix('admin')
+                    .use([middleware.isAdmin()]);
 
                 router.delete('/logout', [AuthController, 'logout']);
 

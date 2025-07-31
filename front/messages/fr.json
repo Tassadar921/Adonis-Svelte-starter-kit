@@ -245,11 +245,15 @@
     },
     "admin": {
         "title": "Tableau de bord",
-        "users": {
+        "user": {
             "title": "Utilisateurs"
         },
-        "languages": {
-            "title": "Langues"
+        "language": {
+            "title": "Langues",
+            "columns": {
+                "code": "Code",
+                "name": "Nom"
+            }
         }
     },
     "notifications": {
