@@ -3,10 +3,9 @@ import { m } from '#lib/paraglide/messages';
 import type { SerializedLanguage } from 'backend/types';
 import { renderComponent } from '#lib/components/ui/data-table/render-helpers';
 import { Checkbox } from '#lib/components/ui/checkbox';
-import { SortableColumn } from '#lib/components/ui/data-table';
-import { TableRowCheckbox } from '#lib/components/ui/table';
+import { SortableColumn, DataTableActions } from '#lib/components/ui/data-table';
 
-export const languageColumns: ColumnDef<SerializedLanguage>[] = [
+export const getLanguageColumns = (onSort: () => Promise<void>): ColumnDef<SerializedLanguage>[] => [
     {
         id: 'select',
         header: ({ table }) =>
@@ -17,10 +16,10 @@ export const languageColumns: ColumnDef<SerializedLanguage>[] = [
                 'aria-label': 'Select all',
             }),
         cell: ({ row }) =>
-            renderComponent(TableRowCheckbox, {
-                row,
+            renderComponent(Checkbox, {
+                checked: row.getIsSelected(),
+                'aria-label': 'Select row',
             }),
-        enableSorting: false,
         enableHiding: false,
     },
     {
@@ -36,13 +35,12 @@ export const languageColumns: ColumnDef<SerializedLanguage>[] = [
         header: ({ column }) =>
             renderComponent(SortableColumn, {
                 title: m['admin.language.columns.name'](),
-                onclick: column.getToggleSortingHandler(),
+                onclick: onSort(),
             }),
     },
-    // {
-    //     id: "actions",
-    //     enableHiding: false,
-    //     cell: ({ row }) =>
-    //         renderComponent(DataTableActions, { id: row.original.id })
-    // }
+    {
+        header: m['admin.datatable.actions'](),
+        enableHiding: false,
+        cell: ({ row }) => renderComponent(DataTableActions, { id: row.original.code, onEdit: (code: string) => console.log(code) }),
+    },
 ];

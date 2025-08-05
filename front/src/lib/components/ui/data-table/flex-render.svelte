@@ -28,6 +28,6 @@
         {@const { snippet, params } = result}
         {@render snippet(params)}
     {:else}
-        {result}
+        <p class="px-3">{result}</p>
     {/if}
 {/if}

@@ -1,23 +1,8 @@
 <script lang="ts">
-    import { Checkbox } from '#lib/components/ui/checkbox';
-    import type { Row } from '@tanstack/table-core';
+    import type { ComponentProps } from 'svelte';
+    import { Checkbox } from '$lib/components/ui/checkbox/index.js';
 
-    type Props = {
-        row: Row<any>;
-    };
-
-    let { row }: Props = $props();
-
-    let checked: boolean = $state(false);
-
-    $effect((): void => {
-        console.log(row.getIsSelected());
-        checked = row.getIsSelected();
-    });
-
-    const toggle = (value: boolean): void => {
-        row.toggleSelected(value);
-    };
+    let { checked = false, onCheckedChange, ...restProps }: ComponentProps<typeof Checkbox> = $props();
 </script>
 
-<Checkbox {checked} onCheckedChange={(event) => toggle(event)} aria-label="Select row" />
+<Checkbox bind:checked {onCheckedChange} {...restProps} />

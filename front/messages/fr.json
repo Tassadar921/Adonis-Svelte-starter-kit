@@ -5,18 +5,22 @@
         "continue": "Continuer",
         "language": "Langue",
         "close": "Fermer",
-        "close-modal": "Fermer la fenêtre",
+        "edit": "Modifier",
+        "delete": "Supprimer",
+        "create": "Créer",
         "cancel": "Annuler",
         "back-to-home": "Retour à la page d'accueil",
-        "search": "Rechercher ...",
         "name": "Nom",
         "created-at": "Créé le",
         "updated-at": "Mis à jour le",
         "public": "Public",
         "private": "Privé",
-        "value": "Value",
         "error": {
             "default-message": "Quelque chose s'est mal passé"
+        },
+        "search": {
+            "label": "Rechercher",
+            "placeholder": "Rechercher..."
         },
         "title": {
             "label": "Titre",
@@ -245,6 +249,20 @@
     },
     "admin": {
         "title": "Tableau de bord",
+        "datatable": {
+            "actions": "Actions",
+            "selected-rows": [
+                {
+                    "declarations": ["input count", "input total", "local countPlural = count: plural"],
+                    "selectors": ["countPlural"],
+                    "match": {
+                        "countPlural=zero": "Aucune ligne sélectionnée",
+                        "countPlural=one": "{count} sur {total} ligne sélectionnée",
+                        "countPlural=other": "{count} sur {total} lignes sélectionnées"
+                    }
+                }
+            ]
+        },
         "user": {
             "title": "Utilisateurs"
         },

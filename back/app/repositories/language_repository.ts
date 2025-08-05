@@ -9,10 +9,13 @@ export default class LanguageRepository extends BaseRepository<typeof Language> 
         super(Language);
     }
 
-    public async getAdminLanguages(query: string, page: number, limit: number): Promise<PaginatedLanguages> {
+    public async getAdminLanguages(query: string, page: number, limit: number, sortBy: { field: keyof Language['$attributes']; order: 'asc' | 'desc' }): Promise<PaginatedLanguages> {
         const languages: ModelPaginatorContract<Language> = await this.Model.query()
             .if(query, (queryBuilder: ModelQueryBuilderContract<typeof Language>): void => {
                 queryBuilder.where('name', 'ILIKE', `%${query}%`).orWhere('code', 'ILIKE', `%${query}%`);
+            })
+            .if(sortBy, (queryBuilder: ModelQueryBuilderContract<typeof Language>): void => {
+                queryBuilder.orderBy(sortBy.field as string, sortBy.order);
             })
             .paginate(page, limit);
 

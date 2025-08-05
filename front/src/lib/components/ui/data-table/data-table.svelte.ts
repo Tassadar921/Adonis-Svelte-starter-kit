@@ -1,4 +1,4 @@
-import { type RowData, type TableOptions, type TableOptionsResolved, type TableState, createTable } from '@tanstack/table-core';
+import { type RowData, type TableOptions, type TableOptionsResolved, type TableState, createTable, type Table } from '@tanstack/table-core';
 
 /**
  * Creates a reactive TanStack table object for Svelte.
@@ -26,11 +26,11 @@ import { type RowData, type TableOptions, type TableOptionsResolved, type TableS
  * </table>
  * ```
  */
-export function createSvelteTable<TData extends RowData>(options: TableOptions<TData>) {
+export function createSvelteTable<TData extends RowData>(options: TableOptions<TData>): Table<TData> {
     const resolvedOptions: TableOptionsResolved<TData> = mergeObjects(
         {
             state: {},
-            onStateChange() {},
+            onStateChange(): void {},
             renderFallbackValue: null,
             enableRowSelection: true,
             enableMultiRowSelection: true,
@@ -45,13 +45,13 @@ export function createSvelteTable<TData extends RowData>(options: TableOptions<T
     const table = createTable(resolvedOptions);
     let state = $state<Partial<TableState>>(table.initialState);
 
-    function updateOptions() {
+    function updateOptions(): void {
         table.setOptions((prev) => {
             return mergeObjects(prev, options, {
                 state: mergeObjects(state, options.state || {}),
 
                 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-                onStateChange: (updater: any) => {
+                onStateChange: (updater: any): void => {
                     if (updater instanceof Function) state = updater(state);
                     else state = mergeObjects(state, updater);
 
@@ -63,7 +63,7 @@ export function createSvelteTable<TData extends RowData>(options: TableOptions<T
 
     updateOptions();
 
-    $effect.pre(() => {
+    $effect.pre((): void => {
         updateOptions();
     });
 
@@ -92,13 +92,13 @@ export function mergeObjects<Sources extends readonly MaybeThunk<any>[]>(...sour
     };
 
     return new Proxy(Object.create(null), {
-        get(_, key) {
+        get(_, key: string | symbol) {
             const src = findSourceWithKey(key);
 
             return src?.[key as never];
         },
 
-        has(_, key) {
+        has(_, key: string | symbol): boolean {
             return !!findSourceWithKey(key);
         },
 
@@ -115,7 +115,7 @@ export function mergeObjects<Sources extends readonly MaybeThunk<any>[]>(...sour
             return [...all];
         },
 
-        getOwnPropertyDescriptor(_, key) {
+        getOwnPropertyDescriptor(_, key: string | symbol) {
             const src = findSourceWithKey(key);
             if (!src) return undefined;
             return {

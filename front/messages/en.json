@@ -5,18 +5,22 @@
         "continue": "Continue",
         "language": "Language",
         "close": "Close",
-        "close-modal": "Close modal",
+        "edit": "Edit",
+        "delete": "Delete",
+        "create": "Create",
         "cancel": "Cancel",
         "back-to-home": "Back to homepage",
-        "search": "Search ...",
         "name": "Name",
         "created-at": "Created at",
         "updated-at": "Updated at",
         "public": "Public",
         "private": "Private",
-        "value": "Value",
         "error": {
             "default-message": "Something went wrong"
+        },
+        "search": {
+            "label": "Search",
+            "placeholder": "Search..."
         },
         "title": {
             "label": "Title",
@@ -245,6 +249,21 @@
     },
     "admin": {
         "title": "Dashboard",
+        "datatable": {
+            "actions": "Actions",
+            "selected-rows": [
+                {
+                    "declarations": ["input count", "input total", "local countPlural = count: plural"],
+                    "selectors": ["countPlural"],
+                    "match": {
+                        "countPlural=zero": "Aucune ligne sélectionnée",
+                        "countPlural=one": "{count} sur {total} ligne sélectionnée",
+                        "countPlural=other": "{count} sur {total} lignes sélectionnées"
+                    }
+                }
+            ],
+            "columns": "Columns"
+        },
         "user": {
             "title": "Users"
         },
