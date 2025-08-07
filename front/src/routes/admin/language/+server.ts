@@ -22,7 +22,6 @@ export const GET: RequestHandler = async ({ url, locals }): Promise<Response> =>
             languages: response.data,
         });
     } catch (error: any) {
-        console.log(error.response.data);
         return json(
             {
                 isSuccess: false,
