@@ -30,6 +30,7 @@ export const getLanguageColumns = (onSort: (field: string, order: 'asc' | 'desc'
                 field: 'code',
                 onclick: onSort,
             }),
+        enableHiding: false,
     },
     {
         accessorKey: 'name',
