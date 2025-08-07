@@ -7,9 +7,10 @@ export const GET: RequestHandler = async ({ url, locals }): Promise<Response> =>
         const page: number = Number(url.searchParams.get('page')) || 1;
         const limit: number = Number(url.searchParams.get('limit')) || 10;
         const query: string = url.searchParams.get('query') || '';
+        const sortBy: string = url.searchParams.get('sortBy') || 'name:asc';
 
         const response = await locals.client.get('/api/admin/language', {
-            params: { page, limit, query },
+            params: { page, limit, query, sortBy },
         });
 
         if (response.status !== 200) {
@@ -20,13 +21,14 @@ export const GET: RequestHandler = async ({ url, locals }): Promise<Response> =>
             isSuccess: true,
             languages: response.data,
         });
-    } catch (err: any) {
+    } catch (error: any) {
+        console.log(error.response.data);
         return json(
             {
                 isSuccess: false,
-                message: err?.response?.data?.error || m['common.error.default-message'](),
+                message: error?.response?.data?.error || m['common.error.default-message'](),
             },
-            { status: err?.response?.status || 500 }
+            { status: error?.response?.status || 500 }
         );
     }
 };

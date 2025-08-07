@@ -21,6 +21,11 @@
         }
     });
 
+    const handleSort = (field: string, order: 'asc' | 'desc'): void => {
+        sortBy = `${field}:${order}`;
+        getLanguages();
+    };
+
     const getLanguages = async (page: number = 1, limit: number = 10): Promise<void> => {
         await wrappedFetch(`/admin/language?page=${page}&limit=${limit}&query=${query}&sortBy=${sortBy}`, { method: 'GET' }, (data): void => {
             paginatedLanguages = data.languages;
@@ -32,7 +37,7 @@
 
 {#if paginatedLanguages}
     <div class="flex flex-col gap-1 mt-10">
-        <DataTable data={paginatedLanguages.languages} columns={getLanguageColumns(async () => await getLanguages())} onSearch={getLanguages} bind:query bind:sortBy />
+        <DataTable data={paginatedLanguages.languages} columns={getLanguageColumns(handleSort)} onSearch={getLanguages} bind:query bind:sortBy />
         <Pagination paginatedObject={paginatedLanguages} onChange={async (page: number, limit: number) => await getLanguages(page, limit)} />
     </div>
 {/if}

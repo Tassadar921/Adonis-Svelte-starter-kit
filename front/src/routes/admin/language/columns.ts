@@ -5,7 +5,7 @@ import { renderComponent } from '#lib/components/ui/data-table/render-helpers';
 import { Checkbox } from '#lib/components/ui/checkbox';
 import { SortableColumn, DataTableActions } from '#lib/components/ui/data-table';
 
-export const getLanguageColumns = (onSort: () => Promise<void>): ColumnDef<SerializedLanguage>[] => [
+export const getLanguageColumns = (onSort: (field: string, order: 'asc' | 'desc') => void): ColumnDef<SerializedLanguage>[] => [
     {
         id: 'select',
         header: ({ table }) =>
@@ -27,7 +27,8 @@ export const getLanguageColumns = (onSort: () => Promise<void>): ColumnDef<Seria
         header: ({ column }) =>
             renderComponent(SortableColumn, {
                 title: m['admin.language.columns.code'](),
-                onclick: column.getToggleSortingHandler(),
+                field: 'code',
+                onclick: onSort,
             }),
     },
     {
@@ -35,7 +36,8 @@ export const getLanguageColumns = (onSort: () => Promise<void>): ColumnDef<Seria
         header: ({ column }) =>
             renderComponent(SortableColumn, {
                 title: m['admin.language.columns.name'](),
-                onclick: onSort(),
+                field: 'name',
+                onclick: onSort,
             }),
     },
     {
