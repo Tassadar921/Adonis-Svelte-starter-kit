@@ -24,7 +24,8 @@ export default class FriendController {
 
         return response.ok({
             friends: await cache.getOrSet({
-                key: `user-friends:${user.id}`,
+                key: `user-friends:${user.id}:query:${query}:page:${page}:limit:${limit}`,
+                tags: [`user-friends:${user.id}`],
                 ttl: '5m',
                 factory: async (): Promise<PaginatedFriends> => {
                     return await this.friendRepository.search(query ?? '', page ?? 1, limit ?? 10, user);
@@ -58,10 +59,9 @@ export default class FriendController {
             ]),
             pendingFriend.notification.delete(),
             pendingFriend.delete(),
-            cache.delete({ key: `user-not-friends:${user.id}` }),
-            cache.delete({ key: `user-friends:${user.id}` }),
-            cache.delete({ key: `user-not-friends:${targetUser.id}` }),
-            cache.delete({ key: `user-friends:${targetUser.id}` }),
+            cache.deleteByTag({
+                tags: [`user-not-friends:${user.id}`, `user-friends:${user.id}`, `user-not-friends:${targetUser.id}`, `user-friends:${targetUser.id}`],
+            }),
         ]);
 
         transmit.broadcast(`notification/add-friend/accept/${userId}`, user.apiSerialize());
@@ -76,12 +76,7 @@ export default class FriendController {
 
         let pendingFriend: PendingFriend = await this.pendingFriendRepository.findOneFromUsers(user, targetUser);
 
-        await Promise.all([
-            pendingFriend.notification.delete(),
-            pendingFriend.delete(),
-            cache.delete({ key: `user-not-friends:${user.id}` }),
-            cache.delete({ key: `user-not-friends:${targetUser.id}` }),
-        ]);
+        await Promise.all([pendingFriend.notification.delete(), pendingFriend.delete(), cache.deleteByTag({ tags: [`user-not-friends:${user.id}`, `user-not-friends:${targetUser.id}`] })]);
 
         transmit.broadcast(`notification/add-friend/refuse/${userId}`, user.apiSerialize());
 

@@ -28,4 +28,14 @@ export default class LanguageRepository extends BaseRepository<typeof Language> 
             currentPage: page,
         };
     }
+
+    public async delete(code: string): Promise<boolean> {
+        try {
+            // Delete some other things if needed
+            await this.Model.query().where('code', code).delete();
+        } catch (error: any) {
+            return false;
+        }
+        return true;
+    }
 }

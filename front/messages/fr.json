@@ -271,6 +271,10 @@
             "columns": {
                 "code": "Code",
                 "name": "Nom"
+            },
+            "delete": {
+                "title": "Supprimer {name}",
+                "text": "Êtes-vous sûr de vouloir supprimer la langue nommée {name} ? Cette action est irréversible et supprimera les données liées."
             }
         }
     },

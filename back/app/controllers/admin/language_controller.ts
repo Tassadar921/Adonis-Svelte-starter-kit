@@ -1,7 +1,7 @@
 import { inject } from '@adonisjs/core';
 import { HttpContext } from '@adonisjs/core/http';
 import LanguageRepository from '#repositories/language_repository';
-import { searchAdminLanguagesValidator } from '#validators/admin/language';
+import { searchAdminLanguagesValidator, deleteAdminLanguageValidator } from '#validators/admin/language';
 import Language from '#models/language';
 
 @inject()
@@ -15,5 +15,16 @@ export default class FileController {
         const sortBy = { field: field as keyof Language['$attributes'], order: order as 'asc' | 'desc' };
 
         return response.ok(await this.languageRepository.getAdminLanguages(query, page, limit, sortBy));
+    }
+
+    public async delete({ request, response }: HttpContext) {
+        const { code } = await deleteAdminLanguageValidator.validate(request.params());
+
+        const deleted: boolean = await this.languageRepository.delete(code);
+        if (!deleted) {
+            return response.notFound({ error: 'Language not found' });
+        }
+
+        return response.ok({ deleted });
     }
 }

@@ -27,7 +27,8 @@ export default class BlockedUserController {
 
         return response.ok({
             blockedUsers: await cache.getOrSet({
-                key: `user-blocked:${user.id}`,
+                key: `user-blocked:${user.id}:query:${query}:page:${page}:limit:${limit}`,
+                tags: [`user-blocked:${user.id}`],
                 ttl: '5m',
                 factory: async (): Promise<PaginatedBlockedUsers> => {
                     return await this.blockedUserRepository.search(query ?? '', page ?? 1, limit ?? 10, user);
@@ -50,9 +51,12 @@ export default class BlockedUserController {
 
         const friendRelationships: Friend[] = await this.friendRepository.findFromUsers(user, targetUser);
         if (friendRelationships.length) {
-            await Promise.all([...friendRelationships.map(async (friend: Friend): Promise<void> => friend.delete())]);
+            await Promise.all([
+                ...friendRelationships.map(async (friend: Friend): Promise<void> => friend.delete()),
+                cache.deleteByTag({ tags: [`user-friends:${user.id}`, `user-friends:${targetUser.id}`] }),
+            ]);
         } else {
-            await Promise.all([cache.delete({ key: `user-not-friends:${user.id}` }), cache.delete({ key: `user-not-friends:${targetUser.id}` })]);
+            await cache.deleteByTag({ tags: [`user-not-friends:${user.id}`, `user-not-friends:${targetUser.id}`] });
         }
 
         await Promise.all([
@@ -64,8 +68,7 @@ export default class BlockedUserController {
                 blockerId: user.id,
                 blockedId: targetUser.id,
             }),
-            cache.delete({ key: `user-blocked:${user.id}` }),
-            cache.delete({ key: `user-blocked:${targetUser.id}` }),
+            cache.deleteByTag({ tags: [`user-blocked:${user.id}`, `user-blocked:${targetUser.id}`] }),
         ]);
 
         transmit.broadcast(`notification/blocked/${userId}`, user.apiSerialize());
@@ -85,8 +88,7 @@ export default class BlockedUserController {
 
         await Promise.all([
             ...blockedUsers.map((blockedUser: BlockedUser): Promise<void> => blockedUser.delete()),
-            cache.delete({ key: `user-blocked:${user.id}` }),
-            cache.delete({ key: `user-blocked:${targetUser.id}` }),
+            cache.deleteByTag({ tags: [`user-blocked:${user.id}`, `user-blocked:${targetUser.id}`] }),
         ]);
 
         transmit.broadcast(`notification/unblocked/${userId}`);

@@ -1,6 +1,9 @@
 <script lang="ts" generics="TData, TValue, TContext extends HeaderContext<TData, TValue> | CellContext<TData, TValue>">
     import type { CellContext, ColumnDefTemplate, HeaderContext } from '@tanstack/table-core';
     import { RenderComponentConfig, RenderSnippetConfig } from './render-helpers.js';
+    import { location } from '#lib/stores/locationStore';
+    import { Link } from '#lib/components/ui/link';
+
     type Props = {
         /** The cell or header field of the current cell's column definition. */
         content?: TContext extends HeaderContext<TData, TValue>
@@ -13,6 +16,8 @@
     };
 
     let { content, context }: Props = $props();
+
+    console.log($location);
 </script>
 
 {#if typeof content === 'string'}
@@ -25,9 +30,10 @@
         {@const { component: Component, props } = result}
         <Component {...props} />
     {:else if result instanceof RenderSnippetConfig}
+        <p>coucou</p>
         {@const { snippet, params } = result}
         {@render snippet(params)}
     {:else}
-        <p class="px-3">{result}</p>
+        <Link href={`${$location}/edit/${context.row.original.code}`} class="px-3">{result}</Link>
     {/if}
 {/if}

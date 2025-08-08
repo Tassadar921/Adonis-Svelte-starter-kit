@@ -44,6 +44,11 @@ export const getLanguageColumns = (onSort: (field: string, order: 'asc' | 'desc'
     {
         header: m['admin.datatable.actions'](),
         enableHiding: false,
-        cell: ({ row }) => renderComponent(DataTableActions, { id: row.original.code, onEdit: (code: string) => console.log(code) }),
+        cell: ({ row }) =>
+            renderComponent(DataTableActions, {
+                id: row.original.code,
+                deleteTitle: m['admin.language.delete.title']({ name: row.original.name }),
+                deleteText: m['admin.language.delete.text']({ name: row.original.name }),
+            }),
     },
 ];
