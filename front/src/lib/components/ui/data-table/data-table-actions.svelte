@@ -31,7 +31,7 @@
 
     const handleDelete = async (): Promise<void> => {
         showModal = false;
-        await wrappedFetch(`${$location}/delete/${id}`, { method: 'DELETE' }, () => {
+        await wrappedFetch(`${$location}/delete`, { method: 'POST', body: { languages: [id] } }, () => {
             onDelete?.();
         });
     };
