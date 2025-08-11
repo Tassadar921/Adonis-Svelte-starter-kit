@@ -17,14 +17,19 @@ export default class FileController {
         return response.ok(await this.languageRepository.getAdminLanguages(query, page, limit, sortBy));
     }
 
-    public async delete({ request, response }: HttpContext) {
-        const { code } = await deleteAdminLanguageValidator.validate(request.params());
+    public async delete({ request, response, i18n }: HttpContext) {
+        const { languages } = await request.validateUsing(deleteAdminLanguageValidator);
 
-        const deleted: boolean = await this.languageRepository.delete(code);
-        if (!deleted) {
-            return response.notFound({ error: 'Language not found' });
-        }
+        const statuses: { isDeleted: boolean; name?: string; code?: string }[] = await this.languageRepository.delete(languages);
 
-        return response.ok({ deleted });
+        return response.ok({
+            messages: statuses.map((status: { isDeleted: boolean; name?: string; code?: string }): { message: string; isSuccess: boolean } => {
+                if (status.isDeleted) {
+                    return { message: i18n.t(`admin.language.delete.success`, { name: status.name }), isSuccess: true };
+                } else {
+                    return { message: i18n.t(`admin.language.delete.error`, { code: status.code }), isSuccess: false };
+                }
+            }),
+        });
     }
 }

@@ -3,17 +3,20 @@ import type { RequestHandler } from './$types';
 import { m } from '#lib/paraglide/messages';
 
 export const POST: RequestHandler = async ({ request, params, locals }): Promise<Response> => {
-    console.log(await request.json());
+    const body = await request.json();
     try {
-        // const response = await locals.client.post(`/api/admin/language/delete`);
-        //
-        // if (response.status !== 200) {
-        //     throw response;
-        // }
+        const response = await locals.client.post(`/api/admin/language/delete`, {
+            languages: body.languages,
+        });
+
+        if (response.status !== 200) {
+            throw response;
+        }
+
+        console.log(response.data);
 
         return json({
             isSuccess: true,
-            // languages: response.data,
         });
     } catch (error: any) {
         return json(

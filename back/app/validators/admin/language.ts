@@ -12,6 +12,6 @@ export const searchAdminLanguagesValidator = vine.compile(
 
 export const deleteAdminLanguageValidator = vine.compile(
     vine.object({
-        code: vine.string().fixedLength(2),
+        languages: vine.array(vine.string().fixedLength(2)),
     })
 );

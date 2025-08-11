@@ -29,13 +29,18 @@ export default class LanguageRepository extends BaseRepository<typeof Language> 
         };
     }
 
-    public async delete(code: string): Promise<boolean> {
-        try {
-            // Delete some other things if needed
-            await this.Model.query().where('code', code).delete();
-        } catch (error: any) {
-            return false;
-        }
-        return true;
+    public async delete(codes: string[]): Promise<{ isDeleted: boolean; name?: string; code?: string }[]> {
+        // Delete some other things if needed
+        return await Promise.all([
+            ...codes.map(async (code: string): Promise<{ isDeleted: boolean; name?: string; code?: string }> => {
+                try {
+                    const language: Language = await this.Model.query().where('code', code).firstOrFail();
+                    await language.delete();
+                    return { isDeleted: true, name: language.name };
+                } catch (error: any) {
+                    return { isDeleted: false, code };
+                }
+            }),
+        ]);
     }
 }

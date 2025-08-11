@@ -1,4 +1,12 @@
 {
+    "admin": {
+        "language": {
+            "delete": {
+                "success": "Successfully deleted {name}",
+                "error": "Error while deleting language with code {code}"
+            }
+        }
+    },
     "auth": {
         "login": {
             "success": "Logged in",
