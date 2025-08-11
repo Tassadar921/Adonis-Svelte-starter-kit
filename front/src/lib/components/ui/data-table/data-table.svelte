@@ -102,7 +102,9 @@
                 </TableRow>
             {:else}
                 <TableRow>
-                    <TableCell colspan={columns.length} class="h-24 text-center">No results.</TableCell>
+                    <TableCell colspan={columns.length} class="h-24 text-center">
+                        {m['admin.datatable.no-result']}
+                    </TableCell>
                 </TableRow>
             {/each}
         </TableBody>

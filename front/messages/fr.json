@@ -251,6 +251,7 @@
         "title": "Tableau de bord",
         "datatable": {
             "actions": "Actions",
+            "no-result": "Pas de résultat",
             "selected-rows": [
                 {
                     "declarations": ["input count", "input total", "local countPlural = count: plural"],

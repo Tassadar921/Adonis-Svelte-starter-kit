@@ -251,6 +251,7 @@
         "title": "Dashboard",
         "datatable": {
             "actions": "Actions",
+            "no-result": "No result",
             "selected-rows": [
                 {
                     "declarations": ["input count", "input total", "local countPlural = count: plural"],
