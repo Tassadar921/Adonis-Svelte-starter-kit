@@ -7,16 +7,26 @@
     import { Button } from '#lib/components/ui/button';
     import Search from '#components/Search.svelte';
     import { m } from '#lib/paraglide/messages';
+    import Pagination from '#components/Pagination.svelte';
+
+    interface PaginatedObject {
+        currentPage: number;
+        firstPage: number;
+        lastPage: number;
+        limit: number;
+        total: number;
+    }
 
     type Props = {
+        paginatedObject: PaginatedObject;
         data: any[];
         columns: ColumnDef<any>[];
         onSearch: () => void;
         query: string;
-        sortBy: string;
+        onPaginationChange: (page: number, limit: number) => void;
     };
 
-    let { data, columns, onSearch, query = $bindable(''), sortBy = $bindable('') }: Props = $props();
+    let { paginatedObject, data, columns, onSearch, query = $bindable(''), onPaginationChange }: Props = $props();
 
     let rowSelection = $state<RowSelectionState>({});
     let columnVisibility = $state<VisibilityState>({});
@@ -114,3 +124,5 @@
 <div class="text-muted-foreground flex-1 text-sm">
     {m['admin.datatable.selected-rows']({ count: table.getFilteredSelectedRowModel().rows.length, total: table.getFilteredRowModel().rows.length })}
 </div>
+
+<Pagination {paginatedObject} onChange={async (page: number, limit: number) => await getLanguages(page, limit)} />
