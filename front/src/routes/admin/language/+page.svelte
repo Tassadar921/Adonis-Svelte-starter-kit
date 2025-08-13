@@ -10,6 +10,7 @@
     import { Button } from '#lib/components/ui/button';
 
     let paginatedLanguages: PaginatedLanguages | undefined = $state();
+    let selectedRows: string[] = $state([]);
     let query: string = $state('');
     let sortBy: string = $state('name:asc');
 
@@ -40,6 +41,10 @@
             paginatedLanguages = data.languages;
         });
     };
+
+    $effect((): void => {
+        console.log([ ...selectedRows ]);
+    });
 </script>
 
 <Title title={m['admin.language.title']()} hasBackground />
@@ -52,6 +57,7 @@
             columns={getLanguageColumns(handleSort, handleDelete)}
             onSearch={getLanguages}
             bind:query
+            bind:selectedRows
             onPaginationChange={async (page: number, limit: number) => await getLanguages(page, limit)}
         />
         <div class="w-full flex justify-end gap-5">

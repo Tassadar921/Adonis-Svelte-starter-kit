@@ -16,8 +16,6 @@
     };
 
     let { content, context }: Props = $props();
-
-    console.log($location);
 </script>
 
 {#if typeof content === 'string'}
@@ -30,7 +28,6 @@
         {@const { component: Component, props } = result}
         <Component {...props} />
     {:else if result instanceof RenderSnippetConfig}
-        <p>coucou</p>
         {@const { snippet, params } = result}
         {@render snippet(params)}
     {:else}

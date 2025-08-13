@@ -1,5 +1,5 @@
 <script lang="ts">
-    import { getCoreRowModel } from '@tanstack/table-core';
+    import {getCoreRowModel, type Row} from '@tanstack/table-core';
     import type { ColumnDef, RowSelectionState, VisibilityState } from '@tanstack/table-core';
     import { createSvelteTable, FlexRender } from '#lib/components/ui/data-table/index';
     import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '#lib/components/ui/table';
@@ -8,6 +8,7 @@
     import Search from '#components/Search.svelte';
     import { m } from '#lib/paraglide/messages';
     import Pagination from '#components/Pagination.svelte';
+    import type {SerializedLanguage} from "backend/types";
 
     interface PaginatedObject {
         currentPage: number;
@@ -23,10 +24,11 @@
         columns: ColumnDef<any>[];
         onSearch: () => void;
         query: string;
+        selectedRows: string[];
         onPaginationChange: (page: number, limit: number) => void;
     };
 
-    let { paginatedObject, data, columns, onSearch, query = $bindable(''), onPaginationChange }: Props = $props();
+    let { paginatedObject, data, columns, onSearch, query = $bindable(''), selectedRows = $bindable([]), onPaginationChange }: Props = $props();
 
     let rowSelection = $state<RowSelectionState>({});
     let columnVisibility = $state<VisibilityState>({});
@@ -61,6 +63,10 @@
         getCoreRowModel: getCoreRowModel(),
         enableRowSelection: true,
     });
+
+    $effect((): void => {
+        selectedRows = table.getFilteredSelectedRowModel().rows.map((row: Row<SerializedLanguage>): string => row.getValue('code'));
+    })
 </script>
 
 <div class="flex items-center py-4 justify-between">
@@ -125,4 +131,4 @@
     {m['admin.datatable.selected-rows']({ count: table.getFilteredSelectedRowModel().rows.length, total: table.getFilteredRowModel().rows.length })}
 </div>
 
-<Pagination {paginatedObject} onChange={async (page: number, limit: number) => await getLanguages(page, limit)} />
+<Pagination {paginatedObject} onChange={(page: number, limit: number) => onPaginationChange(page, limit)} />
