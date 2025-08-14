@@ -5,7 +5,7 @@ import { renderComponent } from '#lib/components/ui/data-table/render-helpers';
 import { Checkbox } from '#lib/components/ui/checkbox';
 import { SortableColumn, DataTableActions } from '#lib/components/ui/data-table';
 
-export const getLanguageColumns = (onSort: (field: string, order: 'asc' | 'desc') => void, onDelete: (id: string) => void): ColumnDef<SerializedLanguage>[] => [
+export const getLanguageColumns = (onSort: (field: string, order: 'asc' | 'desc') => void, onDelete: (ids: string[]) => void): ColumnDef<SerializedLanguage>[] => [
     {
         id: 'select',
         header: ({ table }) =>

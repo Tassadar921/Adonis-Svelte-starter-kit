@@ -276,7 +276,20 @@
             },
             "delete": {
                 "title": "Delete {name}",
-                "text": "Are you sure you want to delete {name} ? This action cannot be undone and will permanently remove the language and all related data."
+                "text": [
+                    {
+                        "declarations": [
+                            "input languages",
+                            "local countPlural = languages.length: plural"
+                        ],
+                        "selectors": ["countPlural"],
+                        "match": {
+                            "countPlural=zero": "Are you sure you want to delete {languages}? This action cannot be undone and will permanently remove the languages and all related data.",
+                            "countPlural=one": "Are you sure you want to delete {languages}? This action cannot be undone and will permanently remove the language and all related data.",
+                            "countPlural=other": "Are you sure you want to delete {languages}? This action cannot be undone and will permanently remove the languages and all related data."
+                        }
+                    }
+                ]
             }
         }
     },

@@ -7,10 +7,8 @@
     import { wrappedFetch } from '#lib/services/requestService';
     import { DataTable } from '#lib/components/ui/data-table';
     import { getLanguageColumns } from './columns';
-    import { Button } from '#lib/components/ui/button';
 
     let paginatedLanguages: PaginatedLanguages | undefined = $state();
-    let selectedRows: string[] = $state([]);
     let query: string = $state('');
     let sortBy: string = $state('name:asc');
 
@@ -27,13 +25,15 @@
         getLanguages();
     };
 
-    const handleDelete = (code: string): void => {
+    const handleDelete = (codes: string[]): void => {
         if (!paginatedLanguages) {
             return;
         }
 
-        paginatedLanguages.languages = paginatedLanguages.languages.filter((language: SerializedLanguage): boolean => language.code !== code);
-        paginatedLanguages.total = paginatedLanguages.total - 1;
+        codes.forEach((code: string): void => {
+            paginatedLanguages!.languages = paginatedLanguages!.languages.filter((language: SerializedLanguage): boolean => language.code !== code);
+            paginatedLanguages!.total = paginatedLanguages!.total - 1;
+        });
     };
 
     const getLanguages = async (page: number = 1, limit: number = 10): Promise<void> => {
@@ -41,10 +41,6 @@
             paginatedLanguages = data.languages;
         });
     };
-
-    $effect((): void => {
-        console.log([ ...selectedRows ]);
-    });
 </script>
 
 <Title title={m['admin.language.title']()} hasBackground />
@@ -57,12 +53,8 @@
             columns={getLanguageColumns(handleSort, handleDelete)}
             onSearch={getLanguages}
             bind:query
-            bind:selectedRows
+            onBatchDelete={handleDelete}
             onPaginationChange={async (page: number, limit: number) => await getLanguages(page, limit)}
         />
-        <div class="w-full flex justify-end gap-5">
-            <Button variant="destructive" disabled={true}>Supprimer</Button>
-            <Button variant="secondary" disabled={false}>Nouveau</Button>
-        </div>
     </div>
 {/if}

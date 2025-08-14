@@ -1,7 +1,7 @@
 <script lang="ts">
     import {getCoreRowModel, type Row} from '@tanstack/table-core';
     import type { ColumnDef, RowSelectionState, VisibilityState } from '@tanstack/table-core';
-    import { createSvelteTable, FlexRender } from '#lib/components/ui/data-table/index';
+    import {createSvelteTable, DataTable, FlexRender} from '#lib/components/ui/data-table/index';
     import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '#lib/components/ui/table';
     import { DropdownMenu, DropdownMenuCheckboxItem, DropdownMenuContent, DropdownMenuTrigger } from '#lib/components/ui/dropdown-menu';
     import { Button } from '#lib/components/ui/button';
@@ -9,6 +9,18 @@
     import { m } from '#lib/paraglide/messages';
     import Pagination from '#components/Pagination.svelte';
     import type {SerializedLanguage} from "backend/types";
+    import {wrappedFetch} from "#lib/services/requestService";
+    import { location } from '#lib/stores/locationStore';
+    import {
+        AlertDialog,
+        AlertDialogAction,
+        AlertDialogCancel,
+        AlertDialogContent,
+        AlertDialogDescription,
+        AlertDialogFooter,
+        AlertDialogHeader,
+        AlertDialogTitle
+    } from "#lib/components/ui/alert-dialog";
 
     interface PaginatedObject {
         currentPage: number;
@@ -24,14 +36,20 @@
         columns: ColumnDef<any>[];
         onSearch: () => void;
         query: string;
-        selectedRows: string[];
+        selectedRows?: string[];
+        batchDeleteTitle?: string;
+        batchDeleteText?: string;
+        onBatchDelete?: (ids: string[]) => void;
         onPaginationChange: (page: number, limit: number) => void;
     };
 
-    let { paginatedObject, data, columns, onSearch, query = $bindable(''), selectedRows = $bindable([]), onPaginationChange }: Props = $props();
+    let { paginatedObject, data = $bindable([]), columns, onSearch, query = $bindable(''), selectedRows = $bindable([]), batchDeleteTitle, batchDeleteText, onBatchDelete, onPaginationChange }: Props = $props();
 
     let rowSelection = $state<RowSelectionState>({});
     let columnVisibility = $state<VisibilityState>({});
+
+    let showModal: boolean = $state(false);
+    const deletable: boolean = $state(!!(batchDeleteTitle && batchDeleteText));
 
     const table = createSvelteTable({
         get data() {
@@ -63,6 +81,13 @@
         getCoreRowModel: getCoreRowModel(),
         enableRowSelection: true,
     });
+
+    const handleDelete = async (): Promise<void> => {
+        showModal = false;
+        await wrappedFetch(`${$location}/delete`, { method: 'POST', body: { languages: [...selectedRows] } }, () => {
+            onBatchDelete?.([...selectedRows]);
+        });
+    };
 
     $effect((): void => {
         selectedRows = table.getFilteredSelectedRowModel().rows.map((row: Row<SerializedLanguage>): string => row.getValue('code'));
@@ -132,3 +157,21 @@
 </div>
 
 <Pagination {paginatedObject} onChange={(page: number, limit: number) => onPaginationChange(page, limit)} />
+
+<div class="w-full flex justify-end gap-5">
+    <Button variant="destructive" disabled={!deletable || ![ ...selectedRows ].length}>Supprimer</Button>
+    <Button variant="secondary" disabled={false}>Nouveau</Button>
+</div>
+
+<AlertDialog open={showModal} onOpenChange={() => (showModal = false)}>
+    <AlertDialogContent>
+        <AlertDialogHeader>
+            <AlertDialogTitle>{batchDeleteTitle}</AlertDialogTitle>
+            <AlertDialogDescription>{batchDeleteText}</AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+            <AlertDialogCancel>{m['common.cancel']()}</AlertDialogCancel>
+            <AlertDialogAction onclick={handleDelete}>{m['common.continue']()}</AlertDialogAction>
+        </AlertDialogFooter>
+    </AlertDialogContent>
+</AlertDialog>

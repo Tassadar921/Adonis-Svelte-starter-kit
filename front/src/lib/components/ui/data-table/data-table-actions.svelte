@@ -19,7 +19,7 @@
 
     type Props = {
         id: string;
-        onDelete?: (id: string) => void;
+        onDelete?: (ids: string[]) => void;
         deleteTitle?: string;
         deleteText?: string;
     };
@@ -32,7 +32,7 @@
     const handleDelete = async (): Promise<void> => {
         showModal = false;
         await wrappedFetch(`${$location}/delete`, { method: 'POST', body: { languages: [id] } }, () => {
-            onDelete?.(id);
+            onDelete?.([id]);
         });
     };
 </script>
