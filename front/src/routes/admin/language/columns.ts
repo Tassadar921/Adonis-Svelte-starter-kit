@@ -42,14 +42,23 @@ export const getLanguageColumns = (onSort: (field: string, order: 'asc' | 'desc'
             }),
     },
     {
+        accessorKey: 'isFallback',
+        header: ({ column }) =>
+            renderComponent(SortableColumn, {
+                title: m['admin.language.columns.fallback'](),
+                field: 'isFallback',
+                onclick: onSort,
+            }),
+    },
+    {
         header: m['admin.datatable.actions'](),
         enableHiding: false,
         cell: ({ row }) =>
             renderComponent(DataTableActions, {
                 id: row.original.code,
                 onDelete,
-                deleteTitle: m['admin.language.delete.title']({ name: row.original.name }),
-                deleteText: m['admin.language.delete.text']({ name: row.original.name }),
+                deleteTitle: m['admin.language.delete.title']({ languages: row.original.name }),
+                deleteText: m['admin.language.delete.text']({ languages: row.original.name, count: 1 }),
             }),
     },
 ];

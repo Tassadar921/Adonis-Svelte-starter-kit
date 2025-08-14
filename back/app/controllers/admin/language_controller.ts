@@ -25,9 +25,9 @@ export default class FileController {
         return response.ok({
             messages: statuses.map((status: { isDeleted: boolean; name?: string; code?: string }): { message: string; isSuccess: boolean } => {
                 if (status.isDeleted) {
-                    return { message: i18n.t(`admin.language.delete.success`, { name: status.name }), isSuccess: true };
+                    return { message: i18n.t(`messages.admin.language.delete.success`, { name: status.name }), isSuccess: true };
                 } else {
-                    return { message: i18n.t(`admin.language.delete.error`, { code: status.code }), isSuccess: false };
+                    return { message: i18n.t(`messages.admin.language.delete.error`, { code: status.code }), isSuccess: false };
                 }
             }),
         });

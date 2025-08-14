@@ -34,7 +34,7 @@ export default class LanguageRepository extends BaseRepository<typeof Language> 
         return await Promise.all([
             ...codes.map(async (code: string): Promise<{ isDeleted: boolean; name?: string; code?: string }> => {
                 try {
-                    const language: Language = await this.Model.query().where('code', code).firstOrFail();
+                    const language: Language = await this.Model.query().where('code', code).where('is_fallback', false).firstOrFail();
                     await language.delete();
                     return { isDeleted: true, name: language.name };
                 } catch (error: any) {

@@ -9,12 +9,13 @@
     import { getLanguageColumns } from './columns';
 
     let paginatedLanguages: PaginatedLanguages | undefined = $state();
+    let selectedLanguages: string[] = $state([]);
     let query: string = $state('');
     let sortBy: string = $state('name:asc');
 
     onMount(async (): Promise<void> => {
         if (page.data.isSuccess) {
-            paginatedLanguages = page.data.languages;
+            paginatedLanguages = page.data.data;
         } else {
             await getLanguages();
         }
@@ -38,7 +39,8 @@
 
     const getLanguages = async (page: number = 1, limit: number = 10): Promise<void> => {
         await wrappedFetch(`/admin/language?page=${page}&limit=${limit}&query=${query}&sortBy=${sortBy}`, { method: 'GET' }, (data): void => {
-            paginatedLanguages = data.languages;
+            console.log(data);
+            paginatedLanguages = data;
         });
     };
 </script>
@@ -53,7 +55,10 @@
             columns={getLanguageColumns(handleSort, handleDelete)}
             onSearch={getLanguages}
             bind:query
+            bind:selectedRows={selectedLanguages}
             onBatchDelete={handleDelete}
+            batchDeleteTitle={m['admin.language.delete.title']({ languages: selectedLanguages })}
+            batchDeleteText={m['admin.language.delete.text']({ languages: selectedLanguages, count: selectedLanguages.length })}
             onPaginationChange={async (page: number, limit: number) => await getLanguages(page, limit)}
         />
     </div>

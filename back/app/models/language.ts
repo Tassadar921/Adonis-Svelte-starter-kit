@@ -2,14 +2,22 @@ import { DateTime } from 'luxon';
 import { BaseModel, column } from '@adonisjs/lucid/orm';
 import SerializedLanguage from '#types/serialized/serialized_language';
 
+interface LanguageInterface {
+    name: string;
+    code: string;
+    isFallback?: boolean;
+}
+
 export default class Language extends BaseModel {
-    public static LANGUAGE_FRENCH: { name: string; code: string } = {
-        name: 'Français',
-        code: 'fr',
-    };
-    public static LANGUAGE_ENGLISH: { name: string; code: string } = {
+    public static LANGUAGE_ENGLISH: LanguageInterface = {
         name: 'English',
         code: 'en',
+        isFallback: true,
+    };
+
+    public static LANGUAGE_FRENCH: LanguageInterface = {
+        name: 'Français',
+        code: 'fr',
     };
 
     @column({ isPrimary: true })
@@ -21,6 +29,9 @@ export default class Language extends BaseModel {
     @column()
     declare code: string;
 
+    @column()
+    declare isFallback: boolean;
+
     @column.dateTime({ autoCreate: true })
     declare createdAt: DateTime;
 
@@ -31,6 +42,7 @@ export default class Language extends BaseModel {
         return {
             name: this.name,
             code: this.code,
+            isFallback: this.isFallback,
             createdAt: this.createdAt?.toString(),
             updatedAt: this.updatedAt?.toString(),
         };

@@ -19,7 +19,7 @@ export const GET: RequestHandler = async ({ url, locals }): Promise<Response> =>
 
         return json({
             isSuccess: true,
-            languages: response.data,
+            data: response.data,
         });
     } catch (error: any) {
         return json(

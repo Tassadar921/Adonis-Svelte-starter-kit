@@ -11,6 +11,7 @@ export default class extends BaseSeeder {
                 await Language.create({
                     name: language.name,
                     code: language.code,
+                    isFallback: language.isFallback || false,
                 });
             }
         }

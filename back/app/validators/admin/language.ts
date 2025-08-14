@@ -6,12 +6,12 @@ export const searchAdminLanguagesValidator = vine.compile(
         query: vine.string().trim(),
         page: vine.number().positive(),
         limit: vine.number().positive(),
-        sortBy: vine.string().trim().use(sortByLanguageRule()),
+        sortBy: vine.string().trim().use(sortByLanguageRule()).toLowerCase(),
     })
 );
 
 export const deleteAdminLanguageValidator = vine.compile(
     vine.object({
-        languages: vine.array(vine.string().fixedLength(2)),
+        languages: vine.array(vine.string().fixedLength(2).toLowerCase()),
     })
 );

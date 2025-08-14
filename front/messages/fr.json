@@ -271,11 +271,22 @@
             "title": "Langues",
             "columns": {
                 "code": "Code",
-                "name": "Nom"
+                "name": "Nom",
+                "fallback": "Valeur par défaut"
             },
             "delete": {
-                "title": "Supprimer {name}",
-                "text": "Êtes-vous sûr de vouloir supprimer la langue nommée {name} ? Cette action est irréversible et supprimera les données liées."
+                "title": "Supprimer {languages}",
+                "text": [
+                    {
+                        "declarations": ["input languages", "input count", "local countPlural = count: plural"],
+                        "selectors": ["countPlural"],
+                        "match": {
+                            "countPlural=zero": "Êtes-vous sûr de vouloir supprimer {languages} ? Cette action est irréversible et supprimera définitivement les langues ainsi que toutes les données associées.",
+                            "countPlural=one": "Êtes-vous sûr de vouloir supprimer {languages} ? Cette action est irréversible et supprimera définitivement la langue ainsi que toutes les données associées.",
+                            "countPlural=other": "Êtes-vous sûr de vouloir supprimer {languages} ? Cette action est irréversible et supprimera définitivement les langues ainsi que toutes les données associées."
+                        }
+                    }
+                ]
             }
         }
     },
