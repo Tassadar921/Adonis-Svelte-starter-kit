@@ -6,7 +6,7 @@ export const searchAdminLanguagesValidator = vine.compile(
         query: vine.string().trim(),
         page: vine.number().positive(),
         limit: vine.number().positive(),
-        sortBy: vine.string().trim().use(sortByLanguageRule()).toLowerCase(),
+        sortBy: vine.string().trim().use(sortByLanguageRule()),
     })
 );
 

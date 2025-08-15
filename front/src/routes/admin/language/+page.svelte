@@ -38,8 +38,7 @@
     };
 
     const getLanguages = async (page: number = 1, limit: number = 10): Promise<void> => {
-        await wrappedFetch(`/admin/language?page=${page}&limit=${limit}&query=${query}&sortBy=${sortBy}`, { method: 'GET' }, (data): void => {
-            console.log(data);
+        await wrappedFetch(`/admin/language?page=${page}&limit=${limit}&query=${query}&sortBy=${sortBy}`, { method: 'GET' }, ({ data }): void => {
             paginatedLanguages = data;
         });
     };
