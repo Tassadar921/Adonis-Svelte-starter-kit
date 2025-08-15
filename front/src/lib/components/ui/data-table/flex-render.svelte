@@ -13,9 +13,10 @@
               : never;
         /** The result of the `getContext()` function of the header or cell */
         context: TContext;
+        id: string | number;
     };
 
-    let { content, context }: Props = $props();
+    let { content, context, id }: Props = $props();
 </script>
 
 {#if typeof content === 'string'}
@@ -31,6 +32,6 @@
         {@const { snippet, params } = result}
         {@render snippet(params)}
     {:else}
-        <Link href={`${$location}/edit/${context.row.original.code}`} class="px-3">{result}</Link>
+        <Link href={`${$location}/edit/${id}`} class="px-3">{result}</Link>
     {/if}
 {/if}

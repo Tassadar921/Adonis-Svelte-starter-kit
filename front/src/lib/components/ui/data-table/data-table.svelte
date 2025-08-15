@@ -156,7 +156,7 @@
                 >
                     {#each row.getVisibleCells() as cell (cell.id)}
                         <TableCell>
-                            <FlexRender content={cell.column.columnDef.cell} context={cell.getContext()} />
+                            <FlexRender content={cell.column.columnDef.cell} context={cell.getContext()} id={row.original.id} />
                         </TableCell>
                     {/each}
                 </TableRow>
@@ -178,8 +178,12 @@
 <Pagination {paginatedObject} onChange={(page: number, limit: number) => onPaginationChange(page, limit)} />
 
 <div class="w-full flex justify-end gap-5">
-    <Button variant="destructive" disabled={!deletable || ![...selectedRows].length} onclick={() => (showModal = true)}>Supprimer</Button>
-    <Button variant="secondary" disabled={false}>Nouveau</Button>
+    <Button variant="destructive" disabled={!deletable || ![...selectedRows].length} onclick={() => (showModal = true)}>
+        {m['common.delete']()}
+    </Button>
+    <Button variant="secondary" disabled={false}>
+        {m['common.create']()}
+    </Button>
 </div>
 
 <AlertDialog open={showModal} onOpenChange={() => (showModal = false)}>

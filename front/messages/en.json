@@ -252,6 +252,10 @@
         "datatable": {
             "actions": "Actions",
             "no-result": "No result",
+            "select": {
+                "row": "Select row",
+                "all": "Select all"
+            },
             "selected-rows": [
                 {
                     "declarations": ["input count", "input total", "local countPlural = count: plural"],

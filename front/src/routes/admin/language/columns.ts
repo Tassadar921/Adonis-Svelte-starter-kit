@@ -13,12 +13,12 @@ export const getLanguageColumns = (onSort: (field: string, order: 'asc' | 'desc'
                 checked: table.getIsAllPageRowsSelected(),
                 indeterminate: table.getIsSomePageRowsSelected() && !table.getIsAllPageRowsSelected(),
                 onCheckedChange: (value: boolean): void => table.toggleAllPageRowsSelected(value),
-                'aria-label': 'Select all',
+                'aria-label': m['admin.datatable.select.all'](),
             }),
         cell: ({ row }) =>
             renderComponent(Checkbox, {
                 checked: row.getIsSelected(),
-                'aria-label': 'Select row',
+                'aria-label': m['admin.datatable.select.row'](),
             }),
         enableHiding: false,
     },
