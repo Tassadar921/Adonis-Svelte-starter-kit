@@ -53,7 +53,6 @@ export const wrappedFetch = async (
             await onError?.(data);
         }
 
-        console.log(data);
         return data;
     } catch (error: any) {
         return undefined;

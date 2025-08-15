@@ -29,14 +29,17 @@ export default class LanguageRepository extends BaseRepository<typeof Language> 
         };
     }
 
-    public async delete(codes: string[]): Promise<{ isDeleted: boolean; name?: string; code?: string }[]> {
+    public async delete(codes: string[]): Promise<{ isDeleted: boolean; name?: string; code: string }[]> {
         // Delete some other things if needed
         return await Promise.all([
-            ...codes.map(async (code: string): Promise<{ isDeleted: boolean; name?: string; code?: string }> => {
+            ...codes.map(async (code: string): Promise<{ isDeleted: boolean; isFallback?: boolean; name?: string; code: string }> => {
                 try {
-                    const language: Language = await this.Model.query().where('code', code).where('is_fallback', false).firstOrFail();
+                    const language: Language = await this.Model.query().where('code', code).firstOrFail();
+                    if (language.isFallback) {
+                        return { isDeleted: false, isFallback: true, name: language.name, code };
+                    }
                     await language.delete();
-                    return { isDeleted: true, name: language.name };
+                    return { isDeleted: true, name: language.name, code };
                 } catch (error: any) {
                     return { isDeleted: false, code };
                 }

@@ -97,8 +97,13 @@
     const handleDelete = async (): Promise<void> => {
         showModal = false;
         await wrappedFetch(`${$location}/delete`, { method: 'POST', body: { data: [...selectedRows] } }, (data) => {
-            for (const status of data.messages) {
+            const filteredStatuses: { isSuccess: boolean; message: string; code: string }[] = data.messages.filter((status: { isSuccess: boolean; message: string; code: string }) => {
                 showToast(status.message, status.isSuccess ? 'success' : 'error');
+                return status.isSuccess;
+            });
+
+            if (onBatchDelete) {
+                onBatchDelete(filteredStatuses.map((status: { code: string }) => status.code));
             }
         });
     };

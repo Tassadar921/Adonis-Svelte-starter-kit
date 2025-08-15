@@ -3,7 +3,10 @@
         "language": {
             "delete": {
                 "success": "Successfully deleted {name}",
-                "error": "Error while deleting language with code {code}"
+                "error": {
+                    "fallback": "You cannot delete the default language ({code})",
+                    "default": "Error while deleting language with code {code}"
+                }
             }
         }
     },

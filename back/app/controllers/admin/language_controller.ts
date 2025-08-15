@@ -5,7 +5,7 @@ import { searchAdminLanguagesValidator, deleteAdminLanguageValidator } from '#va
 import Language from '#models/language';
 
 @inject()
-export default class FileController {
+export default class AdminLanguageController {
     constructor(private readonly languageRepository: LanguageRepository) {}
 
     public async getAll({ request, response }: HttpContext) {
@@ -20,14 +20,18 @@ export default class FileController {
     public async delete({ request, response, i18n }: HttpContext) {
         const { languages } = await request.validateUsing(deleteAdminLanguageValidator);
 
-        const statuses: { isDeleted: boolean; name?: string; code?: string }[] = await this.languageRepository.delete(languages);
+        const statuses: { isDeleted: boolean; isFallback?: boolean; name?: string; code: string }[] = await this.languageRepository.delete(languages);
 
         return response.ok({
-            messages: statuses.map((status: { isDeleted: boolean; name?: string; code?: string }): { message: string; isSuccess: boolean } => {
+            messages: statuses.map((status: { isDeleted: boolean; isFallback?: boolean; name?: string; code: string }): { code: string; message: string; isSuccess: boolean } => {
                 if (status.isDeleted) {
-                    return { message: i18n.t(`messages.admin.language.delete.success`, { name: status.name }), isSuccess: true };
+                    return { code: status.code, message: i18n.t(`messages.admin.language.delete.success`, { name: status.name }), isSuccess: true };
                 } else {
-                    return { message: i18n.t(`messages.admin.language.delete.error`, { code: status.code }), isSuccess: false };
+                    if (status.isFallback) {
+                        return { code: status.code, message: i18n.t(`messages.admin.language.delete.error.fallback`, { code: status.code }), isSuccess: false };
+                    } else {
+                        return { code: status.code, message: i18n.t(`messages.admin.language.delete.error.default`, { code: status.code }), isSuccess: false };
+                    }
                 }
             }),
         });
