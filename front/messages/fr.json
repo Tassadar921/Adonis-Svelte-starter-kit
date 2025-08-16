@@ -292,6 +292,9 @@
                     }
                 ]
             }
+        },
+        "new": {
+            "title": "Nouvelle langue"
         }
     },
     "notifications": {
