@@ -22,6 +22,7 @@
         AlertDialogTitle,
     } from '#lib/components/ui/alert-dialog';
     import { showToast } from '#lib/services/toastService';
+    import { Link } from '#lib/components/ui/link';
 
     interface PaginatedObject {
         currentPage: number;
@@ -182,7 +183,9 @@
         {m['common.delete']()}
     </Button>
     <Button variant="secondary" disabled={false}>
-        {m['common.create']()}
+        <Link href={`${$location}/new`} class="p-0 !no-underline">
+            {m['common.create']()}
+        </Link>
     </Button>
 </div>
 
