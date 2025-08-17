@@ -3,6 +3,7 @@ import { HttpContext } from '@adonisjs/core/http';
 import LanguageRepository from '#repositories/language_repository';
 import { searchAdminLanguagesValidator, deleteAdminLanguageValidator } from '#validators/admin/language';
 import Language from '#models/language';
+import cache from '@adonisjs/cache/services/main';
 
 @inject()
 export default class AdminLanguageController {
@@ -23,8 +24,9 @@ export default class AdminLanguageController {
         const statuses: { isDeleted: boolean; isFallback?: boolean; name?: string; code: string }[] = await this.languageRepository.delete(languages);
 
         return response.ok({
-            messages: statuses.map((status: { isDeleted: boolean; isFallback?: boolean; name?: string; code: string }): { code: string; message: string; isSuccess: boolean } => {
+            messages: statuses.map(async (status: { isDeleted: boolean; isFallback?: boolean; name?: string; code: string }): Promise<{ code: string; message: string; isSuccess: boolean }> => {
                 if (status.isDeleted) {
+                    await cache.deleteByTag({ tags: [`language:${status.code}`] });
                     return { code: status.code, message: i18n.t(`messages.admin.language.delete.success`, { name: status.name }), isSuccess: true };
                 } else {
                     if (status.isFallback) {

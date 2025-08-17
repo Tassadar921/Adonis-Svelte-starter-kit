@@ -3,12 +3,17 @@ import { HttpContext } from '@adonisjs/core/http';
 import app from '@adonisjs/core/services/app';
 import UserRepository from '#repositories/user_repository';
 import User from '#models/user';
-import { serveStaticProfilePictureFileValidator } from '#validators/file';
+import { serveStaticProfilePictureFileValidator, serveStaticLanguageIconFileValidator } from '#validators/file';
 import cache from '@adonisjs/cache/services/main';
+import LanguageRepository from '#repositories/language_repository';
+import Language from '#models/language';
 
 @inject()
 export default class FileController {
-    constructor(private readonly userRepository: UserRepository) {}
+    constructor(
+        private readonly userRepository: UserRepository,
+        private readonly languageRepository: LanguageRepository
+    ) {}
 
     public async serveStaticProfilePictureFile({ request, response, i18n }: HttpContext) {
         const { userId } = await serveStaticProfilePictureFileValidator.validate(request.params());
@@ -34,5 +39,22 @@ export default class FileController {
                 return response.notFound({ error: i18n.t('messages.file.serve-status-profile-picture-file.error') });
             }
         }
+    }
+
+    public async serveStaticLanguageIconFile({ request, response }: HttpContext) {
+        const { languageCode } = await serveStaticLanguageIconFileValidator.validate(request.params());
+
+        const filePath: string = await cache.getOrSet({
+            key: `language-icon:${languageCode}`,
+            tags: [`language:${languageCode}`],
+            ttl: '1h',
+            factory: async (): Promise<string> => {
+                const language: Language = await this.languageRepository.firstOrFail({ code: languageCode }, ['icon']);
+
+                return app.makePath(language.icon.path);
+            },
+        });
+
+        return response.download(filePath);
     }
 }

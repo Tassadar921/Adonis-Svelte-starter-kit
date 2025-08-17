@@ -5,3 +5,9 @@ export const serveStaticProfilePictureFileValidator = vine.compile(
         userId: vine.number().positive(),
     })
 );
+
+export const serveStaticLanguageIconFileValidator = vine.compile(
+    vine.object({
+        languageCode: vine.string().fixedLength(2).toLowerCase(),
+    })
+);
