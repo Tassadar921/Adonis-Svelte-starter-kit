@@ -6,6 +6,7 @@
         "language": "Language",
         "close": "Close",
         "edit": "Edit",
+        "update": "Update",
         "delete": "Delete",
         "create": "Create",
         "cancel": "Cancel",
@@ -274,7 +275,7 @@
         },
         "language": {
             "title": "Languages",
-            "columns": {
+            "fields": {
                 "code": "Code",
                 "name": "Name",
                 "fallback": "Fallback"
@@ -296,18 +297,6 @@
             "new": {
                 "title": "New language"
             }
-        }
-    },
-    "notifications": {
-        "title": "Notifications",
-        "meta": {
-            "title": "Manage Notifications – Adonis & Svelte Starter Kit",
-            "description": "View, accept, decline, and delete your notifications, including friend requests, easily with Adonis & Svelte Starter Kit.",
-            "keywords": "notifications, manage notifications, friend requests, accept notifications, decline notifications, delete notifications, Adonis & Svelte Starter Kit"
-        },
-        "friend-requests": {
-            "title": "Friend requests",
-            "none": "No pending friend request"
         }
     }
 }

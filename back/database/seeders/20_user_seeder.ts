@@ -5,7 +5,7 @@ import UserRepository from '#repositories/user_repository';
 import UserRoleEnum from '#types/enum/user_role_enum';
 
 export default class extends BaseSeeder {
-    async run(): Promise<void> {
+    public async run(): Promise<void> {
         const userRepository: UserRepository = new UserRepository();
 
         const emails: string[] = JSON.parse(env.get('FRIEND_EMAILS'));

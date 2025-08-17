@@ -1,6 +1,8 @@
 import { DateTime } from 'luxon';
-import { BaseModel, column } from '@adonisjs/lucid/orm';
+import { BaseModel, belongsTo, column } from '@adonisjs/lucid/orm';
 import SerializedLanguage from '#types/serialized/serialized_language';
+import File from '#models/file';
+import type { BelongsTo } from '@adonisjs/lucid/types/relations';
 
 interface LanguageInterface {
     name: string;
@@ -31,6 +33,14 @@ export default class Language extends BaseModel {
 
     @column()
     declare isFallback: boolean;
+
+    @column()
+    declare iconId: string | null;
+
+    @belongsTo((): typeof File => File, {
+        foreignKey: 'iconId',
+    })
+    declare icon: BelongsTo<typeof File>;
 
     @column.dateTime({ autoCreate: true })
     declare createdAt: DateTime;

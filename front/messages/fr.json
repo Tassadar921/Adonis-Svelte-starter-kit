@@ -6,6 +6,7 @@
         "language": "Langue",
         "close": "Fermer",
         "edit": "Modifier",
+        "update": "Mettre à jour",
         "delete": "Supprimer",
         "create": "Créer",
         "cancel": "Annuler",
@@ -266,14 +267,15 @@
                         "countPlural=other": "{count} sur {total} lignes sélectionnées"
                     }
                 }
-            ]
+            ],
+            "columns": "Colonnes"
         },
         "user": {
             "title": "Utilisateurs"
         },
         "language": {
             "title": "Langues",
-            "columns": {
+            "fields": {
                 "code": "Code",
                 "name": "Nom",
                 "fallback": "Valeur par défaut"
@@ -295,18 +297,6 @@
         },
         "new": {
             "title": "Nouvelle langue"
-        }
-    },
-    "notifications": {
-        "title": "Notifications",
-        "meta": {
-            "title": "Gérer les notifications – Adonis & Svelte Starter Kit",
-            "description": "Consultez, acceptez, refusez et supprimez vos notifications, y compris les demandes d’amis, facilement avec Adonis & Svelte Starter Kit.",
-            "keywords": "notifications, gérer notifications, demandes d’amis, accepter notifications, refuser notifications, supprimer notifications, Adonis & Svelte Starter Kit"
-        },
-        "friend-requests": {
-            "title": "Demandes d'ami",
-            "none": "Pas de demande d'ami en attente"
         }
     }
 }

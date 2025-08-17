@@ -55,7 +55,7 @@ export default class FileService {
 
         const fileTypeResult: FileTypeResult | undefined = await fileTypeFromBuffer(buffer);
         if (!fileTypeResult) {
-            throw new Error('Impossible de détecter le type de fichier');
+            throw new Error('Unable to detect file type');
         }
 
         const filename = `${cuid()}-${Date.now()}.${fileTypeResult.ext}`;

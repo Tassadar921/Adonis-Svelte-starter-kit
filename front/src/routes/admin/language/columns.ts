@@ -23,32 +23,32 @@ export const getLanguageColumns = (onSort: (field: string, order: 'asc' | 'desc'
         enableHiding: false,
     },
     {
-        id: m['admin.language.columns.code'](),
+        id: m['admin.language.fields.code'](),
         accessorKey: 'code',
         header: ({ column }) =>
             renderComponent(SortableColumn, {
-                title: m['admin.language.columns.code'](),
+                title: m['admin.language.fields.code'](),
                 field: 'code',
                 onclick: onSort,
             }),
         enableHiding: false,
     },
     {
-        id: m['admin.language.columns.name'](),
+        id: m['admin.language.fields.name'](),
         accessorKey: 'name',
         header: ({ column }) =>
             renderComponent(SortableColumn, {
-                title: m['admin.language.columns.name'](),
+                title: m['admin.language.fields.name'](),
                 field: 'name',
                 onclick: onSort,
             }),
     },
     {
-        id: m['admin.language.columns.fallback'](),
+        id: m['admin.language.fields.fallback'](),
         accessorKey: 'isFallback',
         header: ({ column }) =>
             renderComponent(SortableColumn, {
-                title: m['admin.language.columns.fallback'](),
+                title: m['admin.language.fields.fallback'](),
                 field: 'isFallback',
                 onclick: onSort,
             }),

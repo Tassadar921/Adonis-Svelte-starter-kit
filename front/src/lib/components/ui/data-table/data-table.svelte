@@ -182,7 +182,7 @@
     <Button variant="destructive" disabled={!deletable || ![...selectedRows].length} onclick={() => (showModal = true)}>
         {m['common.delete']()}
     </Button>
-    <Button variant="secondary" disabled={false}>
+    <Button variant="secondary">
         <Link href={`${$location}/new`} class="p-0 !no-underline">
             {m['common.create']()}
         </Link>
