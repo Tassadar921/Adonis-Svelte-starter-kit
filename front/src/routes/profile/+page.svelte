@@ -55,7 +55,7 @@
     <Input name="email" placeholder={m['common.email.label']()} label={m['common.email.label']()} bind:value={formValues.email} disabled required />
     <FileUpload
         name="profilePicture"
-        accept="png jpg gif jpeg webp"
+        accept="png jpg jpeg gif webp svg"
         fileName={profileData.profilePicture?.name}
         title={m['profile.profile-picture.title']()}
         description={m['profile.profile-picture.description']()}

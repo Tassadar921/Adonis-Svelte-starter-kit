@@ -84,6 +84,7 @@ router
                             .group((): void => {
                                 router.get('/', [AdminLanguageController, 'getAll']);
                                 router.post('/delete', [AdminLanguageController, 'delete']);
+                                router.post('/create', [AdminLanguageController, 'create']);
                             })
                             .prefix('language');
                     })

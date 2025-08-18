@@ -38,7 +38,7 @@ export default class extends BaseSeeder {
     }
 
     private async moveLanguageFlag(code: string): Promise<string> {
-        const targetDir: string = path.join(process.cwd(), 'static/language');
+        const targetDir: string = path.join(process.cwd(), 'static/language-flag');
         const targetFile: string = path.join(targetDir, `${code}.svg`);
 
         try {

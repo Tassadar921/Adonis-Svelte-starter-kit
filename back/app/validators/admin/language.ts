@@ -10,8 +10,19 @@ export const searchAdminLanguagesValidator = vine.compile(
     })
 );
 
-export const deleteAdminLanguageValidator = vine.compile(
+export const deleteLanguageValidator = vine.compile(
     vine.object({
         languages: vine.array(vine.string().fixedLength(2).toLowerCase()),
+    })
+);
+
+export const createLanguageValidator = vine.compile(
+    vine.object({
+        name: vine.string().trim(),
+        code: vine.string().trim().fixedLength(2).toLowerCase(),
+        flag: vine.file({
+            size: '2mb',
+            extnames: ['png', 'jpg', 'jpeg', 'webp', 'svg'],
+        }),
     })
 );

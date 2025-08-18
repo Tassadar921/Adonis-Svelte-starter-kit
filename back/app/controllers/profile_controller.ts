@@ -106,7 +106,7 @@ export default class ProfileController {
             }
 
             profilePicture.clientName = `${cuid()}-${this.slugifyService.slugify(profilePicture.clientName)}`;
-            const profilePicturePath = `static/profile-picture`;
+            const profilePicturePath: string = `static/profile-picture`;
             await profilePicture.move(app.makePath(profilePicturePath));
             const newProfilePicture: File = await File.create({
                 name: profilePicture.clientName,
