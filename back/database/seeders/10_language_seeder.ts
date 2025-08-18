@@ -14,30 +14,30 @@ export default class extends BaseSeeder {
         const fileService: FileService = new FileService();
 
         for (const language of [Language.LANGUAGE_ENGLISH, Language.LANGUAGE_FRENCH]) {
-            const path: string = await this.moveLanguageIcon(language.code);
+            const path: string = await this.moveLanguageFlag(language.code);
             const { size, mimeType, extension, name } = await fileService.getFileInfo(app.makePath(`${path}/${language.code}.svg`));
-            const icon: File = await File.create({
+            const flag: File = await File.create({
                 name,
                 path: `${path}/${language.code}.svg`,
                 extension,
                 mimeType,
                 size,
-                type: FileTypeEnum.LANGUAGE_ICON,
+                type: FileTypeEnum.LANGUAGE_FLAG,
             });
-            await icon.refresh();
+            await flag.refresh();
 
             if (!(await languageRepository.findOneBy({ code: language.code }))) {
                 await Language.create({
                     name: language.name,
                     code: language.code,
                     isFallback: language.isFallback || false,
-                    iconId: icon.id,
+                    flagId: flag.id,
                 });
             }
         }
     }
 
-    private async moveLanguageIcon(code: string): Promise<string> {
+    private async moveLanguageFlag(code: string): Promise<string> {
         const targetDir: string = path.join(process.cwd(), 'static/language');
         const targetFile: string = path.join(targetDir, `${code}.svg`);
 

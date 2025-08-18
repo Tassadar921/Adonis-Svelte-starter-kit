@@ -1,5 +1,5 @@
 export enum FileTypeEnum {
-    LANGUAGE_ICON = 'language_icon',
+    LANGUAGE_FLAG = 'language_flag',
     PROFILE_PICTURE = 'profile_picture',
 }
 

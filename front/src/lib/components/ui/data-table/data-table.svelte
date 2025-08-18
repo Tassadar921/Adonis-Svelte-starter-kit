@@ -138,7 +138,7 @@
             {#each table.getHeaderGroups() as headerGroup (headerGroup.id)}
                 <TableRow>
                     {#each headerGroup.headers as header (header.id)}
-                        <TableHead colspan={header.colSpan}>
+                        <TableHead colspan={header.colSpan} class={`w-1/${headerGroup.headers.length}`}>
                             {#if !header.isPlaceholder}
                                 <FlexRender content={header.column.columnDef.header} context={header.getContext()} />
                             {/if}

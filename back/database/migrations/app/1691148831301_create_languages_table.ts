@@ -10,7 +10,7 @@ export default class extends BaseSchema {
             table.string('name').notNullable();
             table.string('code', 2).notNullable();
             table.boolean('is_fallback').defaultTo(false);
-            table.uuid('icon_id').notNullable().references('id').inTable('files');
+            table.uuid('flag_id').notNullable().references('id').inTable('files');
             table.timestamp('created_at', { useTz: true });
             table.timestamp('updated_at', { useTz: true });
         });

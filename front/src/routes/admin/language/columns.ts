@@ -4,6 +4,7 @@ import type { SerializedLanguage } from 'backend/types';
 import { renderComponent } from '#lib/components/ui/data-table/render-helpers';
 import { Checkbox } from '#lib/components/ui/checkbox';
 import { SortableColumn, DataTableActions } from '#lib/components/ui/data-table';
+import DatatableLanguageIcon from './datatable-language-icon.svelte';
 
 export const getLanguageColumns = (onSort: (field: string, order: 'asc' | 'desc') => void, onDelete: (ids: string[]) => void): ColumnDef<SerializedLanguage>[] => [
     {
@@ -32,6 +33,13 @@ export const getLanguageColumns = (onSort: (field: string, order: 'asc' | 'desc'
                 onclick: onSort,
             }),
         enableHiding: false,
+    },
+    {
+        header: m['admin.language.fields.flag'](),
+        cell: ({ row }) =>
+            renderComponent(DatatableLanguageIcon, {
+                language: row.original,
+            }),
     },
     {
         id: m['admin.language.fields.name'](),

@@ -259,12 +259,11 @@
             },
             "selected-rows": [
                 {
-                    "declarations": ["input count", "input total", "local countPlural = count: plural"],
-                    "selectors": ["countPlural"],
+                    "declarations": ["input count", "input total"],
                     "match": {
-                        "countPlural=zero": "Aucune ligne sélectionnée",
-                        "countPlural=one": "{count} sur {total} ligne sélectionnée",
-                        "countPlural=other": "{count} sur {total} lignes sélectionnées"
+                        "count=0": "No rows selected",
+                        "count=1": "{count} of {total} row selected",
+                        "count=*": "{count} of {total} rows selected"
                     }
                 }
             ],
@@ -276,6 +275,7 @@
         "language": {
             "title": "Languages",
             "fields": {
+                "flag": "Flag",
                 "code": "Code",
                 "name": "Name",
                 "fallback": "Fallback"

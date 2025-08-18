@@ -35,12 +35,12 @@ export default class Language extends BaseModel {
     declare isFallback: boolean;
 
     @column()
-    declare iconId: string | null;
+    declare flagId: string | null;
 
     @belongsTo((): typeof File => File, {
-        foreignKey: 'iconId',
+        foreignKey: 'flagId',
     })
-    declare icon: BelongsTo<typeof File>;
+    declare flag: BelongsTo<typeof File>;
 
     @column.dateTime({ autoCreate: true })
     declare createdAt: DateTime;
@@ -53,6 +53,7 @@ export default class Language extends BaseModel {
             name: this.name,
             code: this.code,
             isFallback: this.isFallback,
+            flag: this.flag?.apiSerialize(),
             createdAt: this.createdAt?.toString(),
             updatedAt: this.updatedAt?.toString(),
         };

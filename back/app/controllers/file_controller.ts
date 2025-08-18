@@ -41,7 +41,7 @@ export default class FileController {
         }
     }
 
-    public async serveStaticLanguageIconFile({ request, response }: HttpContext) {
+    public async serveStaticLanguageFlagFile({ request, response }: HttpContext) {
         const { languageCode } = await serveStaticLanguageIconFileValidator.validate(request.params());
 
         const filePath: string = await cache.getOrSet({
@@ -49,9 +49,9 @@ export default class FileController {
             tags: [`language:${languageCode}`],
             ttl: '1h',
             factory: async (): Promise<string> => {
-                const language: Language = await this.languageRepository.firstOrFail({ code: languageCode }, ['icon']);
+                const language: Language = await this.languageRepository.firstOrFail({ code: languageCode }, ['flag']);
 
-                return app.makePath(language.icon.path);
+                return app.makePath(language.flag.path);
             },
         });
 

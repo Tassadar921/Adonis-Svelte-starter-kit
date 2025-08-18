@@ -17,6 +17,7 @@ export default class LanguageRepository extends BaseRepository<typeof Language> 
             .if(sortBy, (queryBuilder: ModelQueryBuilderContract<typeof Language>): void => {
                 queryBuilder.orderBy(sortBy.field as string, sortBy.order);
             })
+            .preload('flag')
             .paginate(page, limit);
 
         return {

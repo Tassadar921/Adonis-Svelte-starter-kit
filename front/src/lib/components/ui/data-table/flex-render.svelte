@@ -13,7 +13,7 @@
               : never;
         /** The result of the `getContext()` function of the header or cell */
         context: TContext;
-        id: string | number;
+        id?: string | number;
     };
 
     let { content, context, id }: Props = $props();
