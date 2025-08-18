@@ -3,7 +3,7 @@ import { HttpContext } from '@adonisjs/core/http';
 import app from '@adonisjs/core/services/app';
 import UserRepository from '#repositories/user_repository';
 import User from '#models/user';
-import { serveStaticProfilePictureFileValidator, serveStaticLanguageIconFileValidator } from '#validators/file';
+import { serveStaticProfilePictureFileValidator, serveStaticLanguageFlagFileValidator } from '#validators/file';
 import cache from '@adonisjs/cache/services/main';
 import LanguageRepository from '#repositories/language_repository';
 import Language from '#models/language';
@@ -42,14 +42,14 @@ export default class FileController {
     }
 
     public async serveStaticLanguageFlagFile({ request, response }: HttpContext) {
-        const { languageCode } = await serveStaticLanguageIconFileValidator.validate(request.params());
+        const { languageCode } = await serveStaticLanguageFlagFileValidator.validate(request.params());
 
         const filePath: string = await cache.getOrSet({
-            key: `language-icon:${languageCode}`,
+            key: `language-flag:${languageCode}`,
             tags: [`language:${languageCode}`],
             ttl: '1h',
             factory: async (): Promise<string> => {
-                const language: Language = await this.languageRepository.firstOrFail({ code: languageCode }, ['flag']);
+                const language: Language = await this.languageRepository.firstOrFail({ code: languageCode });
 
                 return app.makePath(language.flag.path);
             },

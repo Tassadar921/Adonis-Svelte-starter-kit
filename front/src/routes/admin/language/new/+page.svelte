@@ -4,6 +4,6 @@
     import AdminLanguageForm from '#lib/partials/admin/language/AdminLanguageForm.svelte';
 </script>
 
-<Title title={m['admin.language.new.title']()} hasBackground />
+<Title title={m['admin.language.new.title']()} />
 
-<AdminLanguageForm isNew />
+<AdminLanguageForm />

@@ -293,10 +293,14 @@
                         }
                     }
                 ]
+            },
+            "new": {
+                "title": "Nouvelle langue",
+                "flag": {
+                    "title": "Drapeau",
+                    "description": "Drapeau de la langue"
+                }
             }
-        },
-        "new": {
-            "title": "Nouvelle langue"
         }
     }
 }

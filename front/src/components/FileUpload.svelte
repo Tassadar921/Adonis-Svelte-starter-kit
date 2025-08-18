@@ -12,7 +12,7 @@
         accept: string;
         fileName?: string;
         pathPrefix: string;
-        id: number;
+        id: number | string;
         disabled?: boolean;
     };
 
@@ -82,7 +82,7 @@
 
 <Loader {isLoading} />
 
-<div class="flex flex-col w-full my-5">
+<div class="flex flex-col w-full">
     {#if title}
         <h3 class="font-semibold text-center mb-2">{title}</h3>
     {/if}

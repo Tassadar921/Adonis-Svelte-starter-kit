@@ -295,7 +295,11 @@
                 ]
             },
             "new": {
-                "title": "New language"
+                "title": "New language",
+                "flag": {
+                    "title": "Flag",
+                    "description": "Language flag"
+                }
             }
         }
     }

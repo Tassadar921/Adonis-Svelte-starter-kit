@@ -7,6 +7,12 @@
                     "fallback": "Vous ne pouvez pas supprimer la langue par défaut ({code})",
                     "default": "Une erreur est survenue lors de la suppression de la langue du code {code}"
                 }
+            },
+            "create": {
+                "success": "Langue {name} créée avec succès",
+                "error": {
+                    "already-exists": "Une language avec le code {code} existe déjà"
+                }
             }
         }
     },

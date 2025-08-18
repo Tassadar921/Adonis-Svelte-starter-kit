@@ -1,7 +1,7 @@
 import { inject } from '@adonisjs/core';
 import { HttpContext } from '@adonisjs/core/http';
 import LanguageRepository from '#repositories/language_repository';
-import { searchAdminLanguagesValidator, deleteLanguageValidator, createLanguageValidator } from '#validators/admin/language';
+import { searchAdminLanguagesValidator, deleteLanguageValidator, createLanguageValidator, getLanguageValidator } from '#validators/admin/language';
 import Language from '#models/language';
 import cache from '@adonisjs/cache/services/main';
 import app from '@adonisjs/core/services/app';
@@ -73,6 +73,14 @@ export default class AdminLanguageController {
 
         await language.load('flag');
 
-        return response.created({ language: language.apiSerialize(), message: i18n.t('messages.admin.language.create.success') });
+        return response.created({ language: language.apiSerialize(), message: i18n.t('messages.admin.language.create.success', { name }) });
+    }
+
+    public async get({ request, response }: HttpContext) {
+        const { languageCode: code } = await getLanguageValidator.validate(request.params());
+        console.log(code);
+        const language: Language = await this.languageRepository.firstOrFail({ code });
+
+        return response.ok({ language: language.apiSerialize() });
     }
 }

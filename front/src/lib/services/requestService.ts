@@ -60,6 +60,7 @@ export const wrappedFetch = async (
 };
 
 export const extractFormErrors = (data: any): PageDataError[] => {
+    console.log('ici bro');
     const errors: PageDataError[] = [];
 
     // Adonis validator

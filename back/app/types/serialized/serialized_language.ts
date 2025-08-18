@@ -4,7 +4,7 @@ export type SerializedLanguage = {
     name: string;
     code: string;
     isFallback: boolean;
-    flag?: SerializedFile;
+    flag: SerializedFile;
     updatedAt?: string;
     createdAt?: string;
 };

@@ -7,6 +7,12 @@
                     "fallback": "You cannot delete the default language ({code})",
                     "default": "Error while deleting language with code {code}"
                 }
+            },
+            "create": {
+                "success": "Successfully created language {name}",
+                "error": {
+                    "already-exists": "Language with code {code} already exists"
+                }
             }
         }
     },

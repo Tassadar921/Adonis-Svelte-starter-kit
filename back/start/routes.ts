@@ -85,6 +85,7 @@ router
                                 router.get('/', [AdminLanguageController, 'getAll']);
                                 router.post('/delete', [AdminLanguageController, 'delete']);
                                 router.post('/create', [AdminLanguageController, 'create']);
+                                router.get('/:languageCode', [AdminLanguageController, 'get']);
                             })
                             .prefix('language');
                     })

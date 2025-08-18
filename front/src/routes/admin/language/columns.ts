@@ -24,7 +24,7 @@ export const getLanguageColumns = (onSort: (field: string, order: 'asc' | 'desc'
         enableHiding: false,
     },
     {
-        id: m['admin.language.fields.code'](),
+        id: 'code',
         accessorKey: 'code',
         header: ({ column }) =>
             renderComponent(SortableColumn, {
@@ -36,14 +36,20 @@ export const getLanguageColumns = (onSort: (field: string, order: 'asc' | 'desc'
     },
     {
         header: m['admin.language.fields.flag'](),
+        meta: {
+            headerName: m['admin.language.fields.flag'](),
+        },
         cell: ({ row }) =>
             renderComponent(DatatableLanguageIcon, {
                 language: row.original,
             }),
     },
     {
-        id: m['admin.language.fields.name'](),
+        id: 'name',
         accessorKey: 'name',
+        meta: {
+            headerName: m['admin.language.fields.name'](),
+        },
         header: ({ column }) =>
             renderComponent(SortableColumn, {
                 title: m['admin.language.fields.name'](),
@@ -52,8 +58,11 @@ export const getLanguageColumns = (onSort: (field: string, order: 'asc' | 'desc'
             }),
     },
     {
-        id: m['admin.language.fields.fallback'](),
+        id: 'fallback',
         accessorKey: 'isFallback',
+        meta: {
+            headerName: m['admin.language.fields.fallback'](),
+        },
         header: ({ column }) =>
             renderComponent(SortableColumn, {
                 title: m['admin.language.fields.fallback'](),

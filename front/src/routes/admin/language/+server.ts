@@ -18,8 +18,6 @@ export const GET: RequestHandler = async ({ url, locals }): Promise<Response> =>
             throw response;
         }
 
-        console.log(response.data);
-
         return json({
             isSuccess: true,
             data: { ...response.data, languages: response.data.languages.map((language: SerializedLanguage) => ({ id: language.code, ...language })) },
