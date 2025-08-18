@@ -7,6 +7,7 @@
     import { wrappedFetch } from '#lib/services/requestService';
     import { DataTable } from '#lib/components/ui/data-table';
     import { getLanguageColumns } from './columns';
+    import { Breadcrumb } from '#lib/components/ui/breadcrumb';
 
     let paginatedLanguages: PaginatedLanguages | undefined = $state();
     let selectedLanguages: string[] = $state([]);
@@ -45,6 +46,8 @@
 </script>
 
 <Title title={m['admin.language.title']()} hasBackground />
+
+<Breadcrumb items={[{ title: 'Admin', href: '/admin' }, { title: 'Languages' }]} />
 
 {#if paginatedLanguages}
     <div class="flex flex-col gap-1 mt-10">

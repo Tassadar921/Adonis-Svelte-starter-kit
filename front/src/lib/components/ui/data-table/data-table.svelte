@@ -125,7 +125,7 @@
         <DropdownMenuContent align="end">
             {#each table.getAllColumns().filter((col) => col.getCanHide()) as column (column.id)}
                 <DropdownMenuCheckboxItem class="capitalize" bind:checked={() => column.getIsVisible(), (v) => column.toggleVisibility(!!v)}>
-                    {column.columnDef.meta?.headerName!}
+                    {column.columnDef.meta?.headerName}
                 </DropdownMenuCheckboxItem>
             {/each}
         </DropdownMenuContent>

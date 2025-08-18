@@ -5,14 +5,46 @@
     import { page } from '$app/state';
     import type { PageDataError } from '../../../app';
     import { showToast } from '#lib/services/toastService';
+    import {
+        AlertDialog,
+        AlertDialogAction,
+        AlertDialogCancel,
+        AlertDialogContent,
+        AlertDialogDescription,
+        AlertDialogFooter,
+        AlertDialogHeader,
+        AlertDialogTitle,
+    } from '#lib/components/ui/alert-dialog';
+    import { wrappedFetch } from '#lib/services/requestService';
+    import { location, navigate } from '#lib/stores/locationStore';
+    import { language } from '#lib/stores/languageStore';
 
     type Props = {
         children: import('svelte').Snippet;
-        isNew?: boolean;
+        id?: string | number;
+        deleteTitle?: string;
+        deleteText?: string;
         onError?: () => void;
     };
 
-    let { children, isNew, onError }: Props = $props();
+    let { children, id, deleteTitle, deleteText, onError }: Props = $props();
+
+    let showModal: boolean = $state(false);
+
+    const handleDelete = async (): Promise<void> => {
+        showModal = false;
+        console.log(`/edit/${id}`, `${$location.replace(`/edit/${id}`, '')}/delete`);
+        await wrappedFetch(`${$location.replace(`/edit/${id}`, '')}/delete`, { method: 'POST', body: { data: [id] } }, (data) => {
+            const status: { isSuccess: boolean; message: string; code: string } = data.messages.map((status: { isSuccess: boolean; message: string; code: string }) => {
+                showToast(status.message, status.isSuccess ? 'success' : 'error');
+                return status.isSuccess;
+            })[0];
+
+            if (status.isSuccess) {
+                navigate(`${$language}/admin/language`);
+            }
+        });
+    };
 
     $effect((): void => {
         page.data.formError?.errors.forEach((error: PageDataError) => {
@@ -26,11 +58,24 @@
 <form use:enhance method="POST" enctype="multipart/form-data" class="pt-8 flex flex-col gap-8 rounded-lg shadow-md mt-5 p-3 bg-gray-300 dark:bg-gray-700">
     {@render children?.()}
     <div class="w-full flex justify-end gap-5 pr-5">
-        {#if !isNew}
-            <Button variant="destructive">
+        {#if id}
+            <Button variant="destructive" onclick={() => (showModal = true)}>
                 {m['common.delete']()}
             </Button>
         {/if}
-        <Button type="submit" variant="secondary">{m[`common.${isNew ? 'create' : 'update'}`]()}</Button>
+        <Button type="submit" variant="secondary">{m[`common.${id ? 'update' : 'create'}`]()}</Button>
     </div>
 </form>
+
+<AlertDialog open={showModal} onOpenChange={() => (showModal = false)}>
+    <AlertDialogContent>
+        <AlertDialogHeader>
+            <AlertDialogTitle>{deleteTitle}</AlertDialogTitle>
+            <AlertDialogDescription>{deleteText}</AlertDialogDescription>
+        </AlertDialogHeader>
+        <AlertDialogFooter>
+            <AlertDialogCancel>{m['common.cancel']()}</AlertDialogCancel>
+            <AlertDialogAction onclick={handleDelete}>{m['common.continue']()}</AlertDialogAction>
+        </AlertDialogFooter>
+    </AlertDialogContent>
+</AlertDialog>

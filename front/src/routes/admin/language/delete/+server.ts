@@ -18,7 +18,6 @@ export const POST: RequestHandler = async ({ request, params, locals }): Promise
             messages: response.data.messages,
         });
     } catch (error: any) {
-        console.log(error.response.data);
         return json(
             {
                 isSuccess: false,

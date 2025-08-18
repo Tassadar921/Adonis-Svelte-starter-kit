@@ -28,18 +28,20 @@ export default class AdminLanguageController {
         const statuses: { isDeleted: boolean; isFallback?: boolean; name?: string; code: string }[] = await this.languageRepository.delete(languages);
 
         return response.ok({
-            messages: statuses.map(async (status: { isDeleted: boolean; isFallback?: boolean; name?: string; code: string }): Promise<{ code: string; message: string; isSuccess: boolean }> => {
-                if (status.isDeleted) {
-                    await cache.deleteByTag({ tags: [`language:${status.code}`] });
-                    return { code: status.code, message: i18n.t(`messages.admin.language.delete.success`, { name: status.name }), isSuccess: true };
-                } else {
-                    if (status.isFallback) {
-                        return { code: status.code, message: i18n.t(`messages.admin.language.delete.error.fallback`, { code: status.code }), isSuccess: false };
+            messages: await Promise.all(
+                statuses.map(async (status: { isDeleted: boolean; isFallback?: boolean; name?: string; code: string }): Promise<{ code: string; message: string; isSuccess: boolean }> => {
+                    if (status.isDeleted) {
+                        await cache.deleteByTag({ tags: [`language:${status.code}`] });
+                        return { code: status.code, message: i18n.t(`messages.admin.language.delete.success`, { name: status.name }), isSuccess: true };
                     } else {
-                        return { code: status.code, message: i18n.t(`messages.admin.language.delete.error.default`, { code: status.code }), isSuccess: false };
+                        if (status.isFallback) {
+                            return { code: status.code, message: i18n.t(`messages.admin.language.delete.error.fallback`, { code: status.code }), isSuccess: false };
+                        } else {
+                            return { code: status.code, message: i18n.t(`messages.admin.language.delete.error.default`, { code: status.code }), isSuccess: false };
+                        }
                     }
-                }
-            }),
+                })
+            ),
         });
     }
 

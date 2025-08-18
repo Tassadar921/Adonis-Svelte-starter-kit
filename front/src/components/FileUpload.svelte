@@ -14,9 +14,21 @@
         pathPrefix: string;
         id: number | string;
         disabled?: boolean;
+        required?: boolean;
     };
 
-    let { name, title = m['common.file.title'](), description = m['common.file.description'](), width = 96, accept, fileName = '', pathPrefix, id, disabled = false }: Props = $props();
+    let {
+        name,
+        title = m['common.file.title'](),
+        description = m['common.file.description'](),
+        width = 96,
+        accept,
+        fileName = '',
+        pathPrefix,
+        id,
+        disabled = false,
+        required = false,
+    }: Props = $props();
 
     let inputRef: HTMLInputElement;
     let acceptedFormats = $state(
@@ -84,7 +96,12 @@
 
 <div class="flex flex-col w-full">
     {#if title}
-        <h3 class="font-semibold text-center mb-2">{title}</h3>
+        <div class="flex items-center gap-1 justify-center">
+            <h3 class="font-semibold text-center mb-2">{title}</h3>
+            {#if required}
+                <span class="text-red-600 font-medium mb-2.5">*</span>
+            {/if}
+        </div>
     {/if}
 
     <button
@@ -100,7 +117,7 @@
         aria-label="File uploader"
         {disabled}
     >
-        <input bind:this={inputRef} type="file" class="hidden" {name} accept={acceptedFormats} onchange={handleFileChange} {disabled} />
+        <input bind:this={inputRef} type="file" class="hidden" {name} accept={acceptedFormats} onchange={handleFileChange} {disabled} {required} />
 
         <span class="text-primary-500">
             <Upload class="size-6" />

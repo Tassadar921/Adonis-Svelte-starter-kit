@@ -17,7 +17,6 @@ export const load: PageServerLoad = async (event) => {
             language: response.data.language,
         };
     } catch (error: any) {
-        console.log(error);
         redirect(
             `/${cookies.get('PARAGLIDE_LOCALE')}/admin/language`,
             {
