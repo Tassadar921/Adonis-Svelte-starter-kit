@@ -4,7 +4,7 @@
     import { EllipsisIcon, Trash, Pencil } from '@lucide/svelte';
     import { m } from '#lib/paraglide/messages';
     import { Link } from '#lib/components/ui/link/index.js';
-    import { location } from '#lib/stores/locationStore';
+    import { location, navigate } from '#lib/stores/locationStore';
     import {
         AlertDialog,
         AlertDialogAction,
@@ -16,6 +16,7 @@
         AlertDialogTitle,
     } from '#lib/components/ui/alert-dialog';
     import { wrappedFetch } from '#lib/services/requestService';
+    import { showToast } from '#lib/services/toastService';
 
     type Props = {
         id: string;
@@ -31,8 +32,15 @@
 
     const handleDelete = async (): Promise<void> => {
         showModal = false;
-        await wrappedFetch(`${$location}/delete`, { method: 'POST', body: { languages: [id] } }, () => {
-            onDelete?.([id]);
+        await wrappedFetch(`${$location}/delete`, { method: 'POST', body: { data: [id] } }, (data) => {
+            const isSuccess: boolean = data.messages.map((status: { isSuccess: boolean; message: string; code: string }) => {
+                showToast(status.message, status.isSuccess ? 'success' : 'error');
+                return status.isSuccess;
+            })[0];
+
+            if (isSuccess) {
+                onDelete?.([id]);
+            }
         });
     };
 </script>

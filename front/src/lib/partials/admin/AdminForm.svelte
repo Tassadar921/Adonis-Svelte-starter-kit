@@ -35,13 +35,13 @@
         showModal = false;
         console.log(`/edit/${id}`, `${$location.replace(`/edit/${id}`, '')}/delete`);
         await wrappedFetch(`${$location.replace(`/edit/${id}`, '')}/delete`, { method: 'POST', body: { data: [id] } }, (data) => {
-            const status: { isSuccess: boolean; message: string; code: string } = data.messages.map((status: { isSuccess: boolean; message: string; code: string }) => {
+            const isSuccess: boolean = data.messages.map((status: { isSuccess: boolean; message: string; code: string }) => {
                 showToast(status.message, status.isSuccess ? 'success' : 'error');
                 return status.isSuccess;
             })[0];
 
-            if (status.isSuccess) {
-                navigate(`${$language}/admin/language`);
+            if (isSuccess) {
+                navigate(`${$location.replace(`/edit/${id}`, '')}`);
             }
         });
     };

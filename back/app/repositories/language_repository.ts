@@ -3,9 +3,12 @@ import Language from '#models/language';
 import SerializedLanguage from '#types/serialized/serialized_language';
 import PaginatedLanguages from '#types/paginated/paginated_languages';
 import { ModelPaginatorContract, ModelQueryBuilderContract } from '@adonisjs/lucid/types/model';
+import FileService from '#services/file_service';
+import { inject } from '@adonisjs/core';
 
+@inject()
 export default class LanguageRepository extends BaseRepository<typeof Language> {
-    constructor() {
+    constructor(private readonly fileService: FileService) {
         super(Language);
     }
 
@@ -38,7 +41,8 @@ export default class LanguageRepository extends BaseRepository<typeof Language> 
                     if (language.isFallback) {
                         return { isDeleted: false, isFallback: true, name: language.name, code };
                     }
-                    await language.delete();
+                    this.fileService.delete(language.flag);
+                    await Promise.all([language.delete(), language.flag.delete()]);
                     return { isDeleted: true, name: language.name, code };
                 } catch (error: any) {
                     return { isDeleted: false, code };

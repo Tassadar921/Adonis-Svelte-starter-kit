@@ -72,7 +72,6 @@ export const load: LayoutServerLoad = loadFlash(async (event): Promise<{ user?: 
         try {
             const response = await locals.client.get('/api');
             if (response.status !== 200) {
-                console.log(response);
                 throw response;
             }
         } catch (error: any) {
@@ -90,6 +89,8 @@ export const load: LayoutServerLoad = loadFlash(async (event): Promise<{ user?: 
     if (openedPathNames.some((openedPathName: OpenedPathName): boolean => location.startsWith(openedPathName.pathname) && !openedPathName.hybrid)) {
         redirect(303, `/${language}/`);
     }
+
+    cookies.delete('previousPathName', { path: '/' });
 
     if (formError) {
         cookies.delete('formError', { path: '/' });

@@ -2,7 +2,7 @@ import { json } from '@sveltejs/kit';
 import type { RequestHandler } from './$types';
 import { m } from '#lib/paraglide/messages';
 
-export const POST: RequestHandler = async ({ request, params, locals }): Promise<Response> => {
+export const POST: RequestHandler = async ({ request, locals }): Promise<Response> => {
     const body = await request.json();
     try {
         const response = await locals.client.post(`/api/admin/language/delete`, {

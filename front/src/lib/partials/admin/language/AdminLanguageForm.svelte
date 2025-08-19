@@ -14,7 +14,7 @@
     let code: string = $state(language?.code || '');
 </script>
 
-<AdminForm id={language?.code} deleteTitle={m['admin.language.delete.title']({ languages: [language?.code] })} deleteText={m['admin.language.delete.text']({ languages: [language?.code], count: 1 })}>
+<AdminForm id={language?.code} deleteTitle={m['admin.language.delete.title']({ languages: [language?.name] })} deleteText={m['admin.language.delete.text']({ languages: [language?.name], count: 1 })}>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="flex flex-col gap-8">
             <Input name="name" label={m['admin.language.fields.name']()} value={language?.name} required />
