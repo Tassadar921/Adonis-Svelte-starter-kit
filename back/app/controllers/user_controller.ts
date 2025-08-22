@@ -14,9 +14,9 @@ export default class UserController {
 
         return response.ok({
             users: await cache.getOrSet({
-                key: `user-not-friends:${user.id}:query:${query}:page:${page}:limit:${limit}`,
-                tags: [`user-not-friends:${user.id}`],
-                ttl: '1m',
+                key: `not-friends:${user.id}:query:${query}:page:${page}:limit:${limit}`,
+                tags: ['not-friends', `not-friends:${user.id}`],
+                ttl: '1h',
                 factory: async (): Promise<PaginatedUsers> => {
                     return await this.userRepository.searchNotFriends(query ?? '', page ?? 1, limit ?? 10, user);
                 },

@@ -20,7 +20,10 @@ export const GET: RequestHandler = async ({ url, locals }): Promise<Response> =>
 
         return json({
             isSuccess: true,
-            data: { ...response.data, languages: response.data.languages.map((language: SerializedLanguage) => ({ id: language.code, ...language })) },
+            data: {
+                ...response.data,
+                languages: response.data.languages.map((language: SerializedLanguage) => ({ id: language.code, ...language })),
+            },
         });
     } catch (error: any) {
         return json(

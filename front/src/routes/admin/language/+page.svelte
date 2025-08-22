@@ -47,7 +47,7 @@
 
 <Title title={m['admin.language.title']()} hasBackground />
 
-<Breadcrumb items={[{ title: 'Admin', href: '/admin' }, { title: 'Languages' }]} />
+<Breadcrumb items={[{ title: 'Admin', href: '/admin' }, { title: m['admin.language.title']() }]} />
 
 {#if paginatedLanguages}
     <div class="flex flex-col gap-1 mt-10">

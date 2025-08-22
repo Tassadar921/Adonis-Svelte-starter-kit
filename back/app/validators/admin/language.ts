@@ -27,7 +27,7 @@ export const createLanguageValidator = vine.compile(
     })
 );
 
-export const getLanguageValidator = vine.compile(
+export const getAdminLanguageValidator = vine.compile(
     vine.object({
         languageCode: vine.string().trim().fixedLength(2).toLowerCase(),
     })

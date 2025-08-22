@@ -25,7 +25,8 @@ export default class PendingFriendController {
         return response.ok({
             pendingFriends: await cache.getOrSet({
                 key: `pending-friends:${user.id}`,
-                ttl: '5m',
+                ttl: '1h',
+                tags: ['pending-friends', `pending-friends:${user.id}`],
                 factory: async (): Promise<PaginatedPendingFriends> => {
                     return await this.pendingFriendRepository.search(query ?? '', page ?? 1, limit ?? 10, user);
                 },

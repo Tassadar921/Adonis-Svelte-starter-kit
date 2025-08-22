@@ -29,7 +29,7 @@ export const createUserValidator = vine.compile(
     })
 );
 
-export const getUserValidator = vine.compile(
+export const getAdminUserValidator = vine.compile(
     vine.object({
         frontId: vine.number(),
     })

@@ -7,7 +7,6 @@ import { extractFormData, extractFormErrors } from '#lib/services/requestService
 
 export const load: PageServerLoad = async (event) => {
     const { locals, params, cookies } = event;
-    console.log('ici');
     try {
         const response = await locals.client.get(`/api/admin/language/${params.code}`);
 

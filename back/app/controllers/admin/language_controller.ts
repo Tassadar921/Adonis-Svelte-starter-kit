@@ -1,7 +1,7 @@
 import { inject } from '@adonisjs/core';
 import { HttpContext } from '@adonisjs/core/http';
 import LanguageRepository from '#repositories/language_repository';
-import { searchAdminLanguagesValidator, deleteLanguagesValidator, createLanguageValidator, getLanguageValidator, updateLanguageValidator } from '#validators/admin/language';
+import { searchAdminLanguagesValidator, deleteLanguagesValidator, createLanguageValidator, getAdminLanguageValidator, updateLanguageValidator } from '#validators/admin/language';
 import Language from '#models/language';
 import cache from '@adonisjs/cache/services/main';
 import app from '@adonisjs/core/services/app';
@@ -10,6 +10,8 @@ import path from 'node:path';
 import FileTypeEnum from '#types/enum/file_type_enum';
 import FileService from '#services/file_service';
 import { MultipartFile } from '@adonisjs/bodyparser/types';
+import PaginatedLanguages from '#types/paginated/paginated_languages';
+import SerializedLanguage from '#types/serialized/serialized_language';
 
 @inject()
 export default class AdminLanguageController {
@@ -21,10 +23,19 @@ export default class AdminLanguageController {
     public async getAll({ request, response }: HttpContext) {
         const { query, page, limit, sortBy: inputSortBy } = await request.validateUsing(searchAdminLanguagesValidator);
 
-        const [field, order] = inputSortBy.split(':');
-        const sortBy = { field: field as keyof Language['$attributes'], order: order as 'asc' | 'desc' };
+        return response.ok(
+            await cache.getOrSet({
+                key: `admin-languages:query:${query}:page:${page}:limit:${limit}`,
+                tags: [`admin-languages`],
+                ttl: '1h',
+                factory: async (): Promise<PaginatedLanguages> => {
+                    const [field, order] = inputSortBy.split(':');
+                    const sortBy = { field: field as keyof Language['$attributes'], order: order as 'asc' | 'desc' };
 
-        return response.ok(await this.languageRepository.getAdminLanguages(query, page, limit, sortBy));
+                    return await this.languageRepository.getAdminLanguages(query, page, limit, sortBy);
+                },
+            })
+        );
     }
 
     public async delete({ request, response, i18n }: HttpContext) {
@@ -36,7 +47,7 @@ export default class AdminLanguageController {
             messages: await Promise.all(
                 statuses.map(async (status: { isDeleted: boolean; isFallback?: boolean; name?: string; code: string }): Promise<{ code: string; message: string; isSuccess: boolean }> => {
                     if (status.isDeleted) {
-                        await cache.deleteByTag({ tags: [`language:${status.code}`] });
+                        await cache.deleteByTag({ tags: [`admin-languages`, `admin-language:${status.code}`] });
                         return { code: status.code, message: i18n.t(`messages.admin.language.delete.success`, { name: status.name }), isSuccess: true };
                     } else {
                         if (status.isFallback) {
@@ -66,7 +77,7 @@ export default class AdminLanguageController {
             flagId: flag.id,
         });
 
-        await language.load('flag');
+        await Promise.all([language.load('flag'), cache.deleteByTag({ tags: ['admin-languages'] })]);
 
         return response.created({ language: language.apiSerialize(), message: i18n.t('messages.admin.language.create.success', { name }) });
     }
@@ -86,14 +97,29 @@ export default class AdminLanguageController {
 
         await language.save();
 
+        if (!this.areSameFiles(language.flag, inputFlag)) {
+            await language.flag.delete();
+        }
+
+        await Promise.all([language.load('flag'), cache.deleteByTag({ tags: [`admin-languages`, `admin-language:${language.id}`] })]);
+
         return response.ok({ language: language.apiSerialize(), message: i18n.t('messages.admin.language.update.success', { name }) });
     }
 
     public async get({ request, response }: HttpContext) {
-        const { languageCode: code } = await getLanguageValidator.validate(request.params());
+        const { languageCode: code } = await getAdminLanguageValidator.validate(request.params());
         const language: Language = await this.languageRepository.firstOrFail({ code });
 
-        return response.ok({ language: language.apiSerialize() });
+        return response.ok(
+            await cache.getOrSet({
+                key: `admin-languages:${language.id}`,
+                tags: [`admin-language:${language.id}`],
+                ttl: '1h',
+                factory: (): SerializedLanguage => {
+                    return language.apiSerialize();
+                },
+            })
+        );
     }
 
     private async processInputFlag(inputFlag: MultipartFile, code: string): Promise<File> {

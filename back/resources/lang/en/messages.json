@@ -17,6 +17,24 @@
             "update": {
                 "success": "Successfully updated language {name}"
             }
+        },
+        "user": {
+            "delete": {
+                "success": "Successfully deleted {username}",
+                "error": {
+                    "current": "You cannot delete your own account from back-office ({username})",
+                    "default": "Error while deleting user with identifier {frontId}"
+                }
+            },
+            "create": {
+                "success": "Successfully created user {username} ({email})",
+                "error": {
+                    "already-exists": "user with email {email} already exists"
+                }
+            },
+            "update": {
+                "success": "Successfully updated {username}"
+            }
         }
     },
     "auth": {

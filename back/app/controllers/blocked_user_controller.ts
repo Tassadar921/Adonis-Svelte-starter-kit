@@ -27,9 +27,9 @@ export default class BlockedUserController {
 
         return response.ok({
             blockedUsers: await cache.getOrSet({
-                key: `user-blocked:${user.id}:query:${query}:page:${page}:limit:${limit}`,
-                tags: [`user-blocked:${user.id}`],
-                ttl: '5m',
+                key: `blocked-users:${user.id}:query:${query}:page:${page}:limit:${limit}`,
+                tags: ['blocked-users', `blocked-users:${user.id}`],
+                ttl: '1h',
                 factory: async (): Promise<PaginatedBlockedUsers> => {
                     return await this.blockedUserRepository.search(query ?? '', page ?? 1, limit ?? 10, user);
                 },
@@ -51,24 +51,21 @@ export default class BlockedUserController {
 
         const friendRelationships: Friend[] = await this.friendRepository.findFromUsers(user, targetUser);
         if (friendRelationships.length) {
-            await Promise.all([
-                ...friendRelationships.map(async (friend: Friend): Promise<void> => friend.delete()),
-                cache.deleteByTag({ tags: [`user-friends:${user.id}`, `user-friends:${targetUser.id}`] }),
-            ]);
+            await Promise.all([...friendRelationships.map(async (friend: Friend): Promise<void> => friend.delete()), cache.deleteByTag({ tags: [`friends:${user.id}`, `friends:${targetUser.id}`] })]);
         } else {
-            await cache.deleteByTag({ tags: [`user-not-friends:${user.id}`, `user-not-friends:${targetUser.id}`] });
+            await cache.deleteByTag({ tags: [`not-friends:${user.id}`, `not-friends:${targetUser.id}`] });
         }
 
         await Promise.all([
             ...pendingFriends.map(async (pendingFriend: PendingFriend): Promise<void> => {
                 transmit.broadcast(`notification/add-friend/cancel/${userId}`, pendingFriend.apiSerialize());
-                await pendingFriend.delete();
+                await Promise.all([cache.deleteByTag({ tags: [`pending-friends:${user.id}`, `pending-friends:${targetUser.id}`] }), pendingFriend.delete(), pendingFriend.notification.delete()]);
             }),
             BlockedUser.create({
                 blockerId: user.id,
                 blockedId: targetUser.id,
             }),
-            cache.deleteByTag({ tags: [`user-blocked:${user.id}`, `user-blocked:${targetUser.id}`] }),
+            cache.deleteByTag({ tags: [`blocked-users:${user.id}`, `blocked-users:${targetUser.id}`] }),
         ]);
 
         transmit.broadcast(`notification/blocked/${userId}`, user.apiSerialize());
@@ -88,7 +85,7 @@ export default class BlockedUserController {
 
         await Promise.all([
             ...blockedUsers.map((blockedUser: BlockedUser): Promise<void> => blockedUser.delete()),
-            cache.deleteByTag({ tags: [`user-blocked:${user.id}`, `user-blocked:${targetUser.id}`] }),
+            cache.deleteByTag({ tags: [`blocked-users:${user.id}`, `blocked-users:${targetUser.id}`] }),
         ]);
 
         transmit.broadcast(`notification/unblocked/${userId}`);

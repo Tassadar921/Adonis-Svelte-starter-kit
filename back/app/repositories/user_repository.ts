@@ -3,7 +3,6 @@ import User from '#models/user';
 import { ModelPaginatorContract, ModelQueryBuilderContract } from '@adonisjs/lucid/types/model';
 import PaginatedUsers from '#types/paginated/paginated_users';
 import SerializedUser from '#types/serialized/serialized_user';
-import Language from '#models/language';
 import { inject } from '@adonisjs/core';
 import FileService from '#services/file_service';
 
@@ -58,7 +57,7 @@ export default class UserRepository extends BaseRepository<typeof User> {
         };
     }
 
-    public async getAdminUsers(query: string, page: number, limit: number, sortBy: { field: keyof Language['$attributes']; order: 'asc' | 'desc' }): Promise<PaginatedUsers> {
+    public async getAdminUsers(query: string, page: number, limit: number, sortBy: { field: keyof User['$attributes']; order: 'asc' | 'desc' }): Promise<PaginatedUsers> {
         const users: ModelPaginatorContract<User> = await this.Model.query()
             .if(query, (queryBuilder: ModelQueryBuilderContract<typeof User>): void => {
                 queryBuilder.where('username', 'ILIKE', `%${query}%`).orWhere('email', 'ILIKE', `%${query}%`);
@@ -78,10 +77,10 @@ export default class UserRepository extends BaseRepository<typeof User> {
         };
     }
 
-    public async delete(frontIds: number[], currentUser: User): Promise<{ isDeleted: boolean; isCurrentUser?: boolean; username?: string; frontId: number }[]> {
+    public async delete(frontIds: number[], currentUser: User): Promise<{ isDeleted: boolean; isCurrentUser?: boolean; username?: string; frontId: number; id?: string }[]> {
         // Delete some other things if needed
         return await Promise.all([
-            ...frontIds.map(async (frontId: number): Promise<{ isDeleted: boolean; isCurrentUser?: boolean; username?: string; frontId: number }> => {
+            ...frontIds.map(async (frontId: number): Promise<{ isDeleted: boolean; isCurrentUser?: boolean; username?: string; frontId: number; id?: string }> => {
                 try {
                     const user: User = await this.Model.query().where('front_id', frontId).firstOrFail();
                     if (user.id === currentUser.id) {
@@ -95,7 +94,7 @@ export default class UserRepository extends BaseRepository<typeof User> {
                         await user.profilePicture.delete();
                     }
 
-                    return { isDeleted: true, username: user.username, frontId };
+                    return { isDeleted: true, username: user.username, frontId, id: user.id };
                 } catch (error: any) {
                     return { isDeleted: false, frontId };
                 }

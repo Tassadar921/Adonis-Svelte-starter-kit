@@ -15,7 +15,6 @@ export const POST: RequestHandler = async ({ params, locals }): Promise<Response
             message: response.data.message,
         });
     } catch (error: any) {
-        console.log(error);
         return json(
             {
                 isSuccess: false,
