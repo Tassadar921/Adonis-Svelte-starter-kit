@@ -9,6 +9,7 @@
     import { page } from '$app/state';
     import type { PageDataError } from '../app';
     import { showToast } from '#lib/services/toastService';
+    import { cn } from '#lib/utils';
 
     type Props = {
         children: import('svelte').Snippet;
@@ -20,9 +21,10 @@
         isValid?: boolean;
         submittable?: boolean;
         hasBackground?: boolean;
+        class?: string;
     };
 
-    let { children, header, links, footer, onError, isValid = false, submittable = true, hasBackground = true, submitContent }: Props = $props();
+    let { children, header, links, footer, onError, isValid = false, submittable = true, hasBackground = true, submitContent, class: className }: Props = $props();
 
     let isLoading: boolean = $state(false);
     let isSendButtonDisabled: boolean = $state(false);
@@ -32,11 +34,14 @@
     });
 
     $effect((): void => {
+        if (!page.data.formError) {
+            return;
+        }
         page.data.formError?.errors.forEach((error: PageDataError) => {
             showToast(error.message, error.type);
-            onError?.();
         });
         page.data.formError = undefined;
+        onError?.();
     });
 </script>
 
@@ -44,7 +49,7 @@
     <FormBackground />
 {/if}
 
-<div class:mt-20={hasBackground} class="flex items-center justify-center">
+<div class:mt-20={hasBackground} class={cn('flex items-center justify-center', className)}>
     <Card class="w-10/12 sm:w-lg">
         <form use:enhance method="POST" enctype="multipart/form-data" class="z-10 flex flex-col gap-3">
             <CardHeader>

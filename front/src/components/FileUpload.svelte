@@ -14,7 +14,7 @@
         pathPrefix: string;
         id: number | string;
         disabled?: boolean;
-        required?: boolean;
+        file?: File;
     };
 
     let {
@@ -27,7 +27,7 @@
         pathPrefix,
         id,
         disabled = false,
-        required = false,
+        file = $bindable(),
     }: Props = $props();
 
     let inputRef: HTMLInputElement;
@@ -90,6 +90,25 @@
             inputRef.click();
         }
     };
+
+    const urlToFile = async (url: string, filename: string): Promise<File> => {
+        const res = await fetch(url);
+        const blob = await res.blob();
+        return new File([blob], filename, { type: blob.type });
+    };
+
+    $effect((): void => {
+        if (fileName && pathPrefix && id && inputRef) {
+            if (!inputRef.files?.length) {
+                urlToFile(`/assets/${pathPrefix}/${id}`, fileName).then((f) => {
+                    const dt = new DataTransfer();
+                    dt.items.add(f);
+                    inputRef.files = dt.files;
+                    inputRef.dispatchEvent(new Event('change', { bubbles: true }));
+                });
+            }
+        }
+    });
 </script>
 
 <Loader {isLoading} />
@@ -98,9 +117,6 @@
     {#if title}
         <div class="flex items-center gap-1 justify-center">
             <h3 class="font-semibold text-center mb-2">{title}</h3>
-            {#if required}
-                <span class="text-red-600 font-medium mb-2.5">*</span>
-            {/if}
         </div>
     {/if}
 
@@ -117,7 +133,7 @@
         aria-label="File uploader"
         {disabled}
     >
-        <input bind:this={inputRef} type="file" class="hidden" {name} accept={acceptedFormats} onchange={handleFileChange} {disabled} {required} />
+        <input bind:this={inputRef} type="file" class="sr-only" {name} accept={acceptedFormats} onchange={handleFileChange} {disabled} bind:value={file} />
 
         <span class="text-primary-500">
             <Upload class="size-6" />

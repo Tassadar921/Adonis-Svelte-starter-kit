@@ -5,31 +5,17 @@
     import { Link } from '#lib/components/ui/link';
     import { profile } from '#lib/stores/profileStore';
     import { m } from '#lib/paraglide/messages';
-    import { onMount } from 'svelte';
     import FileUpload from '#components/FileUpload.svelte';
     import { type SerializedUser } from 'backend/types';
     import Meta from '#components/Meta.svelte';
-    import { PUBLIC_API_BASE_URI } from '$env/static/public';
 
     let formValues: { username: string; email: string } = $state({
-        username: '',
-        email: '',
+        username: $profile?.username || '',
+        email: $profile?.email || '',
     });
-    let path: string = '';
     let canSubmit: boolean = $state(false);
 
     let profileData: SerializedUser = $profile!;
-
-    onMount((): void => {
-        formValues = {
-            username: $profile?.username || '',
-            email: $profile?.email || '',
-        };
-
-        if ($profile!.profilePicture) {
-            path = `${PUBLIC_API_BASE_URI}/api/static/profile-picture/${$profile!.id}`;
-        }
-    });
 
     const handleError = (): void => {
         formValues = {

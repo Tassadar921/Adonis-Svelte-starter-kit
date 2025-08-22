@@ -4,7 +4,7 @@
             "delete": {
                 "success": "{name} supprimé avec succès",
                 "error": {
-                    "fallback": "Vous ne pouvez pas supprimer la langue par défaut ({code})",
+                    "fallback": "Vous ne pouvez pas supprimer la langue par défaut ({name})",
                     "default": "Une erreur est survenue lors de la suppression de la langue du code {code}"
                 }
             },
@@ -13,6 +13,9 @@
                 "error": {
                     "already-exists": "Une language avec le code {code} existe déjà"
                 }
+            },
+            "update": {
+                "success": "{name} mis à jour avec succès"
             }
         }
     },

@@ -1,7 +1,7 @@
 import { inject } from '@adonisjs/core';
 import { HttpContext } from '@adonisjs/core/http';
 import LanguageRepository from '#repositories/language_repository';
-import { searchAdminLanguagesValidator, deleteLanguagesValidator, createLanguageValidator, getLanguageValidator, updateLanguageValidator } from '#validators/admin/language';
+import { searchAdminLanguagesValidator, deleteLanguageValidator, createLanguageValidator, getLanguageValidator, updateLanguageValidator } from '#validators/admin/language';
 import Language from '#models/language';
 import cache from '@adonisjs/cache/services/main';
 import app from '@adonisjs/core/services/app';
@@ -10,39 +10,41 @@ import path from 'node:path';
 import FileTypeEnum from '#types/enum/file_type_enum';
 import FileService from '#services/file_service';
 import { MultipartFile } from '@adonisjs/bodyparser/types';
+import UserRepository from '#repositories/user_repository';
+import { deleteUsersValidator, searchAdminUsersValidator } from '#validators/admin/user';
 
 @inject()
-export default class AdminLanguageController {
+export default class AdminUserController {
     constructor(
-        private readonly languageRepository: LanguageRepository,
+        private readonly userRepository: UserRepository,
         private readonly fileService: FileService
     ) {}
 
     public async getAll({ request, response }: HttpContext) {
-        const { query, page, limit, sortBy: inputSortBy } = await request.validateUsing(searchAdminLanguagesValidator);
+        const { query, page, limit, sortBy: inputSortBy } = await request.validateUsing(searchAdminUsersValidator);
 
         const [field, order] = inputSortBy.split(':');
         const sortBy = { field: field as keyof Language['$attributes'], order: order as 'asc' | 'desc' };
 
-        return response.ok(await this.languageRepository.getAdminLanguages(query, page, limit, sortBy));
+        return response.ok(await this.userRepository.getAdminUsers(query, page, limit, sortBy));
     }
 
-    public async delete({ request, response, i18n }: HttpContext) {
-        const { languages } = await request.validateUsing(deleteLanguagesValidator);
+    public async delete({ request, response, i18n, user }: HttpContext) {
+        const { users } = await request.validateUsing(deleteUsersValidator);
 
-        const statuses: { isDeleted: boolean; isFallback?: boolean; name?: string; code: string }[] = await this.languageRepository.delete(languages);
+        const statuses: { isDeleted: boolean; isCurrentUser?: boolean; username?: string; frontId: number }[] = await this.userRepository.delete(users, user);
 
         return response.ok({
             messages: await Promise.all(
-                statuses.map(async (status: { isDeleted: boolean; isFallback?: boolean; name?: string; code: string }): Promise<{ code: string; message: string; isSuccess: boolean }> => {
+                statuses.map(async (status: { isDeleted: boolean; isCurrentUser?: boolean; username?: string; frontId: number }): Promise<{ id: number; message: string; isSuccess: boolean }> => {
                     if (status.isDeleted) {
                         await cache.deleteByTag({ tags: [`language:${status.code}`] });
-                        return { code: status.code, message: i18n.t(`messages.admin.language.delete.success`, { name: status.name }), isSuccess: true };
+                        return { id: status.frontId, message: i18n.t(`messages.admin.user.delete.success`, { username: status.username }), isSuccess: true };
                     } else {
-                        if (status.isFallback) {
-                            return { code: status.code, message: i18n.t(`messages.admin.language.delete.error.fallback`, { name: status.name }), isSuccess: false };
+                        if (status.isCurrentUser) {
+                            return { id: status.frontId, message: i18n.t(`messages.admin.user.delete.error.current`, { username: status.username }), isSuccess: false };
                         } else {
-                            return { code: status.code, message: i18n.t(`messages.admin.language.delete.error.default`, { code: status.code }), isSuccess: false };
+                            return { id: status.frontId, message: i18n.t(`messages.admin.user.delete.error.default`, { frontId: status.frontId }), isSuccess: false };
                         }
                     }
                 })

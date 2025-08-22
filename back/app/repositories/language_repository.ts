@@ -42,7 +42,10 @@ export default class LanguageRepository extends BaseRepository<typeof Language> 
                         return { isDeleted: false, isFallback: true, name: language.name, code };
                     }
                     this.fileService.delete(language.flag);
-                    await Promise.all([language.delete(), language.flag.delete()]);
+
+                    await language.delete();
+                    await language.flag.delete();
+
                     return { isDeleted: true, name: language.name, code };
                 } catch (error: any) {
                     return { isDeleted: false, code };

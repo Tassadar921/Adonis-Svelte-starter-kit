@@ -8,4 +8,4 @@
     let { language }: Props = $props();
 </script>
 
-<img src={`/assets/language-flag/${language.code}`} alt={language.name} />
+<img src={`/assets/language-flag/${language.code}`} alt={language.name} class="max-h-10" />

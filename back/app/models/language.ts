@@ -50,8 +50,8 @@ export default class Language extends BaseModel {
 
     @beforeFind()
     @beforeFetch()
-    public static preloadDefaults(userQuery: any): void {
-        userQuery.preload('flag');
+    public static preloadDefaults(langageQuery: any): void {
+        langageQuery.preload('flag');
     }
 
     public apiSerialize(): SerializedLanguage {

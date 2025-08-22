@@ -4,7 +4,7 @@
             "delete": {
                 "success": "Successfully deleted {name}",
                 "error": {
-                    "fallback": "You cannot delete the default language ({code})",
+                    "fallback": "You cannot delete the default language ({name})",
                     "default": "Error while deleting language with code {code}"
                 }
             },
@@ -13,6 +13,9 @@
                 "error": {
                     "already-exists": "Language with code {code} already exists"
                 }
+            },
+            "update": {
+                "success": "Successfully updated language {name}"
             }
         }
     },

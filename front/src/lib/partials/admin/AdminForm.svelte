@@ -17,17 +17,17 @@
     } from '#lib/components/ui/alert-dialog';
     import { wrappedFetch } from '#lib/services/requestService';
     import { location, navigate } from '#lib/stores/locationStore';
-    import { language } from '#lib/stores/languageStore';
 
     type Props = {
         children: import('svelte').Snippet;
         id?: string | number;
+        canSubmit: boolean;
         deleteTitle?: string;
         deleteText?: string;
         onError?: () => void;
     };
 
-    let { children, id, deleteTitle, deleteText, onError }: Props = $props();
+    let { children, id, canSubmit, deleteTitle, deleteText, onError }: Props = $props();
 
     let showModal: boolean = $state(false);
 
@@ -47,11 +47,14 @@
     };
 
     $effect((): void => {
+        if (!page.data.formError) {
+            return;
+        }
         page.data.formError?.errors.forEach((error: PageDataError) => {
             showToast(error.message, error.type);
-            onError?.();
         });
         page.data.formError = undefined;
+        onError?.();
     });
 </script>
 
@@ -63,7 +66,7 @@
                 {m['common.delete']()}
             </Button>
         {/if}
-        <Button type="submit" variant="secondary">{m[`common.${id ? 'update' : 'create'}`]()}</Button>
+        <Button type="submit" variant="secondary" disabled={!canSubmit}>{m[`common.${id ? 'update' : 'create'}`]()}</Button>
     </div>
 </form>
 
