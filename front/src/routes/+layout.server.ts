@@ -12,6 +12,8 @@ interface OpenedPathName {
 
 export const load: LayoutServerLoad = loadFlash(async (event): Promise<{ user?: SerializedUser; language: LanguageCode; location: string; formError?: FormError }> => {
     const { cookies, url, locals } = event;
+
+    // Paths that don't require authentication
     const openedPathNames: OpenedPathName[] = [
         { pathname: '/create-account', hybrid: false },
         { pathname: '/login', hybrid: false },

@@ -1,12 +1,12 @@
 import vine from '@vinejs/vine';
-import { sortByLanguageRule } from '#validators/admin/custom/language';
+import { sortByUserRule } from '#validators/admin/custom/user';
 
 export const searchAdminUsersValidator = vine.compile(
     vine.object({
         query: vine.string().trim().maxLength(50),
         page: vine.number().positive(),
         limit: vine.number().positive(),
-        sortBy: vine.string().trim().use(sortByLanguageRule()),
+        sortBy: vine.string().trim().use(sortByUserRule()),
     })
 );
 

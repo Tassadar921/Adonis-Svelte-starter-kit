@@ -4,6 +4,7 @@
     import { Input } from '#lib/components/ui/input';
     import { m } from '#lib/paraglide/messages';
     import FileUpload from '#components/FileUpload.svelte';
+    import { onMount } from 'svelte';
 
     type Props = {
         language?: SerializedLanguage;
@@ -12,23 +13,27 @@
     let { language }: Props = $props();
 
     let formValues: { name: string; code: string } = $state({
-        name: language?.name || '',
-        code: language?.code || '',
+        name: '',
+        code: '',
     });
     let canSubmit: boolean = $state(false);
-    let code: string = $state(language?.code || '');
     let file: File | undefined = $state();
 
+    onMount(() => {
+        setInitialValues();
+    });
+
+    const setInitialValues = (): void => {
+        formValues.name = language?.name || '';
+        formValues.code = language?.code || '';
+    };
+
     const handleError = (): void => {
-        formValues = {
-            name: language?.name || '',
-            code: language?.code || '',
-        };
+        setInitialValues();
     };
 
     $effect((): void => {
         canSubmit = !!formValues.name && !!formValues.code && !!(language?.flag || file);
-        console.log(canSubmit, formValues.name, formValues.code, language?.flag, file);
     });
 </script>
 
@@ -42,7 +47,7 @@
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="flex flex-col gap-8">
             <Input name="name" label={m['admin.language.fields.name']()} bind:value={formValues.name} required />
-            <Input name="code" label={m['admin.language.fields.code']()} bind:value={formValues.code} disabled={!!language} required />
+            <Input name="code" label={m['admin.language.fields.code']()} bind:value={formValues.code} readonly={!!language} required />
         </div>
         <div>
             <FileUpload
@@ -52,7 +57,7 @@
                 title={m['admin.language.new.flag.title']()}
                 description={m['admin.language.new.flag.description']()}
                 pathPrefix="language-flag"
-                id={code}
+                id={formValues.code}
                 bind:file
             />
         </div>

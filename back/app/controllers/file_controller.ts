@@ -17,19 +17,18 @@ export default class FileController {
 
     public async serveStaticProfilePictureFile({ request, response, i18n }: HttpContext) {
         const { userId } = await serveStaticProfilePictureFileValidator.validate(request.params());
+        const user: User = await this.userRepository.firstOrFail({ frontId: userId });
 
         try {
             const filePath: string = await cache.getOrSet({
-                key: `user-profile-picture:${userId}`,
+                key: `user-profile-picture:${user.id}`,
                 ttl: '1h',
                 factory: async (): Promise<string> => {
-                    const otherUser: User = await this.userRepository.firstOrFail({ frontId: userId });
-
-                    if (!otherUser.profilePicture) {
+                    if (!user.profilePicture) {
                         throw new Error('NO_PICTURE');
                     }
 
-                    return app.makePath(otherUser.profilePicture.path);
+                    return app.makePath(user.profilePicture.path);
                 },
             });
 

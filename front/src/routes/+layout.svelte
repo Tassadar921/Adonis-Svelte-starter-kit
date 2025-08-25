@@ -12,6 +12,7 @@
     import { Transmit } from '@adonisjs/transmit-client';
     import { transmit } from '#lib/stores/transmitStore';
     import { PUBLIC_API_REAL_URI } from '$env/static/public';
+    import { location } from '#lib/stores/locationStore';
 
     const currentPage = readable(page);
 
@@ -36,6 +37,10 @@
         if ($flash) {
             showToast($flash.message, $flash.type);
         }
+    });
+
+    $effect(() => {
+        console.log($location);
     });
 </script>
 

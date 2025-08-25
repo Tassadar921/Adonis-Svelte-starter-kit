@@ -25,7 +25,7 @@ export default class AdminLanguageController {
 
         return response.ok(
             await cache.getOrSet({
-                key: `admin-languages:query:${query}:page:${page}:limit:${limit}`,
+                key: `admin-languages:query:${query}:page:${page}:limit:${limit}:sortBy:${inputSortBy}`,
                 tags: [`admin-languages`],
                 ttl: '1h',
                 factory: async (): Promise<PaginatedLanguages> => {
@@ -45,15 +45,15 @@ export default class AdminLanguageController {
 
         return response.ok({
             messages: await Promise.all(
-                statuses.map(async (status: { isDeleted: boolean; isFallback?: boolean; name?: string; code: string }): Promise<{ code: string; message: string; isSuccess: boolean }> => {
+                statuses.map(async (status: { isDeleted: boolean; isFallback?: boolean; name?: string; code: string }): Promise<{ id: string; message: string; isSuccess: boolean }> => {
                     if (status.isDeleted) {
                         await cache.deleteByTag({ tags: [`admin-languages`, `admin-language:${status.code}`] });
-                        return { code: status.code, message: i18n.t(`messages.admin.language.delete.success`, { name: status.name }), isSuccess: true };
+                        return { id: status.code, message: i18n.t(`messages.admin.language.delete.success`, { name: status.name }), isSuccess: true };
                     } else {
                         if (status.isFallback) {
-                            return { code: status.code, message: i18n.t(`messages.admin.language.delete.error.fallback`, { name: status.name }), isSuccess: false };
+                            return { id: status.code, message: i18n.t(`messages.admin.language.delete.error.fallback`, { name: status.name }), isSuccess: false };
                         } else {
-                            return { code: status.code, message: i18n.t(`messages.admin.language.delete.error.default`, { code: status.code }), isSuccess: false };
+                            return { id: status.code, message: i18n.t(`messages.admin.language.delete.error.default`, { code: status.code }), isSuccess: false };
                         }
                     }
                 })
@@ -112,7 +112,7 @@ export default class AdminLanguageController {
 
         return response.ok(
             await cache.getOrSet({
-                key: `admin-languages:${language.id}`,
+                key: `admin-language:${language.id}`,
                 tags: [`admin-language:${language.id}`],
                 ttl: '1h',
                 factory: (): SerializedLanguage => {

@@ -8,6 +8,7 @@ const UnsubscribeController = () => import('@adonisjs/transmit/controllers/unsub
 
 // Admin controllers
 const AdminLanguageController = () => import('#controllers/admin/language_controller');
+const AdminUserController = () => import('#controllers/admin/user_controller');
 
 // App controllers
 const HealthCheckController = () => import('#controllers/health_checks_controller');
@@ -89,6 +90,16 @@ router
                                 router.get('/:languageCode', [AdminLanguageController, 'get']);
                             })
                             .prefix('language');
+
+                        router
+                            .group((): void => {
+                                router.get('/', [AdminUserController, 'getAll']);
+                                router.post('/delete', [AdminUserController, 'delete']);
+                                router.post('/create', [AdminUserController, 'create']);
+                                router.post('/update', [AdminUserController, 'update']);
+                                router.get('/:frontId', [AdminUserController, 'get']);
+                            })
+                            .prefix('user');
                     })
                     .prefix('admin')
                     .use([middleware.isAdmin()]);

@@ -41,7 +41,7 @@
         selectedRows?: string[];
         batchDeleteTitle?: string;
         batchDeleteText?: string;
-        onBatchDelete?: (ids: string[]) => void;
+        onBatchDelete?: (ids: string[] | number[]) => void;
         onPaginationChange: (page: number, limit: number) => void;
     };
 
@@ -98,19 +98,19 @@
     const handleDelete = async (): Promise<void> => {
         showModal = false;
         await wrappedFetch(`${$location}/delete`, { method: 'POST', body: { data: [...selectedRows] } }, (data) => {
-            const filteredStatuses: { isSuccess: boolean; message: string; code: string }[] = data.messages.filter((status: { isSuccess: boolean; message: string; code: string }) => {
+            const filteredStatuses: { isSuccess: boolean; message: string; id: string }[] = data.messages.filter((status: { isSuccess: boolean; message: string; id: string }) => {
                 showToast(status.message, status.isSuccess ? 'success' : 'error');
                 return status.isSuccess;
             });
 
             if (onBatchDelete) {
-                onBatchDelete(filteredStatuses.map((status: { code: string }) => status.code));
+                onBatchDelete(filteredStatuses.map((status: { id: string }) => status.id));
             }
         });
     };
 
     $effect((): void => {
-        selectedRows = table.getFilteredSelectedRowModel().rows.map((row: Row<SerializedLanguage>): string => row.getValue('code'));
+        selectedRows = table.getFilteredSelectedRowModel().rows.map((row: Row<SerializedLanguage>): string => row.original.id);
     });
 </script>
 

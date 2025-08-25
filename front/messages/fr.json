@@ -270,7 +270,34 @@
             "columns": "Colonnes"
         },
         "user": {
-            "title": "Utilisateurs"
+            "title": "Utilisateurs",
+            "fields": {
+                "profile-picture": "Image de profil",
+                "username": "Pseudonyme",
+                "email": "Email",
+                "enabled": "Activé"
+            },
+            "delete": {
+                "title": "Supprimer {users}",
+                "text": [
+                    {
+                        "declarations": ["input users", "input count", "local countPlural = count: plural"],
+                        "selectors": ["countPlural"],
+                        "match": {
+                            "countPlural=zero": "Êtes-vous sûr de vouloir supprimer {users} ? Cette action est irréversible et supprimera définitivement les utilisateurs ainsi que toutes les données associées.",
+                            "countPlural=one": "Êtes-vous sûr de vouloir supprimer {users} ? Cette action est irréversible et supprimera définitivement l'utilisateur ainsi que toutes les données associées.",
+                            "countPlural=other": "Êtes-vous sûr de vouloir supprimer {users} ? Cette action est irréversible et supprimera définitivement les utilisateurs ainsi que toutes les données associées."
+                        }
+                    }
+                ]
+            },
+            "new": {
+                "title": "Nouvel utilisateur",
+                "profile-picture": {
+                    "title": "Image de profil",
+                    "description": "Image de profil de l'utilisateur (format carré recommandé)"
+                }
+            }
         },
         "language": {
             "title": "Langues",
@@ -298,7 +325,7 @@
                 "title": "Nouvelle langue",
                 "flag": {
                     "title": "Drapeau",
-                    "description": "Drapeau de la langue"
+                    "description": "Drapeau de la langue (format SVG width=\"24\" height=\"24\" viewBox=\"0 0 36 36\" recommandé)"
                 }
             }
         }

@@ -44,7 +44,9 @@
                 if (isAbsolute) {
                     window.open(href, target);
                 } else {
-                    navigate(href);
+                    const cleanHref = href.startsWith(`/${$language}/`) ? href.substring(`/${$language}`.length) : href;
+                    console.log(cleanHref);
+                    // navigate(href);
                 }
             }
         }

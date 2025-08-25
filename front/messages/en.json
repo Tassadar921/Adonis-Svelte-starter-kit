@@ -270,7 +270,34 @@
             "columns": "Columns"
         },
         "user": {
-            "title": "Users"
+            "title": "Users",
+            "fields": {
+                "profile-picture": "Profile picture",
+                "username": "Username",
+                "email": "Email",
+                "enabled": "Enabled"
+            },
+            "delete": {
+                "title": "Delete {users}",
+                "text": [
+                    {
+                        "declarations": ["input users", "input count", "local countPlural = count: plural"],
+                        "selectors": ["countPlural"],
+                        "match": {
+                            "countPlural=zero": "Are you sure you want to delete {users} ? This action cannot be undone and will permanently remove the users and all related data.",
+                            "countPlural=one": "Are you sure you want to delete {users} ? This action cannot be undone and will permanently remove the user and all related data.",
+                            "countPlural=other": "Are you sure you want to delete {users} ? This action cannot be undone and will permanently remove the users and all related data."
+                        }
+                    }
+                ]
+            },
+            "new": {
+                "title": "New user",
+                "profile-picture": {
+                    "title": "Profile picture",
+                    "description": "User profile picture (square image recommended)"
+                }
+            }
         },
         "language": {
             "title": "Languages",
@@ -298,7 +325,7 @@
                 "title": "New language",
                 "flag": {
                     "title": "Flag",
-                    "description": "Language flag"
+                    "description": "Language flag (SVG format width=\"24\" height=\"24\" viewBox=\"0 0 36 36\" recommended)"
                 }
             }
         }

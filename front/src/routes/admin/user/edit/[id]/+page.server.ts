@@ -8,7 +8,7 @@ import { extractFormData, extractFormErrors } from '#lib/services/requestService
 export const load: PageServerLoad = async (event) => {
     const { locals, params, cookies } = event;
     try {
-        const response = await locals.client.get(`/api/admin/language/${params.code}`);
+        const response = await locals.client.get(`/api/admin/user/${params.id}`);
 
         if (response.status !== 200) {
             throw response;
@@ -16,11 +16,11 @@ export const load: PageServerLoad = async (event) => {
 
         return {
             isSuccess: true,
-            language: response.data,
+            user: response.data,
         };
     } catch (error: any) {
         redirect(
-            `/${cookies.get('PARAGLIDE_LOCALE')}/admin/language`,
+            `/${cookies.get('PARAGLIDE_LOCALE')}/admin/user`,
             {
                 type: 'error',
                 message: error?.response?.data?.error ?? m['common.error.default-message'](),
@@ -32,16 +32,16 @@ export const load: PageServerLoad = async (event) => {
 
 export const actions: Actions = {
     default: async (event: RequestEvent): Promise<void> => {
-        const { request, cookies, locals, params } = event;
+        const { request, cookies, locals } = event;
 
         const formData: FormData = await request.formData();
-        formData.set('code', params.code);
+        console.log(formData);
 
         let data: any;
         let isSuccess: boolean = true;
 
         try {
-            const { data: returnedData } = await locals.client.post('api/admin/language/update', formData, {
+            const { data: returnedData } = await locals.client.post('api/admin/user/update', formData, {
                 headers: {
                     'Content-Type': 'multipart/form-data',
                 },

@@ -13,6 +13,7 @@ import User from '#models/user';
 import { cuid } from '@adonisjs/core/helpers';
 import SlugifyService from '#services/slugify_service';
 import PaginatedUsers from '#types/paginated/paginated_users';
+import SerializedUser from '#types/serialized/serialized_user';
 
 @inject()
 export default class AdminUserController {
@@ -27,7 +28,7 @@ export default class AdminUserController {
 
         return response.ok(
             await cache.getOrSet({
-                key: `admin-users:query:${query}:page:${page}:limit:${limit}`,
+                key: `admin-users:query:${query}:page:${page}:limit:${limit}:sortBy:${inputSortBy}`,
                 tags: [`admin-users`],
                 ttl: '1h',
                 factory: async (): Promise<PaginatedUsers> => {
@@ -98,15 +99,18 @@ export default class AdminUserController {
 
         user.username = username;
 
-        if (inputProfilePicture && !this.areSameFiles(user.profilePicture, inputProfilePicture)) {
-            this.fileService.delete(user.profilePicture);
+        if (inputProfilePicture) {
+            if (user.profilePicture && !this.areSameFiles(user.profilePicture, inputProfilePicture)) {
+                this.fileService.delete(user.profilePicture);
+            }
             const profilePicture: File = await this.processInputProfilePicture(inputProfilePicture);
             user.profilePictureId = profilePicture.id;
+            await cache.delete({ key: `user-profile-picture:${user.id}` });
         }
 
         await user.save();
 
-        if (inputProfilePicture && !this.areSameFiles(user.profilePicture, inputProfilePicture)) {
+        if (inputProfilePicture && user.profilePicture && !this.areSameFiles(user.profilePicture, inputProfilePicture)) {
             await user.profilePicture.delete();
         }
 
@@ -116,11 +120,19 @@ export default class AdminUserController {
     }
 
     public async get({ request, response }: HttpContext) {
-        // TODO: Add cache
         const { frontId } = await getAdminUserValidator.validate(request.params());
         const user: User = await this.userRepository.firstOrFail({ frontId });
 
-        return response.ok({ user: user.apiSerialize() });
+        return response.ok(
+            await cache.getOrSet({
+                key: `admin-user:${user.id}`,
+                tags: [`admin-user:${user.id}`],
+                ttl: '1h',
+                factory: (): SerializedUser => {
+                    return user.apiSerialize();
+                },
+            })
+        );
     }
 
     private async processInputProfilePicture(inputProfilePicture: MultipartFile): Promise<File> {
