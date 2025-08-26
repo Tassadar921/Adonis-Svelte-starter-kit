@@ -70,4 +70,4 @@
     };
 </script>
 
-<!--<MetaTags {...meta} />-->
+<MetaTags {...meta} />
