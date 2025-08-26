@@ -14,6 +14,7 @@
         selected?: boolean;
         resultsArray?: any[];
         selectedObserver?: boolean;
+        class?: string;
     };
 
     let {
@@ -28,6 +29,7 @@
         selected = false,
         resultsArray = $bindable([]),
         selectedObserver = false,
+        class: className = '',
     }: Props = $props();
 
     let searchTimeout: NodeJS.Timeout | undefined;
@@ -78,4 +80,5 @@
     {name}
     {disabled}
     {label}
+    class={className}
 />
