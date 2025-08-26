@@ -18,7 +18,7 @@
         onmouseout?: (event: MouseEvent) => void;
         href: string;
         class?: string;
-        target?: string;
+        target?: '_blank' | '_self';
         ariaLabel?: string;
         size?: SizeKeys;
     };
@@ -37,15 +37,15 @@
         "cursor-pointer focus-visible:border-ring focus-visible:ring-ring/50 aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium outline-none transition-all focus-visible:ring-[3px] disabled:pointer-events-none disabled:opacity-50 aria-disabled:pointer-events-none aria-disabled:opacity-50 [&_svg:not([class*='size-'])]:size-4 [&_svg]:pointer-events-none [&_svg]:shrink-0 text-primary underline-offset-4 hover:underline hover:bg-transparent";
 
     const handleClick = (event: MouseEvent) => {
-        if (target === '' || target === '_self') {
-            event.preventDefault();
-            if (href) {
-                onclick?.(event);
-                if (isAbsolute) {
-                    window.open(href, target);
-                } else {
-                    navigate(href);
-                }
+        event.preventDefault();
+        event.stopPropagation();
+        if (href) {
+            onclick?.(event);
+            if (isAbsolute) {
+                window.open(href, target);
+            } else {
+                const cleanHref = href.startsWith(`/${$language}/`) ? href.substring(`/${$language}`.length) : href;
+                navigate(cleanHref);
             }
         }
     };

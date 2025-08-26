@@ -17,6 +17,7 @@ import FileTypeEnum from '#types/enum/file_type_enum';
 import cache from '@adonisjs/cache/services/main';
 import UserToken from '#models/user_token';
 import UserTokenTypeEnum from '#types/enum/user_token_type_enum';
+import SerializedUser from '#types/serialized/serialized_user';
 
 @inject()
 export default class ProfileController {
@@ -29,7 +30,16 @@ export default class ProfileController {
     ) {}
 
     public async getProfile({ response, user }: HttpContext) {
-        return response.ok({ user: user.apiSerialize() });
+        return response.ok({
+            user: await cache.getOrSet({
+                key: `user:${user.id}`,
+                tags: [`user:${user.id}`],
+                ttl: '1h',
+                factory: (): SerializedUser => {
+                    return user.apiSerialize();
+                },
+            }),
+        });
     }
 
     public async sendResetPasswordEmail({ request, response, i18n }: HttpContext) {
@@ -106,7 +116,7 @@ export default class ProfileController {
             }
 
             profilePicture.clientName = `${cuid()}-${this.slugifyService.slugify(profilePicture.clientName)}`;
-            const profilePicturePath = `static/profile-picture`;
+            const profilePicturePath: string = `static/profile-picture`;
             await profilePicture.move(app.makePath(profilePicturePath));
             const newProfilePicture: File = await File.create({
                 name: profilePicture.clientName,
@@ -119,9 +129,10 @@ export default class ProfileController {
             await newProfilePicture.refresh();
             user.profilePictureId = newProfilePicture.id;
 
-            await cache.delete({ key: `user-profile-picture:${user.frontId}` });
+            await cache.deleteByTag({ tags: [`user:${user.id}`, `admin-users`, `admin-user:${user.id}`] });
             await cache.set({
-                key: `user-profile-picture:${user.frontId}`,
+                key: `user-profile-picture:${user.id}`,
+                tags: [`user:${user.id}`],
                 ttl: '1h',
                 value: app.makePath(newProfilePicture.path),
             });

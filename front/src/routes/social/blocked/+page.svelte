@@ -41,8 +41,8 @@
         }
     });
 
-    const getBlockedUsers = async (page: number = 1, limit: number = 10) => {
-        await wrappedFetch(`/social/blocked?page=${page}&limit=${limit}&query=${query}`, { method: 'GET' }, (data) => {
+    const getBlockedUsers = async (page: number = 1, limit: number = 10): Promise<void> => {
+        await wrappedFetch(`/social/blocked?page=${page}&limit=${limit}&query=${query}`, { method: 'GET' }, (data): void => {
             paginatedBlockedUsers = data.blockedUsers;
         });
     };
@@ -52,8 +52,8 @@
             return;
         }
 
-        await wrappedFetch(`/social/blocked/cancel/${selectedBlockedUser.id}`, { method: 'DELETE' }, () => {
-            paginatedBlockedUsers!.blockedUsers = paginatedBlockedUsers!.blockedUsers.filter((currentUser: SerializedBlockedUser) => {
+        await wrappedFetch(`/social/blocked/cancel/${selectedBlockedUser.id}`, { method: 'DELETE' }, (): void => {
+            paginatedBlockedUsers!.blockedUsers = paginatedBlockedUsers!.blockedUsers.filter((currentUser: SerializedBlockedUser): boolean => {
                 return currentUser.user.id !== selectedBlockedUser!.id;
             });
         });

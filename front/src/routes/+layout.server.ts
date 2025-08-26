@@ -12,6 +12,8 @@ interface OpenedPathName {
 
 export const load: LayoutServerLoad = loadFlash(async (event): Promise<{ user?: SerializedUser; language: LanguageCode; location: string; formError?: FormError }> => {
     const { cookies, url, locals } = event;
+
+    // Paths that don't require authentication
     const openedPathNames: OpenedPathName[] = [
         { pathname: '/create-account', hybrid: false },
         { pathname: '/login', hybrid: false },
@@ -72,7 +74,6 @@ export const load: LayoutServerLoad = loadFlash(async (event): Promise<{ user?: 
         try {
             const response = await locals.client.get('/api');
             if (response.status !== 200) {
-                console.log(response);
                 throw response;
             }
         } catch (error: any) {
@@ -90,6 +91,8 @@ export const load: LayoutServerLoad = loadFlash(async (event): Promise<{ user?: 
     if (openedPathNames.some((openedPathName: OpenedPathName): boolean => location.startsWith(openedPathName.pathname) && !openedPathName.hybrid)) {
         redirect(303, `/${language}/`);
     }
+
+    cookies.delete('previousPathName', { path: '/' });
 
     if (formError) {
         cookies.delete('formError', { path: '/' });

@@ -9,6 +9,7 @@ export type { PaginatedFriends } from './paginated/paginated_friends.js';
 export type { PaginatedPendingFriendNotifications } from './paginated/paginated_pending_friend_notifications.js';
 export type { PaginatedPendingFriends } from './paginated/paginated_pending_friends.js';
 export type { PaginatedUsers } from './paginated/paginated_users.js';
+export type { PaginatedLanguages } from './paginated/paginated_languages.js';
 
 export type { SerializedBlockedUser } from './serialized/serialized_blocked_user.js';
 export type { SerializedFile } from './serialized/serialized_file.js';

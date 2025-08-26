@@ -5,6 +5,7 @@ import { ModelAttributes, ModelQueryBuilderContract } from '@adonisjs/lucid/type
 import { StrictValues } from '@adonisjs/lucid/types/querybuilder';
 import { LucidModel } from '@adonisjs/lucid/types/model';
 
+// This is the base class for all repositories and aims to provide common functionalities to all repositories
 export default class BaseRepository<T extends LucidModel> {
     protected Model: T;
 

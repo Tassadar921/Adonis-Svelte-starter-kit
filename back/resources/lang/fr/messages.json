@@ -1,4 +1,42 @@
 {
+    "admin": {
+        "language": {
+            "delete": {
+                "success": "{name} supprimé avec succès",
+                "error": {
+                    "fallback": "Vous ne pouvez pas supprimer la langue par défaut ({name})",
+                    "default": "Une erreur est survenue lors de la suppression de la langue du code {code}"
+                }
+            },
+            "create": {
+                "success": "Langue {name} créée avec succès",
+                "error": {
+                    "already-exists": "Une language avec le code {code} existe déjà"
+                }
+            },
+            "update": {
+                "success": "{name} mis à jour avec succès"
+            }
+        },
+        "user": {
+            "delete": {
+                "success": "Utilisateur {username} supprimé avec succès",
+                "error": {
+                    "current": "Vous ne pouvez pas supprimer votre propre compte depuis le back-office ({username})",
+                    "default": "Erreur lors de la suppression de l’utilisateur avec l’identifiant {frontId}"
+                }
+            },
+            "create": {
+                "success": "Utilisateur {username} ({email}) créé avec succès",
+                "error": {
+                    "already-exists": "Un utilisateur avec l’email {email} existe déjà"
+                }
+            },
+            "update": {
+                "success": "Utilisateur {username} mis à jour avec succès"
+            }
+        }
+    },
     "auth": {
         "login": {
             "success": "Connexion réussie",

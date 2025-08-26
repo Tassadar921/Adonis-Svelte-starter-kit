@@ -1,10 +1,16 @@
 import router from '@adonisjs/core/services/router';
 import { middleware } from '#start/kernel';
 
+// Transmit controllers
 const EventStreamController = () => import('@adonisjs/transmit/controllers/event_stream_controller');
 const SubscribeController = () => import('@adonisjs/transmit/controllers/subscribe_controller');
 const UnsubscribeController = () => import('@adonisjs/transmit/controllers/unsubscribe_controller');
 
+// Admin controllers
+const AdminLanguageController = () => import('#controllers/admin/language_controller');
+const AdminUserController = () => import('#controllers/admin/user_controller');
+
+// App controllers
 const HealthCheckController = () => import('#controllers/health_checks_controller');
 const AuthController = () => import('#controllers/auth_controller');
 const ProfileController = () => import('#controllers/profile_controller');
@@ -64,11 +70,39 @@ router
             })
             .prefix('reset-password');
 
+        // Authenticated routes
         router
             .group((): void => {
+                // Authentication check route
                 router.get('/', (): { isSessionTokenValid: boolean } => {
                     return { isSessionTokenValid: true };
                 });
+
+                // Admin routes
+                router
+                    .group((): void => {
+                        router
+                            .group((): void => {
+                                router.get('/', [AdminLanguageController, 'getAll']);
+                                router.post('/delete', [AdminLanguageController, 'delete']);
+                                router.post('/create', [AdminLanguageController, 'create']);
+                                router.post('/update', [AdminLanguageController, 'update']);
+                                router.get('/:languageCode', [AdminLanguageController, 'get']);
+                            })
+                            .prefix('language');
+
+                        router
+                            .group((): void => {
+                                router.get('/', [AdminUserController, 'getAll']);
+                                router.post('/delete', [AdminUserController, 'delete']);
+                                router.post('/create', [AdminUserController, 'create']);
+                                router.post('/update', [AdminUserController, 'update']);
+                                router.get('/:frontId', [AdminUserController, 'get']);
+                            })
+                            .prefix('user');
+                    })
+                    .prefix('admin')
+                    .use([middleware.isAdmin()]);
 
                 router.delete('/logout', [AuthController, 'logout']);
 
@@ -114,6 +148,7 @@ router
                 router
                     .group((): void => {
                         router.get('/profile-picture/:userId', [FileController, 'serveStaticProfilePictureFile']);
+                        router.get('/language-flag/:languageCode', [FileController, 'serveStaticLanguageFlagFile']);
                     })
                     .prefix('static');
             })

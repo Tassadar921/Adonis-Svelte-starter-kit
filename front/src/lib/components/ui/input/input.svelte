@@ -6,9 +6,30 @@
 
     type InputType = Exclude<HTMLInputTypeAttribute, 'file'>;
 
-    type Props = WithElementRef<Omit<HTMLInputAttributes, 'type'> & ({ type: 'file'; files?: FileList; label?: undefined } | { type?: InputType; files?: undefined; label: string })>;
+    type Props = WithElementRef<
+        Omit<HTMLInputAttributes, 'type'> & {
+            type?: InputType | 'file';
+            files?: FileList;
+            label?: string;
+            readonly?: boolean;
+        }
+    >;
 
-    let { ref = $bindable(), value = $bindable(), type = 'text', files = $bindable(), class: className, name, placeholder, required = false, onfocus, onblur, label, ...restProps }: Props = $props();
+    let {
+        ref = $bindable(),
+        value = $bindable(),
+        type = 'text',
+        files = $bindable(),
+        class: className,
+        name,
+        placeholder,
+        required = false,
+        onfocus,
+        onblur,
+        label,
+        readonly = false,
+        ...restProps
+    }: Props = $props();
 
     let showPassword = $state(false);
     let isFocused = $state(false);
@@ -22,14 +43,12 @@
 
     const handleFocus = (event: FocusEvent) => {
         isFocused = true;
-
         const inputEvent = event as FocusEvent & { currentTarget: EventTarget & HTMLInputElement };
         onfocus?.(inputEvent);
     };
 
     const handleBlur = (event: FocusEvent) => {
         isFocused = false;
-
         const inputEvent = event as FocusEvent & { currentTarget: EventTarget & HTMLInputElement };
         onblur?.(inputEvent);
     };
@@ -42,14 +61,16 @@
             type="file"
             data-slot="input"
             class={cn(
-                'selection:bg-primary dark:bg-input/30 selection:text-primary-foreground border-input ring-offset-background placeholder:text-muted-foreground shadow-xs flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 pt-1.5 text-sm font-medium outline-none transition-[color,box-shadow] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
+                'selection:bg-primary dark:bg-input/30 selection:text-primary-foreground border-input ring-offset-background placeholder:text-muted-foreground shadow-xs flex h-9 w-full min-w-0 rounded-md border bg-transparent px-3 pt-1.5 text-sm font-medium outline-none transition-[color,box-shadow]',
                 'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
                 'aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
+                'disabled:cursor-not-allowed disabled:opacity-50 read-only:cursor-not-allowed read-only:opacity-50',
                 className
             )}
             {name}
             bind:files
             bind:value
+            {readonly}
             {...restProps}
         />
     {:else}
@@ -72,14 +93,16 @@
             onfocus={handleFocus}
             onblur={handleBlur}
             class={cn(
-                'border-input bg-background selection:bg-primary dark:bg-input/30 selection:text-primary-foreground ring-offset-background placeholder:text-muted-foreground shadow-xs flex h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base outline-none transition-[color,box-shadow] disabled:cursor-not-allowed disabled:opacity-50 md:text-sm',
+                'border-input bg-background selection:bg-primary dark:bg-input/30 selection:text-primary-foreground ring-offset-background placeholder:text-muted-foreground shadow-xs flex h-9 w-full min-w-0 rounded-md border px-3 py-1 text-base outline-none transition-[color,box-shadow]',
                 'focus-visible:border-ring focus-visible:ring-ring/50 focus-visible:ring-[3px]',
                 'aria-invalid:ring-destructive/20 dark:aria-invalid:ring-destructive/40 aria-invalid:border-destructive',
+                'disabled:cursor-not-allowed disabled:opacity-50 read-only:cursor-not-allowed read-only:opacity-50',
                 isPassword ? 'pr-10' : '',
                 className
             )}
             {name}
             bind:value
+            {readonly}
             {...restProps}
         />
 

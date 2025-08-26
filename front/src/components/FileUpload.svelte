@@ -12,11 +12,23 @@
         accept: string;
         fileName?: string;
         pathPrefix: string;
-        id: number;
+        id: number | string;
         disabled?: boolean;
+        file?: File;
     };
 
-    let { name, title = m['common.file.title'](), description = m['common.file.description'](), width = 96, accept, fileName = '', pathPrefix, id, disabled = false }: Props = $props();
+    let {
+        name,
+        title = m['common.file.title'](),
+        description = m['common.file.description'](),
+        width = 96,
+        accept,
+        fileName = '',
+        pathPrefix,
+        id,
+        disabled = false,
+        file = $bindable(),
+    }: Props = $props();
 
     let inputRef: HTMLInputElement;
     let acceptedFormats = $state(
@@ -78,13 +90,34 @@
             inputRef.click();
         }
     };
+
+    const urlToFile = async (url: string, filename: string): Promise<File> => {
+        const res = await fetch(url);
+        const blob = await res.blob();
+        return new File([blob], filename, { type: blob.type });
+    };
+
+    $effect((): void => {
+        if (fileName && pathPrefix && id && inputRef) {
+            if (!inputRef.files?.length) {
+                urlToFile(`/assets/${pathPrefix}/${id}`, fileName).then((f) => {
+                    const dt = new DataTransfer();
+                    dt.items.add(f);
+                    inputRef.files = dt.files;
+                    inputRef.dispatchEvent(new Event('change', { bubbles: true }));
+                });
+            }
+        }
+    });
 </script>
 
 <Loader {isLoading} />
 
-<div class="flex flex-col w-full my-5">
+<div class="flex flex-col w-full">
     {#if title}
-        <h3 class="font-semibold text-center mb-2">{title}</h3>
+        <div class="flex items-center gap-1 justify-center">
+            <h3 class="font-semibold text-center mb-2">{title}</h3>
+        </div>
     {/if}
 
     <button
@@ -100,7 +133,7 @@
         aria-label="File uploader"
         {disabled}
     >
-        <input bind:this={inputRef} type="file" class="hidden" {name} accept={acceptedFormats} onchange={handleFileChange} {disabled} />
+        <input bind:this={inputRef} type="file" class="sr-only" {name} accept={acceptedFormats} onchange={handleFileChange} {disabled} bind:value={file} />
 
         <span class="text-primary-500">
             <Upload class="size-6" />

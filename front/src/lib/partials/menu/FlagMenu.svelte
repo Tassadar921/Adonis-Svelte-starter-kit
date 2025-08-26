@@ -26,6 +26,9 @@
     let buttonContainerElement: HTMLDivElement | undefined = $state();
 
     onMount(() => {
+        const match: Flag | undefined = flags.find((flag) => flag.value === $language);
+        selectedFlag = match || flags[0];
+
         document.addEventListener('click', handleClickOutside);
 
         return () => document.removeEventListener('click', handleClickOutside);
@@ -53,11 +56,6 @@
             isExpanded = false;
         }
     };
-
-    $effect((): void => {
-        const match: Flag | undefined = flags.find((flag) => flag.value === $language);
-        selectedFlag = match || flags[0];
-    });
 </script>
 
 <div class="relative inline-block" bind:this={buttonContainerElement}>

@@ -12,21 +12,21 @@
         disabled?: boolean;
         label?: string;
         selected?: boolean;
-        resultsArray: any;
+        resultsArray?: any[];
         selectedObserver?: boolean;
     };
 
     let {
         onSearch,
         search = $bindable(''),
-        placeholder = m['common.search'](),
+        label = m['common.search.label'](),
+        placeholder = m['common.search.placeholder'](),
         debounce = 300,
         minChars,
         name = '',
         disabled = false,
-        label = '',
         selected = false,
-        resultsArray = $bindable(),
+        resultsArray = $bindable([]),
         selectedObserver = false,
     }: Props = $props();
 
@@ -67,17 +67,15 @@
     });
 </script>
 
-<div class="mt-8">
-    <Input
-        bind:ref={inputElement}
-        onfocus={handleFocus}
-        onblur={handleBlur}
-        onkeydown={searchDebounced}
-        type="search"
-        bind:value={search}
-        placeholder={focused || search.length ? placeholder : ''}
-        {name}
-        {disabled}
-        {label}
-    />
-</div>
+<Input
+    bind:ref={inputElement}
+    onfocus={handleFocus}
+    onblur={handleBlur}
+    onkeydown={searchDebounced}
+    type="search"
+    bind:value={search}
+    placeholder={focused || search.length ? placeholder : ''}
+    {name}
+    {disabled}
+    {label}
+/>

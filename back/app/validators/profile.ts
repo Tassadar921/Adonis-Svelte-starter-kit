@@ -2,7 +2,7 @@ import vine from '@vinejs/vine';
 
 export const sendResetPasswordEmailValidator = vine.compile(
     vine.object({
-        email: vine.string().trim().email(),
+        email: vine.string().trim().email().maxLength(100),
     })
 );
 
@@ -28,7 +28,7 @@ export const updateProfileValidator = vine.compile(
         profilePicture: vine
             .file({
                 size: '2mb',
-                extnames: ['png', 'jpg', 'gif', 'jpeg', 'webp'],
+                extnames: ['png', 'jpg', 'gif', 'jpeg', 'webp', 'svg'],
             })
             .optional(),
     })

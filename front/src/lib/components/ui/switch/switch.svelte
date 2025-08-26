@@ -2,15 +2,24 @@
     import { Switch as SwitchPrimitive } from 'bits-ui';
     import { cn, type WithoutChildrenOrChild } from '#lib/utils';
 
-    let { ref = $bindable(null), class: className, checked = $bindable(false), label, name, ...restProps }: WithoutChildrenOrChild<SwitchPrimitive.RootProps> & { label: string } = $props();
+    let {
+        ref = $bindable(null),
+        class: className,
+        checked = $bindable(false),
+        label,
+        name,
+        disabled = false, // ✅ new disabled prop
+        ...restProps
+    }: WithoutChildrenOrChild<SwitchPrimitive.RootProps> & { label: string; disabled?: boolean } = $props();
 </script>
 
-<input type="hidden" {name} value={checked} />
+<input type="hidden" {name} value={checked} {disabled} />
 
 <div class="flex items-center gap-2">
     <SwitchPrimitive.Root
         bind:ref
         bind:checked
+        {disabled}
         data-slot="switch"
         class={cn(
             'data-[state=checked]:bg-primary data-[state=unchecked]:bg-gray-400 cursor-pointer focus-visible:border-ring focus-visible:ring-ring/50 dark:data-[state=unchecked]:bg-input/80 shadow-xs peer inline-flex h-[1.15rem] w-8 shrink-0 items-center rounded-full border border-transparent outline-none transition-all focus-visible:ring-[3px] disabled:cursor-not-allowed disabled:opacity-50',
@@ -25,5 +34,5 @@
             )}
         />
     </SwitchPrimitive.Root>
-    <p>{label}</p>
+    <p class={cn(disabled && 'opacity-50 cursor-not-allowed')}>{label}</p>
 </div>

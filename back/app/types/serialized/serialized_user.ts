@@ -6,6 +6,7 @@ export type SerializedUser = {
     username: string;
     email: string;
     role: UserRoleEnum;
+    enabled: boolean;
     acceptedTermsAndConditions: boolean;
     receivedFriendRequest?: boolean;
     sentFriendRequest?: boolean;

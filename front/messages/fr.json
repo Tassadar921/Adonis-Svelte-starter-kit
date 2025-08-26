@@ -5,18 +5,23 @@
         "continue": "Continuer",
         "language": "Langue",
         "close": "Fermer",
-        "close-modal": "Fermer la fenêtre",
+        "edit": "Modifier",
+        "update": "Mettre à jour",
+        "delete": "Supprimer",
+        "create": "Créer",
         "cancel": "Annuler",
         "back-to-home": "Retour à la page d'accueil",
-        "search": "Rechercher ...",
         "name": "Nom",
         "created-at": "Créé le",
         "updated-at": "Mis à jour le",
         "public": "Public",
         "private": "Privé",
-        "value": "Value",
         "error": {
             "default-message": "Quelque chose s'est mal passé"
+        },
+        "search": {
+            "label": "Rechercher",
+            "placeholder": "Rechercher..."
         },
         "title": {
             "label": "Titre",
@@ -245,23 +250,84 @@
     },
     "admin": {
         "title": "Tableau de bord",
-        "users": {
-            "title": "Utilisateurs"
+        "datatable": {
+            "actions": "Actions",
+            "no-result": "Pas de résultat",
+            "select": {
+                "row": "Sélectionner la ligne",
+                "all": "Tout sélectionner"
+            },
+            "selected-rows": [
+                {
+                    "declarations": ["input count", "input total"],
+                    "match": {
+                        "count=0": "Aucune ligne sélectionnée",
+                        "count=1": "{count} sur {total} ligne sélectionnée",
+                        "count=*": "{count} sur {total} lignes sélectionnées"
+                    }
+                }
+            ],
+            "columns": "Colonnes"
         },
-        "languages": {
-            "title": "Langues"
-        }
-    },
-    "notifications": {
-        "title": "Notifications",
-        "meta": {
-            "title": "Gérer les notifications – Adonis & Svelte Starter Kit",
-            "description": "Consultez, acceptez, refusez et supprimez vos notifications, y compris les demandes d’amis, facilement avec Adonis & Svelte Starter Kit.",
-            "keywords": "notifications, gérer notifications, demandes d’amis, accepter notifications, refuser notifications, supprimer notifications, Adonis & Svelte Starter Kit"
+        "user": {
+            "title": "Utilisateurs",
+            "fields": {
+                "profile-picture": "Image de profil",
+                "username": "Pseudonyme",
+                "email": "Email",
+                "enabled": "Activé"
+            },
+            "delete": {
+                "title": "Supprimer {users}",
+                "text": [
+                    {
+                        "declarations": ["input users", "input count", "local countPlural = count: plural"],
+                        "selectors": ["countPlural"],
+                        "match": {
+                            "countPlural=zero": "Êtes-vous sûr de vouloir supprimer {users} ? Cette action est irréversible et supprimera définitivement les utilisateurs ainsi que toutes les données associées.",
+                            "countPlural=one": "Êtes-vous sûr de vouloir supprimer {users} ? Cette action est irréversible et supprimera définitivement l'utilisateur ainsi que toutes les données associées.",
+                            "countPlural=other": "Êtes-vous sûr de vouloir supprimer {users} ? Cette action est irréversible et supprimera définitivement les utilisateurs ainsi que toutes les données associées."
+                        }
+                    }
+                ]
+            },
+            "new": {
+                "title": "Nouvel utilisateur",
+                "profile-picture": {
+                    "title": "Image de profil",
+                    "description": "Image de profil de l'utilisateur (format carré recommandé)"
+                }
+            }
         },
-        "friend-requests": {
-            "title": "Demandes d'ami",
-            "none": "Pas de demande d'ami en attente"
+        "language": {
+            "title": "Langues",
+            "fields": {
+                "flag": "Drapeau",
+                "code": "Code",
+                "name": "Nom",
+                "fallback": "Valeur par défaut"
+            },
+            "delete": {
+                "title": "Supprimer {languages}",
+                "text": [
+                    {
+                        "declarations": ["input languages", "input count", "local countPlural = count: plural"],
+                        "selectors": ["countPlural"],
+                        "match": {
+                            "countPlural=zero": "Êtes-vous sûr de vouloir supprimer {languages} ? Cette action est irréversible et supprimera définitivement les langues ainsi que toutes les données associées.",
+                            "countPlural=one": "Êtes-vous sûr de vouloir supprimer {languages} ? Cette action est irréversible et supprimera définitivement la langue ainsi que toutes les données associées.",
+                            "countPlural=other": "Êtes-vous sûr de vouloir supprimer {languages} ? Cette action est irréversible et supprimera définitivement les langues ainsi que toutes les données associées."
+                        }
+                    }
+                ]
+            },
+            "new": {
+                "title": "Nouvelle langue",
+                "flag": {
+                    "title": "Drapeau",
+                    "description": "Drapeau de la langue (format SVG width=\"24\" height=\"24\" viewBox=\"0 0 36 36\" recommandé)"
+                }
+            }
         }
     }
 }

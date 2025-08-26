@@ -5,18 +5,23 @@
         "continue": "Continue",
         "language": "Language",
         "close": "Close",
-        "close-modal": "Close modal",
+        "edit": "Edit",
+        "update": "Update",
+        "delete": "Delete",
+        "create": "Create",
         "cancel": "Cancel",
         "back-to-home": "Back to homepage",
-        "search": "Search ...",
         "name": "Name",
         "created-at": "Created at",
         "updated-at": "Updated at",
         "public": "Public",
         "private": "Private",
-        "value": "Value",
         "error": {
             "default-message": "Something went wrong"
+        },
+        "search": {
+            "label": "Search",
+            "placeholder": "Search..."
         },
         "title": {
             "label": "Title",
@@ -245,23 +250,84 @@
     },
     "admin": {
         "title": "Dashboard",
-        "users": {
-            "title": "Users"
+        "datatable": {
+            "actions": "Actions",
+            "no-result": "No result",
+            "select": {
+                "row": "Select row",
+                "all": "Select all"
+            },
+            "selected-rows": [
+                {
+                    "declarations": ["input count", "input total"],
+                    "match": {
+                        "count=0": "No rows selected",
+                        "count=1": "{count} of {total} row selected",
+                        "count=*": "{count} of {total} rows selected"
+                    }
+                }
+            ],
+            "columns": "Columns"
         },
-        "languages": {
-            "title": "Languages"
-        }
-    },
-    "notifications": {
-        "title": "Notifications",
-        "meta": {
-            "title": "Manage Notifications – Adonis & Svelte Starter Kit",
-            "description": "View, accept, decline, and delete your notifications, including friend requests, easily with Adonis & Svelte Starter Kit.",
-            "keywords": "notifications, manage notifications, friend requests, accept notifications, decline notifications, delete notifications, Adonis & Svelte Starter Kit"
+        "user": {
+            "title": "Users",
+            "fields": {
+                "profile-picture": "Profile picture",
+                "username": "Username",
+                "email": "Email",
+                "enabled": "Enabled"
+            },
+            "delete": {
+                "title": "Delete {users}",
+                "text": [
+                    {
+                        "declarations": ["input users", "input count", "local countPlural = count: plural"],
+                        "selectors": ["countPlural"],
+                        "match": {
+                            "countPlural=zero": "Are you sure you want to delete {users} ? This action cannot be undone and will permanently remove the users and all related data.",
+                            "countPlural=one": "Are you sure you want to delete {users} ? This action cannot be undone and will permanently remove the user and all related data.",
+                            "countPlural=other": "Are you sure you want to delete {users} ? This action cannot be undone and will permanently remove the users and all related data."
+                        }
+                    }
+                ]
+            },
+            "new": {
+                "title": "New user",
+                "profile-picture": {
+                    "title": "Profile picture",
+                    "description": "User profile picture (square image recommended)"
+                }
+            }
         },
-        "friend-requests": {
-            "title": "Friend requests",
-            "none": "No pending friend request"
+        "language": {
+            "title": "Languages",
+            "fields": {
+                "flag": "Flag",
+                "code": "Code",
+                "name": "Name",
+                "fallback": "Fallback"
+            },
+            "delete": {
+                "title": "Delete {languages}",
+                "text": [
+                    {
+                        "declarations": ["input languages", "input count", "local countPlural = count: plural"],
+                        "selectors": ["countPlural"],
+                        "match": {
+                            "countPlural=zero": "Are you sure you want to delete {languages} ? This action cannot be undone and will permanently remove the languages and all related data.",
+                            "countPlural=one": "Are you sure you want to delete {languages} ? This action cannot be undone and will permanently remove the language and all related data.",
+                            "countPlural=other": "Are you sure you want to delete {languages} ? This action cannot be undone and will permanently remove the languages and all related data."
+                        }
+                    }
+                ]
+            },
+            "new": {
+                "title": "New language",
+                "flag": {
+                    "title": "Flag",
+                    "description": "Language flag (SVG format width=\"24\" height=\"24\" viewBox=\"0 0 36 36\" recommended)"
+                }
+            }
         }
     }
 }
