@@ -166,7 +166,7 @@
     };
 </script>
 
-{#if paginatedUsers}
+<div class="w-full mt-3">
     <Search
         selected
         placeholder={searchPlaceholder}
@@ -177,7 +177,9 @@
         bind:search={query}
         bind:resultsArray={users}
     />
+</div>
 
+{#if paginatedUsers}
     <div class="flex flex-wrap gap-5 justify-center my-5">
         {#if paginatedUsers.users.length}
             <div class="flex flex-col gap-1 w-full">

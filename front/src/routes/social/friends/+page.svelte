@@ -112,13 +112,12 @@
 
 <Title title={m['social.friends.title']()} />
 
-<div class="flex gap-3 items-center">
+<div class="w-full mt-8 flex gap-3 items-center">
     <Button variant="outline" size="icon" aria-label="Add a friend" onclick={() => (showAddFriendsModal = true)}>
         <UserRoundPlus class="size-6 text-green-500" />
     </Button>
+    <Search selected placeholder={searchPlaceholder} label={m['social.friends.search.label']()} name="search-friend" onSearch={() => getFriends()} bind:search={query} bind:resultsArray={friends} />
 </div>
-
-<Search selected placeholder={searchPlaceholder} label={m['social.friends.search.label']()} name="search-friend" onSearch={() => getFriends()} bind:search={query} bind:resultsArray={friends} />
 
 {#if paginatedFriends}
     <div class="flex flex-wrap gap-5 justify-center my-5">

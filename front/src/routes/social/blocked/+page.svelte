@@ -70,7 +70,7 @@
 
 <Title title={m['social.blocked.title']()} />
 
-{#if paginatedBlockedUsers}
+<div class="w-full mt-8">
     <Search
         selected
         placeholder={searchPlaceholder}
@@ -81,7 +81,9 @@
         bind:search={query}
         bind:resultsArray={blockedUsers}
     />
+</div>
 
+{#if paginatedBlockedUsers}
     <div class="flex flex-wrap gap-5 justify-center my-5">
         {#if paginatedBlockedUsers.blockedUsers.length}
             <div class="flex flex-col gap-1 w-full">

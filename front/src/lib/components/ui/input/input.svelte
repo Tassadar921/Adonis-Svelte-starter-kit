@@ -54,7 +54,7 @@
     };
 </script>
 
-<div class="relative">
+<div class="relative w-full">
     {#if type === 'file'}
         <input
             bind:this={ref}
