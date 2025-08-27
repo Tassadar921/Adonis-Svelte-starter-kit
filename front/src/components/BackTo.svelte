@@ -5,7 +5,7 @@
     type Props = {
         children: import('svelte').Snippet;
         href: string;
-    };
+    }
 
     let { children, href }: Props = $props()
 </script>
