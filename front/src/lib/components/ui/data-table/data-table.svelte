@@ -153,8 +153,8 @@
                     <TableRow
                         data-state={row.getIsSelected() && 'selected'}
                         onclick={() => {
-                        row.toggleSelected(!row.getIsSelected());
-                    }}
+                            row.toggleSelected(!row.getIsSelected());
+                        }}
                     >
                         {#each row.getVisibleCells() as cell (cell.id)}
                             <TableCell>
