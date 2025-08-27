@@ -8,6 +8,7 @@ const buildRegex = (glob) => {
 
 export default {
     "*": (filenames) => {
+        console.log(filenames);
         const commands = [];
 
         // Parcours tous les dossiers/patterns définis dans patterns.js
