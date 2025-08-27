@@ -13,6 +13,6 @@
         "svelte-meta-tags": "^4.3.0"
     },
     "simple-git-hooks": {
-        "pre-commit": "make format && git add -u && git commit --amend --no-edit"
+        "pre-commit": "make format && git add . && git commit --amend --no-edit"
     }
 }
