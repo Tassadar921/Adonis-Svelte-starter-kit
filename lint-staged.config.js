@@ -1,11 +1,11 @@
-import files from "./prettier-files.js";
+import patterns from "./format/patterns.js";
 
-const buildRegex = (exts) => new RegExp(`\\.(${exts.join("|")})$`);
+const buildRegex = (extensions) => new RegExp(`\\.(${extensions.join("|")})$`);
 
 export default {
     "*": (filenames) => {
-        const backFiles = filenames.filter(f => f.startsWith("back/") && buildRegex(files.back).test(f));
-        const frontFiles = filenames.filter(f => f.startsWith("front/") && buildRegex(files.front).test(f));
+        const backFiles = filenames.filter(f => f.startsWith("back/") && buildRegex(patterns.back).test(f));
+        const frontFiles = filenames.filter(f => f.startsWith("front/") && buildRegex(patterns.front).test(f));
 
         const commands = [];
         if (backFiles.length) commands.push(`npx prettier --write ${backFiles.join(" ")}`);

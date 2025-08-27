@@ -1,7 +1,7 @@
 SHELL := /bin/bash
 
 format:
-	node format.js
+	node format/command.js
 
 format-check:
 	cd back && npm run format

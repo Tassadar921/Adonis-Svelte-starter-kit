@@ -25,4 +25,4 @@
 - [Commands](commands.md) &rarr;
 - [Icons](icons.md) &rarr;
 - [Sveltekit translations](sveltekit-translations.md) &rarr;
-- **/!\ Coming soon** [Tuyau](tuyau.md) &rarr;
+- [**/!\ Coming soon** Tuyau](tuyau.md)  &rarr;
