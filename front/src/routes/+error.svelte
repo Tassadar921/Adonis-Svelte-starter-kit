@@ -17,7 +17,7 @@
             key = 'not-found';
             break;
         case 409:
-            key = 'already-connected'
+            key = 'already-connected';
             break;
         default:
             key = 'unknown-error';

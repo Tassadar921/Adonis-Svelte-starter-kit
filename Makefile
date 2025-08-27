@@ -1,8 +1,7 @@
 SHELL := /bin/bash
 
 format:
-	cd back && npx prettier --write "**/*.{js,ts,json,yml}"
-	cd front && npx prettier --write "**/*.{js,ts,svelte,html,css,json,yml}"
+	node format.js
 
 format-check:
 	cd back && npm run format
