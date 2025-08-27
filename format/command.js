@@ -1,14 +1,29 @@
-import { execSync } from "child_process";
-import patterns from "./patterns.js";
+import { execSync } from 'child_process';
+import { fileURLToPath } from 'url';
+import { dirname, join } from 'path';
+import patterns from './patterns.js';
+
+const __dirname = dirname(fileURLToPath(import.meta.url));
+const root = join(__dirname, '..');
 
 const formatAll = () => {
     try {
-        execSync(`cd back && npx prettier --write "${patterns.back}"`, { stdio: "inherit" });
-        execSync(`cd front && npx prettier --write "${patterns.front}"`, { stdio: "inherit" });
-        execSync(`cd doc && npx prettier --write "${patterns.doc}"`, { stdio: "inherit" });
-        execSync(`cd format && npx prettier --write "${patterns.format}"`, { stdio: "inherit" });
+        Object.keys(patterns).forEach((key) => {
+            const pattern = patterns[key];
+            if (!pattern) {
+                return;
+            }
+
+            const target = join(root, key, pattern);
+
+            console.log(`Formatting ${key} -> ${target}`);
+            execSync(`npx prettier --write '${pattern}' --ignore-unknown`, {
+                stdio: 'inherit',
+                cwd: key,
+            });
+        });
     } catch (err) {
-        console.error("Format error :", err);
+        console.error('Format error :', err);
         process.exit(1);
     }
 };

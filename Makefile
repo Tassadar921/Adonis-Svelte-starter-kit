@@ -1,7 +1,9 @@
 SHELL := /bin/bash
 
+.PHONY: format format-check install upgrade list-routes db-fresh db-migrate db-seed init-logs-db db paraglide stop up rm prune build-prod migrate-prod start-prod deploy
+
 format:
-	node format/command.js
+	node ./format/command.js
 
 format-check:
 	cd back && npm run format
