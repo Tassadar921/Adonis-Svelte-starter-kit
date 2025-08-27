@@ -46,6 +46,7 @@ up:
 	${MAKE} stop
 	rm -rf front/node_modules/.vite
 	${MAKE} paraglide
+	npx simple-git-hooks
 	./compose-env.sh up -d --build
 
 rm:
