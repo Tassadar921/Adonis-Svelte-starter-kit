@@ -90,18 +90,18 @@ PUBLIC_FRONT_URI=""
 PUBLIC_API_BASE_URI=""
 PUBLIC_API_REAL_URI=""
 PUBLIC_GITHUB_REPOSITORY=""
-PUBLIC_DEFAULT_IMAGE=/assets/default/image.png
+PUBLIC_DEFAULT_IMAGE=/default/image.png
 PUBLIC_TWITTER_HANDLE=""
 ```
 
-| Variable                   | Value                                                     |
-|----------------------------|-----------------------------------------------------------|
-| `PUBLIC_FRONT_PORT`        | ""                                                        |
-| `PUBLIC_FRONT_URI`         | ""                                                        |
-| `PUBLIC_API_BASE_URI`      | ""                                                        |
-| `PUBLIC_API_REAL_URI`      | ""                                                        |
-| `PUBLIC_GITHUB_REPOSITORY` | ""                                                        |
-| `PUBLIC_DEFAULT_IMAGE`     | /assets/default/image.png                                 |
+| Variable                   | Value                                                    |
+|----------------------------|----------------------------------------------------------|
+| `PUBLIC_FRONT_PORT`        | ""                                                       |
+| `PUBLIC_FRONT_URI`         | ""                                                       |
+| `PUBLIC_API_BASE_URI`      | ""                                                       |
+| `PUBLIC_API_REAL_URI`      | ""                                                       |
+| `PUBLIC_GITHUB_REPOSITORY` | ""                                                       |
+| `PUBLIC_DEFAULT_IMAGE`     | /default/image.png                                 |
 | `PUBLIC_TWITTER_HANDLE`    | **`Put your twitter @ here, for example : @Tassadar921`** |
 
 ---

@@ -29,7 +29,7 @@
             "create": {
                 "success": "Successfully created user {username} ({email})",
                 "error": {
-                    "already-exists": "user with email {email} already exists"
+                    "already-exists": "User with email {email} already exists"
                 }
             },
             "update": {
