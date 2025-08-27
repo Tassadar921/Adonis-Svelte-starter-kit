@@ -1,12 +1,12 @@
 SHELL := /bin/bash
 
+.PHONY: format format-check install upgrade list-routes db-fresh db-migrate db-seed init-logs-db db paraglide stop up rm prune build-prod migrate-prod start-prod deploy
+
 format:
-	cd back && npx prettier --write "**/*.{js,ts,json,yml}"
-	cd front && npx prettier --write "**/*.{js,ts,svelte,html,css,json,yml}"
+	node ./format/command.js
 
 format-check:
-	cd back && npm run format
-	cd front && npm run format
+	node ./format/command.js --check
 
 install:
 	rm -rf node_modules package-lock.json back/node_modules front/node_modules
@@ -46,6 +46,7 @@ up:
 	${MAKE} stop
 	rm -rf front/node_modules/.vite
 	${MAKE} paraglide
+	npx simple-git-hooks
 	./compose-env.sh up -d --build
 
 rm:

@@ -50,7 +50,7 @@
 <Breadcrumb items={[{ title: 'Admin', href: '/admin' }, { title: m['admin.user.title']() }]} />
 
 {#if paginatedUsers}
-    <div class="flex flex-col gap-1 mt-10">
+    <div class="mt-3">
         <DataTable
             paginatedObject={paginatedUsers}
             data={paginatedUsers.users}
