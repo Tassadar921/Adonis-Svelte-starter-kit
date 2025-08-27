@@ -6,8 +6,7 @@ format:
 	node ./format/command.js
 
 format-check:
-	cd back && npm run format
-	cd front && npm run format
+	node ./format/command.js --check
 
 install:
 	rm -rf node_modules package-lock.json back/node_modules front/node_modules

@@ -7,8 +7,7 @@
         "install:prod": "rm -rf node_modules && npm ci --omit=\"dev\"",
         "build": "node ace build",
         "dev": "node ace serve --hmr",
-        "test": "node ace test",
-        "format": "npx prettier --check \"**/*.{js,ts,json,yml}\""
+        "test": "node ace test"
     },
     "exports": {
         "./types": "./app/types/index.ts"
