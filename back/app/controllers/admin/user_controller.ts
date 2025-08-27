@@ -87,7 +87,15 @@ export default class AdminUserController {
             password: cuid(),
         });
 
-        await Promise.all([user.load('profilePicture'), cache.deleteByTag({ tags: ['not-friends', 'admin-users'] })]);
+        await user.refresh();
+
+        const promises: any[] = [cache.deleteByTag({ tags: ['not-friends', 'admin-users'] })];
+
+        if (profilePicture) {
+            promises.push(user.load('profilePicture'));
+        }
+
+        await Promise.all(promises);
 
         return response.created({ user: user.apiSerialize(), message: i18n.t('messages.admin.user.create.success', { email, username }) });
     }

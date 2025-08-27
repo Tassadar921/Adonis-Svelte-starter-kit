@@ -33,7 +33,6 @@
 
     const handleDelete = async (): Promise<void> => {
         showModal = false;
-        console.log(`/edit/${id}`, `${$location.replace(`/edit/${id}`, '')}/delete`);
         await wrappedFetch(`${$location.replace(`/edit/${id}`, '')}/delete`, { method: 'POST', body: { data: [id] } }, (data) => {
             const isSuccess: boolean = data.messages.map((status: { isSuccess: boolean; message: string; code: string }) => {
                 showToast(status.message, status.isSuccess ? 'success' : 'error');

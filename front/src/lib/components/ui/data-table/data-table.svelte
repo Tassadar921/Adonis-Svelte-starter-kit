@@ -103,6 +103,10 @@
                 return status.isSuccess;
             });
 
+            table.getFilteredSelectedRowModel().rows.forEach((row: Row<SerializedLanguage>): void => {
+                row.toggleSelected(false);
+            });
+
             if (onBatchDelete) {
                 onBatchDelete(filteredStatuses.map((status: { id: string }) => status.id));
             }

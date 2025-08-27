@@ -5,10 +5,14 @@ import PaginatedUsers from '#types/paginated/paginated_users';
 import SerializedUser from '#types/serialized/serialized_user';
 import { inject } from '@adonisjs/core';
 import FileService from '#services/file_service';
+import LogUserRepository from '#repositories/log_user_repository';
 
 @inject()
 export default class UserRepository extends BaseRepository<typeof User> {
-    constructor(private readonly fileService: FileService) {
+    constructor(
+        private readonly fileService: FileService,
+        private readonly logUserRepository: LogUserRepository
+    ) {
         super(User);
     }
 
@@ -93,6 +97,8 @@ export default class UserRepository extends BaseRepository<typeof User> {
                         this.fileService.delete(user.profilePicture);
                         await user.profilePicture.delete();
                     }
+
+                    await this.logUserRepository.deleteByUser(user);
 
                     return { isDeleted: true, username: user.username, frontId, id: user.id };
                 } catch (error: any) {
