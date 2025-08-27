@@ -1,15 +1,24 @@
 import patterns from "./format/patterns.js";
 
-const buildRegex = (extensions) => new RegExp(`\\.(${extensions.join("|")})$`);
+const buildRegex = (glob) => {
+    const match = glob.match(/\*\.\{(.+)\}/) || glob.match(/\*\.(.+)/);
+    const exts = match ? match[1].split(",") : [];
+    return new RegExp(`\\.(${exts.join("|")})$`);
+};
 
 export default {
     "*": (filenames) => {
-        const backFiles = filenames.filter(f => f.startsWith("back/") && buildRegex(patterns.back).test(f));
-        const frontFiles = filenames.filter(f => f.startsWith("front/") && buildRegex(patterns.front).test(f));
-
         const commands = [];
-        if (backFiles.length) commands.push(`npx prettier --write ${backFiles.join(" ")}`);
-        if (frontFiles.length) commands.push(`npx prettier --write ${frontFiles.join(" ")}`);
+
+        // Parcours tous les dossiers/patterns définis dans patterns.js
+        Object.keys(patterns).forEach((folder) => {
+            const regex = buildRegex(patterns[folder]);
+            const matchedFiles = filenames.filter(f => f.startsWith(`${folder}/`) && regex.test(f));
+
+            if (matchedFiles.length) {
+                commands.push(`npx prettier --write ${matchedFiles.join(" ")}`);
+            }
+        });
 
         return commands;
     },
