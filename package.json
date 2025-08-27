@@ -12,7 +12,7 @@
         "simple-git-hooks": "^2.13.1",
         "svelte-meta-tags": "^4.3.0"
     },
-        "simple-git-hooks": {
-            "pre-commit": "make format"
-        }
+    "simple-git-hooks": {
+        "pre-commit": "make format && git add ."
+    }
 }
