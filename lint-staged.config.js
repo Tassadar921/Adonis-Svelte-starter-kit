@@ -8,7 +8,7 @@ export default {
 
         Object.keys(patterns).forEach((folder) => {
             const matchedFiles = micromatch(filenames, `${folder}/${patterns[folder]}`);
-            console.log('là : ', matchedFiles)
+            console.log('là : ', `${folder}/${patterns[folder]}`, matchedFiles)
             if (matchedFiles.length) {
                 commands.push(`npx prettier --write ${matchedFiles.join(" ")}`);
             }

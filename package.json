@@ -16,5 +16,8 @@
     },
     "simple-git-hooks": {
         "pre-commit": "npx lint-staged"
+    },
+    "dependencies": {
+        "micromatch": "^4.0.8"
     }
 }
