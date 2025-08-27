@@ -15,6 +15,8 @@ export default {
             const regex = buildRegex(patterns[folder]);
             const matchedFiles = filenames.filter(f => f.startsWith(`${folder}/`) && regex.test(f));
 
+            console.log(matchedFiles)
+
             if (matchedFiles.length) {
                 commands.push(`npx prettier --write ${matchedFiles.join(" ")}`);
             }
