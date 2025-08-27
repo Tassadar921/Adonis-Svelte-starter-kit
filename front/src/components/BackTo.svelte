@@ -7,7 +7,7 @@
         href: string;
     };
 
-    let { children, href }: Props = $props();
+    let { children, href }: Props = $props()
 </script>
 
 <Link {href} class="flex items-center">
