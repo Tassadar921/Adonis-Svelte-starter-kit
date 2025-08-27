@@ -5,10 +5,10 @@ import { cwd } from "process";
 
 export default {
     "*": (filenames) => {
-        console.log('ici : ', filenames)
         const commands = [];
 
         const relativeFiles = filenames.map(f => relative(cwd(), f));
+        console.log('ici : ', relativeFiles)
 
         Object.keys(patterns).forEach((folder) => {
             const matchedFiles = micromatch(relativeFiles, `${folder}/${patterns[folder]}`);
