@@ -9,6 +9,10 @@
     "devDependencies": {
         "npm-check-updates": "^18.0.1",
         "prettier": "^3.5.3",
+        "simple-git-hooks": "^2.13.1",
         "svelte-meta-tags": "^4.3.0"
-    }
+    },
+        "simple-git-hooks": {
+            "pre-commit": "make format"
+        }
 }
