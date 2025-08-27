@@ -50,7 +50,7 @@
 <Breadcrumb items={[{ title: 'Admin', href: '/admin' }, { title: m['admin.language.title']() }]} />
 
 {#if paginatedLanguages}
-    <div class="flex flex-col gap-1 mt-10">
+    <div class="mt-3">
         <DataTable
             paginatedObject={paginatedLanguages}
             data={paginatedLanguages.languages}

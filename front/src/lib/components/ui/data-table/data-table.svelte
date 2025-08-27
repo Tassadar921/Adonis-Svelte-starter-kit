@@ -114,79 +114,81 @@
     });
 </script>
 
-<div class="flex items-center py-4 justify-between">
-    <Search bind:search={query} resultsArray={data} minChars={0} {onSearch} />
-    <DropdownMenu>
-        <DropdownMenuTrigger>
-            {#snippet child({ props })}
-                <Button {...props} variant="outline">{m['admin.datatable.columns']()}</Button>
-            {/snippet}
-        </DropdownMenuTrigger>
-        <DropdownMenuContent align="end">
-            {#each table.getAllColumns().filter((col) => col.getCanHide()) as column (column.id)}
-                <DropdownMenuCheckboxItem class="capitalize" bind:checked={() => column.getIsVisible(), (v) => column.toggleVisibility(!!v)}>
-                    {column.columnDef.meta?.headerName}
-                </DropdownMenuCheckboxItem>
-            {/each}
-        </DropdownMenuContent>
-    </DropdownMenu>
-</div>
+<div class="flex flex-col gap-1">
+    <div class="flex gap-5 items-center justify-between py-4">
+        <Search bind:search={query} resultsArray={data} minChars={0} {onSearch} />
+        <DropdownMenu>
+            <DropdownMenuTrigger>
+                {#snippet child({ props })}
+                    <Button {...props} variant="outline">{m['admin.datatable.columns']()}</Button>
+                {/snippet}
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+                {#each table.getAllColumns().filter((col) => col.getCanHide()) as column (column.id)}
+                    <DropdownMenuCheckboxItem class="capitalize" bind:checked={() => column.getIsVisible(), (v) => column.toggleVisibility(!!v)}>
+                        {column.columnDef.meta?.headerName}
+                    </DropdownMenuCheckboxItem>
+                {/each}
+            </DropdownMenuContent>
+        </DropdownMenu>
+    </div>
 
-<div class="rounded-md border bg-gray-300 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-800">
-    <Table>
-        <TableHeader>
-            {#each table.getHeaderGroups() as headerGroup (headerGroup.id)}
-                <TableRow>
-                    {#each headerGroup.headers as header (header.id)}
-                        <TableHead colspan={header.colSpan} class={`w-1/${headerGroup.headers.length}`}>
-                            {#if !header.isPlaceholder}
-                                <FlexRender content={header.column.columnDef.header} context={header.getContext()} />
-                            {/if}
-                        </TableHead>
-                    {/each}
-                </TableRow>
-            {/each}
-        </TableHeader>
-        <TableBody>
-            {#each table.getRowModel().rows as row (row.id)}
-                <TableRow
-                    data-state={row.getIsSelected() && 'selected'}
-                    onclick={() => {
+    <div class="rounded-md border bg-gray-300 dark:bg-gray-800 hover:bg-gray-300 dark:hover:bg-gray-800">
+        <Table>
+            <TableHeader>
+                {#each table.getHeaderGroups() as headerGroup (headerGroup.id)}
+                    <TableRow>
+                        {#each headerGroup.headers as header (header.id)}
+                            <TableHead colspan={header.colSpan} class={`w-1/${headerGroup.headers.length}`}>
+                                {#if !header.isPlaceholder}
+                                    <FlexRender content={header.column.columnDef.header} context={header.getContext()} />
+                                {/if}
+                            </TableHead>
+                        {/each}
+                    </TableRow>
+                {/each}
+            </TableHeader>
+            <TableBody>
+                {#each table.getRowModel().rows as row (row.id)}
+                    <TableRow
+                        data-state={row.getIsSelected() && 'selected'}
+                        onclick={() => {
                         row.toggleSelected(!row.getIsSelected());
                     }}
-                >
-                    {#each row.getVisibleCells() as cell (cell.id)}
-                        <TableCell>
-                            <FlexRender content={cell.column.columnDef.cell} context={cell.getContext()} id={row.original.id} />
+                    >
+                        {#each row.getVisibleCells() as cell (cell.id)}
+                            <TableCell>
+                                <FlexRender content={cell.column.columnDef.cell} context={cell.getContext()} id={row.original.id} />
+                            </TableCell>
+                        {/each}
+                    </TableRow>
+                {:else}
+                    <TableRow>
+                        <TableCell colspan={columns.length} class="h-24 text-center">
+                            {m['admin.datatable.no-result']()}
                         </TableCell>
-                    {/each}
-                </TableRow>
-            {:else}
-                <TableRow>
-                    <TableCell colspan={columns.length} class="h-24 text-center">
-                        {m['admin.datatable.no-result']()}
-                    </TableCell>
-                </TableRow>
-            {/each}
-        </TableBody>
-    </Table>
-</div>
+                    </TableRow>
+                {/each}
+            </TableBody>
+        </Table>
+    </div>
 
-<div class="text-muted-foreground flex-1 text-sm">
-    {m['admin.datatable.selected-rows']({ count: table.getFilteredSelectedRowModel().rows.length, total: table.getFilteredRowModel().rows.length })}
-</div>
+    <div class="text-muted-foreground flex-1 text-sm">
+        {m['admin.datatable.selected-rows']({ count: table.getFilteredSelectedRowModel().rows.length, total: table.getFilteredRowModel().rows.length })}
+    </div>
 
-<Pagination {paginatedObject} onChange={(page: number, limit: number) => onPaginationChange(page, limit)} />
+    <Pagination {paginatedObject} onChange={(page: number, limit: number) => onPaginationChange(page, limit)} />
 
-<div class="w-full flex justify-end gap-5">
-    <Button variant="destructive" disabled={!deletable || ![...selectedRows].length} onclick={() => (showModal = true)}>
-        {m['common.delete']()}
-    </Button>
-    <Button variant="secondary">
-        <Link href={`${$location}/new`} class="p-0 !no-underline">
-            {m['common.create']()}
-        </Link>
-    </Button>
+    <div class="w-full flex justify-end gap-5">
+        <Button variant="destructive" disabled={!deletable || ![...selectedRows].length} onclick={() => (showModal = true)}>
+            {m['common.delete']()}
+        </Button>
+        <Button variant="secondary">
+            <Link href={`${$location}/new`} class="p-0 !no-underline">
+                {m['common.create']()}
+            </Link>
+        </Button>
+    </div>
 </div>
 
 <AlertDialog open={showModal} onOpenChange={() => (showModal = false)}>
