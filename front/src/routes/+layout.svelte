@@ -12,11 +12,12 @@
     import { Transmit } from '@adonisjs/transmit-client';
     import { transmit } from '#lib/stores/transmitStore';
     import { PUBLIC_API_REAL_URI } from '$env/static/public';
+    import type { Snippet } from 'svelte';
 
     const currentPage = readable(page);
 
     interface Props {
-        children: import('svelte').Snippet;
+        children: Snippet;
     }
 
     let { children }: Props = $props();

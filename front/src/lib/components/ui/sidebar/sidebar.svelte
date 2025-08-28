@@ -43,11 +43,12 @@
     };
 
     onMount(() => {
-        document.addEventListener('click', handleClick, true);
-
-        return () => {
-            document.removeEventListener('click', handleClick, true);
-        };
+        if (!sidebar.isMobile) {
+            document.addEventListener('click', handleClick, true);
+            return () => {
+                document.removeEventListener('click', handleClick, true);
+            };
+        }
     });
 </script>
 

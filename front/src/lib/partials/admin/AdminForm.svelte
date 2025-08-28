@@ -17,9 +17,10 @@
     } from '#lib/components/ui/alert-dialog';
     import { wrappedFetch } from '#lib/services/requestService';
     import { location, navigate } from '#lib/stores/locationStore';
+    import type { Snippet } from 'svelte';
 
     type Props = {
-        children: import('svelte').Snippet;
+        children: Snippet;
         id?: string | number;
         canSubmit: boolean;
         deleteTitle?: string;

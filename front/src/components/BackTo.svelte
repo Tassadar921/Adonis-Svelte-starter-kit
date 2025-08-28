@@ -1,9 +1,10 @@
 <script lang="ts">
     import { ArrowLeft } from '@lucide/svelte';
     import { Link } from '#lib/components/ui/link';
+    import type { Snippet } from 'svelte';
 
     type Props = {
-        children: import('svelte').Snippet;
+        children: Snippet;
         href: string;
     };
 

@@ -6,9 +6,10 @@
     import FlagMenu from '#lib/partials/menu/FlagMenu.svelte';
     import { Link } from '#lib/components/ui/link';
     import { page } from '$app/state';
+    import type { Snippet } from 'svelte';
 
     type Props = {
-        children: import('svelte').Snippet;
+        children: Snippet;
     };
 
     let { children }: Props = $props();
