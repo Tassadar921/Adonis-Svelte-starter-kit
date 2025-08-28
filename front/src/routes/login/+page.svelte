@@ -5,21 +5,17 @@
     import OauthProviders from '#lib/partials/login/OauthProviders.svelte';
     import Meta from '#components/Meta.svelte';
     import { Input } from '#lib/components/ui/input';
-    import { isValidEmail } from '#lib/services/checkStringService';
     import { Link } from '#lib/components/ui/link';
-    import { page } from '$app/state';
+    import * as zod from 'zod';
+
+    const schema = zod.object({
+        email: zod.email(),
+        password: zod.string(),
+    });
 
     let email: string = $state('');
     let password: string = $state('');
-    let canSubmit = $derived(isValidEmail(email) && !!password);
-
-    $effect((): void => {
-        const errorData = page.data.formError?.data;
-        if (errorData) {
-            email = errorData.email ?? '';
-            password = errorData.password ?? '';
-        }
-    });
+    let canSubmit = $derived(schema.safeParse({ email, password }).success);
 </script>
 
 <Meta title={m['login.meta.title']()} description={m['login.meta.description']()} keywords={m['login.meta.keywords']().split(', ')} pathname="/login" />

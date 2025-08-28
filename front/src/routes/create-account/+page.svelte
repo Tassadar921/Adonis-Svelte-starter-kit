@@ -8,6 +8,20 @@
     import Meta from '#components/Meta.svelte';
     import { Switch } from '#lib/components/ui/switch';
     import { page } from '$app/state';
+    import * as zod from 'zod';
+
+    const schema = zod
+        .object({
+            username: zod.string().min(3).max(50),
+            email: zod.email(),
+            password: zod.string().min(8).max(100),
+            confirmPassword: zod.string().min(8).max(100),
+            consent: zod.boolean().parse(true),
+        })
+        .refine((data) => data.password === data.confirmPassword, {
+            message: m['common.password.match'](),
+            path: ['confirmPassword'],
+        });
 
     let username: string = $state('');
     let email: string = $state('');
@@ -15,7 +29,7 @@
     let confirmPassword: string = $state('');
     let consent: boolean = $state(false);
 
-    let canSubmit: boolean = $state(false);
+    let canSubmit: boolean = $derived(schema.safeParse({ username, email, password, confirmPassword, consent }).success);
 
     $effect((): void => {
         const errorData = page.data.formError?.data;
@@ -25,15 +39,6 @@
             password = errorData.password ?? '';
             confirmPassword = errorData.confirmPassword ?? '';
             consent = errorData.consent ?? false;
-        }
-    });
-
-    $effect((): void => {
-        if (username && email && isValidEmail(email) && password && confirmPassword && consent) {
-            const checkPasswordMessageKey = checkPassword(password, confirmPassword);
-            canSubmit = !checkPasswordMessageKey;
-        } else {
-            canSubmit = false;
         }
     });
 </script>
