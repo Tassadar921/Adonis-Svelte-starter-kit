@@ -10,13 +10,14 @@
     import type { PageDataError } from '../app';
     import { showToast } from '#lib/services/toastService';
     import { cn } from '#lib/utils';
+    import type { Snippet } from 'svelte';
 
     type Props = {
-        children: import('svelte').Snippet;
-        header?: import('svelte').Snippet;
-        links?: import('svelte').Snippet;
-        footer?: import('svelte').Snippet;
-        submitContent?: import('svelte').Snippet;
+        children: Snippet;
+        header?: Snippet;
+        links?: Snippet;
+        footer?: Snippet;
+        submitContent?: Snippet;
         onError?: (data?: any) => void;
         isValid?: boolean;
         submittable?: boolean;

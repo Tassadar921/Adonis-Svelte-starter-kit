@@ -1,6 +1,8 @@
 <script lang="ts" module>
+    import type { Snippet } from 'svelte';
+
     export type FooterGroupProps = {
-        children: import('svelte').Snippet;
+        children: Snippet;
         title: string;
         class: string;
     };
