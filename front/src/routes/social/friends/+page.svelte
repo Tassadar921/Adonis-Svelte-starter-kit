@@ -32,7 +32,7 @@
 
     let isLoading: boolean = $state(false);
     let paginatedFriends: PaginatedFriends | undefined = $state();
-    let friends = $derived(paginatedFriends?.friends || []);
+    const friends = $derived(paginatedFriends?.friends || []);
     let query: string = $state('');
 
     let selectedFriend: SerializedUser | undefined = $state();

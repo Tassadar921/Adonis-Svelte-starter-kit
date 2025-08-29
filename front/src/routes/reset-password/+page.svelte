@@ -4,16 +4,16 @@
     import { Input } from '#lib/components/ui/input';
     import { m } from '#lib/paraglide/messages';
     import { profile } from '#lib/stores/profileStore';
-    import { isValidEmail } from '#lib/services/checkStringService';
     import Meta from '#components/Meta.svelte';
+    import * as zod from 'zod';
+
+    const schema = zod.object({
+        email: zod.email().max(100),
+    });
 
     let email: string = $state('');
     let readonly: boolean = $state(false);
-    let canSubmit: boolean = $state(false);
-
-    $effect((): void => {
-        canSubmit = !!email && isValidEmail(email);
-    });
+    const canSubmit: boolean = $derived(schema.safeParse({ email }).success);
 
     $effect((): void => {
         if ($profile && $profile.email) {

@@ -5,6 +5,13 @@
     import { m } from '#lib/paraglide/messages';
     import FileUpload from '#components/FileUpload.svelte';
     import { onMount } from 'svelte';
+    import * as zod from 'zod';
+
+    const schema = zod.object({
+        name: zod.string().min(3).max(50),
+        code: zod.string().length(2).lowercase(),
+        flag: zod.instanceof(File).refine((file) => ['image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/svg+xml'].includes(file.type), { message: 'Invalid file type' }),
+    });
 
     type Props = {
         language?: SerializedLanguage;
@@ -16,8 +23,8 @@
         name: '',
         code: '',
     });
-    let canSubmit: boolean = $state(false);
-    let file: File | undefined = $state();
+    let flag: File | undefined = $state();
+    const canSubmit: boolean = $derived(schema.safeParse({ name: formValues.name, code: formValues.code, flag }).success);
 
     onMount(() => {
         setInitialValues();
@@ -31,10 +38,6 @@
     const handleError = (): void => {
         setInitialValues();
     };
-
-    $effect((): void => {
-        canSubmit = !!formValues.name && !!formValues.code && !!(language?.flag || file);
-    });
 </script>
 
 <AdminForm
@@ -46,8 +49,8 @@
 >
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
         <div class="flex flex-col gap-8">
-            <Input name="name" label={m['admin.language.fields.name']()} bind:value={formValues.name} required />
-            <Input name="code" label={m['admin.language.fields.code']()} bind:value={formValues.code} readonly={!!language} required />
+            <Input name="name" label={m['admin.language.fields.name']()} bind:value={formValues.name} min={3} max={50} required />
+            <Input name="code" label={m['admin.language.fields.code']()} bind:value={formValues.code} min={2} max={2} readonly={!!language} required />
         </div>
         <div>
             <FileUpload
@@ -58,7 +61,7 @@
                 description={m['admin.language.new.flag.description']()}
                 pathPrefix="language-flag"
                 id={formValues.code}
-                bind:file
+                bind:file={flag}
             />
         </div>
     </div>

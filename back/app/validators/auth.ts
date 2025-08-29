@@ -2,7 +2,7 @@ import vine from '@vinejs/vine';
 
 export const loginValidator = vine.compile(
     vine.object({
-        email: vine.string().trim().email(),
+        email: vine.string().trim().email().maxLength(100),
         password: vine.string().trim(),
     })
 );
@@ -14,8 +14,9 @@ export const sendAccountCreationEmailValidator = vine.compile(
         password: vine
             .string()
             .trim()
+            .minLength(8)
+            .maxLength(100)
             .regex(/^(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*(),.?":{}|<>]).{8,}$/)
-            .trim()
             .confirmed({ confirmationField: 'confirmPassword' }),
         consent: vine.boolean(),
     })

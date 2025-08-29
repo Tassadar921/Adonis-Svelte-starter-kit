@@ -25,7 +25,7 @@
 
     let isLoading: boolean = false;
     let paginatedBlockedUsers: PaginatedBlockedUsers | undefined = $state();
-    let blockedUsers = $derived(paginatedBlockedUsers?.blockedUsers || []);
+    const blockedUsers = $derived(paginatedBlockedUsers?.blockedUsers || []);
     let query: string = $state('');
     let selectedBlockedUser: SerializedUser | undefined = $state();
     let showModal: boolean = $state(false);

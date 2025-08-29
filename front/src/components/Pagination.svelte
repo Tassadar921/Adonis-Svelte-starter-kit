@@ -18,8 +18,8 @@
 
     let { paginatedObject, containerElement = window, onChange }: Props = $props();
 
-    let canGoBack: boolean = $derived(paginatedObject.currentPage > paginatedObject.firstPage);
-    let canGoForward: boolean = $derived(paginatedObject.currentPage < paginatedObject.lastPage);
+    const canGoBack: boolean = $derived(paginatedObject.currentPage > paginatedObject.firstPage);
+    const canGoForward: boolean = $derived(paginatedObject.currentPage < paginatedObject.lastPage);
 
     const handleClick = async (page: number, limit: number): Promise<void> => {
         try {
