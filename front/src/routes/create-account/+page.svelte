@@ -3,7 +3,6 @@
     import { Title } from '#lib/components/ui/title';
     import { m } from '#lib/paraglide/messages';
     import { Input } from '#lib/components/ui/input';
-    import { checkPassword, isValidEmail } from '#lib/services/checkStringService';
     import OauthProviders from '#lib/partials/login/OauthProviders.svelte';
     import Meta from '#components/Meta.svelte';
     import { Switch } from '#lib/components/ui/switch';
@@ -13,7 +12,7 @@
     const schema = zod
         .object({
             username: zod.string().min(3).max(50),
-            email: zod.email(),
+            email: zod.email().max(100),
             password: zod.string().min(8).max(100),
             confirmPassword: zod.string().min(8).max(100),
             consent: zod.boolean().parse(true),
@@ -29,7 +28,7 @@
     let confirmPassword: string = $state('');
     let consent: boolean = $state(false);
 
-    let canSubmit: boolean = $derived(schema.safeParse({ username, email, password, confirmPassword, consent }).success);
+    const canSubmit: boolean = $derived(schema.safeParse({ username, email, password, confirmPassword, consent }).success);
 
     $effect((): void => {
         const errorData = page.data.formError?.data;

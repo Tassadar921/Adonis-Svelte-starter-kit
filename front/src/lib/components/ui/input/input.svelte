@@ -34,8 +34,8 @@
     let showPassword = $state(false);
     let isFocused = $state(false);
 
-    let isPassword: boolean = $derived(type === 'password');
-    let actualType: InputType = $derived(isPassword ? (showPassword ? 'text' : 'password') : type);
+    const isPassword: boolean = $derived(type === 'password');
+    const actualType: InputType = $derived(isPassword ? (showPassword ? 'text' : 'password') : type);
 
     const togglePasswordVisibility = () => {
         showPassword = !showPassword;

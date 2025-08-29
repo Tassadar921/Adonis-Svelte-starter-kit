@@ -32,7 +32,7 @@
 
     let isLoading: boolean = $state(false);
     let paginatedUsers: PaginatedUsers | undefined = $state();
-    let users = $derived(paginatedUsers?.users || []);
+    const users = $derived(paginatedUsers?.users || []);
     let query: string = $state('');
     let showModal: boolean = $state(false);
     let blockingUser: SerializedUser | undefined = $state();

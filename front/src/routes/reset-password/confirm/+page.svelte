@@ -5,6 +5,17 @@
     import { checkPassword } from '#lib/services/checkStringService';
     import Meta from '#components/Meta.svelte';
     import { Input } from '#lib/components/ui/input';
+    import * as zod from 'zod';
+
+    const schema = zod
+        .object({
+            password: zod.string().min(8).max(100),
+            confirmPassword: zod.string().min(8).max(100),
+        })
+        .refine((data) => data.password === data.confirmPassword, {
+            message: m['common.password.match'](),
+            path: ['confirmPassword'],
+        });
 
     interface Props {
         token: string;
@@ -14,13 +25,7 @@
 
     let password: string = $state('');
     let confirmPassword: string = $state('');
-    let canSubmit: boolean = $state(false);
-
-    $effect((): void => {
-        if (password && confirmPassword) {
-            canSubmit = !checkPassword(password, confirmPassword);
-        }
-    });
+    const canSubmit: boolean = $derived(schema.safeParse({ password, confirmPassword }).success);
 </script>
 
 <meta name="robots" content="noindex, nofollow" />

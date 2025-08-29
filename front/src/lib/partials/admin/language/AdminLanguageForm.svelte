@@ -5,6 +5,12 @@
     import { m } from '#lib/paraglide/messages';
     import FileUpload from '#components/FileUpload.svelte';
     import { onMount } from 'svelte';
+    import * as zod from 'zod';
+
+    const schema = zod.object({
+        name: zod.string().min(3).max(50),
+        code: zod.string().length(2).lowercase(),
+    });
 
     type Props = {
         language?: SerializedLanguage;
@@ -16,8 +22,8 @@
         name: '',
         code: '',
     });
-    let canSubmit: boolean = $state(false);
-    let file: File | undefined = $state();
+    let flag: File | undefined = $state();
+    const canSubmit: boolean = $derived(schema.safeParse({ name: formValues.name, code: formValues.code, flag }).success);
 
     onMount(() => {
         setInitialValues();
@@ -31,10 +37,6 @@
     const handleError = (): void => {
         setInitialValues();
     };
-
-    $effect((): void => {
-        canSubmit = !!formValues.name && !!formValues.code && !!(language?.flag || file);
-    });
 </script>
 
 <AdminForm
@@ -58,7 +60,7 @@
                 description={m['admin.language.new.flag.description']()}
                 pathPrefix="language-flag"
                 id={formValues.code}
-                bind:file
+                bind:file={flag}
             />
         </div>
     </div>

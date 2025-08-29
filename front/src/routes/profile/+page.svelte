@@ -8,12 +8,18 @@
     import FileUpload from '#components/FileUpload.svelte';
     import { type SerializedUser } from 'backend/types';
     import Meta from '#components/Meta.svelte';
+    import * as zod from 'zod';
+
+    const schema = zod.object({
+        username: zod.string().min(3).max(50),
+        email: zod.email(),
+    });
 
     let formValues: { username: string; email: string } = $state({
         username: $profile?.username || '',
         email: $profile?.email || '',
     });
-    let canSubmit: boolean = $state(false);
+    const canSubmit: boolean = $derived(schema.safeParse({ username: formValues.username, email: formValues.email }).success);
 
     let profileData: SerializedUser = $profile!;
 
@@ -23,10 +29,6 @@
             email: $profile!.email,
         };
     };
-
-    $effect((): void => {
-        canSubmit = !!formValues.username && !!formValues.email;
-    });
 </script>
 
 <Meta title={m['profile.meta.title']()} description={m['profile.meta.description']()} keywords={m['profile.meta.keywords']().split(', ')} pathname="/profile" />

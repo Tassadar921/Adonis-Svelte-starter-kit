@@ -6,6 +6,13 @@
     import FileUpload from '#components/FileUpload.svelte';
     import { Switch } from '#lib/components/ui/switch';
     import { onMount } from 'svelte';
+    import * as zod from 'zod';
+
+    const schema = zod.object({
+        username: zod.string().min(3).max(50),
+        email: zod.email().max(100),
+        enabled: zod.boolean(),
+    });
 
     type Props = {
         user?: SerializedUser;
@@ -18,7 +25,7 @@
         username: '',
         enabled: false,
     });
-    let canSubmit: boolean = $state(false);
+    const canSubmit: boolean = $derived(schema.safeParse({ email: formValues.email, username: formValues.username, enabled: formValues.enabled }).success);
     let file: File | undefined = $state();
 
     onMount(() => {
@@ -34,10 +41,6 @@
     const handleError = (): void => {
         setInitialValues();
     };
-
-    $effect((): void => {
-        canSubmit = !!formValues.username && !!formValues.email;
-    });
 </script>
 
 <AdminForm

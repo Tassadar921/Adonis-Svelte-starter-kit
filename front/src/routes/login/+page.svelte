@@ -15,7 +15,7 @@
 
     let email: string = $state('');
     let password: string = $state('');
-    let canSubmit = $derived(schema.safeParse({ email, password }).success);
+    const canSubmit = $derived(schema.safeParse({ email, password }).success);
 </script>
 
 <Meta title={m['login.meta.title']()} description={m['login.meta.description']()} keywords={m['login.meta.keywords']().split(', ')} pathname="/login" />
