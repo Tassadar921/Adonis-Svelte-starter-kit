@@ -12,14 +12,16 @@
 
     const schema = zod.object({
         username: zod.string().min(3).max(50),
-        email: zod.email(),
+        email: zod.email().max(100),
+        profilePicture: zod.file().mime(['image/png', 'image/jpeg', 'image/gif', 'image/webp', 'image/svg+xml']).optional(),
     });
 
     let formValues: { username: string; email: string } = $state({
         username: $profile?.username || '',
         email: $profile?.email || '',
     });
-    const canSubmit: boolean = $derived(schema.safeParse({ username: formValues.username, email: formValues.email }).success);
+    let profilePicture: File | undefined = $state();
+    const canSubmit: boolean = $derived(schema.safeParse({ username: formValues.username, email: formValues.email, profilePicture }).success);
 
     let profileData: SerializedUser = $profile!;
 
@@ -39,8 +41,8 @@
 </Link>
 
 <Form isValid={canSubmit} onError={handleError}>
-    <Input name="username" placeholder={m['common.username.label']()} label={m['common.username.label']()} bind:value={formValues.username} min={3} max={50} required />
-    <Input name="email" placeholder={m['common.email.label']()} label={m['common.email.label']()} bind:value={formValues.email} disabled required />
+    <Input name="username" placeholder={m['common.username.label']()} label={m['common.username.label']()} min={3} max={50} bind:value={formValues.username} required />
+    <Input name="email" placeholder={m['common.email.label']()} label={m['common.email.label']()} max={100} bind:value={formValues.email} readonly required />
     <FileUpload
         name="profilePicture"
         accept="png jpg jpeg gif webp svg"
@@ -49,5 +51,6 @@
         description={m['profile.profile-picture.description']()}
         pathPrefix="profile-picture"
         id={profileData.id}
+        bind:file={profilePicture}
     />
 </Form>

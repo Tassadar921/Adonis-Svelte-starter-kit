@@ -7,7 +7,7 @@ export default class extends BaseSchema {
     public async up(): Promise<void> {
         this.schema.createTable(this.tableName, (table: Knex.CreateTableBuilder): void => {
             table.uuid('id').primary().defaultTo(this.raw('uuid_generate_v4()'));
-            table.string('name').notNullable();
+            table.string('name', 50).notNullable();
             table.string('code', 2).notNullable();
             table.boolean('is_fallback').defaultTo(false);
             table.uuid('flag_id').notNullable().references('id').inTable('files');

@@ -9,7 +9,7 @@
     import * as zod from 'zod';
 
     const schema = zod.object({
-        email: zod.email(),
+        email: zod.email().max(100),
         password: zod.string(),
     });
 

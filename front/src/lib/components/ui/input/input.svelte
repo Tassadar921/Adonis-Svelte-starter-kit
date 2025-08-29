@@ -12,6 +12,7 @@
             files?: FileList;
             label?: string;
             readonly?: boolean;
+            max?: number;
         }
     >;
 
@@ -28,6 +29,7 @@
         onblur,
         label,
         readonly = false,
+        max,
         ...restProps
     }: Props = $props();
 
@@ -52,6 +54,12 @@
         const inputEvent = event as FocusEvent & { currentTarget: EventTarget & HTMLInputElement };
         onblur?.(inputEvent);
     };
+
+    $effect(() => {
+        if (max && typeof value === 'string' && value.length > max) {
+            value = value.slice(0, max);
+        }
+    });
 </script>
 
 <div class="relative w-full">

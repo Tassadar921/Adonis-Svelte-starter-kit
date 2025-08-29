@@ -43,11 +43,9 @@
 
     const handleFileChange = (event: Event): void => {
         const target = event.target as HTMLInputElement;
-        if (disabled || !target.files || target.files.length === 0) {
-            return;
-        }
+        if (disabled || !target.files || target.files.length === 0) return;
 
-        const file = target.files[0];
+        file = target.files[0];
         fileName = file.name;
 
         if (file.type.startsWith('image/')) {
@@ -133,7 +131,7 @@
         aria-label="File uploader"
         {disabled}
     >
-        <input bind:this={inputRef} type="file" class="sr-only" {name} accept={acceptedFormats} onchange={handleFileChange} {disabled} bind:value={file} />
+        <input bind:this={inputRef} type="file" class="sr-only" {name} accept={acceptedFormats} onchange={handleFileChange} {disabled} />
 
         <span class="text-primary-500">
             <Upload class="size-6" />

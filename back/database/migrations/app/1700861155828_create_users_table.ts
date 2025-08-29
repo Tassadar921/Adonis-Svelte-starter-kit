@@ -9,8 +9,8 @@ export default class extends BaseSchema {
         this.schema.createTable(this.tableName, (table: Knex.CreateTableBuilder): void => {
             table.uuid('id').primary().defaultTo(this.raw('uuid_generate_v4()'));
             table.specificType('front_id', 'serial').notNullable();
-            table.string('username').notNullable();
-            table.string('email').notNullable().unique();
+            table.string('username', 50).notNullable();
+            table.string('email', 100).notNullable().unique();
             table.string('password').nullable();
             table.string('role').notNullable().defaultTo(UserRoleEnum.USER);
             table.boolean('enabled').defaultTo(false);
