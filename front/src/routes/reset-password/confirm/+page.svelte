@@ -2,7 +2,6 @@
     import Form from '#components/Form.svelte';
     import { Title } from '#lib/components/ui/title';
     import { m } from '#lib/paraglide/messages';
-    import { checkPassword } from '#lib/services/checkStringService';
     import Meta from '#components/Meta.svelte';
     import { Input } from '#lib/components/ui/input';
     import * as zod from 'zod';
