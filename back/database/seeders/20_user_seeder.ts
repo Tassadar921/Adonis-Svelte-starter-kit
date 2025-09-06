@@ -10,7 +10,7 @@ export default class extends BaseSeeder {
         const fileService: FileService = new FileService();
         const userRepository: UserRepository = new UserRepository(fileService);
 
-        const emails: string[] = JSON.parse(env.get('FRIEND_EMAILS'));
+        const emails: string[] = JSON.parse(env.get('ADDITIONAL_EMAILS'));
         for (const email of [...emails, env.get('ADMIN_EMAIL')]) {
             if (!(await userRepository.findOneBy({ email }))) {
                 await User.create({
